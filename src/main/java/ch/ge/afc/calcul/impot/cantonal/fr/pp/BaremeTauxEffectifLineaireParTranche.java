@@ -1,0 +1,104 @@
+/**
+ * This file is part of CalculImpotCH.
+ *
+ * CalculImpotCH is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * CalculImpotCH is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with CalculImpotCH.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package ch.ge.afc.calcul.impot.cantonal.fr.pp;
+
+import static java.math.BigDecimal.ZERO;
+
+import java.math.BigDecimal;
+
+import ch.ge.afc.calcul.bareme.BaremeTauxEffectifParTranche;
+import ch.ge.afc.calcul.bareme.TrancheBareme;
+import ch.ge.afc.util.BigDecimalUtil;
+
+/**
+ * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
+ *
+ */
+public class BaremeTauxEffectifLineaireParTranche extends BaremeTauxEffectifParTranche {
+
+	public void ajouterTranche(int montant, String taux, String tauxEnPlusPar100Francs) {
+		getTranches().add(new TrancheBaremeLineaire(new BigDecimal(montant),
+				BigDecimalUtil.parseTaux(taux),BigDecimalUtil.parseTaux(tauxEnPlusPar100Francs).movePointLeft(2)));
+	}
+	
+	public void ajouterDerniereTranche(String taux) {
+		getTranches().add(new TrancheBaremeLineaire.DerniereTrancheBaremeLineaire(BigDecimalUtil.parseTaux(taux)));
+	}
+	
+	/* (non-Javadoc)
+	 * @see ch.ge.afc.calcul.impot.bareme.BaremeTauxEffectif#getTaux(java.math.BigDecimal)
+	 */
+	@Override
+	public BigDecimal getTaux(BigDecimal assiette) {
+		BigDecimal resultat = ZERO;
+		BigDecimal montantMaxTranchePrecedente = ZERO;
+		for (TrancheBareme tranche : getTranches()) {
+			resultat = resultat.add(tranche.calcul(montantMaxTranchePrecedente,assiette));
+			montantMaxTranchePrecedente = tranche.getMontantMaxTranche();
+		}
+		return resultat;
+	}
+	
+	protected static class TrancheBaremeLineaire extends TrancheBareme {
+
+		private final BigDecimal pente;
+		
+		public TrancheBaremeLineaire(BigDecimal montantImposableMax,
+				BigDecimal taux, BigDecimal pente) {
+			super(montantImposableMax, taux);
+			this.pente = pente;
+		}
+
+		/* (non-Javadoc)
+		 * @see ch.ge.afc.calcul.impot.bareme.TrancheBareme#calcul(java.math.BigDecimal, java.math.BigDecimal)
+		 */
+		@Override
+		public BigDecimal calcul(
+				BigDecimal montantImposableMaxTranchePrecedente,
+				BigDecimal montantImposable) {
+			if (0 <= montantImposable.compareTo(montantImposableMaxTranchePrecedente)
+					&&
+				0 > montantImposable.compareTo(this.getMontantMaxTranche())) {
+				return this.getTauxOuMontant().add(pente.multiply(montantImposable.subtract(montantImposableMaxTranchePrecedente)));
+			}
+			return BigDecimal.ZERO;
+		}
+
+		protected static class DerniereTrancheBaremeLineaire extends DerniereTrancheBareme {
+			 
+			public DerniereTrancheBaremeLineaire(BigDecimal taux) {
+				super(taux);
+			}
+
+			/* (non-Javadoc)
+			 * @see ch.ge.afc.calcul.impot.cantonal.fr.pp.BaremeTauxEffectifLineaireParTranche.TrancheBaremeLineaire#calcul(java.math.BigDecimal, java.math.BigDecimal)
+			 */
+			@Override
+			public BigDecimal calcul(
+					BigDecimal montantImposableMaxTranchePrecedente,
+					BigDecimal montantImposable) {
+				if (0 <= montantImposable.compareTo(montantImposableMaxTranchePrecedente)) {
+					return this.getTauxOuMontant();
+				}
+				return BigDecimal.ZERO;
+			}
+			
+			
+		}
+		
+	}
+	
+}
