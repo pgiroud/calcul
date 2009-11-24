@@ -23,10 +23,10 @@ import java.util.ListIterator;
 import ch.ge.afc.util.TypeArrondi;
 
 /**
- * Cette classe représente un barème qui est constitué de points reliés entre eux par
+ * Cette classe reprÃ©sente un barÃ¨me qui est constituÃ© de points reliÃ©s entre eux par
  * des droites.
- * Pour avoir la valeur du barème en un point donné, on recherche tout d'abord l'unique intervalle contenant ce point
- * puis on fait une interpolation linéaire pour trouver la valeur.
+ * Pour avoir la valeur du barÃ¨me en un point donnÃ©, on recherche tout d'abord l'unique intervalle contenant ce point
+ * puis on fait une interpolation linÃ©aire pour trouver la valeur.
  *
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
