@@ -21,6 +21,12 @@ public class BaremeRevenu2010Test {
 	private FournisseurRegleImpotCantonalGE fournisseur;
 
 	@Test
+	public void baremeSource() {
+		Bareme bareme = fournisseur.getBaremeRevenu(2010);
+		assertEquals("Pour 17753 francs",new BigDecimal("18.10"),bareme.calcul(new BigDecimal("17753")));
+	}
+	
+	@Test
 	public void borneBareme() {
 		Bareme bareme = fournisseur.getBaremeRevenu(2010);
 		assertEquals("Pour 17527 francs",new BigDecimal("0.00"),bareme.calcul(new BigDecimal("17527")));
