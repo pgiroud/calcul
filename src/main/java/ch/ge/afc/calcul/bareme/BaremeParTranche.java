@@ -83,7 +83,7 @@ public abstract class BaremeParTranche implements Bareme {
     /******************* Méthodes *********************/
     /**************************************************/
 
-	protected void ajouterTranche(BigDecimal montantImposable, BigDecimal montant) {
+	public void ajouterTranche(BigDecimal montantImposable, BigDecimal montant) {
 		getTranches().add(new TrancheBareme(montantImposable,montant));
 	}
 	
