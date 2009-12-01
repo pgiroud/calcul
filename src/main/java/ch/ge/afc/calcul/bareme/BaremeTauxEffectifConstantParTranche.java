@@ -44,6 +44,10 @@ public class BaremeTauxEffectifConstantParTranche extends
     /******************* Méthodes *********************/
     /**************************************************/
 
+	public void ajouterTranche(int montant, BigDecimal taux) {
+		getTranches().add(new TrancheBareme(new BigDecimal(montant),taux));
+	}
+	
 	public void ajouterTranche(int montant, String taux) {
 		getTranches().add(new TrancheBareme(new BigDecimal(montant),BigDecimalUtil.parseTaux(taux)));
 	}
@@ -52,13 +56,22 @@ public class BaremeTauxEffectifConstantParTranche extends
 		getTranches().add(new TrancheBareme.DerniereTrancheBareme(BigDecimalUtil.parseTaux(taux)));
 	}
 	
+	public void ajouterDerniereTranche(BigDecimal taux) {
+		getTranches().add(new TrancheBareme.DerniereTrancheBareme(taux));
+	}
+	
 	/* (non-Javadoc)
 	 * @see ch.ge.afc.calcul.impot.bareme.BaremeTauxEffectif#getTaux(java.math.BigDecimal)
 	 */
 	@Override
 	public BigDecimal getTaux(BigDecimal assiette) {
 		for (TrancheBareme tranche : getTranches()) {
-			int comparaison = assiette.compareTo(tranche.getMontantMaxTranche());
+			int comparaison;
+			if (null == tranche.getMontantMaxTranche()) {
+				comparaison = -1;
+			} else {
+				comparaison = assiette.compareTo(tranche.getMontantMaxTranche());
+			}
 			if ((montantMaxNonInclus && 0 > comparaison) 
 					|| 
 				(!montantMaxNonInclus && 0 >= comparaison)) {
@@ -68,6 +81,5 @@ public class BaremeTauxEffectifConstantParTranche extends
 		return getTranches().get(getTranches().size()-1).getTauxOuMontant();
 	}
 
-	
 	
 }
