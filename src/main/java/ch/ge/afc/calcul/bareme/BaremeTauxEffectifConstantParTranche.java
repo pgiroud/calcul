@@ -20,10 +20,13 @@ import java.math.BigDecimal;
 import ch.ge.afc.util.BigDecimalUtil;
 
 /**
+ * Barème à taux effectif défini par tranche et dont le taux est constant sur chacune des tranches.
+ * Ces barèmes sont typiquement utilisés pour l'impôt à la source.
+ *
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public class BaremeTauxEffectifConstantParTranche extends
+public final class BaremeTauxEffectifConstantParTranche extends
 		BaremeTauxEffectifParTranche {
 
 	/**************************************************/
@@ -79,6 +82,17 @@ public class BaremeTauxEffectifConstantParTranche extends
 			}
 		}
 		return getTranches().get(getTranches().size()-1).getTauxOuMontant();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof BaremeTauxEffectifConstantParTranche)) return false;
+		BaremeTauxEffectifConstantParTranche bareme = (BaremeTauxEffectifConstantParTranche)obj;
+		if (this.montantMaxNonInclus != bareme.montantMaxNonInclus) return false;
+		if (!this.getTypeArrondi().equals(bareme.getTypeArrondi())) return false;
+		if (0 != BigDecimalUtil.nullSafeCompare(this.getSeuil(), bareme.getSeuil())) return false;
+		if (!this.getTranches().equals(bareme.getTranches())) return false;
+		return true;
 	}
 
 	

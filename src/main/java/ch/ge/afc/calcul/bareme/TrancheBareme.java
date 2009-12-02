@@ -98,7 +98,22 @@ public class TrancheBareme {
 		return montantImposableMax + " " + tauxOuMontant;
 	}
 
-    /**************************************************/
+	private static boolean safeEquals(BigDecimal premier, BigDecimal second) {
+		if (null == premier) return null == second;
+		if (null == second) return false;
+		return 0 == premier.compareTo(second);
+	}
+	
+    @Override
+	public boolean equals(Object obj) {
+    	if (!(obj instanceof TrancheBareme)) return false;
+    	TrancheBareme tranche = (TrancheBareme)obj;
+		return safeEquals(montantImposableMax,tranche.montantImposableMax) 
+			&& 0 == tauxOuMontant.compareTo(tranche.tauxOuMontant); 
+	}
+
+
+	/**************************************************/
     /************** Classes internes ******************/
     /**************************************************/
 	

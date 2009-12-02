@@ -62,6 +62,17 @@ public class BaremeTauxEffectifLineaireParTranche extends BaremeTauxEffectifParT
 			this.pente = pente;
 		}
 
+		@Override
+		public boolean equals(Object obj) {
+			// Attention, il n'est en général pas conseillé de surcharger
+			// la méthode equals dans une sous-classe.
+			// On se le permet ici car cette classe est sufisamment isolée.
+			if (!(obj instanceof TrancheBaremeLineaire)) return false;
+			TrancheBaremeLineaire tranche = (TrancheBaremeLineaire)obj;
+			if (0 != pente.compareTo(tranche.pente)) return false;
+			return super.equals(obj);
+		}
+
 		/* (non-Javadoc)
 		 * @see ch.ge.afc.calcul.impot.bareme.TrancheBareme#calcul(java.math.BigDecimal, java.math.BigDecimal)
 		 */

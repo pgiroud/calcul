@@ -79,6 +79,10 @@ public abstract class BaremeParTranche implements Bareme {
 		return typeArrondi;
 	}
 
+	protected BigDecimal getSeuil() {
+		return seuil;
+	}
+	
     /**************************************************/
     /******************* Méthodes *********************/
     /**************************************************/
