@@ -15,44 +15,98 @@
  */
 package ch.ge.afc.util;
 
+import java.lang.reflect.Array;
+
 /**
  * Construit un hashcode suivant l'algorithme décrit par Josh Bloch.
+ * Typiquement, pour une classe 
+ * <pre>
+ * 	public class Bareme {
+ * 		private int annee;
+ * 		private Tranche[] tranches;
+ * 		private TypeArrondi typeArrondi;
+ * 		....
+ * </pre>
+ * on utilisera ce builder comme suit :
+ * <pre>
+ * 	int hashcode = new HashCodeBuilder().add(annee)
+ * 						.add(tranches).add(typeArrondi).hash();
+ * </pre>
  * 
+ * 
+ * Attention, il ne s'agit pas ici de construire des fonctions de hachage cryptographique ! 
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
 public class HashCodeBuilder {
 
-	private int hashcode = 17;
+	private final int multiplier;
+	private int hashcode;
 	
-	private HashCodeBuilder increment(int valeur) {
-		hashcode = 37 * hashcode + valeur;
+	/**
+	 * Construit une méthode de hachage avec les constantes indiquées
+	 * dans le livre de J. Bloch à savoir : premier terme = 17 et multiplier = 37.
+	 */
+	public HashCodeBuilder() {
+		this(17,37);
+	}
+	
+	public HashCodeBuilder(int firstTerm, int multiplier) {
+		this.multiplier = multiplier;
+		hashcode = firstTerm;
+	}
+	
+	
+	private HashCodeBuilder increment(int value) {
+		hashcode = multiplier * hashcode + value;
 		return this;
 	}
 	
 
-	public HashCodeBuilder booleen(boolean valeur) {
-		return increment(valeur ? 1 : 0);
+	public HashCodeBuilder add(boolean value) {
+		return increment(value ? 1 : 0);
 	}
 	
-	public HashCodeBuilder entier(int valeur) {
-		return increment(valeur);
+	public HashCodeBuilder add(char value) {
+		return increment((int)value);
+	}
+	
+	public HashCodeBuilder add(int value) {
+		// Les valeurs de type byte, short sont traitées par cette méthode
+		return increment(value);
 	}
 
-	public HashCodeBuilder entierLong(long valeur) {
-		return increment((int)(valeur ^ (valeur >>> 32)));
+	public HashCodeBuilder add(long value) {
+		return increment((int)(value ^ (value >>> 32)));
 	}
 
-	public HashCodeBuilder simplePrecision(float valeur) {
-		return increment(Float.floatToIntBits(valeur));
+	public HashCodeBuilder add(float value) {
+		return increment(Float.floatToIntBits(value));
 	}
 	
-	public HashCodeBuilder doublePrecision(double valeur) {
-		return entierLong(Double.doubleToLongBits(valeur));
+	public HashCodeBuilder add(double value) {
+		return add(Double.doubleToLongBits(value));
 	}
 	
-	public HashCodeBuilder objet(Object valeur) {
-		return entierLong(valeur.hashCode());
+	private boolean isArray(Object value) {
+		return value.getClass().isArray();
+	}
+	
+	public HashCodeBuilder add(Object value) {
+		if (null == value) {
+			return add(0);
+		} else {
+			if (!isArray(value)) {
+				return add(value.hashCode());
+			} else {
+	            int length = Array.getLength(value);
+	            for (int i = 0; i < length; ++i) {
+	                Object item = Array.get(value, i);
+	                add(item);
+	            }
+	            return this;
+			}
+		}
 	}
 	
 	public int hash() {
