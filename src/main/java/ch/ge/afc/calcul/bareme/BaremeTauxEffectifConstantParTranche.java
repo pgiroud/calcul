@@ -18,6 +18,7 @@ package ch.ge.afc.calcul.bareme;
 import java.math.BigDecimal;
 
 import ch.ge.afc.util.BigDecimalUtil;
+import ch.ge.afc.util.HashCodeBuilder;
 
 /**
  * Barème à taux effectif défini par tranche et dont le taux est constant sur chacune des tranches.
@@ -93,6 +94,12 @@ public final class BaremeTauxEffectifConstantParTranche extends
 		if (0 != BigDecimalUtil.nullSafeCompare(this.getSeuil(), bareme.getSeuil())) return false;
 		if (!this.getTranches().equals(bareme.getTranches())) return false;
 		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().add(montantMaxNonInclus).add(getTypeArrondi())
+				.add(getSeuil()).add(getTranches()).hash();
 	}
 
 	

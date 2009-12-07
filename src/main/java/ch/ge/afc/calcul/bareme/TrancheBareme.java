@@ -18,6 +18,7 @@ package ch.ge.afc.calcul.bareme;
 
 import java.math.BigDecimal;
 
+import ch.ge.afc.util.HashCodeBuilder;
 import ch.ge.afc.util.TypeArrondi;
 
 /**
@@ -110,6 +111,12 @@ public class TrancheBareme {
     	TrancheBareme tranche = (TrancheBareme)obj;
 		return safeEquals(montantImposableMax,tranche.montantImposableMax) 
 			&& 0 == tauxOuMontant.compareTo(tranche.tauxOuMontant); 
+	}
+
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().add(montantImposableMax).add(tauxOuMontant).hash();
 	}
 
 
