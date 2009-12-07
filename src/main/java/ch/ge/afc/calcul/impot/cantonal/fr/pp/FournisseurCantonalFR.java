@@ -15,12 +15,19 @@
  */
 package ch.ge.afc.calcul.impot.cantonal.fr.pp;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import ch.ge.afc.calcul.bareme.Bareme;
 import ch.ge.afc.calcul.bareme.BaremeTauxEffectifConstantParTranche;
 import ch.ge.afc.calcul.impot.cantonal.FournisseurCantonal;
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
 import ch.ge.afc.util.TypeArrondi;
 
 public class FournisseurCantonalFR extends FournisseurCantonal implements FournisseurRegleImpotCantonalFR {
+
+	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICRevenu = new ConcurrentHashMap<Integer, ProducteurImpot>();
+	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICFortune = new ConcurrentHashMap<Integer, ProducteurImpot>();
 
 	/* (non-Javadoc)
 	 * @see ch.ge.afc.calcul.impot.cantonal.FournisseurCantonal#construireBaremeRevenu(int)
@@ -57,6 +64,21 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
 		return bareme;
 	}
 
+	protected ProducteurImpot construireProducteurImpotsICRevenu(int annee) {
+		// TODO PGI
+		return null;
+	}
+	
+	@Override
+	public ProducteurImpot getProducteurImpotsICRevenu(int annee) {
+		if (!producteurImpotsICRevenu.containsKey(annee))
+			producteurImpotsICRevenu.putIfAbsent(annee,
+					construireProducteurImpotsICRevenu(annee));
+		return producteurImpotsICRevenu.get(annee);
+	}
+	
+
+	
 	/* (non-Javadoc)
 	 * @see ch.ge.afc.calcul.impot.cantonal.FournisseurCantonal#construireBaremeFortune(int)
 	 */
@@ -106,7 +128,20 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
 		bareme.setTypeArrondi(TypeArrondi.CINQ_CTS);
 		return bareme;
 	}
+
+	protected ProducteurImpot construireProducteurImpotsICFortune(int annee) {
+		// TODO PGI
+		return null;
+	}
 	
+	@Override
+	public ProducteurImpot getProducteurImpotsICFortune(int annee) {
+		if (!producteurImpotsICFortune.containsKey(annee))
+			producteurImpotsICFortune.putIfAbsent(annee,
+					construireProducteurImpotsICFortune(annee));
+		return producteurImpotsICFortune.get(annee);
+	}
+
 	
 	
 

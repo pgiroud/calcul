@@ -16,8 +16,13 @@
 package ch.ge.afc.calcul.impot.cantonal.fr.pp;
 
 import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
 
 public interface FournisseurRegleImpotCantonalFR {
 	Bareme getBaremeRevenu(int annee);
 	Bareme getBaremeFortune(int annee);
+	
+	ProducteurImpot getProducteurImpotsICRevenu(int annee);
+	ProducteurImpot getProducteurImpotsICFortune(int annee);
+	
 }

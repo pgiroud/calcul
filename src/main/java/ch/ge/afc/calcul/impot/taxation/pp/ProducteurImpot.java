@@ -47,6 +47,7 @@ public abstract class ProducteurImpot {
 	
 	private List<ProducteurImpotDerive> producteursDerives = new ArrayList<ProducteurImpotDerive>();
 	private ProducteurImpotCommunal producteurImpotCommunal;
+//	private ProducteurImpotParoissial producteurImpotParoissial;
 	private StrategieProductionImpotFamille impositionFamille;
 	/**
 	 * Par défaut, la stratégie d'annualisation utilise un calendrier comptable à 360 jours.
