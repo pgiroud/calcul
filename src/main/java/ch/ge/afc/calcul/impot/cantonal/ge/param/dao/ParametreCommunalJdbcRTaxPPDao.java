@@ -18,7 +18,6 @@ package ch.ge.afc.calcul.impot.cantonal.ge.param.dao;
 import java.math.BigDecimal;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.ParameterizedSingleColumnRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
@@ -54,7 +53,7 @@ public class ParametreCommunalJdbcRTaxPPDao extends SimpleJdbcDaoSupport impleme
 		MapSqlParameterSource param = new MapSqlParameterSource();
 		param.addValue("periode", annee);
 		param.addValue("noOFS", noOFSCommune);
-		return this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedSingleColumnRowMapper.newInstance(BigDecimal.class), param);
+		return this.getSimpleJdbcTemplate().queryForObject(sql, BigDecimal.class, param);
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class ParametreCommunalJdbcRTaxPPDao extends SimpleJdbcDaoSupport impleme
 		MapSqlParameterSource param = new MapSqlParameterSource();
 		param.addValue("periode", annee);
 		param.addValue("noOFS", noOFSCommune);
-		return this.getSimpleJdbcTemplate().queryForObject(sql, ParameterizedSingleColumnRowMapper.newInstance(BigDecimal.class), param);
+		return this.getSimpleJdbcTemplate().queryForObject(sql, BigDecimal.class, param);
 	}
 
 }
