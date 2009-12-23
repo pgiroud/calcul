@@ -22,8 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import ch.ge.afc.calcul.ReglePeriodique;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.FournisseurIndicePeriodiqueGE;
-import ch.ge.afc.calcul.math.Fonction;
-import ch.ge.afc.calcul.math.integration.Primitivable;
+import ch.ge.afc.util.math.Fonction;
+import ch.ge.afc.util.math.integration.Primitivable;
 
 /**
  * Cette classe fournit le taux marginal de l'impôt sur le revenu des personnes

@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.ge.afc.calcul.ReglePeriodique;
-import ch.ge.afc.calcul.math.Fonction;
+import ch.ge.afc.util.math.Fonction;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
