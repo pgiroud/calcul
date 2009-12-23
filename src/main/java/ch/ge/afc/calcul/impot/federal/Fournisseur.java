@@ -19,14 +19,13 @@ import java.math.BigDecimal;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import ch.ge.afc.calcul.bareme.Bareme;
-import ch.ge.afc.calcul.bareme.BaremeTxMarginalEtEffectifParTranche;
+import ch.ge.afc.bareme.Bareme;
+import ch.ge.afc.bareme.BaremeTxMarginalEtEffectifParTranche;
 import ch.ge.afc.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
 import ch.ge.afc.calcul.impot.taxation.pp.DeductionSociale;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 import ch.ge.afc.calcul.impot.taxation.pp.famille.DoubleBareme;
-import ch.ge.afc.calcul.impot.taxation.pp.famille.DoubleBaremeEtRabaisCharge;
 import ch.ge.afc.calcul.impot.taxation.pp.famille.ImpositionFamilleSansAvantage;
 import ch.ge.afc.calcul.impot.taxation.pp.federal.deduction.DeductionSocialeParEnfant;
 import ch.ge.afc.calcul.impot.taxation.pp.federal.deduction.DeductionSocialePourConjoints;
@@ -210,11 +209,7 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 			protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
 		};
 		StrategieProductionImpotFamille strategie = null;
-		if (annee < 2011) {
-			strategie = new DoubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
-		} else {
-			strategie = new DoubleBaremeEtRabaisCharge(getBaremeRevenu(annee), getBaremeRevenuFamille(annee),new BigDecimal(170));
-		}
+		strategie = new DoubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
 		producteur.setStrategieProductionImpotFamille(strategie);
 
 		producteur.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
@@ -229,11 +224,7 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 			protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
 		};
 		StrategieProductionImpotFamille strategie = null;
-		if (annee < 2011) {
-			strategie = new DoubleBareme(getBaremePrestationCapital(annee), getBaremePrestationCapitalFamille(annee));
-		} else {
-			strategie = new DoubleBaremeEtRabaisCharge(getBaremePrestationCapital(annee), getBaremePrestationCapitalFamille(annee),new BigDecimal(170));
-		}
+		strategie = new DoubleBareme(getBaremePrestationCapital(annee), getBaremePrestationCapitalFamille(annee));
 		producteur.setStrategieProductionImpotFamille(strategie);
 
 		producteur.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
