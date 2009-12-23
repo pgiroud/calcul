@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ch.ge.afc.calcul.bareme.BaremeTauxMarginalConstantParTranche;
+import ch.ge.afc.bareme.BaremeTauxMarginalConstantParTranche;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeTxMarginalConstantParTranche;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE;
 import ch.ge.afc.util.TypeArrondi;

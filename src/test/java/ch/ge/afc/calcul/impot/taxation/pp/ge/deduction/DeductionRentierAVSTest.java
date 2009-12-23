@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import ch.ge.afc.calcul.bareme.BaremeConstantParTranche;
+import ch.ge.afc.bareme.BaremeConstantParTranche;
 import ch.ge.afc.calcul.impot.taxation.pp.ge.deduction.DeductionRentierAVS;
 
 

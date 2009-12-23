@@ -15,7 +15,7 @@
  */
 package ch.ge.afc.calcul.impot.cantonal.fr.pp;
 
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
 
 public interface FournisseurRegleImpotCantonalFR {

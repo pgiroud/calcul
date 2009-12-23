@@ -17,8 +17,8 @@ package ch.ge.afc.calcul.impot.taxation.pp.ge.deduction;
 
 import java.math.BigDecimal;
 
+import ch.ge.afc.bareme.BaremeConstantParTranche;
 import ch.ge.afc.calcul.ReglePeriodique;
-import ch.ge.afc.calcul.bareme.BaremeConstantParTranche;
 import ch.ge.afc.util.TypeArrondi;
 
 /**

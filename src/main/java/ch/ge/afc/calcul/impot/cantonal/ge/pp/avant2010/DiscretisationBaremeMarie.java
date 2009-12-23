@@ -15,7 +15,7 @@
  */
 package ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010;
 
-import static ch.ge.afc.calcul.bareme.Point.ORIGINE;
+import static ch.ge.afc.bareme.Point.ORIGINE;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,10 +23,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import ch.ge.afc.calcul.bareme.Point;
-import ch.ge.afc.calcul.math.Fonction;
-import ch.ge.afc.calcul.math.integration.MethodeIntegration;
+import ch.ge.afc.bareme.Point;
 import ch.ge.afc.util.TypeArrondi;
+import ch.ge.afc.util.math.Fonction;
+import ch.ge.afc.util.math.integration.MethodeIntegration;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>

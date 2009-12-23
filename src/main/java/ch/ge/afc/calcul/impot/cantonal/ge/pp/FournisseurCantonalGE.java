@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import ch.ge.afc.bareme.Bareme;
+import ch.ge.afc.bareme.BaremeConstantParTranche;
+import ch.ge.afc.bareme.BaremeDiscretiseEtInterpolationLineaire;
+import ch.ge.afc.bareme.BaremeTauxMarginalConstantParTranche;
+import ch.ge.afc.bareme.BaremeTauxMarginalIntegrable;
+import ch.ge.afc.bareme.Point;
 import ch.ge.afc.calcul.assurancessociales.FournisseurRegleCalculAssuranceSociale;
-import ch.ge.afc.calcul.bareme.Bareme;
-import ch.ge.afc.calcul.bareme.BaremeConstantParTranche;
-import ch.ge.afc.calcul.bareme.BaremeDiscretiseEtInterpolationLineaire;
-import ch.ge.afc.calcul.bareme.BaremeTauxMarginalConstantParTranche;
-import ch.ge.afc.calcul.bareme.BaremeTauxMarginalIntegrable;
-import ch.ge.afc.calcul.bareme.Point;
 import ch.ge.afc.calcul.impot.ProducteurImpotDerivePourcent;
 import ch.ge.afc.calcul.impot.cantonal.FournisseurCantonal;
 import ch.ge.afc.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
@@ -52,10 +52,10 @@ import ch.ge.afc.calcul.impot.taxation.pp.ge.deduction.DeductionBeneficiaireRent
 import ch.ge.afc.calcul.impot.taxation.pp.ge.deduction.DeductionChargeFamille;
 import ch.ge.afc.calcul.impot.taxation.pp.ge.deduction.DeductionRentierAVS;
 import ch.ge.afc.calcul.impot.taxation.pp.ge.deduction.rabais.ProducteurBaseRabaisImpot;
-import ch.ge.afc.calcul.math.integration.MethodeIntegrationPointMilieu;
 import ch.ge.afc.util.ExplicationDetailleTexteBuilder;
 import ch.ge.afc.util.IExplicationDetailleeBuilder;
 import ch.ge.afc.util.TypeArrondi;
+import ch.ge.afc.util.math.integration.MethodeIntegrationPointMilieu;
 
 public class FournisseurCantonalGE extends FournisseurCantonal implements FournisseurRegleImpotCantonalGE {
 	
@@ -423,8 +423,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 		producteur.setStrategieProductionImpotFamille(strategie);
 
 		producteur.setTypeArrondiImposable(TypeArrondi.FRANC);
-		// Pour être conforme avec RTaxPP
-		producteur.setTypeArrondiDeterminant(TypeArrondi.FRANC_INF);
+		producteur.setTypeArrondiDeterminant(TypeArrondi.FRANC);
 		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
 
 		IExplicationDetailleeBuilder explication = getNewExplicationBuilder();

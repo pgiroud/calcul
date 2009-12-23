@@ -26,7 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.junit.Assert.*;
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 
 @RunWith(SpringJUnit4ClassRunner.class)

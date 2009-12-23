@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
@@ -54,7 +54,7 @@ public class BaremeRevenu2010Test {
 	public void montantImpot() {
 		Bareme bareme = fournisseur.getBaremeRevenu(2010);
 		assertEquals("Pour 100000 francs",new BigDecimal("11632.45"),bareme.calcul(new BigDecimal("100000")));
-		
+		assertEquals("Pour 88935 francs",new BigDecimal("3171.40"),bareme.calcul(new BigDecimal("44467")));
 		
 	}
 }

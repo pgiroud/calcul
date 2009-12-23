@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.ge.afc.calcul.bareme.BaremeTauxMarginalConstantParTranche;
+import ch.ge.afc.bareme.BaremeTauxMarginalConstantParTranche;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.FournisseurIndicePeriodiqueGE;
 import ch.ge.afc.util.TypeArrondi;
 

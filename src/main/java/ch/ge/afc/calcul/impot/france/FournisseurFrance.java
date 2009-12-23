@@ -15,8 +15,8 @@
  */
 package ch.ge.afc.calcul.impot.france;
 
-import ch.ge.afc.calcul.bareme.Bareme;
-import ch.ge.afc.calcul.bareme.BaremeTauxMarginalConstantParTranche;
+import ch.ge.afc.bareme.Bareme;
+import ch.ge.afc.bareme.BaremeTauxMarginalConstantParTranche;
 import ch.ge.afc.util.TypeArrondi;
 
 /**

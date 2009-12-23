@@ -15,7 +15,7 @@
  */
 package ch.ge.afc.calcul.impot.federal;
 
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
 import ch.ge.afc.calcul.impot.taxation.pp.DeductionSociale;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;

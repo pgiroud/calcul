@@ -18,7 +18,7 @@ package ch.ge.afc.calcul.impot.cantonal;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 
 public abstract class FournisseurCantonal {
 

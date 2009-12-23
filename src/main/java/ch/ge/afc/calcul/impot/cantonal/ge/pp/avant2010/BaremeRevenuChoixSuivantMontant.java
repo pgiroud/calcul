@@ -17,7 +17,7 @@ package ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.util.TypeArrondi;
 
 /**

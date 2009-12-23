@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 
 public class TestCalculImpotBaremeFrance {
 

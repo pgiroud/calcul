@@ -15,7 +15,7 @@
  */
 package ch.ge.afc.calcul.impot.taxation.pp.famille;
 
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.calcul.impot.taxation.pp.SituationFamiliale;
 import ch.ge.afc.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 

@@ -2,8 +2,8 @@ package ch.ge.afc.calcul.impot.france;
 
 import java.math.BigDecimal;
 
+import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.calcul.ReglePeriodique;
-import ch.ge.afc.calcul.bareme.Bareme;
 import ch.ge.afc.util.BigDecimalUtil;
 import ch.ge.afc.util.TypeArrondi;
 

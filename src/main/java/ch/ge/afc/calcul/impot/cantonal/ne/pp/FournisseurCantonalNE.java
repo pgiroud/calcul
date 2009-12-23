@@ -15,8 +15,8 @@
  */
 package ch.ge.afc.calcul.impot.cantonal.ne.pp;
 
-import ch.ge.afc.calcul.bareme.Bareme;
-import ch.ge.afc.calcul.bareme.BaremeTxMarginalEtEffectifParTranche;
+import ch.ge.afc.bareme.Bareme;
+import ch.ge.afc.bareme.BaremeTxMarginalEtEffectifParTranche;
 import ch.ge.afc.calcul.impot.cantonal.FournisseurCantonal;
 import ch.ge.afc.util.TypeArrondi;
 
