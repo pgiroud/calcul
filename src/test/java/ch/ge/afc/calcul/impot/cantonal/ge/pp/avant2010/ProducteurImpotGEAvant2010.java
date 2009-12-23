@@ -13,52 +13,27 @@
  * You should have received a copy of the GNU General Public License
  * along with CalculImpotCH.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.ge.afc.calcul.impot.taxation.pp;
+package ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import org.junit.Ignore;
 
 import ch.ge.afc.calcul.impot.FournisseurAssietteCommunale;
-import ch.ge.afc.calcul.impot.Souverainete;
-import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.FournisseurAssiettePeriodiqueGE;
-import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.SituationFamilialeGE;
-import ch.ge.afc.calcul.impot.taxation.forimposition.ForCommunal;
-import ch.ge.afc.calcul.impot.taxation.repart.Part;
-import ch.ge.afc.calcul.impot.taxation.repart.Repartition;
-import ch.ge.afc.calcul.lieu.FournisseurLieu;
-import ch.ge.afc.calcul.lieu.ICommuneSuisse;
+import ch.ge.afc.calcul.impot.taxation.pp.EnfantACharge;
+import ch.ge.afc.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
+import ch.ge.afc.calcul.impot.taxation.pp.PersonneACharge;
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotTst;
+import ch.ge.afc.calcul.impot.taxation.pp.SituationFamiliale;
 
-@Ignore
-public class ProducteurImpotTest {
+/**
+ * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
+ *
+ */
+public class ProducteurImpotGEAvant2010 extends ProducteurImpotTst {
 
-	private FournisseurLieu fournisseurLieu = new FournisseurLieu();
-	
-	protected Set<EnfantACharge> creerEnfant(final int... ageEnfant) {
-		Set<EnfantACharge> enfants = new HashSet<EnfantACharge>();
-		for (final int age : ageEnfant) {
-			enfants.add(new EnfantACharge(){
-
-				@Override
-				public int getAge(int anneeFiscale) {
-					return age;
-				}
-
-				@Override
-				public boolean isDemiPart(Souverainete souverainete) {
-					return false;
-				}
-				
-			});
-		}
-		return enfants;
-	}
-	
+	@Override
 	protected SituationFamiliale creerSituationCelibataireSansEnfant() {
 		SituationFamilialeGE situation = new SituationFamilialeGE() {
 
@@ -103,6 +78,7 @@ public class ProducteurImpotTest {
 		return situation;
 	}
 	
+	@Override
 	protected SituationFamiliale creerSituationFamilleAvecEnfant(final int... ageEnfant) {
 		SituationFamilialeGE situation = new SituationFamilialeGE() {
 
@@ -144,59 +120,7 @@ public class ProducteurImpotTest {
 		return situation;
 	}
 	
-	protected FournisseurAssietteCommunale creerAssietteCommunaleSurUneSeuleCommune(final int annee, final ICommuneSuisse commune) {
-		return new FournisseurAssietteCommunale() {
-			@Override
-			public Map<ICommuneSuisse, Integer> getNbreJourDomicileSurCommune() {
-				Map<ICommuneSuisse, Integer> map = new HashMap<ICommuneSuisse, Integer>();
-				map.put(commune, 360);
-				return map;
-			}
-			@Override
-			public int getPeriodeFiscale() {return annee;}
-			@Override
-			public Repartition<ForCommunal> getRepartition() {
-				Repartition<ForCommunal> repart = new Repartition<ForCommunal>();
-				repart.ajouterPart(new ForCommunal(commune),new Part(BigDecimal.ONE));
-				return repart;
-			}
-			
-		};
-	}
-
-	protected FournisseurAssiettePeriodique creerAssiettes(final int periodeFiscale, final int montantImposable) {
-		FournisseurAssiettePeriodique assietteFournisseur = new FournisseurAssiettePeriodique() {
-
-			@Override
-			public FournisseurAssietteCommunale getFournisseurAssietteCommunale() {
-				return ProducteurImpotTest.this.creerAssietteCommunaleSurUneSeuleCommune(periodeFiscale,fournisseurLieu.getCommuneGeneve());
-			}
-
-			@Override
-			public int getNombreJourPourAnnualisation() {
-				return 360;
-			}
-
-			@Override
-			public int getPeriodeFiscale() {
-				return periodeFiscale;
-			}
-
-			@Override
-			public BigDecimal getMontantDeterminant() {
-				return new BigDecimal(montantImposable);
-			}
-
-			@Override
-			public BigDecimal getMontantImposable() {
-				return new BigDecimal(montantImposable);
-			}
-			
-		};
-		return assietteFournisseur;
-	}
-	
-	protected FournisseurAssiettePeriodique creerAssiettes(final int periodeFiscale, final int montantImposable, final int montantDeterminantRabais) {
+	protected FournisseurAssiettePeriodique creerAssiettesAvecRabais(final int periodeFiscale, final int montantImposable, final int montantDeterminantRabais) {
 		FournisseurAssiettePeriodiqueGE assietteFournisseur = new FournisseurAssiettePeriodiqueGE() {
 
 			@Override
@@ -224,12 +148,12 @@ public class ProducteurImpotTest {
 			}
 			@Override
 			public FournisseurAssietteCommunale getFournisseurAssietteCommunale() {
-				return ProducteurImpotTest.this.creerAssietteCommunaleSurUneSeuleCommune(periodeFiscale,fournisseurLieu.getCommuneGeneve());
+				return ProducteurImpotGEAvant2010.this.creerAssietteCommunaleSurUneSeuleCommune(periodeFiscale,fournisseurLieu.getCommuneGeneve());
 			}
 			
 		};
 		return assietteFournisseur;
 	}
 	
-	
+
 }

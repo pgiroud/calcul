@@ -17,14 +17,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ge.afc.calcul.impot.Impot;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
-import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotTest;
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotTst;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurImpotSomme;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurMultipleImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurUniqueImpot;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
-public class ProductionImpotLIPP2010Test extends ProducteurImpotTest {
+@ContextConfiguration(locations = {"/beans.xml", "/beans-test.xml"})
+public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
 
 	@Resource(name = "fournisseurRegleImpotCantonalGE")
 	private FournisseurRegleImpotCantonalGE fournisseur;
@@ -133,6 +133,21 @@ public class ProductionImpotLIPP2010Test extends ProducteurImpotTest {
 		verifierMontantImpot(recepteur,"TOTAL","50450.85");
 	}
 	
+	@Test
+	public void problemeCalculetteRTax() {
+		ProducteurImpot producteur = fournisseur.getProducteurImpotsICCRevenu(2010);
+		RecepteurMultipleImpot recepteur = recepteur("IBR","RIBR","CAR","RCAR","ADR","PPR","COR");
+		// Test sur un montant impaire pour voir les effets d'arrondi.
+		producteur.produireImpot(this.creerSituationFamilleAvecEnfant(11), this.creerAssiettes(2010, 88935), recepteur);
+		verifierMontantImpot(recepteur,"IBR",  "6342.85");
+//		verifierMontantImpot(recepteur,"RIBR", "-3434.00");
+//		verifierMontantImpot(recepteur,"CAR",  "13592.85");
+//		verifierMontantImpot(recepteur,"RCAR", "-1631.15");
+//		verifierMontantImpot(recepteur,"ADR",    "286.15");
+//		verifierMontantImpot(recepteur,"PPR",   "3385.35");
+//		verifierMontantImpot(recepteur,"COR",   "9635.15");
+//		verifierMontantImpot(recepteur,"TOTAL","50450.85");
+	}
 	
 	@Test
 	public void fortune() {

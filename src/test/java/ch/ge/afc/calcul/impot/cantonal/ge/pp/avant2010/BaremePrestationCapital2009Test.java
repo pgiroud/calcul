@@ -31,7 +31,6 @@ import ch.ge.afc.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.SituationFamilialeGE;
 import ch.ge.afc.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
-import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotTest;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurImpotSomme;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurMultipleImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurUniqueImpot;
@@ -48,7 +47,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
-public class BaremePrestationCapital2009Test extends ProducteurImpotTest {
+public class BaremePrestationCapital2009Test extends ProducteurImpotGEAvant2010 {
 
 	@Resource(name = "fournisseurRegleImpotCantonalGE")
 	private FournisseurRegleImpotCantonalGE fournisseur;

@@ -14,7 +14,7 @@ import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeT
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE;
 import ch.ge.afc.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
-import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotTest;
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotTst;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurUniqueImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.SituationFamiliale;
 import ch.ge.afc.calcul.impot.taxation.pp.famille.Splitting;
@@ -22,7 +22,7 @@ import ch.ge.afc.util.ExplicationDetailleTexteBuilder;
 import ch.ge.afc.util.IExplicationDetailleeBuilder;
 import ch.ge.afc.util.TypeArrondi;
 
-public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTest {
+public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
 
 	private ProducteurImpot producteur;
 

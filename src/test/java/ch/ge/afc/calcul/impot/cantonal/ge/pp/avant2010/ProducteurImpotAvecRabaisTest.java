@@ -29,7 +29,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import ch.ge.afc.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
-import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotTest;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurMultipleImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurUniqueImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.SituationFamiliale;
@@ -37,7 +36,7 @@ import ch.ge.afc.calcul.impot.taxation.pp.SituationFamiliale;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
-public class ProducteurImpotAvecRabaisTest extends ProducteurImpotTest {
+public class ProducteurImpotAvecRabaisTest extends ProducteurImpotGEAvant2010 {
 
 	@Resource(name = "fournisseurRegleImpotCantonalGE")
 	private FournisseurRegleImpotCantonalGE fournisseur;
@@ -46,7 +45,7 @@ public class ProducteurImpotAvecRabaisTest extends ProducteurImpotTest {
 	private void testFamilleAvecEnfant(final int periodeFiscale, final int montantImposable, final String montantImpot , int montantDeterminantRabais, String montantRabaisImpot, final int...ageEnfant) {
 		ProducteurImpot producteurGERevenu = fournisseur.getProducteurImpotsICCRevenu(periodeFiscale);
 		SituationFamiliale situation = creerSituationFamilleAvecEnfant(ageEnfant);
-		FournisseurAssiettePeriodique fournisseur = this.creerAssiettes(periodeFiscale, montantImposable, montantDeterminantRabais);
+		FournisseurAssiettePeriodique fournisseur = this.creerAssiettesAvecRabais(periodeFiscale, montantImposable, montantDeterminantRabais);
 		RecepteurUniqueImpot recepteurIBR = new RecepteurUniqueImpot("IBR");
 		RecepteurUniqueImpot recepteurRI = new RecepteurUniqueImpot("RI");
 		
@@ -62,7 +61,7 @@ public class ProducteurImpotAvecRabaisTest extends ProducteurImpotTest {
 	private void testCelibataireSansEnfant(final int periodeFiscale, final int montantImposable, final String montantImpot, int montantDeterminantRabais, String montantRabais) {
 		ProducteurImpot producteurGERevenu = fournisseur.getProducteurImpotsICCRevenu(periodeFiscale);
 		SituationFamiliale situation = creerSituationCelibataireSansEnfant();
-		FournisseurAssiettePeriodique fournisseur = this.creerAssiettes(periodeFiscale, montantImposable, montantDeterminantRabais);
+		FournisseurAssiettePeriodique fournisseur = this.creerAssiettesAvecRabais(periodeFiscale, montantImposable, montantDeterminantRabais);
 		RecepteurUniqueImpot recepteurIBR = new RecepteurUniqueImpot("IBR");
 		RecepteurUniqueImpot recepteurRI = new RecepteurUniqueImpot("RI");
 		
