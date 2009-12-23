@@ -19,8 +19,8 @@ import static java.math.BigDecimal.ZERO;
 
 import java.math.BigDecimal;
 
-import ch.ge.afc.calcul.bareme.BaremeTauxEffectifParTranche;
-import ch.ge.afc.calcul.bareme.TrancheBareme;
+import ch.ge.afc.bareme.BaremeTauxEffectifParTranche;
+import ch.ge.afc.bareme.TrancheBareme;
 import ch.ge.afc.util.BigDecimalUtil;
 
 /**
@@ -29,9 +29,24 @@ import ch.ge.afc.util.BigDecimalUtil;
  */
 public class BaremeTauxEffectifLineaireParTranche extends BaremeTauxEffectifParTranche {
 
+	public BigDecimal getMontantImposablePremiereTranche() {
+		return getTranches().get(0).getMontantMaxTranche();
+	}
+	
+	public BigDecimal getTauxMinimum() {
+		for (TrancheBareme tranche : getTranches()) {
+			if (0 < tranche.getTauxOuMontant().compareTo(ZERO)) return tranche.getTauxOuMontant();
+		}
+		throw new IllegalStateException("Il faut qu'il existe des tranches avant d'invoquer cette méthode !!");
+	}
+	
 	public void ajouterTranche(int montant, String taux, String tauxEnPlusPar100Francs) {
-		getTranches().add(new TrancheBaremeLineaire(new BigDecimal(montant),
-				BigDecimalUtil.parseTaux(taux),BigDecimalUtil.parseTaux(tauxEnPlusPar100Francs).movePointLeft(2)));
+		ajouterTranche(new BigDecimal(montant),
+				BigDecimalUtil.parseTaux(taux),BigDecimalUtil.parseTaux(tauxEnPlusPar100Francs).movePointLeft(2));
+	}
+	
+	private void ajouterTranche(BigDecimal montant, BigDecimal taux, BigDecimal tauxEnPlusPar100Francs) {
+		getTranches().add(new TrancheBaremeLineaire(montant,taux,tauxEnPlusPar100Francs));
 	}
 	
 	public void ajouterDerniereTranche(String taux) {
