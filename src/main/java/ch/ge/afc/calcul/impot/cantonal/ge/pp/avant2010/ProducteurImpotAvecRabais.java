@@ -15,13 +15,14 @@
  */
 package ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010;
 
+import static ch.ge.afc.util.BigDecimalUtil.isStrictementPositif;
+
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.ge.afc.calcul.bareme.Bareme;
 import ch.ge.afc.calcul.impot.FournisseurAssietteCommunale;
 import ch.ge.afc.calcul.impot.ImpotProduit;
 import ch.ge.afc.calcul.impot.RecepteurImpot;
@@ -82,13 +83,12 @@ public abstract class ProducteurImpotAvecRabais extends ProducteurImpot {
 
 	protected BigDecimal produireRabaisImpot(BigDecimal montantImpotBase, SituationFamiliale situation, FournisseurAssiettePeriodique fournisseur, RecepteurImpot recepteur) {
 		BigDecimal determinant = getTypeArrondiDeterminant().arrondirMontant(fournisseur.getMontantDeterminant());
-		determinant = getStrategieImpositionFamille().transformeDeterminant(situation,determinant);
 		BigDecimal imposable = getTypeArrondiImposable().arrondirMontant(fournisseur.getMontantImposable());
-		BigDecimal impotAnnuel = null;
-		Bareme bareme = getStrategieImpositionFamille().getBareme(situation);
-		impotAnnuel = super.produireImpot(situation, bareme, determinant,imposable);
-		BigDecimal impot = getStrategieAnnualisation().annualiseImpot(impotAnnuel, fournisseur.getNombreJourPourAnnualisation());
+		if (!isStrictementPositif(determinant) || !isStrictementPositif(imposable)) return BigDecimal.ZERO;
+
 		
+		BigDecimal impotAnnuel = getStrategieImpositionFamille().produireImpotAnnuel(situation,determinant,imposable);
+		BigDecimal impot = getStrategieAnnualisation().annualiseImpot(impotAnnuel, fournisseur.getNombreJourPourAnnualisation());
 		impot = getTypeArrondiImpot().arrondirMontant(impot).min(montantImpotBase).negate();
 		
 		ImpotProduit impotProduit = new ImpotProduit(this.nomRabaisImpot,impot);
