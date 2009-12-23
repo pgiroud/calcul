@@ -24,7 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import ch.ge.afc.calcul.bareme.BaremeTauxMarginalConstantParTranche;
+import ch.ge.afc.bareme.BaremeTauxMarginalConstantParTranche;
 import ch.ge.afc.calcul.impot.taxation.pp.EnfantACharge;
 import ch.ge.afc.calcul.impot.taxation.pp.PersonneACharge;
 import ch.ge.afc.calcul.impot.taxation.pp.SituationFamiliale;
@@ -47,22 +47,12 @@ public class SplittingTest {
 		splitting = new Splitting(constructeur.construire(),"50 %");
 	}
 
-	private boolean equalsSansDecimale(BigDecimal montantAttendu, BigDecimal montantCalcule) {
-		if (null == montantAttendu) return null == montantCalcule;
-		if (null == montantCalcule) return false;
-		return 0 == montantAttendu.compareTo(montantCalcule);
-	}
-	
 	
 	@Test
-	public void testTransformeDeterminant() {
-		assertTrue("Montant déterminant",equalsSansDecimale(new BigDecimal("1000"), splitting.transformeDeterminant(getFamille(),new BigDecimal("2000"))));
-	}
-
-	@Test
-	public void testTransformeImpot() {
-		BigDecimal impot = new BigDecimal(1000);
-		assertTrue("Transfo Impot",equalsSansDecimale(impot,splitting.transformeImpotDeterminant(getFamille(),impot)));
+	public void produireImpot() {
+		BigDecimal impot = splitting.produireImpotAnnuel(getFamille(),new BigDecimal("2000"), new BigDecimal("2000"));
+		impot = TypeArrondi.CINQ_CTS.arrondirMontant(impot);
+		assertEquals("Transfo Impot",new BigDecimal("20.00"),impot);
 	}
 	
 	private SituationFamiliale getFamille() {

@@ -17,10 +17,11 @@ package ch.ge.afc.calcul.impot.taxation.pp.famille;
 
 import java.math.BigDecimal;
 
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.calcul.impot.taxation.pp.SituationFamiliale;
 import ch.ge.afc.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 import ch.ge.afc.util.BigDecimalUtil;
+import ch.ge.afc.util.TypeArrondi;
 
 public class Splitting extends ImpositionFamilleSansAvantage implements StrategieProductionImpotFamille {
 
@@ -29,6 +30,8 @@ public class Splitting extends ImpositionFamilleSansAvantage implements Strategi
     /**************************************************/
 	
 	private final BigDecimal tauxSplitting;
+	private TypeArrondi typeArrondi = TypeArrondi.FRANC_INF;
+	private TypeArrondi typeArrondiImpot = TypeArrondi.CINQ_CTS;
 	
     /**************************************************/
     /**************** Constructeurs *******************/
@@ -51,16 +54,45 @@ public class Splitting extends ImpositionFamilleSansAvantage implements Strategi
 		return tauxSplitting;
 	}
 
+	public void setTypeArrondi(TypeArrondi type) {
+		this.typeArrondi = type;
+	}
+	
+	protected TypeArrondi getTypeArrondi() {
+		return this.typeArrondi;
+	}
+	
+	protected Bareme getBareme() {
+		return this.getBaremeSeul();
+	}
+	
 	/**************************************************/
     /******************* Méthodes *********************/
     /**************************************************/
 
-	@Override
-	public BigDecimal transformeDeterminant(SituationFamiliale situation, BigDecimal determinant) {
-		if (isFamille(situation)) return tauxSplitting.multiply(determinant);
-		return super.transformeDeterminant(situation, determinant);
+	private BigDecimal produireImpotDeterminantFamille(BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
+		BigDecimal determinantApresSplitting = typeArrondi.arrondirMontant(tauxSplitting.multiply(determinantArrondi));
+		BigDecimal impotDeterminantApresSplitting = getBareme().calcul(determinantApresSplitting);
+		impotDeterminantApresSplitting = typeArrondiImpot.arrondirMontant(impotDeterminantApresSplitting);
+		return typeArrondiImpot.arrondirMontant(impotDeterminantApresSplitting.multiply(determinantArrondi).divide(determinantApresSplitting,10,BigDecimal.ROUND_HALF_UP));
 	}
 	
 	
-
+	private BigDecimal produireImpotDeterminantSeul(BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
+		BigDecimal impotDeterminant = getBareme().calcul(determinantArrondi);
+		return typeArrondiImpot.arrondirMontant(impotDeterminant);
+	}
+	
+	@Override
+	public BigDecimal produireImpotAnnuel(SituationFamiliale situation,
+			BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
+		BigDecimal impotDeterminant = null;
+		if (isFamille(situation)) {
+			impotDeterminant = this.produireImpotDeterminantFamille(determinantArrondi,imposableArrondi);
+		} else {
+			impotDeterminant = this.produireImpotDeterminantSeul(determinantArrondi, imposableArrondi);
+		}
+		if (0 == imposableArrondi.compareTo(determinantArrondi)) return impotDeterminant;
+		else return typeArrondiImpot.arrondirMontant(imposableArrondi.multiply(impotDeterminant).divide(determinantArrondi,10,BigDecimal.ROUND_HALF_UP));
+	}
 }

@@ -17,9 +17,10 @@ package ch.ge.afc.calcul.impot.taxation.pp.famille;
 
 import java.math.BigDecimal;
 
-import ch.ge.afc.calcul.bareme.Bareme;
+import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.calcul.impot.taxation.pp.SituationFamiliale;
 import ch.ge.afc.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
+import ch.ge.afc.util.TypeArrondi;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -33,7 +34,7 @@ public class ImpositionFamilleSansAvantage implements
     /**************************************************/
 	
 	private final Bareme bareme;
-
+	private TypeArrondi typeArrondiImpot = TypeArrondi.CINQ_CTS;
 	
     /**************************************************/
     /**************** Constructeurs *******************/
@@ -50,21 +51,25 @@ public class ImpositionFamilleSansAvantage implements
 	public Bareme getBaremeSeul() {
 		return bareme;
 	}
+ 
+	public void setTypeArrondiImpot(TypeArrondi type) {
+		this.typeArrondiImpot = type;
+	}
+	
 	
 	@Override
-	public Bareme getBareme(SituationFamiliale situation) {
+	public BigDecimal produireImpotAnnuel(SituationFamiliale situation,
+			BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
+		BigDecimal impotDeterminant = getBareme(situation).calcul(determinantArrondi);
+		impotDeterminant = typeArrondiImpot.arrondirMontant(impotDeterminant);
+		if (0 == imposableArrondi.compareTo(determinantArrondi)) return impotDeterminant;
+		else return typeArrondiImpot.arrondirMontant(imposableArrondi.multiply(impotDeterminant).divide(determinantArrondi,10,BigDecimal.ROUND_HALF_UP));
+	}
+
+	protected Bareme getBareme(SituationFamiliale situation) {
 		return bareme;
 	}
 
-	@Override
-	public BigDecimal transformeDeterminant(SituationFamiliale situation, BigDecimal determinant) {
-		return determinant;
-	}
-
-	@Override
-	public BigDecimal transformeImpotDeterminant(SituationFamiliale situation, BigDecimal impot) {
-		return impot;
-	}
 
 	protected boolean hasCharge(SituationFamiliale situation) {
 		return situation.getEnfants().size() > 0 || situation.getPersonnesNecessiteuses().size() > 0;

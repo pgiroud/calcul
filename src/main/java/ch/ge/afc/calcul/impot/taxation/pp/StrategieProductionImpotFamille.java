@@ -17,10 +17,7 @@ package ch.ge.afc.calcul.impot.taxation.pp;
 
 import java.math.BigDecimal;
 
-import ch.ge.afc.calcul.bareme.Bareme;
 
 public interface StrategieProductionImpotFamille {
-	Bareme getBareme(SituationFamiliale situation);
-	BigDecimal transformeDeterminant(SituationFamiliale situation, BigDecimal determinant);
-	BigDecimal transformeImpotDeterminant(SituationFamiliale situation, BigDecimal impot);
+	BigDecimal produireImpotAnnuel(SituationFamiliale situation, BigDecimal determinantArrondi, BigDecimal imposableArrondi);
 }

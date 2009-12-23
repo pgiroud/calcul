@@ -22,7 +22,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.ge.afc.calcul.bareme.Bareme;
 import ch.ge.afc.calcul.impot.FournisseurAssiette;
 import ch.ge.afc.calcul.impot.ImpotProduit;
 import ch.ge.afc.calcul.impot.ProducteurImpotCommunal;
@@ -70,6 +69,10 @@ public abstract class ProducteurImpot {
     /******* Accesseurs / Mutateurs *******************/
     /**************************************************/
 
+	protected String getNomImpotProduit() {
+		return nomImpotProduit;
+	}
+	
 	protected String getCodeBeneficiaire() {
 		return codeBeneficiaire;
 	}
@@ -191,15 +194,6 @@ public abstract class ProducteurImpot {
 		producteursDerives.add(producteur);
 	}
 	
-	protected BigDecimal produireImpot(SituationFamiliale situation, Bareme bareme, BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
-		if (!isStrictementPositif(determinantArrondi) || !isStrictementPositif(imposableArrondi)) return BigDecimal.ZERO;
-		BigDecimal impotDeterminant = bareme.calcul(determinantArrondi);
-		impotDeterminant = getStrategieImpositionFamille().transformeImpotDeterminant(situation,impotDeterminant);
-		impotDeterminant = getTypeArrondiImpot().arrondirMontant(impotDeterminant);
-		BigDecimal impot = imposableArrondi.multiply(impotDeterminant).divide(determinantArrondi,10,BigDecimal.ROUND_HALF_UP);
-		return impot;
-	}
-	
 	protected void produireImpotsDerives(BigDecimal montantBase, FournisseurAssiette fournisseur, RecepteurImpot recepteur) {
 		for (ProducteurImpotDerive producteur : producteursDerives) {
 			producteur.produireImpot(montantBase, fournisseur, recepteur);
@@ -208,11 +202,11 @@ public abstract class ProducteurImpot {
 	
 	protected BigDecimal produireImpotBase(SituationFamiliale situation, FournisseurAssiettePeriodique fournisseur, RecepteurImpot recepteur) {
 		BigDecimal determinant = getTypeArrondiDeterminant().arrondirMontant(fournisseur.getMontantDeterminant());
-		determinant = getStrategieImpositionFamille().transformeDeterminant(situation,determinant);
 		BigDecimal imposable = getTypeArrondiImposable().arrondirMontant(fournisseur.getMontantImposable());
-		BigDecimal impotAnnuel = null;
-		Bareme bareme = getStrategieImpositionFamille().getBareme(situation);
-		impotAnnuel = produireImpot(situation,bareme, determinant,imposable);
+		if (!isStrictementPositif(determinant) || !isStrictementPositif(imposable)) return BigDecimal.ZERO;
+		
+		
+		BigDecimal impotAnnuel = getStrategieImpositionFamille().produireImpotAnnuel(situation,determinant,imposable);
 		BigDecimal impot = getStrategieAnnualisation().annualiseImpot(impotAnnuel, fournisseur.getNombreJourPourAnnualisation());
 		impot = getTypeArrondiImpot().arrondirMontant(impot);
 		ImpotProduit impotProduit = new ImpotProduit(nomImpotProduit,impot);
