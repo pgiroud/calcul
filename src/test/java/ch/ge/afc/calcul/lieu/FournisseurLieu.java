@@ -101,6 +101,7 @@ public class FournisseurLieu {
 		
 		this.remplirCanton("FR","Fribourg",9010);
 		this.remplirCommune("FR","Fribourg",2196);
+		this.remplirCommune("FR","Attalens",2321);
 		
 		this.remplirCanton("VS","Valais",9023);
 		this.remplirCommune("VS","Sion",6266);
