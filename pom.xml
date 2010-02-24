@@ -10,6 +10,7 @@
   <properties>
      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
      <compileSource>1.6</compileSource>
+     <spring.version>3.0.1.RELEASE</spring.version>
   </properties>
   <scm>
         <connection>scm:cvs|pserver|anonymous:anonymous|@chardin|/opt/devcvs/afc/ael|formulaire_dma</connection>
@@ -149,7 +150,7 @@
 	<dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-context</artifactId>
-    	<version>3.0.0.RELEASE</version>
+    	<version>${spring.version}</version>
 		<exclusions>
          	<exclusion>
             	<groupId>commons-logging</groupId>
@@ -160,18 +161,18 @@
 	<dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-test</artifactId>
-    	<version>3.0.0.RELEASE</version>
+    	<version>${spring.version}</version>
     	<scope>test</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-tx</artifactId>
-		<version>3.0.0.RELEASE</version>
+		<version>${spring.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-jdbc</artifactId>
-		<version>3.0.0.RELEASE</version>
+		<version>${spring.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>com.oracle</groupId>
@@ -188,7 +189,13 @@
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-core</artifactId>
-		<version>3.0.0.RELEASE</version>
+		<version>${spring.version}</version>
+		<exclusions>
+         	<exclusion>
+            	<groupId>commons-logging</groupId>
+            	<artifactId>commons-logging</artifactId>
+         	</exclusion>
+      	</exclusions>
 	</dependency>
 	<dependency>
 		<groupId>ch.ge.afc</groupId>
