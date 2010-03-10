@@ -76,6 +76,7 @@ public class ProducteurBaseRabaisImpot2005Test extends AbstractTestProducteurBas
 		assertEquals("couple avec 5 enfants dont au moins 1 petit domicilié GE",new BigDecimal("64944"),producteur.produireMontantDeterminantRabais(creerCoupleSansDoubleActiviteAvecEnfant(5,true,true),this.creerFournisseurMontant()));
 	}
 
+	@Test
 	public void coupleDontUnFonctionnaireInternational() {
 		// Barème source I0
 		assertEquals("couple dont un fonctionnaire international sans charge",new BigDecimal("14288"),producteur.produireMontantDeterminantRabais(creerCoupleDontUnFonctionnaireInternational(0,false),this.creerFournisseurMontant()));
