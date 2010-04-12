@@ -152,7 +152,7 @@ public class RepartitionTest {
         // On somme chacune des parts : 198 + 132 + 330 = 660 d'où une différence d'arrondi de 1 franc
         // On répercute cette différence sur la plus grosse part : Fribourg 
         Part oPart = repart.getPart(getFor("FR"));
-        Assert.assertEquals("Sur la plus grosse part FR",new BigDecimal("329.00"),oPart.getMontant());
+        Assert.assertEquals("Sur la plus grosse part FR",new BigDecimal("329"),oPart.getMontant());
     }
     
 }

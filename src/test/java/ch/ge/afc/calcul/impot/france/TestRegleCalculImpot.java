@@ -32,6 +32,6 @@ public class TestRegleCalculImpot {
 		RegleCalculImpot regle = new RegleCalculImpot(2008);
 		regle.setMontantDecote(new BigDecimal("862"));
 		
-		assertEquals("Montant apres decote", new BigDecimal("619.00"),regle.decote(new BigDecimal("700")));
+		assertEquals("Montant apres decote", new BigDecimal("619"),regle.decote(new BigDecimal("700")));
 	}
 }

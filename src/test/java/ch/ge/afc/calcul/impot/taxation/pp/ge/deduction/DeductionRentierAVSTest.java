@@ -28,7 +28,7 @@ public class DeductionRentierAVSTest {
 	}
 	
 	private void deduction2Rentier(int revenu, int deduction) {
-		assertEquals("Double rentier " + revenu,new BigDecimal(deduction + ".00"),regle.getMontantDeduction(new BigDecimal(revenu), false, true));
+		assertEquals("Double rentier " + revenu,new BigDecimal(deduction),regle.getMontantDeduction(new BigDecimal(revenu), false, true));
 	}
 	
 	@Test
