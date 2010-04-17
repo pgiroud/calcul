@@ -27,6 +27,8 @@ import ch.ge.afc.bareme.BaremeTauxMarginalConstantParTranche;
 import ch.ge.afc.bareme.BaremeTauxMarginalIntegrable;
 import ch.ge.afc.bareme.Point;
 import ch.ge.afc.calcul.assurancessociales.FournisseurRegleCalculAssuranceSociale;
+import ch.ge.afc.calcul.impot.taxation.pp.*;
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import ch.ge.afc.calcul.impot.ProducteurImpotDerivePourcent;
 import ch.ge.afc.calcul.impot.cantonal.FournisseurCantonal;
 import ch.ge.afc.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
@@ -35,18 +37,13 @@ import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.BaremeRevenuChoixSuivantM
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeTxMarginalConstantParTranche;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.DiscretisationBaremeMarie;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.DoubleBaremeGE;
-import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.ProducteurImpotAvecRabais;
+import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.ProducteurImpotGEAvecRabais;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.ProducteurRabaisImpot;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.TauxMarginalFamille;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.TauxMarginalSeul;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.FournisseurIndicePeriodiqueGE;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.IndexateurMontant;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.IndexateurQuadriennal;
-import ch.ge.afc.calcul.impot.taxation.pp.DeductionSociale;
-import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
-import ch.ge.afc.calcul.impot.taxation.pp.RegleAgeEnfant;
-import ch.ge.afc.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
-import ch.ge.afc.calcul.impot.taxation.pp.famille.ImpositionFamilleSansAvantage;
 import ch.ge.afc.calcul.impot.taxation.pp.famille.Splitting;
 import ch.ge.afc.calcul.impot.taxation.pp.ge.deduction.DeductionBeneficiaireRentesAVSAI;
 import ch.ge.afc.calcul.impot.taxation.pp.ge.deduction.DeductionChargeFamille;
@@ -400,32 +397,42 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 		return producteur;
 	}
 	
+	public ProducteurImpotBase construireImpotCantonalBaseRevenu(int annee) {
+		ProducteurImpotBaseProgressif producteur = new ProducteurImpotBaseProgressif();
+		StrategieProductionImpotFamille strategie = null;
+		if (annee < 2010) {
+			strategie = new DoubleBaremeGE(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
+		} else {
+			strategie = new Splitting(getBaremeRevenu(annee),"50 %");
+		}
+		producteur.setStrategieProductionImpotFamille(strategie);
+
+		producteur.setTypeArrondiImposable(TypeArrondi.FRANC);
+		producteur.setTypeArrondiDeterminant(TypeArrondi.FRANC);
+		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+		return producteur;
+	}
+	
 	public ProducteurImpot construireProducteurImpotsCantonauxRevenu(int annee) {
 		ProducteurImpot producteur;
 		String codeBeneficiaire = "CAN-GE";
-		StrategieProductionImpotFamille strategie = null;
+		ProducteurImpotBase producteurImpotBase = construireImpotCantonalBaseRevenu(annee);
 		if (annee < 2010) {
-			ProducteurImpotAvecRabais prodRabais = new ProducteurImpotAvecRabais("IBR","RI",codeBeneficiaire){
+			ProducteurImpotGEAvecRabais prodRabais = new ProducteurImpotGEAvecRabais("IBR","RI",codeBeneficiaire){
 				@Override
 				protected IExplicationDetailleeBuilder createExplicationBuilder() {return FournisseurCantonalGE.this.getNewExplicationBuilder();}
 			};
-			strategie = new DoubleBaremeGE(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
-			prodRabais.setProducteurMinimumVital(construireProducteurRabaisImpot(annee));
+			prodRabais.setProducteurBaseRabais(producteurImpotBase);
 			producteur = prodRabais;
 		} else {
 			producteur = new ProducteurImpot("IBR",codeBeneficiaire){
 				@Override
 				protected IExplicationDetailleeBuilder createExplicationBuilder() {return FournisseurCantonalGE.this.getNewExplicationBuilder();}
 			};
-			strategie = new Splitting(getBaremeRevenu(annee),"50 %");
 		}
+		producteur.setProducteurBase(producteurImpotBase);
 		
-		producteur.setStrategieProductionImpotFamille(strategie);
-
-		producteur.setTypeArrondiImposable(TypeArrondi.FRANC);
-		producteur.setTypeArrondiDeterminant(TypeArrondi.FRANC);
-		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
-
+		
 		IExplicationDetailleeBuilder explication = getNewExplicationBuilder();
 		explication.ajouter("Réduction de {1,number,percent} sur impôt de base sur revenu {0,number,#,##0.00}");
 		explication.ajouter("{2,number,#,##0.00}");
@@ -476,15 +483,19 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 	}	
 	
 	private ProducteurImpot construireProducteurImpotsICCFortune(int annee) {
+		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
+		producteurImpotBase.setBareme(this.getBaremeFortune(annee));
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.FRANC);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.FRANC);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+		
+		
 		String codeBeneficiaire = "CAN-GE";
 		ProducteurImpot producteur = new ProducteurImpot("IBF",codeBeneficiaire){
 			@Override
 			protected IExplicationDetailleeBuilder createExplicationBuilder() {return FournisseurCantonalGE.this.getNewExplicationBuilder();}
 		};
-		producteur.setStrategieProductionImpotFamille(new ImpositionFamilleSansAvantage(this.getBaremeFortune(annee)));
-		producteur.setTypeArrondiImposable(TypeArrondi.FRANC);
-		producteur.setTypeArrondiDeterminant(TypeArrondi.FRANC);
-		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+		producteur.setProducteurBase(producteurImpotBase);
 		
 		IExplicationDetailleeBuilder explication = getNewExplicationBuilder();
 		explication.ajouter("CA Fortune :");
@@ -515,15 +526,19 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 	}
 	
 	private ProducteurImpot construireProducteurImpotsICCFortuneSupplementaire(int annee) {
+		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
+		producteurImpotBase.setBareme(this.getBaremeFortuneSupplementaire(annee));
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.FRANC);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.FRANC);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+		
+		
 		String codeBeneficiaire = "CAN-GE";
 		ProducteurImpot producteur = new ProducteurImpot("ISF",codeBeneficiaire){
 			@Override
 			protected IExplicationDetailleeBuilder createExplicationBuilder() {return FournisseurCantonalGE.this.getNewExplicationBuilder();}
 		};
-		producteur.setStrategieProductionImpotFamille(new ImpositionFamilleSansAvantage(this.getBaremeFortuneSupplementaire(annee)));
-		producteur.setTypeArrondiImposable(TypeArrondi.FRANC);
-		producteur.setTypeArrondiDeterminant(TypeArrondi.FRANC);
-		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+		producteur.setProducteurBase(producteurImpotBase);
 		return producteur;
 	}
 	

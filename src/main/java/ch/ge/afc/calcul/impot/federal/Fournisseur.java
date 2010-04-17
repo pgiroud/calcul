@@ -21,12 +21,12 @@ import java.util.concurrent.ConcurrentMap;
 
 import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.bareme.BaremeTxMarginalEtEffectifParTranche;
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotAvecRabais;
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import ch.ge.afc.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
 import ch.ge.afc.calcul.impot.taxation.pp.DeductionSociale;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
-import ch.ge.afc.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 import ch.ge.afc.calcul.impot.taxation.pp.famille.DoubleBareme;
-import ch.ge.afc.calcul.impot.taxation.pp.famille.ImpositionFamilleSansAvantage;
 import ch.ge.afc.calcul.impot.taxation.pp.federal.deduction.DeductionSocialeParEnfant;
 import ch.ge.afc.calcul.impot.taxation.pp.federal.deduction.DeductionSocialePourConjoints;
 import ch.ge.afc.util.ExplicationDetailleTexteBuilder;
@@ -204,47 +204,68 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 	
 	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee) {
-		ProducteurImpot producteur = new ProducteurImpot("IBR",""){
-			@Override
-			protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
-		};
-		StrategieProductionImpotFamille strategie = null;
-		strategie = new DoubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
-		producteur.setStrategieProductionImpotFamille(strategie);
+		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
+		producteurImpotBase.setStrategieProductionImpotFamille(new DoubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee)));
 
-		producteur.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
-		producteur.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
-		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS_INF);
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS_INF);
+		
+		
+        ProducteurImpot producteur = null;
+        if (annee < 2011) {
+            producteur = new ProducteurImpot("IBR",""){
+                @Override
+                protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
+            };
+        } else {
+            ProducteurRabaisEnfantPersonneNecessiteuse producteurRabais = new  ProducteurRabaisEnfantPersonneNecessiteuse();
+            producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal.valueOf(250));
+
+            ProducteurImpotAvecRabais prodAvecRabais = new ProducteurImpotAvecRabais("IBR","RI","") {
+                @Override
+                protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
+            };
+            prodAvecRabais.setProducteurBaseRabais(producteurRabais);
+            producteur = prodAvecRabais;
+        }
+		producteur.setProducteurBase(producteurImpotBase);
 		return producteur;
 	}
 	
 	private ProducteurImpot construireProducteurImpotsPrestationCapital(int annee) {
+		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
+		producteurImpotBase.setStrategieProductionImpotFamille(new DoubleBareme(getBaremePrestationCapital(annee), getBaremePrestationCapitalFamille(annee)));
+
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS_INF);
+		
+		
+		
 		ProducteurImpot producteur = new ProducteurImpot("IBR",""){
 			@Override
 			protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
 		};
-		StrategieProductionImpotFamille strategie = null;
-		strategie = new DoubleBareme(getBaremePrestationCapital(annee), getBaremePrestationCapitalFamille(annee));
-		producteur.setStrategieProductionImpotFamille(strategie);
-
-		producteur.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
-		producteur.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
-		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS_INF);
+		producteur.setProducteurBase(producteurImpotBase);
 		return producteur;
 	}
 	
 	
 	
 	private ProducteurImpot construireProducteurImpotSourcePrestationCapital(int annee) {
+		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
+		producteurImpotBase.setBareme(construireBaremeImpotSourcePrestationCapital(annee));
+
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS_INF);
+
 		ProducteurImpot producteur = new ProducteurImpot("IBR",""){
 			@Override
 			protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
 		};
-		producteur.setStrategieProductionImpotFamille(new ImpositionFamilleSansAvantage(construireBaremeImpotSourcePrestationCapital(annee)));
-
-		producteur.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
-		producteur.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
-		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS_INF);
+		producteur.setProducteurBase(producteurImpotBase);
 		return producteur;
 	}
 	

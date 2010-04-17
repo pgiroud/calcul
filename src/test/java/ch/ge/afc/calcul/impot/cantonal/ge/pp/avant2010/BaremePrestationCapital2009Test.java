@@ -26,15 +26,14 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import ch.ge.afc.calcul.impot.ProducteurImpotDerivePourcent;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
-import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.SituationFamilialeGE;
 import ch.ge.afc.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurImpotSomme;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurMultipleImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.RecepteurUniqueImpot;
-import ch.ge.afc.calcul.impot.taxation.pp.famille.ImpositionFamilleSansAvantage;
 import ch.ge.afc.util.ExplicationDetailleTexteBuilder;
 import ch.ge.afc.util.IExplicationDetailleeBuilder;
 import ch.ge.afc.util.TypeArrondi;
@@ -62,6 +61,14 @@ public class BaremePrestationCapital2009Test extends ProducteurImpotGEAvant2010 
 
 	@Before
 	public void init() throws Exception {
+		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
+		producteurImpotBase.setBareme(fournisseur.getBaremeRevenu(2009));
+
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.FRANC);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.FRANC);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+		
+		
 		
 		ProducteurImpot producteur;
 		String codeBeneficiaire = "CAN-GE";
@@ -69,12 +76,8 @@ public class BaremePrestationCapital2009Test extends ProducteurImpotGEAvant2010 
 			@Override
 			protected IExplicationDetailleeBuilder createExplicationBuilder() {return getNewExplicationBuilder();}
 		};
-		producteur.setStrategieProductionImpotFamille(new ImpositionFamilleSansAvantage(fournisseur.getBaremeRevenu(2009)));
-
-		producteur.setTypeArrondiImposable(TypeArrondi.FRANC);
-		producteur.setTypeArrondiDeterminant(TypeArrondi.FRANC);
-		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
-
+		producteur.setProducteurBase(producteurImpotBase);
+		
 		IExplicationDetailleeBuilder explication = getNewExplicationBuilder();
 		explication.ajouter("Réduction de {1,number,percent} sur impôt de base sur revenu {0,number,#,##0.00}");
 		explication.ajouter("{2,number,#,##0.00}");

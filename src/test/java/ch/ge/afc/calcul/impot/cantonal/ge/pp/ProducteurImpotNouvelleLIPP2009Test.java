@@ -10,6 +10,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeTxMarginalConstantParTranche;
 import ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE;
 import ch.ge.afc.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
@@ -57,12 +58,15 @@ public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
 		constructeur.tranche(609103, "18.5 %");
 		constructeur.derniereTranche("19 %");
 		
+		ProducteurImpotBaseProgressif producteurBase = new ProducteurImpotBaseProgressif();
+		producteurBase.setStrategieProductionImpotFamille(new Splitting(constructeur.typeArrondiTranche(TypeArrondi.CINQ_CTS).construire(2009),"50 %"));
+		
 		
 		producteur = new ProducteurImpot("IBR","CAN-GE"){
 			@Override
 			protected IExplicationDetailleeBuilder createExplicationBuilder() {return new ExplicationDetailleTexteBuilder();}
 		};
-		producteur.setStrategieProductionImpotFamille(new Splitting(constructeur.typeArrondiTranche(TypeArrondi.CINQ_CTS).construire(2009),"50 %"));
+		producteur.setProducteurBase(producteurBase);
 	}
 
 	private void marie(final int periodeFiscale, final int montantImposable, final String montantImpot, final int...ageEnfant) {

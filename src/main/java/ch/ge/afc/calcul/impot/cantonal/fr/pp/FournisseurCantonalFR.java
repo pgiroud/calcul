@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.bareme.BaremeTauxEffectifConstantParTranche;
+import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import ch.ge.afc.calcul.impot.cantonal.FournisseurCantonal;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.famille.Splitting;
@@ -68,6 +69,16 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
 	}
 
 	protected ProducteurImpot construireProducteurImpotsICRevenu(int annee) {
+		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
+		Splitting splitting = new SplittingFR((BaremeTauxEffectifLineaireParTranche)getBaremeRevenu(annee),"56 %");
+		splitting.setTypeArrondi(TypeArrondi.CENT_FRANC_INF);
+		producteurImpotBase.setStrategieProductionImpotFamille(splitting);
+
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+		
+		
 		String codeBeneficiaire = "CAN-FR";
 		ProducteurImpot producteur = new ProducteurImpot("RCAN",codeBeneficiaire){
 			@Override
@@ -75,14 +86,7 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
 				return FournisseurCantonalFR.this.getNewExplicationBuilder();
 			}
 		};
-		Splitting splitting = new SplittingFR((BaremeTauxEffectifLineaireParTranche)getBaremeRevenu(annee),"56 %");
-		splitting.setTypeArrondi(TypeArrondi.CENT_FRANC_INF);
-		producteur.setStrategieProductionImpotFamille(splitting);
-
-		producteur.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
-		producteur.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
-		producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
-
+		producteur.setProducteurBase(producteurImpotBase);
 		return producteur;
 	}
 	
