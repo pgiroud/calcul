@@ -147,8 +147,9 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 
 	protected CalculCotisationAvsAiApg construireCalculateurCotisationAvsAiApgIndependant(int annee) {
 		CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
-		constructeur.tauxAvs("7.8 %").tauxAi("1.4 %").tauxApg("0.3 %");
+		constructeur.tauxAvs("7.8 %").tauxAi("1.4 %");
 		if (annee < 2009) {
+            constructeur.tauxApg("0.3 %");
 			constructeur.cotisationAvsAiApgMinimum("445");
 			constructeur.trancheBareme( "8900", "4.2 %");
 			constructeur.trancheBareme("15900", "4.2 %");
@@ -171,6 +172,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 			return constructeur.construire(annee);
 			
 		} else if (annee < 2011) {
+            constructeur.tauxApg("0.3 %");
 			constructeur.cotisationAvsAiApgMinimum("460");
 			constructeur.trancheBareme( "9200", "4.2 %");
 			constructeur.trancheBareme("16000", "4.2 %");
@@ -192,6 +194,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 			constructeur.trancheBareme("54800", "7.4 %");
 			return constructeur.construire(annee);
 		} else {
+            constructeur.tauxApg("0.5 %");
             constructeur.cotisationAvsAiApgMinimum("475");
             constructeur.trancheBareme( "9300", "4.2 %");
             constructeur.trancheBareme("16900", "4.2 %");
