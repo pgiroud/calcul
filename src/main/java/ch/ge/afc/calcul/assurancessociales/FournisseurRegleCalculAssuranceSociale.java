@@ -21,8 +21,12 @@ public interface FournisseurRegleCalculAssuranceSociale {
 
 	CalculCotisationsSocialesSalarie getCalculateurCotisationsSocialesSalarie(int annee);
 	
+    CalculCotisationsSocialesSalarie getCalculateurCotisationsSocialesSalarieISIFD(int annee);
+
 	CalculCotisationsSocialesSalarieGE getCalculateurCotisationsSocialesSalarieGE(int annee);
 	
+    CalculCotisationsSocialesSalarieGE getCalculateurCotisationsSocialesSalarieGEIFD(int annee);
+
 	CalculCotisationAvsAiApg getCalculateurCotisationAvsAiApgIndependant(int annee);
 	
 	CalculExtremaRentesAVS getCalculateurExtremaRenteAVS(int annee);
