@@ -45,28 +45,24 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
     /**************************************************/
 
 	private CalculCotisationAvsAiApgSalarie calculateurAvsAiApg;
-	private BigDecimal tauxCotisationAssuranceChomage;
-	private BigDecimal demiTauxCotisationAssuranceChomage;
-	private BigDecimal primeMaximumAC;
-	private BigDecimal primePartSalarieeMaximum;
-	private BigDecimal montantAnnuelMaximumGainAssure;
+	private BigDecimal montantAnnuelMaximumGainAssure; 
+	private CalculCotisationAssuranceChomage calculateurAC;
 	
 	
     /**************************************************/
     /*************** Constructeurs ********************/
     /**************************************************/
 
-	private CalculCotisationsSocialesSalarie(int annee, 
-			BigDecimal nMontantAnnuelMaximumGainAssure,
-			BigDecimal nTauxCotisationAssuranceChomage) {
+	private CalculCotisationsSocialesSalarie(int annee) {
 		super(annee);
-		tauxCotisationAssuranceChomage = nTauxCotisationAssuranceChomage;
-		BigDecimal deux = new BigDecimal(2);
-		demiTauxCotisationAssuranceChomage = tauxCotisationAssuranceChomage.divide(deux);
-		primeMaximumAC = nMontantAnnuelMaximumGainAssure.multiply(tauxCotisationAssuranceChomage).setScale(0);
-		primePartSalarieeMaximum = primeMaximumAC.divide(deux);
-		montantAnnuelMaximumGainAssure = nMontantAnnuelMaximumGainAssure;
 	}
+
+    protected CalculCotisationsSocialesSalarie(CalculCotisationsSocialesSalarie origine) {
+        super(origine.getAnnee());
+        this.calculateurAvsAiApg = origine.calculateurAvsAiApg;
+        this.calculateurAC = origine.calculateurAC;
+        this.montantAnnuelMaximumGainAssure = origine.montantAnnuelMaximumGainAssure;
+    }
 
     /**************************************************/
     /********** Accesseurs / Mutateurs ****************/
@@ -75,6 +71,16 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	private void setCalculateurAvsAiApg(CalculCotisationAvsAiApgSalarie nCalculateurAvsAiApg) {
 		calculateurAvsAiApg = nCalculateurAvsAiApg;
 	}
+
+	protected void setCalculateurAC(CalculCotisationAssuranceChomage calculateurAC) {
+		this.calculateurAC = calculateurAC;
+	}
+	
+	private void setMontantAnnuelMaximumGainAssure(BigDecimal montant) {
+		montantAnnuelMaximumGainAssure = montant;
+	}
+
+
 
     /**************************************************/
     /******************* Méthodes *********************/
@@ -160,7 +166,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	
 	@Override
 	public BigDecimal calculCotisationAC(BigDecimal montantDeterminant) {
-		return primeMaximumAC.min(tauxCotisationAssuranceChomage.multiply(montantDeterminant));
+		return calculateurAC.calculCotisationAC(montantDeterminant);
 	}
 	
 	/* (non-Javadoc)
@@ -169,7 +175,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAssuranceChomage(
 			BigDecimal montantDeterminant) {
-		return primePartSalarieeMaximum.min(demiTauxCotisationAssuranceChomage.multiply(montantDeterminant));
+		return calculateurAC.calculPartSalarieeCotisationAssuranceChomage(montantDeterminant);
 	}
 
 	//------- Implémentation de l'interface CalculCotisationsAssuranceAccidentsNonProfessionnels
@@ -193,8 +199,10 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 		private String tauxAI;
 		private String tauxAPG;
 
-		private BigDecimal montantMax;
-		private BigDecimal tauxAC;
+		private int montantMax;
+		private String tauxAC;
+		private String ratioHautRevenu;
+		private String tauxACContributionHautRevenu;
 		
 		/**
 		 * Spécifie le taux de cotisation total (part employeur + part salariée).
@@ -227,7 +235,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 		}
 
 		public Constructeur montantAnnuelMaxGainAssure(int nMontantMax) {
-			montantMax = new BigDecimal(nMontantMax);
+			montantMax = nMontantMax;
 			return this;
 		}
 		
@@ -237,19 +245,31 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 		 * @return ce construteur afin de chaîner les appels.
 		 */
 		public Constructeur tauxAC(String taux) {
-			try {
-				this.tauxAC = BigDecimalUtil.parseTaux(taux);
-			} catch (NumberFormatException nfe) {
-				throw new IllegalArgumentException(nfe);
-			}
+			this.tauxAC = taux;
 			return this;
 		}
+		
+		public Constructeur participationHautRevenuCotisationAC(String ratioEntreHautRevenuEtMntMaxAssure, String taux) {
+			this.ratioHautRevenu = ratioEntreHautRevenuEtMntMaxAssure;
+			this.tauxACContributionHautRevenu = taux;
+			return this;
+		}
+		
 		
 		public CalculCotisationsSocialesSalarie construire(int annee) {
 			CalculCotisationAvsAiApgSalarie.Constructeur constructeur = new CalculCotisationAvsAiApgSalarie.Constructeur();
 			constructeur.tauxAvs(tauxAVS).tauxAi(tauxAI).tauxApg(tauxAPG);
 			
-			CalculCotisationsSocialesSalarie calculateur = new CalculCotisationsSocialesSalarie(annee,montantMax,tauxAC);
+			CalculateurCotisationAC calculateurAC;
+			if (null != ratioHautRevenu) {
+				calculateurAC = new CalculateurCotisationAC(annee,montantMax,ratioHautRevenu,tauxAC,tauxACContributionHautRevenu);
+			} else {
+				calculateurAC = new CalculateurCotisationAC(annee,montantMax,tauxAC);
+			}
+			
+			CalculCotisationsSocialesSalarie calculateur = new CalculCotisationsSocialesSalarie(annee);
+			calculateur.setMontantAnnuelMaximumGainAssure(new BigDecimal(montantMax));
+			calculateur.setCalculateurAC(calculateurAC);
 			calculateur.setCalculateurAvsAiApg(constructeur.construire(annee));
 			return calculateur;
 		}
