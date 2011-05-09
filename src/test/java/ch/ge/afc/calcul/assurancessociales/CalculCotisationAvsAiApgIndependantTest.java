@@ -36,11 +36,13 @@ public class CalculCotisationAvsAiApgIndependantTest {
 	
 	private CalculCotisationAvsAiApgIndependant calculateur2008;
 	private CalculCotisationAvsAiApgIndependant calculateur2009;
-	
+    private CalculCotisationAvsAiApgIndependant calculateur2011;
+
 	@Before
 	public void initialise() throws Exception {
 		calculateur2008 = (CalculCotisationAvsAiApgIndependant)fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationAvsAiApgIndependant(2008);
 		calculateur2009 = (CalculCotisationAvsAiApgIndependant)fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationAvsAiApgIndependant(2009);
+        calculateur2011 = (CalculCotisationAvsAiApgIndependant)fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationAvsAiApgIndependant(2011);
 	}
 
 	private boolean compare(String montantAttendu, BigDecimal montantCalcule) {
@@ -113,5 +115,23 @@ public class CalculCotisationAvsAiApgIndependantTest {
 		assertTrue("Taux total pour 54800 francs de montant déterminant", compare("0.09500", calculateur2009.getTauxTotal(new BigDecimal("54800"))));
 		
 	}
+
+    @Test
+    public void calculCotisationAvsAiApgApres2011() {
+        assertTrue("Comparaison pour 1000 francs de montant déterminant", compare("475", calculateur2011.calculCotisationAvsAiApg(new BigDecimal("1000"))));
+        assertTrue("Comparaison pour 100000 francs de montant déterminant", compare("9700", calculateur2011.calculCotisationAvsAiApg(new BigDecimal("100000"))));
+    }
+
+    @Test
+    public void getTauxTotalApres2011(){
+        // 2011
+        assertNull("Taux total pour 1000 francs de montant déterminant", calculateur2011.getTauxTotal(new BigDecimal("1000")));
+        assertNull("Taux total pour 9299 francs de montant déterminant", calculateur2011.getTauxTotal(new BigDecimal("9299")));
+        assertTrue("Taux total pour 9300 francs de montant déterminant", compare("0.05223", calculateur2011.getTauxTotal(new BigDecimal("9300"))));
+        assertTrue("Taux total pour 10000 francs de montant déterminant", compare("0.05223", calculateur2011.getTauxTotal(new BigDecimal("10000"))));
+        assertTrue("Taux total pour 55700 francs de montant déterminant", compare("0.09700", calculateur2011.getTauxTotal(new BigDecimal("55700"))));
+
+    }
+
 
 }
