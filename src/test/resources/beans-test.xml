@@ -18,5 +18,10 @@
 		<property name="charsetName" value="UTF-8"/>
 		<property name="fichier" value="classpath:parametrage/ge/ExtractionTauxPPTest.txt"/>
 	</bean>
+
+	<bean name="fournisseurParamCommune" class="ch.ge.afc.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE">
+		<property name="dao" ref="paramCommuneDao"/>
+	</bean>
+	
 	
 </beans>
