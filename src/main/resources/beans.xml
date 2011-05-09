@@ -35,6 +35,8 @@
     			<entry key="2008" value="1105"/>
     			<entry key="2009" value="1140"/>
     			<entry key="2010" value="1140"/>
+    			<entry key="2011" value="1160"/>
+    			<entry key="2012" value="1160"/>
 			</map>
 		</property>
 	</bean>
@@ -63,15 +65,16 @@
     		<map>
     			<entry key="2009" value="102.9"/>
     			<entry key="2010" value="103.1"/>
+    			<entry key="2011" value="103.7"/>
     		</map>
   		</property>
 	</bean>
 	
     <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@brunello37:15001:yafc"/>
+        <property name="url" value="jdbc:oracle:oci:@RAFC_PROTO"/>
         <property name="username" value="rafc_adm"/>
-        <property name="password" value="CLA77EM3NT"/>
+        <property name="password" value="V3N1S372"/>
     </bean>
 
 	<bean name="paramCommuneDaoRTaxPP" class="ch.ge.afc.calcul.impot.cantonal.ge.param.dao.ParametreCommunalJdbcRTaxPPDao">
