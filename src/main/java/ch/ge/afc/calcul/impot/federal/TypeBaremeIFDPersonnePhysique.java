@@ -16,6 +16,8 @@
 package ch.ge.afc.calcul.impot.federal;
 
 public enum TypeBaremeIFDPersonnePhysique {
+	SEUL_2011_POST, 
+	FAMILLE_2011_POST,
 	SEUL_2006_POST, 
 	FAMILLE_2006_POST,
 	SEUL_1996_POST,
@@ -23,5 +25,5 @@ public enum TypeBaremeIFDPersonnePhysique {
 	SEUL_1997_PRAE,
 	FAMILLE_1997_PRAE,
 	SEUL_2007_PRAE,
-	FAMILLE_2007_PRAE;
+	FAMILLE_2007_PRAE
 }
