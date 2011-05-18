@@ -84,4 +84,32 @@ public class BaremeIFDPersonnePhysiqueTest {
 		assertEquals("Revenu de 89600",new BigDecimal("1856.00"),bareme.calcul(new BigDecimal("89600")));
 		assertEquals("Revenu de 775800",new BigDecimal("89217.00"),bareme.calcul(new BigDecimal("775800")));
 	}
+	
+	@Test
+	public void praeNumerandoCelibataire2007() {
+		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2007_PRAE);
+		assertEquals("Revenu de 10000",new BigDecimal("0.00"), bareme.calcul(new BigDecimal("10000")));
+		assertEquals("Revenu de 16800",new BigDecimal("32.30"), bareme.calcul(new BigDecimal("16800")));
+		assertEquals("Revenu de 39000",new BigDecimal("270.55"), bareme.calcul(new BigDecimal("39000")));
+		assertEquals("Revenu de 78100",new BigDecimal("1922.55"), bareme.calcul(new BigDecimal("78100")));
+		assertEquals("Revenu de 775900",new BigDecimal("89228.50"), bareme.calcul(new BigDecimal("775900")));
+	}	
+	
+	
+	@Test
+	public void postNumerandoCelibataire2011() {
+		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2011_POST);
+		assertEquals("Revenu de 20000",new BigDecimal("43.10"), bareme.calcul(new BigDecimal("20000")));
+		assertEquals("Revenu de 34000",new BigDecimal("153.65"), bareme.calcul(new BigDecimal("34000")));
+		assertEquals("Revenu de 250300",new BigDecimal("20268.40"), bareme.calcul(new BigDecimal("250300")));
+		assertEquals("Revenu de 889400",new BigDecimal("102281.00"), bareme.calcul(new BigDecimal("889400")));
+	}	
+	
+	@Test
+	public void postNumerandoMarie2011() {
+		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2011_POST);
+		assertEquals("Revenu de 889400",new BigDecimal("102281.00"), bareme.calcul(new BigDecimal("889400")));
+		assertEquals("Revenu de 889500",new BigDecimal("102292.50"), bareme.calcul(new BigDecimal("889500")));
+	}	
+	
 }
