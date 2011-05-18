@@ -54,7 +54,35 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 
 	private Bareme construireBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique code) {
 		BaremeTxMarginalEtEffectifParTranche.Constructeur constructeur = new BaremeTxMarginalEtEffectifParTranche.Constructeur();
-		if (TypeBaremeIFDPersonnePhysique.SEUL_2006_POST.equals(code)) {
+		if (TypeBaremeIFDPersonnePhysique.SEUL_2011_POST.equals(code)) {
+			constructeur.tranche(  14400,  "0");
+			constructeur.tranche(  31500,  "0.77 %");
+			constructeur.tranche(  41200,  "0.88 %");
+			constructeur.tranche(  55000,  "2.64 %");
+			constructeur.tranche(  72200,  "2.97 %");
+			constructeur.tranche(  77700,  "5.94 %");
+			constructeur.tranche( 103000,  "6.60 %");
+			constructeur.tranche( 133900,  "8.80 %");
+			constructeur.tranche( 175000, "11.00 %");
+			constructeur.tranche( 751200, "13.20 %");
+			constructeur.derniereTranche( "11.50 %");
+		} else if (TypeBaremeIFDPersonnePhysique.FAMILLE_2011_POST.equals(code)){
+			constructeur.tranche(  28100,  "0");
+			constructeur.tranche(  50400,  "1.00 %");
+			constructeur.tranche(  57900,  "2.00 %");
+			constructeur.tranche(  74700,  "3.00 %");
+			constructeur.tranche(  89700,  "4.00 %");
+			constructeur.tranche( 102700,  "5.00 %");
+			constructeur.tranche( 113900,  "6.00 %");
+			constructeur.tranche( 123300,  "7.00 %");
+			constructeur.tranche( 130800,  "8.00 %");
+			constructeur.tranche( 136300,  "9.00 %");
+			constructeur.tranche( 140200, "10.00 %");
+			constructeur.tranche( 142100, "11.00 %");
+			constructeur.tranche( 144000, "12.00 %");
+			constructeur.tranche( 889400, "13.00 %");
+			constructeur.derniereTranche("11.50 %");
+		} else if (TypeBaremeIFDPersonnePhysique.SEUL_2006_POST.equals(code)) {
 			constructeur.tranche(  13600,  "0");
 			constructeur.tranche(  29800,  "0.77 %");
 			constructeur.tranche(  39000,  "0.88 %");
@@ -82,6 +110,18 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 			constructeur.tranche( 136500, "12.00 %");
 			constructeur.tranche( 843600, "13.00 %");
 			constructeur.derniereTranche("11.50 %");
+		} else if (TypeBaremeIFDPersonnePhysique.SEUL_2007_PRAE.equals(code)) {
+			constructeur.tranche(  12600,  "0");
+			constructeur.tranche(  27400,  "0.77 %");
+			constructeur.tranche(  35900,  "0.88 %");
+			constructeur.tranche(  47900,  "2.64 %");
+			constructeur.tranche(  62900,  "2.97 %");
+			constructeur.tranche(  67700,  "5.94 %");
+			constructeur.tranche(  89800,  "6.60 %");
+			constructeur.tranche( 116800,  "8.80 %");
+			constructeur.tranche( 152700, "11.00 %");
+			constructeur.tranche( 655000, "13.20 %");
+			constructeur.derniereTranche( "11.50 %");
 		} else if (TypeBaremeIFDPersonnePhysique.FAMILLE_2007_PRAE.equals(code)) {
 			constructeur.tranche(  24500,  "0");
 			constructeur.tranche(  44000,  "1.00 %");
@@ -169,7 +209,8 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	
 	private Bareme getBaremeRevenu(int annee) {
 		if (annee < 2006) return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_1996_POST);
-		else return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2006_POST);
+		else if (annee < 2011) return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2006_POST);
+        else return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2011_POST);
 	}
 
 	private Bareme construireBaremePrestationCapital(final Bareme bareme) {
@@ -186,17 +227,20 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	
 	private Bareme getBaremePrestationCapital(int annee) {
 		if (annee < 2007) return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_1997_PRAE));
-		else return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2007_PRAE));
+		else if (annee < 2011) return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2007_PRAE));
+		else return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2011_POST));
 	}
 	
 	private Bareme getBaremeRevenuFamille(int annee) {
 		if (annee < 2006) return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_1996_POST);
-		else return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2006_POST);
+		else if (annee < 2011) return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2006_POST);
+        else return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2011_POST);
 	}
 
 	private Bareme getBaremePrestationCapitalFamille(int annee) {
 		if (annee < 2007) return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_1997_PRAE));
-		else return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2007_PRAE));
+		else if (annee < 2011) return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2007_PRAE));
+		else return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2011_POST));
 	}
 		
 	private IExplicationDetailleeBuilder getNewExplicationBuilder() {
@@ -278,7 +322,9 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 
 	protected DeductionSociale construireRegleDeductionSocialeEnfant(int annee) {
 		DeductionSocialeParEnfant deduction = new DeductionSocialeParEnfant(annee);
-		if (annee > 2005) {
+		if (annee > 2010) {
+			deduction.setDeductionSocialeParEnfant(new BigDecimal("6400"));
+		} else if (annee > 2005) {
 			deduction.setDeductionSocialeParEnfant(new BigDecimal("6100"));
 		} else {
 			deduction.setDeductionSocialeParEnfant(new BigDecimal("5600"));
@@ -296,7 +342,11 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 
 	protected DeductionSociale construireRegleDeductionSocialeConjoint(int annee) {
 		DeductionSocialePourConjoints deduction = new DeductionSocialePourConjoints(annee);
-		deduction.setDeducConjointsIFD(new BigDecimal("2500"));
+		if (annee > 2010) {
+			deduction.setDeducConjointsIFD(new BigDecimal("2600"));
+		} else {
+			deduction.setDeducConjointsIFD(new BigDecimal("2500"));
+		}
 		return deduction;
 	}
 	
