@@ -14,12 +14,12 @@
 
 	<context:annotation-config/>
 
-	<bean name="paramCommuneDao" class="ch.ge.afc.calcul.impot.cantonal.ge.param.dao.ParametreCommunalFichierTxtDao">
+	<bean name="paramCommuneDaoTest" class="ch.ge.afc.calcul.impot.cantonal.ge.param.dao.ParametreCommunalFichierTxtDao">
 		<property name="charsetName" value="UTF-8"/>
 		<property name="fichier" value="classpath:parametrage/ge/ExtractionTauxPPTest.txt"/>
 	</bean>
 
-	<bean name="fournisseurParamCommune" class="ch.ge.afc.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE">
+	<bean name="fournisseurParamCommuneTest" class="ch.ge.afc.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE">
 		<property name="dao" ref="paramCommuneDao"/>
 	</bean>
 	

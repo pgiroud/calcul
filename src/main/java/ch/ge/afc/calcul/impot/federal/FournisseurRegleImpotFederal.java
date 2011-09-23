@@ -23,9 +23,7 @@ import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
 public interface FournisseurRegleImpotFederal {
 
 	ProducteurImpot getProducteurImpotsFederauxPP(int annee);
-	
-	Bareme getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique code);
-	
+
 	DeductionSociale getRegleDeductionSocialeEnfant(int annee);
 	
 	DeductionSociale getRegleDeductionSocialeConjoint(int annee);

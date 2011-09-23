@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.bareme.BaremeTxMarginalEtEffectifParTranche;
+import ch.ge.afc.calcul.impot.federal.dao.FournisseurBaremeIFD;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotAvecRabais;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import ch.ge.afc.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
@@ -33,157 +34,20 @@ import ch.ge.afc.util.ExplicationDetailleTexteBuilder;
 import ch.ge.afc.util.IExplicationDetailleeBuilder;
 import ch.ge.afc.util.TypeArrondi;
 
+import javax.annotation.Resource;
+import javax.annotation.Resources;
+
 public class Fournisseur implements FournisseurRegleImpotFederal {
 	
-	private ConcurrentMap<TypeBaremeIFDPersonnePhysique,Bareme> mapBaremeIFDPersonnePhysique = new ConcurrentHashMap<TypeBaremeIFDPersonnePhysique,Bareme>();
 	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsFederauxPP = new ConcurrentHashMap<Integer, ProducteurImpot>();
 	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<Integer, ProducteurImpot>();
 	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotSourcePrestationCapital = new ConcurrentHashMap<Integer, ProducteurImpot>();
 	private ConcurrentMap<Integer,DeductionSociale> deducSocialeEnfant = new ConcurrentHashMap<Integer,DeductionSociale>(); 
 	private ConcurrentMap<Integer,DeductionSociale> deducSocialeConjoint = new ConcurrentHashMap<Integer,DeductionSociale>(); 
-	
-	/**
-	 * Retourne le barème IFD pour les personnes physiques.
-	 * @param code le code du barüeme
-	 * @return un barème à taux marginal (même si la dernière tranche possède un taux effectif).
-	 */
-	public Bareme getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique code) {
-		if (!mapBaremeIFDPersonnePhysique.containsKey(code)) mapBaremeIFDPersonnePhysique.putIfAbsent(code, construireBaremeIFDPersonnePhysique(code));
-		return mapBaremeIFDPersonnePhysique.get(code);
-	}
 
-	private Bareme construireBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique code) {
-		BaremeTxMarginalEtEffectifParTranche.Constructeur constructeur = new BaremeTxMarginalEtEffectifParTranche.Constructeur();
-		if (TypeBaremeIFDPersonnePhysique.SEUL_2011_POST.equals(code)) {
-			constructeur.tranche(  14400,  "0");
-			constructeur.tranche(  31500,  "0.77 %");
-			constructeur.tranche(  41200,  "0.88 %");
-			constructeur.tranche(  55000,  "2.64 %");
-			constructeur.tranche(  72200,  "2.97 %");
-			constructeur.tranche(  77700,  "5.94 %");
-			constructeur.tranche( 103000,  "6.60 %");
-			constructeur.tranche( 133900,  "8.80 %");
-			constructeur.tranche( 175000, "11.00 %");
-			constructeur.tranche( 751200, "13.20 %");
-			constructeur.derniereTranche( "11.50 %");
-		} else if (TypeBaremeIFDPersonnePhysique.FAMILLE_2011_POST.equals(code)){
-			constructeur.tranche(  28100,  "0");
-			constructeur.tranche(  50400,  "1.00 %");
-			constructeur.tranche(  57900,  "2.00 %");
-			constructeur.tranche(  74700,  "3.00 %");
-			constructeur.tranche(  89700,  "4.00 %");
-			constructeur.tranche( 102700,  "5.00 %");
-			constructeur.tranche( 113900,  "6.00 %");
-			constructeur.tranche( 123300,  "7.00 %");
-			constructeur.tranche( 130800,  "8.00 %");
-			constructeur.tranche( 136300,  "9.00 %");
-			constructeur.tranche( 140200, "10.00 %");
-			constructeur.tranche( 142100, "11.00 %");
-			constructeur.tranche( 144000, "12.00 %");
-			constructeur.tranche( 889400, "13.00 %");
-			constructeur.derniereTranche("11.50 %");
-		} else if (TypeBaremeIFDPersonnePhysique.SEUL_2006_POST.equals(code)) {
-			constructeur.tranche(  13600,  "0");
-			constructeur.tranche(  29800,  "0.77 %");
-			constructeur.tranche(  39000,  "0.88 %");
-			constructeur.tranche(  52000,  "2.64 %");
-			constructeur.tranche(  68300,  "2.97 %");
-			constructeur.tranche(  73600,  "5.94 %");
-			constructeur.tranche(  97700,  "6.60 %");
-			constructeur.tranche( 127100,  "8.80 %");
-			constructeur.tranche( 166200, "11.00 %");
-			constructeur.tranche( 712400, "13.20 %");
-			constructeur.derniereTranche( "11.50 %");
-		} else if (TypeBaremeIFDPersonnePhysique.FAMILLE_2006_POST.equals(code)){
-			constructeur.tranche(  26700,  "0");
-			constructeur.tranche(  47900,  "1.00 %");
-			constructeur.tranche(  54900,  "2.00 %");
-			constructeur.tranche(  70900,  "3.00 %");
-			constructeur.tranche(  85100,  "4.00 %");
-			constructeur.tranche(  97400,  "5.00 %");
-			constructeur.tranche( 108100,  "6.00 %");
-			constructeur.tranche( 117000,  "7.00 %");
-			constructeur.tranche( 124000,  "8.00 %");
-			constructeur.tranche( 129300,  "9.00 %");
-			constructeur.tranche( 132900, "10.00 %");
-			constructeur.tranche( 134700, "11.00 %");
-			constructeur.tranche( 136500, "12.00 %");
-			constructeur.tranche( 843600, "13.00 %");
-			constructeur.derniereTranche("11.50 %");
-		} else if (TypeBaremeIFDPersonnePhysique.SEUL_2007_PRAE.equals(code)) {
-			constructeur.tranche(  12600,  "0");
-			constructeur.tranche(  27400,  "0.77 %");
-			constructeur.tranche(  35900,  "0.88 %");
-			constructeur.tranche(  47900,  "2.64 %");
-			constructeur.tranche(  62900,  "2.97 %");
-			constructeur.tranche(  67700,  "5.94 %");
-			constructeur.tranche(  89800,  "6.60 %");
-			constructeur.tranche( 116800,  "8.80 %");
-			constructeur.tranche( 152700, "11.00 %");
-			constructeur.tranche( 655000, "13.20 %");
-			constructeur.derniereTranche( "11.50 %");
-		} else if (TypeBaremeIFDPersonnePhysique.FAMILLE_2007_PRAE.equals(code)) {
-			constructeur.tranche(  24500,  "0");
-			constructeur.tranche(  44000,  "1.00 %");
-			constructeur.tranche(  50500,  "2.00 %");
-			constructeur.tranche(  65200,  "3.00 %");
-			constructeur.tranche(  78200,  "4.00 %");
-			constructeur.tranche(  89600,  "5.00 %");
-			constructeur.tranche(  99400,  "6.00 %");
-			constructeur.tranche( 107600,  "7.00 %");
-			constructeur.tranche( 114100,  "8.00 %");
-			constructeur.tranche( 118900,  "9.00 %");
-			constructeur.tranche( 122200, "10.00 %");
-			constructeur.tranche( 123900, "11.00 %");
-			constructeur.tranche( 125600, "12.00 %");
-			constructeur.tranche( 775900, "13.00 %");
-			constructeur.derniereTranche("11.50 %");
-		} else if (TypeBaremeIFDPersonnePhysique.SEUL_1996_POST.equals(code)) {
-			constructeur.tranche(  12800,  "0");
-			constructeur.tranche(  27900,  "0.77 %");
-			constructeur.tranche(  36500,  "0.88 %");
-			constructeur.tranche(  48600,  "2.64 %");
-			constructeur.tranche(  63800,  "2.97 %");
-			constructeur.tranche(  68800,  "5.94 %");
-			constructeur.tranche(  91100,  "6.60 %");
-			constructeur.tranche( 118400,  "8.80 %");
-			constructeur.tranche( 154700, "11.00 %");
-			constructeur.tranche( 664300, "13.20 %");
-			constructeur.derniereTranche( "11.50 %");
-		} else if (TypeBaremeIFDPersonnePhysique.FAMILLE_1996_POST.equals(code)) {
-			constructeur.tranche(  24900,  "0");
-			constructeur.tranche(  44700,  "1.00 %");
-			constructeur.tranche(  51300,  "2.00 %");
-			constructeur.tranche(  66200,  "3.00 %");
-			constructeur.tranche(  79400,  "4.00 %");
-			constructeur.tranche(  91000,  "5.00 %");
-			constructeur.tranche( 101000,  "6.00 %");
-			constructeur.tranche( 109300,  "7.00 %");
-			constructeur.tranche( 115900,  "8.00 %");
-			constructeur.tranche( 120900,  "9.00 %");
-			constructeur.tranche( 124300, "10.00 %");
-			constructeur.tranche( 126000, "11.00 %");
-			constructeur.tranche( 127700, "12.00 %");
-			constructeur.tranche( 788400, "13.00 %");
-			constructeur.derniereTranche( "11.50 %");
-		}
-		constructeur.typeArrondi(TypeArrondi.CINQ_CTS_INF).seuil(25);
-		return constructeur.construire();
-	}
-	
-	protected Bareme construireBaremeImpotSourcePrestationCapital(int annee) {
-		BaremeTxMarginalEtEffectifParTranche.Constructeur constructeur = new BaremeTxMarginalEtEffectifParTranche.Constructeur();
-		constructeur.tranche(  25000,  "0");
-		constructeur.tranche(  50000,  "0.25 %");
-		constructeur.tranche(  75000,  "0.65 %");
-		constructeur.tranche( 100000,  "1.10 %");
-		constructeur.tranche( 125000,  "1.70 %");
-		constructeur.tranche( 775000,  "2.60 %");
-		constructeur.derniereTranche( "2.30 %");
-		constructeur.typeArrondi(TypeArrondi.CINQ_CTS_INF);
-		return constructeur.construire();
-	}
-	
+    @Resource(name = "fournisseurBaremeIFD")
+    private FournisseurBaremeIFD fournisseurBaremeIFD;
+
 	public ProducteurImpot getProducteurImpotsFederauxPP(int annee) {
 		if (!producteurImpotsFederauxPP.containsKey(annee))
 			producteurImpotsFederauxPP.putIfAbsent(annee,
@@ -208,9 +72,7 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 	
 	private Bareme getBaremeRevenu(int annee) {
-		if (annee < 2006) return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_1996_POST);
-		else if (annee < 2011) return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2006_POST);
-        else return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2011_POST);
+        return fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
 	}
 
 	private Bareme construireBaremePrestationCapital(final Bareme bareme) {
@@ -226,21 +88,17 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 	
 	private Bareme getBaremePrestationCapital(int annee) {
-		if (annee < 2007) return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_1997_PRAE));
-		else if (annee < 2011) return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2007_PRAE));
-		else return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2011_POST));
+        Bareme bareme = 2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
+        return construireBaremePrestationCapital(bareme);
 	}
 	
 	private Bareme getBaremeRevenuFamille(int annee) {
-		if (annee < 2006) return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_1996_POST);
-		else if (annee < 2011) return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2006_POST);
-        else return this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2011_POST);
+        return fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
 	}
 
 	private Bareme getBaremePrestationCapitalFamille(int annee) {
-		if (annee < 2007) return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_1997_PRAE));
-		else if (annee < 2011) return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2007_PRAE));
-		else return construireBaremePrestationCapital(this.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2011_POST));
+        Bareme bareme =  2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
+        return construireBaremePrestationCapital(bareme);
 	}
 		
 	private IExplicationDetailleeBuilder getNewExplicationBuilder() {
@@ -299,7 +157,7 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	
 	private ProducteurImpot construireProducteurImpotSourcePrestationCapital(int annee) {
 		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
-		producteurImpotBase.setBareme(construireBaremeImpotSourcePrestationCapital(annee));
+		producteurImpotBase.setBareme(fournisseurBaremeIFD.getBaremeImpotSourcePrestationCapital(annee));
 
 		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
 		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);

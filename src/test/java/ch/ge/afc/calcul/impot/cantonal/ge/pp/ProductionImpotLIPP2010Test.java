@@ -79,8 +79,8 @@ public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
 		verifierMontantImpot(recepteur,"CAR",   "5525.40");
 		verifierMontantImpot(recepteur,"RCAR",  "-663.05");
 		verifierMontantImpot(recepteur,"ADR",    "116.30");
-		verifierMontantImpot(recepteur,"PPR",   "1376.10");
-		verifierMontantImpot(recepteur,"COR",   "3916.65");
+		verifierMontantImpot(recepteur,"PPR",   "1429.05");
+		verifierMontantImpot(recepteur,"COR",   "3863.70");
 		verifierMontantImpot(recepteur,"TOTAL","20507.95");
 		
 		// Petit revenu, montant impôt = 0
@@ -103,8 +103,8 @@ public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
 		verifierMontantImpot(recepteur,"CAR",  "139338323.05");
 		verifierMontantImpot(recepteur,"RCAR", "-16720598.75");
 		verifierMontantImpot(recepteur,"ADR",    "2933438.40");
-		verifierMontantImpot(recepteur,"PPR",   "34702576.05");
-		verifierMontantImpot(recepteur,"COR",   "98768870.25");
+		verifierMontantImpot(recepteur,"PPR",   "36037290.50");
+		verifierMontantImpot(recepteur,"COR",   "97434155.80");
 		verifierMontantImpot(recepteur,"TOTAL","517165186.45");
 		
 		// À la limite d'une tranche par dessous
@@ -128,8 +128,8 @@ public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
 		verifierMontantImpot(recepteur,"CAR",  "13592.85");
 		verifierMontantImpot(recepteur,"RCAR", "-1631.15");
 		verifierMontantImpot(recepteur,"ADR",    "286.15");
-		verifierMontantImpot(recepteur,"PPR",   "3385.35");
-		verifierMontantImpot(recepteur,"COR",   "9635.15");
+		verifierMontantImpot(recepteur,"PPR",   "3515.55");
+		verifierMontantImpot(recepteur,"COR",   "9504.95");
 		verifierMontantImpot(recepteur,"TOTAL","50450.85");
 	}
 	
@@ -157,8 +157,8 @@ public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
 		verifierMontantImpot(recepteur,"IBF","2998.85");
 		verifierMontantImpot(recepteur,"CAF","1424.45");
 		verifierMontantImpot(recepteur,"ADF",  "30.00");
-		verifierMontantImpot(recepteur,"PPF", "354.75");
-		verifierMontantImpot(recepteur,"COF","1009.70");
+		verifierMontantImpot(recepteur,"PPF", "368.40");
+		verifierMontantImpot(recepteur,"COF","996.05");
 	}
 	
 	@Test

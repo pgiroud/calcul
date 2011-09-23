@@ -13,12 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with CalculImpotCH.  If not, see <http://www.gnu.org/licenses/>.
  */
-package ch.ge.afc.calcul.impot.federal;
+package ch.ge.afc.calcul.impot.federal.dao;
 
 import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 
+import ch.ge.afc.calcul.impot.federal.FournisseurRegleImpotFederal;
+import ch.ge.afc.calcul.impot.federal.TypeBaremeIFDPersonnePhysique;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -32,12 +34,12 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = "/beans.xml")
 public class BaremeIFDPersonnePhysiqueTest {
 
-	@Resource(name = "fournisseurRegleImpotFederal")
-	private FournisseurRegleImpotFederal constructeur;
+	@Resource(name = "fournisseurBaremeIFD")
+	private FournisseurBaremeIFD fournisseur;
 	
 	@Test
 	public void postNumerandoCelibataire2006() {
-		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2006_POST);
+		Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2006);
 		assertEquals("Revenu de 10000",new BigDecimal("0.00"), bareme.calcul(new BigDecimal("10000")));
 		assertEquals("Revenu de 16800",new BigDecimal("0.00"), bareme.calcul(new BigDecimal("16800")));
 		assertEquals("Revenu de 16900",new BigDecimal("25.40"), bareme.calcul(new BigDecimal("16900")));
@@ -53,7 +55,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
 	@Test
 	public void postNumerandoMarie2006() {
-		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2006_POST);
+		Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2006);
 		assertEquals("Revenu de 10000",new BigDecimal("0.00"), bareme.calcul(new BigDecimal("10000")));
 		assertEquals("Revenu de 23000",new BigDecimal("0.00"), bareme.calcul(new BigDecimal("23000")));
 		assertEquals("Revenu de 35000",new BigDecimal("83.00"), bareme.calcul(new BigDecimal("35000")));
@@ -64,7 +66,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
 	@Test
 	public void postNumerandoCelibataire1996() {
-		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_1996_POST);
+		Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(1996);
 		assertEquals("Revenu de 10000",new BigDecimal("0.00"), bareme.calcul(new BigDecimal("10000")));
 		assertEquals("Revenu de 16000",new BigDecimal("0.00"), bareme.calcul(new BigDecimal("16000")));
 		assertEquals("Revenu de 16100",new BigDecimal("25.40"), bareme.calcul(new BigDecimal("16100")));
@@ -79,7 +81,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
 	@Test
 	public void praeNumerandoFamille2007() {
-		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2007_PRAE);
+		Bareme bareme = fournisseur.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(2007);
 		assertEquals("Revenu de 10000",new BigDecimal("0.00"),bareme.calcul(new BigDecimal("10000")));
 		assertEquals("Revenu de 89600",new BigDecimal("1856.00"),bareme.calcul(new BigDecimal("89600")));
 		assertEquals("Revenu de 775800",new BigDecimal("89217.00"),bareme.calcul(new BigDecimal("775800")));
@@ -87,7 +89,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 	
 	@Test
 	public void praeNumerandoCelibataire2007() {
-		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2007_PRAE);
+		Bareme bareme = fournisseur.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(2007);
 		assertEquals("Revenu de 10000",new BigDecimal("0.00"), bareme.calcul(new BigDecimal("10000")));
 		assertEquals("Revenu de 16800",new BigDecimal("32.30"), bareme.calcul(new BigDecimal("16800")));
 		assertEquals("Revenu de 39000",new BigDecimal("270.55"), bareme.calcul(new BigDecimal("39000")));
@@ -98,7 +100,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 	
 	@Test
 	public void postNumerandoCelibataire2011() {
-		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.SEUL_2011_POST);
+		Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2011);
 		assertEquals("Revenu de 20000",new BigDecimal("43.10"), bareme.calcul(new BigDecimal("20000")));
 		assertEquals("Revenu de 34000",new BigDecimal("153.65"), bareme.calcul(new BigDecimal("34000")));
 		assertEquals("Revenu de 250300",new BigDecimal("20268.40"), bareme.calcul(new BigDecimal("250300")));
@@ -107,7 +109,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 	
 	@Test
 	public void postNumerandoMarie2011() {
-		Bareme bareme = constructeur.getBaremeIFDPersonnePhysique(TypeBaremeIFDPersonnePhysique.FAMILLE_2011_POST);
+		Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2011);
 		assertEquals("Revenu de 889400",new BigDecimal("102281.00"), bareme.calcul(new BigDecimal("889400")));
 		assertEquals("Revenu de 889500",new BigDecimal("102292.50"), bareme.calcul(new BigDecimal("889500")));
 	}	

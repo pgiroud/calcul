@@ -41,6 +41,7 @@
 		</property>
 	</bean>
 
+    <bean name="fournisseurBaremeIFD" class="ch.ge.afc.calcul.impot.federal.dao.FournisseurBaremeIFDEnMemoire"/>
 	<bean name="fournisseurRegleImpotFederal" class="ch.ge.afc.calcul.impot.federal.Fournisseur"/>
 	
 	<bean name="indexateurGEBaseMai1993" class="ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE">
@@ -66,6 +67,7 @@
     			<entry key="2009" value="102.9"/>
     			<entry key="2010" value="103.1"/>
     			<entry key="2011" value="103.7"/>
+                <entry key="2012" value="104.2"/>
     		</map>
   		</property>
 	</bean>
