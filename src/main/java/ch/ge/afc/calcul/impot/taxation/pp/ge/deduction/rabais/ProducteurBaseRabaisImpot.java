@@ -171,7 +171,7 @@ public class ProducteurBaseRabaisImpot extends ReglePeriodique implements Produc
 	
 	protected boolean existeJeuneEnfantCharge(SituationFamilialeGE situation) {
 		for (EnfantACharge enfant : situation.getEnfants()) {
-			if (!enfant.isDemiPart(Souverainete.CANTONALE) && getRegleAge().isJeuneEnfant(enfant, this.getAnnee())) {
+			if (!enfant.isDemiPart(Souverainete.CH_CANTONALE_GE) && getRegleAge().isJeuneEnfant(enfant, this.getAnnee())) {
 				return true;
 			}
 		}
@@ -180,7 +180,7 @@ public class ProducteurBaseRabaisImpot extends ReglePeriodique implements Produc
 	
 	protected boolean existeJeuneEnfantDemiCharge(SituationFamilialeGE situation) {
 		for (EnfantACharge enfant : situation.getEnfants()) {
-			if (enfant.isDemiPart(Souverainete.CANTONALE) && getRegleAge().isJeuneEnfant(enfant, this.getAnnee())) {
+			if (enfant.isDemiPart(Souverainete.CH_CANTONALE_GE) && getRegleAge().isJeuneEnfant(enfant, this.getAnnee())) {
 				return true;
 			}
 		}
@@ -221,13 +221,13 @@ public class ProducteurBaseRabaisImpot extends ReglePeriodique implements Produc
 		// On traite les charges
 		for (PersonneACharge personne : situation.getEnfants()) {
 			montantRabais = montantRabais.add(getMontantParDemiCharge());
-			if (!personne.isDemiPart(Souverainete.CANTONALE)) {
+			if (!personne.isDemiPart(Souverainete.CH_CANTONALE_GE)) {
 				montantRabais = montantRabais.add(getMontantParDemiCharge());
 			}
 		}
 		for (PersonneACharge personne : situation.getPersonnesNecessiteuses()) {
 			montantRabais = montantRabais.add(getMontantParDemiCharge());
-			if (!personne.isDemiPart(Souverainete.CANTONALE)) {
+			if (!personne.isDemiPart(Souverainete.CH_CANTONALE_GE)) {
 				montantRabais = montantRabais.add(getMontantParDemiCharge());
 			}
 		}

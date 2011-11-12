@@ -208,7 +208,7 @@ public class ConstructeurSituationFamilialeGE {
 
 				@Override
 				public boolean isDemiPart(Souverainete souverainete) {
-					if (Souverainete.CANTONALE.equals(souverainete)) return demiChargeICC;
+					if (Souverainete.CH_CANTONALE_GE.equals(souverainete)) return demiChargeICC;
 					return demiChargeIFD;
 				}
 				

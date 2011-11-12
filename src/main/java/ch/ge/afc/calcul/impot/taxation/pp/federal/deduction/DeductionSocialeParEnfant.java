@@ -52,7 +52,7 @@ public class DeductionSocialeParEnfant extends ReglePeriodique implements Deduct
 	public BigDecimal getMontantDeduction(SituationFamiliale situation) {
 		BigDecimal deducSocialeEnfant = BigDecimal.ZERO; 
 		for (EnfantACharge enfant : situation.getEnfants()) {
-			deducSocialeEnfant = deducSocialeEnfant.add(enfant.isDemiPart(Souverainete.FEDERALE) ? deductionSocialeParEnfant.divide(new BigDecimal(2), 0, BigDecimal.ROUND_HALF_UP) : deductionSocialeParEnfant);
+			deducSocialeEnfant = deducSocialeEnfant.add(enfant.isDemiPart(Souverainete.CH_FEDERALE) ? deductionSocialeParEnfant.divide(new BigDecimal(2), 0, BigDecimal.ROUND_HALF_UP) : deductionSocialeParEnfant);
 		}
 		return deducSocialeEnfant; 
 	}

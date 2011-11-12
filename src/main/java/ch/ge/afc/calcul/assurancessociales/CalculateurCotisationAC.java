@@ -23,7 +23,7 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 		BaremeTauxMarginalConstantParTranche.Constructeur constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur();
 		constructeur.tranche(nMontantAnnuelMaximumGainAssure, nTauxCotisationAssuranceChomage);
 		constructeur.derniereTranche("0");
-		constructeur.typeArrondi(TypeArrondi.CINQ_CTS);
+		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
 		bareme = constructeur.construire();
 	}
 
@@ -36,7 +36,7 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 		int limiteHautRevenu = BigDecimal.valueOf(nMontantAnnuelMaximumGainAssure).multiply(new BigDecimal(ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu)).intValue();
 		constructeur.tranche(limiteHautRevenu,tauxParticipationHautRevenu);
 		constructeur.derniereTranche("0");
-		constructeur.typeArrondi(TypeArrondi.CINQ_CTS);
+		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
 		bareme = constructeur.construire();
 	}
 

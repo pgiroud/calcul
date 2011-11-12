@@ -16,6 +16,6 @@
 package ch.ge.afc.calcul.impot;
 
 public enum Souverainete {
-	CANTONALE,
-	FEDERALE;
+    CH_CANTONALE_GE,
+    CH_FEDERALE;
 }

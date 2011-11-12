@@ -45,7 +45,7 @@ public class DeductionChargeFamille extends ReglePeriodique implements Deduction
 		BigDecimal nombre = BigDecimal.ZERO;
 		for (EnfantACharge enfant : situation.getEnfants()) {
 			nombre = nombre.add(UN_DEMI);
-			if (!enfant.isDemiPart(Souverainete.CANTONALE)) nombre = nombre.add(UN_DEMI);
+			if (!enfant.isDemiPart(Souverainete.CH_CANTONALE_GE)) nombre = nombre.add(UN_DEMI);
 		}
 		nombre = nombre.add(new BigDecimal(situation.getPersonnesNecessiteuses().size()));
 		return nombre;
