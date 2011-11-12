@@ -132,7 +132,7 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 		BigDecimal indiceRencherissement = calculIndice(annee);
 		BigDecimal rapportRencherissement = indiceRencherissement.divide(indiceReference, 15, BigDecimal.ROUND_HALF_UP);
 		
-		constructeur.typeArrondi(this.typeArrondiTranche);
+		constructeur.typeArrondiSurChaqueTranche(this.typeArrondiTranche);
 		BaremeTauxMarginalConstantParTranche bareme = constructeur.construire();
 		return bareme.homothetie(rapportRencherissement, TypeArrondi.FRANC);
 	}
