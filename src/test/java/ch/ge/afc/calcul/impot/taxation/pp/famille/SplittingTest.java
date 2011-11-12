@@ -38,7 +38,7 @@ public class SplittingTest {
 	@Before
 	public void setUp() throws Exception {
 		BaremeTauxMarginalConstantParTranche.Constructeur constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur();
-		constructeur.typeArrondi(TypeArrondi.CINQ_CTS);
+		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
 		constructeur.tranche(1000, "1 %");
 		constructeur.tranche(2000, "2 %");
 		constructeur.tranche(3000, "3 %");
