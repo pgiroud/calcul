@@ -122,7 +122,11 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
             };
         } else {
             ProducteurRabaisEnfantPersonneNecessiteuse producteurRabais = new  ProducteurRabaisEnfantPersonneNecessiteuse();
-            producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal.valueOf(250));
+            if (annee > 2011) {
+                producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal.valueOf(251));
+            } else {
+                producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal.valueOf(250));
+            }
 
             ProducteurImpotAvecRabais prodAvecRabais = new ProducteurImpotAvecRabais("IBR","RI","") {
                 @Override
@@ -180,7 +184,9 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 
 	protected DeductionSociale construireRegleDeductionSocialeEnfant(int annee) {
 		DeductionSocialeParEnfant deduction = new DeductionSocialeParEnfant(annee);
-		if (annee > 2010) {
+		if (annee > 2011) {
+			deduction.setDeductionSocialeParEnfant(new BigDecimal("6500"));
+		} else if (annee > 2010) {
 			deduction.setDeductionSocialeParEnfant(new BigDecimal("6400"));
 		} else if (annee > 2005) {
 			deduction.setDeductionSocialeParEnfant(new BigDecimal("6100"));
