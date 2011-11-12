@@ -64,7 +64,7 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
 			bareme.ajouterTranche(			203900, 	"13.1014 %",	"0.0016 %");
 			bareme.ajouterDerniereTranche("13.5 %");
 		}
-		bareme.setTypeArrondi(TypeArrondi.CINQ_CTS);
+		bareme.setTypeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
 		return bareme;
 	}
 
@@ -146,7 +146,7 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
 			bareme.ajouterTranche(1100100, "3.40 ‰");
 			bareme.ajouterDerniereTranche("3.50 ‰");
 		}
-		bareme.setTypeArrondi(TypeArrondi.CINQ_CTS);
+		bareme.setTypeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
 		return bareme;
 	}
 
