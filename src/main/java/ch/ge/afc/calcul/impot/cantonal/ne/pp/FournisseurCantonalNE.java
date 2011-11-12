@@ -61,7 +61,7 @@ public class FournisseurCantonalNE extends FournisseurCantonal implements
 		constructeur.tranche( 150000, "17 %");
 		constructeur.tranche( 180000, "18 %");
 		constructeur.derniereTranche( "14.5 %");
-		constructeur.typeArrondi(TypeArrondi.CINQ_CTS_INF).seuil(25);
+		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS_INF).seuil(25);
 		return constructeur.construire();
 	}
 
