@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 
 import ch.ge.afc.calcul.impot.federal.FournisseurRegleImpotFederal;
 import ch.ge.afc.calcul.impot.federal.TypeBaremeIFDPersonnePhysique;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -103,15 +104,36 @@ public class BaremeIFDPersonnePhysiqueTest {
 		Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2011);
 		assertEquals("Revenu de 20000",new BigDecimal("43.10"), bareme.calcul(new BigDecimal("20000")));
 		assertEquals("Revenu de 34000",new BigDecimal("153.65"), bareme.calcul(new BigDecimal("34000")));
+        assertEquals("Revenu de 55000",new BigDecimal("581.30"), bareme.calcul(new BigDecimal("55000")));
 		assertEquals("Revenu de 250300",new BigDecimal("20268.40"), bareme.calcul(new BigDecimal("250300")));
 		assertEquals("Revenu de 889400",new BigDecimal("102281.00"), bareme.calcul(new BigDecimal("889400")));
 	}	
 	
+    @Test
+    public void praeNumerandoCelibataire2011() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(2011);
+        assertEquals("Revenu de 682100",new BigDecimal("78441.05"), bareme.calcul(new BigDecimal("682100")));
+        assertEquals("Revenu de 682200",new BigDecimal("78453.00"), bareme.calcul(new BigDecimal("682200")));
+    }
+
 	@Test
 	public void postNumerandoMarie2011() {
 		Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2011);
 		assertEquals("Revenu de 889400",new BigDecimal("102281.00"), bareme.calcul(new BigDecimal("889400")));
 		assertEquals("Revenu de 889500",new BigDecimal("102292.50"), bareme.calcul(new BigDecimal("889500")));
 	}	
-	
+
+    @Test
+    public void postNumerandoCelibataire2012() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2012);
+        assertEquals("Revenu de 41600",new BigDecimal("223.15"), bareme.calcul(new BigDecimal("41600")));
+    }
+
+    @Test
+    public void postNumerandoMarie2012() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2012);
+        assertEquals("Revenu de 896000",new BigDecimal("103040.00"), bareme.calcul(new BigDecimal("896000")));
+    }
+
+
 }
