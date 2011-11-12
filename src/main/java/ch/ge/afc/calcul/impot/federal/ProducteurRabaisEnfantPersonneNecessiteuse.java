@@ -2,7 +2,6 @@ package ch.ge.afc.calcul.impot.federal;
 
 import ch.ge.afc.calcul.impot.Souverainete;
 import ch.ge.afc.calcul.impot.taxation.pp.*;
-import ch.ge.afc.util.BigDecimalUtil;
 import ch.ge.afc.util.TypeArrondi;
 
 import java.math.BigDecimal;
@@ -33,7 +32,7 @@ public class ProducteurRabaisEnfantPersonneNecessiteuse implements ProducteurImp
     public BigDecimal produireImpotBase(SituationFamiliale situation, FournisseurAssiettePeriodique fournisseur) {
         BigDecimal nbreEnfant = ZERO;
         for (EnfantACharge enfant : situation.getEnfants()) {
-            if (enfant.isDemiPart(Souverainete.FEDERALE)) {
+            if (enfant.isDemiPart(Souverainete.CH_FEDERALE)) {
                 nbreEnfant = nbreEnfant.add(UN_DEMI);
             } else {
                 nbreEnfant = nbreEnfant.add(ONE);
