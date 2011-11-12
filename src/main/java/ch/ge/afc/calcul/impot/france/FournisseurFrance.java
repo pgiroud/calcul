@@ -56,7 +56,7 @@ public class FournisseurFrance {
 		} else {
 			throw new IllegalArgumentException("Pas de barème pour l'année " + annee);
 		}
-		constructeur.typeArrondi(TypeArrondi.FRANC_INF);
+		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.FRANC_INF);
 		return constructeur.construire();
 	}
 }
