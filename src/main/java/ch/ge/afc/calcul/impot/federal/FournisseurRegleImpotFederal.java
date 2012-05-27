@@ -19,10 +19,13 @@ import ch.ge.afc.bareme.Bareme;
 import ch.ge.afc.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
 import ch.ge.afc.calcul.impot.taxation.pp.DeductionSociale;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
+import ch.ge.afc.calcul.impot.taxation.pp.federal.deduction.IDeductionDoubleActivite;
 
 public interface FournisseurRegleImpotFederal {
 
 	ProducteurImpot getProducteurImpotsFederauxPP(int annee);
+
+    IDeductionDoubleActivite getDeductionDoubleActivite(int annee);
 
 	DeductionSociale getRegleDeductionSocialeEnfant(int annee);
 	

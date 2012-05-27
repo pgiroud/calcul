@@ -28,8 +28,10 @@ import ch.ge.afc.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestation
 import ch.ge.afc.calcul.impot.taxation.pp.DeductionSociale;
 import ch.ge.afc.calcul.impot.taxation.pp.ProducteurImpot;
 import ch.ge.afc.calcul.impot.taxation.pp.famille.DoubleBareme;
+import ch.ge.afc.calcul.impot.taxation.pp.federal.deduction.DeductionDoubleActivite;
 import ch.ge.afc.calcul.impot.taxation.pp.federal.deduction.DeductionSocialeParEnfant;
 import ch.ge.afc.calcul.impot.taxation.pp.federal.deduction.DeductionSocialePourConjoints;
+import ch.ge.afc.calcul.impot.taxation.pp.federal.deduction.IDeductionDoubleActivite;
 import ch.ge.afc.util.ExplicationDetailleTexteBuilder;
 import ch.ge.afc.util.IExplicationDetailleeBuilder;
 import ch.ge.afc.util.TypeArrondi;
@@ -42,6 +44,8 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsFederauxPP = new ConcurrentHashMap<Integer, ProducteurImpot>();
 	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<Integer, ProducteurImpot>();
 	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotSourcePrestationCapital = new ConcurrentHashMap<Integer, ProducteurImpot>();
+
+    private ConcurrentMap<Integer,IDeductionDoubleActivite> deducDoubleActivite = new ConcurrentHashMap<Integer, IDeductionDoubleActivite>();
 	private ConcurrentMap<Integer,DeductionSociale> deducSocialeEnfant = new ConcurrentHashMap<Integer,DeductionSociale>(); 
 	private ConcurrentMap<Integer,DeductionSociale> deducSocialeConjoint = new ConcurrentHashMap<Integer,DeductionSociale>(); 
 
@@ -174,7 +178,31 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		producteur.setProducteurBase(producteurImpotBase);
 		return producteur;
 	}
-	
+
+    public IDeductionDoubleActivite getDeductionDoubleActivite(int annee) {
+        if (!deducDoubleActivite.containsKey(annee)) {
+            deducDoubleActivite.putIfAbsent(annee, construireRegleDeductionDoubleActivite(annee));
+        }
+        return deducDoubleActivite.get(annee);
+    }
+
+    private IDeductionDoubleActivite construireRegleDeductionDoubleActivite(int annee) {
+        if (annee > 2007) {
+            DeductionDoubleActivite regle = new DeductionDoubleActivite(annee);
+            regle.setTaux("50 %");
+            if (annee >= 2012) {
+                regle.setPlancher(8100);
+                regle.setPlafond(13400);
+            } else {
+                regle.setPlancher(7600);
+                regle.setPlafond(12500);
+            }
+            return regle;
+        } else {
+            throw new IllegalArgumentException("Les règles de déductions pour double gain ne sont pas définies avant 2008");
+        }
+    }
+
 	public DeductionSociale getRegleDeductionSocialeEnfant(int annee) {
 		if (!deducSocialeEnfant.containsKey(annee)) {
 			deducSocialeEnfant.putIfAbsent(annee, construireRegleDeductionSocialeEnfant(annee));
@@ -195,7 +223,9 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		}
 		return deduction;
 	}
-	
+
+
+
 	public DeductionSociale getRegleDeductionSocialeConjoint(int annee) {
 		if (annee < 2008) return null;
 		if (!deducSocialeConjoint.containsKey(annee)) {
