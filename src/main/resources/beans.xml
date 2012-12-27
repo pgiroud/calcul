@@ -1,107 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:lang="http://www.springframework.org/schema/lang"
-	xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<context:annotation-config/>
+  <context:annotation-config/>
 
-	<bean name="fournisseurRegleCalculAssuranceSociale" class="ch.ge.afc.calcul.assurancessociales.Fournisseur">
-		<property name="renteSimpleMensuelleMinimumParAnnee">
-			<map>
-				<!--  Conformément à l'article 33ter de la loi sur l'assurance-vieillesse 
-				et survivants (LAVS; RS 831.10), le Conseil fédéral procède en règle 
-				générale tous les deux ans à une adaptation des rentes AVS/AI à l'indice 
-				mixte. Cependant, une adaptation peut avoir lieu plus tôt, lorsque l'indice 
-				suisse des prix à la consommation a augmenté de plus de 4 pour cent 
-				au cours d'une année. Le renchérissement du mois de juin par rapport 
-				à l'année précédente est dans ce cas déterminant (art. 51ter du 
-				règlement sur l'assurance-vieillesse et survivants, RAVS; RS 831.101). -->
-    			<entry key="2001" value="1030"/>
-    			<entry key="2002" value="1030"/>
-    			<entry key="2003" value="1055"/>
-    			<entry key="2004" value="1055"/>
-    			<entry key="2005" value="1075"/>
-    			<entry key="2006" value="1075"/>
-    			<entry key="2007" value="1105"/>
-    			<entry key="2008" value="1105"/>
-    			<entry key="2009" value="1140"/>
-    			<entry key="2010" value="1140"/>
-    			<entry key="2011" value="1160"/>
-    			<entry key="2012" value="1160"/>
-			</map>
-		</property>
-	</bean>
+  <bean name="fournisseurRegleCalculAssuranceSociale" class="org.impotch.calcul.assurancessociales.Fournisseur">
+    <property name="renteSimpleMensuelleMinimumParAnnee">
+      <map>
+        <!--  Conformément à l'article 33ter de la loi sur l'assurance-vieillesse
+        et survivants (LAVS; RS 831.10), le Conseil fédéral procède en règle
+        générale tous les deux ans à une adaptation des rentes AVS/AI à l'indice
+        mixte. Cependant, une adaptation peut avoir lieu plus tôt, lorsque l'indice
+        suisse des prix à la consommation a augmenté de plus de 4 pour cent
+        au cours d'une année. Le renchérissement du mois de juin par rapport
+        à l'année précédente est dans ce cas déterminant (art. 51ter du
+        règlement sur l'assurance-vieillesse et survivants, RAVS; RS 831.101). -->
+        <entry key="2001" value="1030"/>
+        <entry key="2002" value="1030"/>
+        <entry key="2003" value="1055"/>
+        <entry key="2004" value="1055"/>
+        <entry key="2005" value="1075"/>
+        <entry key="2006" value="1075"/>
+        <entry key="2007" value="1105"/>
+        <entry key="2008" value="1105"/>
+        <entry key="2009" value="1140"/>
+        <entry key="2010" value="1140"/>
+        <entry key="2011" value="1160"/>
+        <entry key="2012" value="1160"/>
+        <entry key="2013" value="1170"/>
+        <entry key="2014" value="1170"/>
+      </map>
+    </property>
+  </bean>
 
-    <bean name="fournisseurBaremeIFD" class="ch.ge.afc.calcul.impot.federal.dao.FournisseurBaremeIFDEnMemoire"/>
-	<bean name="fournisseurRegleImpotFederal" class="ch.ge.afc.calcul.impot.federal.Fournisseur"/>
-	
-	<bean name="indexateurGEBaseMai1993" class="ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE">
-		<property name="indices">
-    		<map>
-    			<entry key="2000" value="105.8"/>
-    			<entry key="2001" value="107.3"/>
-    			<entry key="2002" value="108.7"/>
-    			<entry key="2003" value="109.4"/>
-    			<entry key="2004" value="110.5"/>
-    			<entry key="2005" value="111.5"/>
-    			<entry key="2006" value="113.2"/>
-    			<entry key="2007" value="114.6"/>
-    			<entry key="2008" value="114.9"/>
-    			<entry key="2009" value="117.5"/>
-    		</map>
-  		</property>
-	</bean>
-	
-	<bean name="indexateurGEBaseDecembre2005" class="ch.ge.afc.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE">
-		<property name="indices">
-    		<map>
-    			<entry key="2009" value="102.9"/>
-    			<entry key="2010" value="103.1"/>
-    			<entry key="2011" value="103.7"/>
-                <entry key="2012" value="104.2"/>
-    		</map>
-  		</property>
-	</bean>
-	
-    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:oci:@RAFC_PROTO"/>
-        <property name="username" value="rafc_adm"/>
-        <property name="password" value="V3N1S372"/>
-    </bean>
+  <bean name="fournisseurBaremeIFD" class="org.impotch.calcul.impot.federal.dao.FournisseurBaremeIFDEnMemoire"/>
+  <bean name="fournisseurRegleImpotFederal" class="org.impotch.calcul.impot.federal.Fournisseur"/>
 
-	<bean name="paramCommuneDaoRTaxPP" class="ch.ge.afc.calcul.impot.cantonal.ge.param.dao.ParametreCommunalJdbcRTaxPPDao">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
-	
-	<bean name="paramCommuneDao" class="ch.ge.afc.calcul.impot.cantonal.ge.param.dao.ParametreCommunalFichierTxtDao">
-		<property name="charsetName" value="UTF-8"/>
-		<property name="fichier" value="classpath:parametrage/ge/ExtractionTauxPP.txt"/>
-	</bean>
-	
-	<bean name="fournisseurParamCommune" class="ch.ge.afc.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE">
-		<property name="dao" ref="paramCommuneDao"/>
-	</bean>
-	
-	<bean name="fournisseurRegleImpotCantonalGE" 
-			class="ch.ge.afc.calcul.impot.cantonal.ge.pp.FournisseurCantonalGE">
-			<property name="fournisseurIndiceBaseMai1993" ref="indexateurGEBaseMai1993"/>
-			<property name="fournisseurIndiceBaseDecembre2005" ref="indexateurGEBaseDecembre2005"/>
-			<property name="fournisseurRegleCalculCotisationAssuranceSociale" ref="fournisseurRegleCalculAssuranceSociale"/>
-			<property name="fournisseurParamCommunaux" ref="fournisseurParamCommune"/>
-	</bean>
-	
-	<bean name="fournisseurRegleImpotCantonalFR" class="ch.ge.afc.calcul.impot.cantonal.fr.pp.FournisseurCantonalFR"/>
+  <bean name="indexateurGEBaseMai1993"
+        class="org.impotch.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE">
+    <property name="indices">
+      <map>
+        <entry key="2000" value="105.8"/>
+        <entry key="2001" value="107.3"/>
+        <entry key="2002" value="108.7"/>
+        <entry key="2003" value="109.4"/>
+        <entry key="2004" value="110.5"/>
+        <entry key="2005" value="111.5"/>
+        <entry key="2006" value="113.2"/>
+        <entry key="2007" value="114.6"/>
+        <entry key="2008" value="114.9"/>
+        <entry key="2009" value="117.5"/>
+      </map>
+    </property>
+  </bean>
 
-	<bean name="fournisseurRegleImpotCantonalNE" class="ch.ge.afc.calcul.impot.cantonal.ne.pp.FournisseurCantonalNE"/>
+  <bean name="indexateurGEBaseDecembre2005"
+        class="org.impotch.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE">
+    <property name="indices">
+      <map>
+        <entry key="2009" value="102.9"/>
+        <entry key="2010" value="103.1"/>
+        <entry key="2011" value="103.7"/>
+        <entry key="2012" value="104.2"/>
+        <entry key="2013" value="103.7"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+    <property name="url" value="jdbc:oracle:oci:@RAFC_PROTO"/>
+    <property name="username" value="rafc_adm"/>
+    <property name="password" value="V3N1S372"/>
+  </bean>
+
+  <bean name="paramCommuneDaoRTaxPP"
+        class="org.impotch.calcul.impot.cantonal.ge.param.dao.ParametreCommunalJdbcRTaxPPDao">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+
+  <bean name="paramCommuneDao" class="org.impotch.calcul.impot.cantonal.ge.param.dao.ParametreCommunalFichierTxtDao">
+    <property name="charsetName" value="UTF-8"/>
+    <property name="fichier" value="classpath:parametrage/ge/ExtractionTauxPP.txt"/>
+  </bean>
+
+  <bean name="fournisseurParamCommune" class="org.impotch.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE">
+    <property name="dao" ref="paramCommuneDao"/>
+  </bean>
+
+  <bean name="fournisseurRegleImpotCantonalGE"
+        class="org.impotch.calcul.impot.cantonal.ge.pp.FournisseurCantonalGE">
+    <property name="fournisseurIndiceBaseMai1993" ref="indexateurGEBaseMai1993"/>
+    <property name="fournisseurIndiceBaseDecembre2005" ref="indexateurGEBaseDecembre2005"/>
+    <property name="fournisseurRegleCalculCotisationAssuranceSociale" ref="fournisseurRegleCalculAssuranceSociale"/>
+    <property name="fournisseurParamCommunaux" ref="fournisseurParamCommune"/>
+  </bean>
+
+  <bean name="fournisseurRegleImpotCantonalFR" class="org.impotch.calcul.impot.cantonal.fr.pp.FournisseurCantonalFR"/>
+
+  <bean name="fournisseurRegleImpotCantonalNE" class="org.impotch.calcul.impot.cantonal.ne.pp.FournisseurCantonalNE"/>
 
 </beans>
