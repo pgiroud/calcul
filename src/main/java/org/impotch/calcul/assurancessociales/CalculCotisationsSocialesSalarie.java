@@ -126,8 +126,8 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	//------ Implémentation de l'interface CalculCotisationAvsAiApg
 	
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel seront calculés les cotisations
+	 * @return  La somme des cotisations à l'assurance vieillesse et survivant, à l'assurance invalidité et à l'assurance pour perte de gain.
 	 * @see CalculCotisationAvsAiApgSalarie#calculCotisationAvsAiApg(java.math.BigDecimal)
 	 */
 	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant) {
@@ -135,8 +135,8 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return le montant de la cotisatin à l'assurance vieillesse et survivant
 	 * @see CalculCotisationAvsAiApgSalarie#calculCotisationAvs(java.math.BigDecimal)
 	 */
 	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant) {
@@ -144,8 +144,8 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return le montant de la cotisatin à l'assurance invalidité.
 	 * @see CalculCotisationAvsAiApgSalarie#calculCotisationAi(java.math.BigDecimal)
 	 */
 	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant) {
@@ -153,8 +153,8 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return le montant de la cotisatin à l'assurance perte de gain
 	 * @see CalculCotisationAvsAiApgSalarie#calculCotisationApg(java.math.BigDecimal)
 	 */
 	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant) {

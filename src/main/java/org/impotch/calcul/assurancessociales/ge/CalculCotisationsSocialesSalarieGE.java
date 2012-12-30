@@ -29,7 +29,7 @@ import org.impotch.util.TypeArrondi;
 /**
  * Cette classe permet de calculer toutes les cotisations dues par le salarié pour les salaires perçus
  * sur le cantonal de Genève.
- * En plus des cotisations définies au plan fédéral {@ link CalculCotisationsSocialesSalarie}, cette classe
+ * En plus des cotisations définies au plan fédéral {@link CalculCotisationsSocialesSalarie}, cette classe
  * calcule la cotisation pour assurance maternité et adoption.
  * 
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -100,8 +100,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	//------ Implémentation de l'interface CalculCotisationsAssuranceAccidentsNonProfessionnels
 	/**
 	 * @param tauxCotisationAssuranceAccidentsNonProfessionnels
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return la part salariée de la cotisation à l'assurance contre les accidents non professionnels
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(java.math.BigDecimal, java.math.BigDecimal)
 	 */
 	public BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(
@@ -121,8 +121,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return le montant de la cotisation à l'assurance contre le chômage
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationAC(java.math.BigDecimal)
 	 */
 	public BigDecimal calculCotisationAC(BigDecimal montantDeterminant) {
@@ -132,8 +132,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	//------ Implémentation de l'interface CalculCotisationAvsAiApg
 	
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return le montant de la cotisatin à l'assurance invalidité.
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationAi(java.math.BigDecimal)
 	 */
 	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant) {
@@ -141,8 +141,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return le montant de la cotisatin à l'assurance perte de gain
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationApg(java.math.BigDecimal)
 	 */
 	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant) {
@@ -150,8 +150,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return le montant de la cotisatin à l'assurance vieillesse et survivant
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationAvs(java.math.BigDecimal)
 	 */
 	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant) {
@@ -159,8 +159,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return La somme des cotisations à l'assurance vieillesse et survivant, à l'assurance invalidité et à l'assurance pour perte de gain.
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationAvsAiApg(java.math.BigDecimal)
 	 */
 	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant) {
@@ -168,8 +168,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return  La part due par le salarié de la cotisation à l'assurances invalidité.
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAi(java.math.BigDecimal)
 	 */
 	public BigDecimal calculPartSalarieeCotisationAi(
@@ -179,8 +179,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return La part due par le salarié de la cotisation aux assurances contre la perte de gain.
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationApg(java.math.BigDecimal)
 	 */
 	public BigDecimal calculPartSalarieeCotisationApg(
@@ -190,8 +190,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return La part due par le salarié de la cotisation aux assurances vieillesse et survivant
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAvs(java.math.BigDecimal)
 	 */
 	public BigDecimal calculPartSalarieeCotisationAvs(
@@ -201,8 +201,8 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	}
 
 	/**
-	 * @param montantDeterminant
-	 * @return
+	 * @param montantDeterminant  Montant déterminant sur lequel sera calculé la cotisation
+	 * @return La part due par le salarié des cotisations aux assurances vieillesse et survivant, invalidité et perte de gain.
 	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAvsAiApg(java.math.BigDecimal)
 	 */
 	public BigDecimal calculPartSalarieeCotisationAvsAiApg(

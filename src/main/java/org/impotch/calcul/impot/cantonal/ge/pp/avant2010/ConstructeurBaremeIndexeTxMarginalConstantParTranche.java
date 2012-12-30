@@ -69,7 +69,6 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 	 * Il n'est cependant pas possible d'utiliser les indices à une décimale pour retrouver l'indexation.
 	 * @param indexateur un indexateur.
 	 * @return le constructeur afin d'être chaîné.
-	 * @see FournisseurIndicePeriodiqueGEPrixConsommation
 	 */
 	public ConstructeurBaremeIndexeTxMarginalConstantParTranche indexateur(FournisseurIndicePeriodiqueGE indexateur) {
 		this.indexateur = indexateur;
