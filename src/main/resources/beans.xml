@@ -50,6 +50,12 @@
         class="org.impotch.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE">
     <property name="indices">
       <map>
+        <entry key="1993" value="100.0"/>
+        <entry key="1995" value="100.9"/>
+        <entry key="1996" value="100.9"/>
+        <entry key="1997" value="100.9"/>
+        <entry key="1998" value="104.3"/>
+        <entry key="1999" value="105.3"/>
         <entry key="2000" value="105.8"/>
         <entry key="2001" value="107.3"/>
         <entry key="2002" value="108.7"/>

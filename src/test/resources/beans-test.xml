@@ -25,5 +25,9 @@
     <property name="dao" ref="paramCommuneDao"/>
   </bean>
 
+  <bean id="chargeurFichierEconometreGE" class="org.impotch.calcul.impot.cantonal.ge.pp.ChargeurFichierEconometre">
+    <property name="fichier" value="classpath:ge/BASEIMP.CSV"/>
+  </bean>
+
 
 </beans>

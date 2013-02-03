@@ -19,7 +19,7 @@
     <dependency>
       <groupId>org.impotch</groupId>
       <artifactId>util</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.impotch</groupId>
@@ -194,16 +194,15 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
           <show>package</show>
-          <javadocExecutable>/usr/lib/jvm/java-6-openjdk/bin/javadoc</javadocExecutable>
           <charset>${project.build.sourceEncoding}</charset>
           <docfilessubdirs>true</docfilessubdirs>
-          <excludedocfilessubdir>CVS</excludedocfilessubdir>
           <links>
             <!-- JSE -->
             <link>http://java.sun.com/javase/6/docs/api/</link>
             <!-- Libraries -->
             <link>http://junit.sourceforge.net/javadoc/</link>
             <link>http://logging.apache.org/log4j/1.2/apidocs/</link>
+            <link>http://www.slf4j.org/api/</link>
           </links>
         </configuration>
       </plugin>
@@ -238,6 +237,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.5.2</version>
       </plugin>
     </plugins>
   </reporting>

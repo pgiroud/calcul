@@ -59,6 +59,18 @@ public class TauxMarginalSeul extends ReglePeriodique implements Primitivable {
 	
 	public TauxMarginalSeul(int annee) {
 		super(annee);
+        if (annee < 2001) {
+            a1 = 9108.17;
+            poids = 0.67;
+            anneeReference = 1993;
+            if (annee < 1998) {
+                // entre 1995 et 1997
+                c0 = 53256800.0;
+            } else {
+                // entre 1998 et 2000
+                c0 = 51818800.0;
+            }
+        }
 	}
 
 	/**************************************************/

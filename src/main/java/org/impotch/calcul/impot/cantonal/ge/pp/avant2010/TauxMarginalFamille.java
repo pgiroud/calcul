@@ -39,6 +39,8 @@ public class TauxMarginalFamille extends ReglePeriodique implements Fonction {
 	private double qmax = 1.0;
 	private double b1 = 6000.0;
 	private double b2 = 70.0;
+    private double deductionPersonnelleSeul = 0.0;
+    private double deductionPersonnelleCouple = 0.0;
 	
     /**************************************************/
     /****************** Constructeurs  ****************/
@@ -46,6 +48,12 @@ public class TauxMarginalFamille extends ReglePeriodique implements Fonction {
 	
 	public TauxMarginalFamille(int annee) {
 		super(annee);
+        if (annee < 2001) {
+            b1 = 61982.0;
+            b2 = 100000.0;
+            deductionPersonnelleSeul = 10383.0;
+            deductionPersonnelleCouple = 20662.0;
+        }
 	}
 
 	
@@ -86,7 +94,7 @@ public class TauxMarginalFamille extends ReglePeriodique implements Fonction {
 	@Override
 	public double valeur(double pMontantImposable) {
 		double tauxSeulMoitieRevenu = tauxMarginalSeul.valeur(pMontantImposable / 2.0);
-		double ecartAvecTauxSeulRevenu = tauxMarginalSeul.valeur(pMontantImposable) - tauxSeulMoitieRevenu;
+		double ecartAvecTauxSeulRevenu = tauxMarginalSeul.valeur(pMontantImposable + deductionPersonnelleCouple - deductionPersonnelleSeul) - tauxSeulMoitieRevenu;
 		double split = splitting(pMontantImposable);
 		return  tauxSeulMoitieRevenu + split * ecartAvecTauxSeulRevenu;
 	}
