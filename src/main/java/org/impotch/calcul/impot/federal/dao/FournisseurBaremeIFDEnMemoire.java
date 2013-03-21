@@ -105,7 +105,7 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
 
     public Bareme getBaremeImpotRevenuPersonnePhysiquePourFamilleNew(int annee) {
         ConstructeurBaremeIFD constructeur = null;
-        if (2012 == annee) {
+        if (2012 == annee || 2013 == annee) {
             constructeur = this.getConstructeurBaremeImpotRevenuPersonnePhysiqueFamille2012();
         }
         if (2011 == annee) {
@@ -167,6 +167,11 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
     /************************************************************************/
 
 
+    /**
+     * Adapté à l'indice de juin 2011: 161,9
+     * barème 2011 étiré de 0.6 %
+     * @return  Constructeur pour les périodes fiscales 2012, 2013
+     */
     private ConstructeurBaremeIFD getConstructeurBaremeImpotRevenuPersonnePhysiquePersonneSeule2012() {
         ConstructeurBaremeIFD constructeur = new ConstructeurBaremeIFD();
         constructeur.jusqua(14500).a("0.00").etPar100FrancsEnPlus("0.77");
@@ -182,6 +187,11 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
         return constructeur;
     }
 
+    /**
+     * Adapté à l'indice de juin 2011: 161,9
+     * barème 2011 étiré de 0.6 %
+     * @return  Constructeur pour les périodes fiscales 2012, 2013
+     */
     private ConstructeurBaremeIFD getConstructeurBaremeImpotRevenuPersonnePhysiqueFamille2012() {
         ConstructeurBaremeIFD constructeur = new ConstructeurBaremeIFD();
         constructeur.jusqua(28300).a("0.00").etPar100FrancsEnPlus("1.00");
