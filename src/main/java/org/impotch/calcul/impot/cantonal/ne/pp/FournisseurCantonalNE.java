@@ -34,16 +34,24 @@ public class FournisseurCantonalNE extends FournisseurCantonal implements
 		// TODO Auto-generated constructor stub
 	}
 
-	/* (non-Javadoc)
+	/**
+     * Barème en vigueur depuis 2001
 	 * @see FournisseurCantonal#construireBaremeFortune(int)
 	 */
 	@Override
 	protected Bareme construireBaremeFortune(int annee) {
-		// TODO Auto-generated method stub
-		return null;
+        BaremeTxMarginalEtEffectifParTranche.Constructeur constructeur = new BaremeTxMarginalEtEffectifParTranche.Constructeur();
+        constructeur.tranche(   50000,  "0");
+        constructeur.tranche(  200000,  "3 ‰");
+        constructeur.tranche(  350000,  "4 ‰");
+        constructeur.tranche(  500000,  "5 ‰");
+        constructeur.derniereTranche( "3.6 ‰");
+        constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS_INF).seuil(25);
+        return constructeur.construire();
 	}
 
-	/* (non-Javadoc)
+	/**
+     * Barème en vigueur depuis 2008
 	 * @see FournisseurCantonal#construireBaremeRevenu(int)
 	 */
 	@Override
