@@ -26,11 +26,23 @@ import org.impotch.calcul.impot.RecepteurImpot;
  */
 public class RecepteurImpotSomme implements RecepteurImpot {
 
-	private BigDecimal valeur = BigDecimal.ZERO;
+    private static BigDecimal ZERO = new BigDecimal("0.00");
 
-	/* (non-Javadoc)
-	 * @see ch.ge.afc.calcul.impot.RecepteurImpot#ajouteImpot(java.math.BigDecimal, java.lang.String)
-	 */
+	private BigDecimal valeur = ZERO;
+    private BigDecimal seuil = ZERO;
+
+    public RecepteurImpotSomme() {
+        this(ZERO);
+    }
+
+
+    public RecepteurImpotSomme(BigDecimal seuil) {
+        this.seuil = seuil;
+    }
+
+    /* (non-Javadoc)
+         * @see ch.ge.afc.calcul.impot.RecepteurImpot#ajouteImpot(java.math.BigDecimal, java.lang.String)
+         */
 	@Override
 	public void ajouteImpot(Impot impot) {
 		valeur = valeur.add(impot.getMontant());
@@ -40,7 +52,8 @@ public class RecepteurImpotSomme implements RecepteurImpot {
 	 * @return the valeur
 	 */
 	public BigDecimal getValeur() {
-		return valeur;
+        return (valeur.compareTo(seuil) >=  0)  ? valeur : ZERO;
 	}
-	
+
+
 }
