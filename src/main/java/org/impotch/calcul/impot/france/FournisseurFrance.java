@@ -53,7 +53,26 @@ public class FournisseurFrance {
 			constructeur.tranche(25926, " 14 %");
 			constructeur.tranche(69505, " 30 %");
 			constructeur.derniereTranche("40 %");
-		} else {
+        } else if (2009 == annee) {
+            constructeur.tranche( 5875, "  0 %");
+            constructeur.tranche(11720, "  5.5 %");
+            constructeur.tranche(26030, " 14 %");
+            constructeur.tranche(69783, " 30 %");
+            constructeur.derniereTranche("40 %");
+        } else if (2010 == annee || 2011 == annee) {
+            constructeur.tranche( 5963, "  0 %");
+            constructeur.tranche(11896, "  5.5 %");
+            constructeur.tranche(26420, " 14 %");
+            constructeur.tranche(70830, " 30 %");
+            constructeur.derniereTranche("41 %");
+		} else if (2012 == annee) {
+            constructeur.tranche(  5963, " 0 %");
+            constructeur.tranche( 11896,"  5.5 %");
+            constructeur.tranche( 26420," 14 %");
+            constructeur.tranche( 70830," 30 %");
+            constructeur.tranche(150000, "41 %");
+            constructeur.derniereTranche("45 %");
+        } else {
 			throw new IllegalArgumentException("Pas de barème pour l'année " + annee);
 		}
 		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.FRANC_INF);
