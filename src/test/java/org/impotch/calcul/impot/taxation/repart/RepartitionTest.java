@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +28,9 @@ import org.impotch.calcul.impot.taxation.repart.Part;
 import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICanton;
 import org.impotch.calcul.lieu.ICommuneSuisse;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.fail;
 
 public class RepartitionTest {
 
@@ -95,13 +97,10 @@ public class RepartitionTest {
     private void controlePresence(Repartition<ForCantonal> repart, String insCodeCanton, int iMontantAttendu)
     {
         Part oPart = repart.getPart(getFor(insCodeCanton));
-        if (null == oPart)
-        {
-            Assert.fail("Le cantonal " + insCodeCanton + " n'a pas été trouvé dans la répartition");
-        }
-        else
-        {
-            Assert.assertEquals("Comparaison mnt " + insCodeCanton,new BigDecimal(iMontantAttendu),oPart.getMontant());
+        if (null == oPart) {
+            fail("Le canton " + insCodeCanton + " n'a pas été trouvé dans la répartition");
+        } else {
+            assertThat(oPart.getMontant()).isEqualTo(BigDecimal.valueOf(iMontantAttendu));
         }
     }
 
@@ -154,7 +153,45 @@ public class RepartitionTest {
         // On somme chacune des parts : 198 + 132 + 330 = 660 d'où une différence d'arrondi de 1 franc
         // On répercute cette différence sur la plus grosse part : Fribourg 
         Part oPart = repart.getPart(getFor("FR"));
-        Assert.assertEquals("Sur la plus grosse part FR",new BigDecimal("329"),oPart.getMontant());
+        assertThat(oPart.getMontant()).isEqualTo("329");
     }
+
+    @Test
+    public void testOrdrePart() {
+        // On veut tester que l'ordre des parts n'a pas d'influence
+        // en répartissant 1 franc entre 3 cantons (avec arrondi à 1 franc)
+        Repartition<ForCantonal> cle = creerRepartitionCantonal("VD",30);
+        ajouterPart(cle,"GE",30);
+        ajouterPart(cle,"VS",30);
+        Repartition<ForCantonal> repart = cle.repartir(BigDecimal.ONE);
+        assertThat(repart.getPart(getFor("GE")).getMontant()).isEqualTo("1");
+        assertThat(repart.getPart(getFor("VD")).getMontant()).isEqualTo("0");
+        assertThat(repart.getPart(getFor("VS")).getMontant()).isEqualTo("0");
+        // On change l'ordre des parts
+        cle = creerRepartitionCantonal("GE",30);
+        ajouterPart(cle,"VD",30);
+        ajouterPart(cle,"VS",30);
+        repart = cle.repartir(BigDecimal.ONE);
+        assertThat(repart.getPart(getFor("GE")).getMontant()).isEqualTo("1");
+        assertThat(repart.getPart(getFor("VD")).getMontant()).isEqualTo("0");
+        assertThat(repart.getPart(getFor("VS")).getMontant()).isEqualTo("0");
+    }
+
+    @Test
+    public void differenceEntreTypeCalculRepartition() {
+        // Soit 2 franc à répartir en 3 parts  (arrondi au franc le plus proche)
+        Repartition<ForCantonal> cle = creerRepartitionCantonal("VD",1);
+        ajouterPart(cle,"GE",3);
+        ajouterPart(cle,"VS",1);
+        // Répartition classique : 2 parts à 0 franc et 1 part à 2 francs
+        Repartition<ForCantonal> repart = cle.repartir(BigDecimal.valueOf(2));
+        assertThat(repart.getPart(getFor("VD")).getMontant()).isEqualTo("0");
+        assertThat(repart.getPart(getFor("VS")).getMontant()).isEqualTo("0");
+        assertThat(repart.getPart(getFor("GE")).getMontant()).isEqualTo("2");
+        // Répartition seulement sur reste à répartir : 1 part à 0 franc et 2 parts à 1 franc
+        repart = cle.repartirSurResteARepartir(BigDecimal.valueOf(2));
+        assertThat(repart.getPart(getFor("VD")).getMontant()).isEqualTo("0");
+        assertThat(repart.getPart(getFor("VS")).getMontant()).isEqualTo("1");
+        assertThat(repart.getPart(getFor("GE")).getMontant()).isEqualTo("1");    }
     
 }
