@@ -1,3 +1,18 @@
+/**
+ * This file is part of impotch/calcul.
+ *
+ * impotch/calcul is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * impotch/calcul is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.impotch.calcul.impot.taxation.pp;
 
 import org.impotch.calcul.impot.ImpotProduit;
@@ -9,13 +24,6 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
-/**
- * Created by IntelliJ IDEA.
- * User: patrick
- * Date: 17 avr. 2010
- * Time: 20:47:21
- * To change this template use File | Settings | File Templates.
- */
 public abstract class ProducteurImpotAvecRabais extends ProducteurImpot {
 
 	final Logger logger = LoggerFactory.getLogger(ProducteurImpotAvecRabais.class);

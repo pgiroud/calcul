@@ -1,3 +1,18 @@
+/**
+ * This file is part of impotch/calcul.
+ *
+ * impotch/calcul is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * impotch/calcul is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.impotch.calcul.impot.federal;
 
 import org.impotch.calcul.impot.Souverainete;
@@ -12,13 +27,6 @@ import static java.math.BigDecimal.ZERO;
 import static java.math.BigDecimal.ONE;
 import static org.impotch.util.BigDecimalUtil.UN_DEMI;
 
-/**
- * Created by IntelliJ IDEA.
- * User: patrick
- * Date: 17 avr. 2010
- * Time: 20:58:54
- * To change this template use File | Settings | File Templates.
- */
 public class ProducteurRabaisEnfantPersonneNecessiteuse implements ProducteurImpotBase {
 
     private BigDecimal montantRabaisParEnfant;

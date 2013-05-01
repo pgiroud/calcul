@@ -1,16 +1,24 @@
+/**
+ * This file is part of impotch/calcul.
+ *
+ * impotch/calcul is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * impotch/calcul is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.impotch.calcul.impot.federal.dao;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.bareme.BaremeTxMarginalEtEffectifParTranche;
 import org.impotch.util.TypeArrondi;
 
-/**
- * Created by IntelliJ IDEA.
- * User: patrick
- * Date: 15/09/11
- * Time: 21:50
- * To change this template use File | Settings | File Templates.
- */
 public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
     private static String[] TAUX_SEUL = new String[]{
             "0",    "0.77 %",   "0.88 %",   "2.64 %",   "2.97 %",   "5.94 %",   "6.60 %",   "8.80 %",   "11.00 %",  "13.20 %"};
