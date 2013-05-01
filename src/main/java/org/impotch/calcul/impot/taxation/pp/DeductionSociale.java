@@ -20,4 +20,5 @@ import java.math.BigDecimal;
 
 public interface DeductionSociale {
 	BigDecimal getMontantDeduction(SituationFamiliale situation);
+    String getNom();
 }

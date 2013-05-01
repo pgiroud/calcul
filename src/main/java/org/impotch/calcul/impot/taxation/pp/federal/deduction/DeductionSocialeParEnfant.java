@@ -56,4 +56,9 @@ public class DeductionSocialeParEnfant extends ReglePeriodique implements Deduct
 		}
 		return deducSocialeEnfant; 
 	}
+
+    @Override
+    public String getNom() {
+        return "déduc. sociale enfants";
+    }
 }

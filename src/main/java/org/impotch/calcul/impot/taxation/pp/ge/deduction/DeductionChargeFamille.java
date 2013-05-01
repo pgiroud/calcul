@@ -56,6 +56,9 @@ public class DeductionChargeFamille extends ReglePeriodique implements Deduction
 		BigDecimal nombreCharge = getNombreCharge(situation);
 		return montantCharge.multiply(nombreCharge);
 	}
-	
-	
+
+    @Override
+    public String getNom() {
+        return "déduc. sociale charge famille";
+    }
 }

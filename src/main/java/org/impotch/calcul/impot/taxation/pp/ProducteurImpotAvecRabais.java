@@ -59,9 +59,6 @@ public abstract class ProducteurImpotAvecRabais extends ProducteurImpot {
 	protected BigDecimal produireImpotBase(SituationFamiliale situation,
 			FournisseurAssiettePeriodique fournisseur, RecepteurImpot recepteur) {
 
-		if (!(fournisseur instanceof FournisseurAssiettePeriodiqueGE)) {
-			logger.error("Pour produire le rabais d'impôt, il faut un fournisseur GE !!");
-		}
 		NumberFormat format = NumberFormat.getNumberInstance();
 		format.setGroupingUsed(true);
 		format.setMaximumFractionDigits(2);
@@ -71,12 +68,12 @@ public abstract class ProducteurImpotAvecRabais extends ProducteurImpot {
 		// Pour le rabais d'impôt, on produit tout d'abord un impôt de base
 		// puis le rabais
 		BigDecimal impotBase = super.produireImpotBase(situation, fournisseur, recepteur);
-		logger.debug("ICC - Impôt base " + format.format(impotBase));
+		logger.debug("Impôt base " + format.format(impotBase));
 
 		FournisseurAssiettePeriodique assiettePourRabais = construireAssietteRabais(fournisseur);
 
 		BigDecimal montantRabaisImpot = this.produireRabaisImpot(impotBase, situation, assiettePourRabais, recepteur);
-		logger.debug("ICC - Rabais impôt " + format.format(montantRabaisImpot));
+		logger.debug("Rabais impôt " + format.format(montantRabaisImpot));
 
 		BigDecimal impotNet = impotBase.add(montantRabaisImpot).max(BigDecimal.ZERO);
 		return impotNet;

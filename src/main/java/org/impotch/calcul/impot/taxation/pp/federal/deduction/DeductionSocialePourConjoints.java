@@ -44,4 +44,9 @@ public class DeductionSocialePourConjoints  extends ReglePeriodique implements D
 		if (situation.isCouple()) return deducConjointsIFD; 
 		else return BigDecimal.ZERO;
 	}
+
+    @Override
+    public String getNom() {
+        return "déduc. sociale conjoint";
+    }
 }
