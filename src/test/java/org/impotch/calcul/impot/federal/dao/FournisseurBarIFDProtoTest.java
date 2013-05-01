@@ -18,8 +18,8 @@ public class FournisseurBarIFDProtoTest {
     @Test
     public void test2012Seul() {
         Bareme bar = new FournisseurBarIFDProto().getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2012);
-//        assertThat(bar.calcul(BigDecimal.valueOf(14500))).isEqualTo("0.00") ;
-//        assertThat(bar.calcul(BigDecimal.valueOf(31600))).isEqualTo("131.65") ;
-//        assertThat(bar.calcul(BigDecimal.valueOf(41400))).isEqualTo("217.90");
+        assertThat(bar.calcul(BigDecimal.valueOf(14500))).isEqualTo("0.00") ;
+        assertThat(bar.calcul(BigDecimal.valueOf(31600))).isEqualTo("131.65") ;
+        //assertThat(bar.calcul(BigDecimal.valueOf(41400))).isEqualTo("217.90");
     }
 }
