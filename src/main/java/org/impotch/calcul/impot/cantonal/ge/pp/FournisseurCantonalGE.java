@@ -437,13 +437,14 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         return producteur;
     }
 
-    private void completerProducteurImpotsCantonaux(ProducteurImpot producteur, String codeBeneficiaire, int annee) {
+    private void completerProducteurImpotsCantonaux(ProducteurImpot producteur, String codeBeneficiaire, int annee, TypeArrondi typeArrondi) {
 
 
         IExplicationDetailleeBuilder explication = getNewExplicationBuilder();
         explication.ajouter("Réduction de {1,number,percent} sur impôt de base sur revenu {0,number,#,##0.00}");
         explication.ajouter("{2,number,#,##0.00}");
         ProducteurImpotDerivePourcent prodRIBR = new ProducteurImpotDerivePourcent("RIBR", "-12 %", codeBeneficiaire);
+        prodRIBR.setTypeArrondi(typeArrondi);
         prodRIBR.setExplicationDetailleePattern(explication.getTexte());
         producteur.ajouteProducteurDerive(prodRIBR);
 
@@ -451,6 +452,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         explication.ajouter("Réduction de {1,number,percent} sur cts add. cantonaux sur revenu {0,number,#,##0.00}");
         explication.ajouter("{2,number,#,##0.00}");
         ProducteurImpotDerivePourcent prodRCAR = new ProducteurImpotDerivePourcent("RCAR", "-12 %", codeBeneficiaire);
+        prodRCAR.setTypeArrondi(typeArrondi);
         prodRCAR.setExplicationDetailleePattern(explication.getTexte());
 
         explication.reset();
@@ -458,6 +460,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         explication.ajouter("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}");
         explication.ajouter("{2,number,#,##0.00}");
         ProducteurImpotDerivePourcent ctsAddCantonaux = new ProducteurImpotDerivePourcent("CAR", "47.5 %", codeBeneficiaire);
+        ctsAddCantonaux.setTypeArrondi(typeArrondi);
         ctsAddCantonaux.setProducteurDerive(prodRCAR);
         ctsAddCantonaux.setExplicationDetailleePattern(explication.getTexte());
         producteur.ajouteProducteurDerive(ctsAddCantonaux);
@@ -467,6 +470,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         explication.ajouter("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}");
         explication.ajouter("{2,number,#,##0.00}");
         ProducteurImpotDerivePourcent prodADR = new ProducteurImpotDerivePourcent("ADR", "1 %", codeBeneficiaire);
+        prodADR.setTypeArrondi(typeArrondi);
         prodADR.setExplicationDetailleePattern(explication.getTexte());
         producteur.ajouteProducteurDerive(prodADR);
     }
@@ -494,12 +498,11 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             };
         }
         producteur.setProducteurBase(producteurImpotBase);
-        completerProducteurImpotsCantonaux(producteur, codeBeneficiaire, annee);
+        completerProducteurImpotsCantonaux(producteur, codeBeneficiaire, annee, TypeArrondi.CINQ_CTS);
         return producteur;
     }
 
-    public ProducteurImpot construireProducteurImpotsCantonauxRevenu(int annee) {
-        String codeBeneficiaire = "CAN-GE";
+    private ProducteurImpot construireProducteurImpotCantonalBaseRevenu(int annee, String codeBeneficiaire) {
         ProducteurImpotBase producteurImpotBase = construireImpotCantonalBaseRevenu(annee);
         ProducteurImpot producteur;
         if (annee < 2010) {
@@ -520,13 +523,19 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             };
         }
         producteur.setProducteurBase(producteurImpotBase);
-        completerProducteurImpotsCantonaux(producteur, codeBeneficiaire, annee);
+        return producteur;
+    }
+
+    public ProducteurImpot construireProducteurImpotsCantonauxRevenu(int annee, TypeArrondi typeArrondi) {
+        String codeBeneficiaire = "CAN-GE";
+        ProducteurImpot producteur = construireProducteurImpotCantonalBaseRevenu(annee,codeBeneficiaire);
+        completerProducteurImpotsCantonaux(producteur, codeBeneficiaire, annee, typeArrondi);
         return producteur;
 
     }
 
     private ProducteurImpot construireProducteurImpotsICCRevenu(int annee) {
-        ProducteurImpot producteur = construireProducteurImpotsCantonauxRevenu(annee);
+        ProducteurImpot producteur = construireProducteurImpotsCantonauxRevenu(annee, TypeArrondi.CINQ_CTS);
 
         // On ajoute ensuite les impôts communaux
         ProducteurImpotCommunalGE prodComm = new ProducteurImpotCommunalGEPersPhysique("PPR", "COR") {

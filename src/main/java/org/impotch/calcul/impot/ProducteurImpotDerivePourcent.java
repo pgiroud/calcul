@@ -72,7 +72,12 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 	}
 
 	protected BigDecimal calculMontant(BigDecimal montantBase, FournisseurAssiette fournisseur) {
-		return typeArrondi.arrondirMontant(montantBase.multiply(taux));
+        BigDecimal resultatNonArrondi = montantBase.multiply(taux);
+        if (null == typeArrondi) {
+            return resultatNonArrondi;
+        }  else {
+            return typeArrondi.arrondirMontant(resultatNonArrondi);
+        }
 	}
 	
 	public String getExplicationDetailleePattern() {

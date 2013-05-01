@@ -21,6 +21,7 @@ import org.impotch.calcul.impot.cantonal.ge.pp.indexateur.IndexateurMontant;
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionBeneficiaireRentesAVSAI;
+import org.impotch.util.TypeArrondi;
 
 public interface FournisseurRegleImpotCantonalGE {
 	Bareme getBaremeRevenu(int annee);
@@ -29,9 +30,9 @@ public interface FournisseurRegleImpotCantonalGE {
 	Bareme getBaremeFortune(int annee);
 	Bareme getBaremeFortuneSupplementaire(int annee);
 	
-	ProducteurImpot construireProducteurImpotsCantonauxRevenu(int annee);
+	ProducteurImpot construireProducteurImpotsCantonauxRevenu(int annee, TypeArrondi typeArrondi);
     ProducteurImpot construireProducteurImpotsCantonauxPC(int annee);
-	ProducteurImpot getProducteurImpotsICCRevenu(int annee);
+    ProducteurImpot getProducteurImpotsICCRevenu(int annee);
 	ProducteurImpot getProducteurImpotsICCFortune(int annee);
 	ProducteurImpot getProducteurImpotsICCFortuneSupplementaire(int annee);
 	
