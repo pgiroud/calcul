@@ -95,9 +95,15 @@
     <property name="dataSource" ref="dataSource"/>
   </bean>
 
+  <bean name="residentParCommuneDao" class="org.impotch.calcul.impot.cantonal.ge.param.dao.ResidentParCommuneFichierTxtDao">
+    <property name="charsetName" value="UTF-8"/>
+    <property name="fichier" value="classpath:parametrage/ge/PopulationParCommuneGenevoise.csv"/>
+  </bean>
+
   <bean name="paramCommuneDao" class="org.impotch.calcul.impot.cantonal.ge.param.dao.ParametreCommunalFichierTxtDao">
     <property name="charsetName" value="UTF-8"/>
     <property name="fichier" value="classpath:parametrage/ge/ExtractionTauxPP.txt"/>
+    <property name="residentParCommuneDao" ref="residentParCommuneDao"/>
   </bean>
 
   <bean name="fournisseurParamCommune" class="org.impotch.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE">

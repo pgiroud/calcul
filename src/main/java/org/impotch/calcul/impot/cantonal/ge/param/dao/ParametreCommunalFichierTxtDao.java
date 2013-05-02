@@ -25,6 +25,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.impotch.calcul.lieu.ICommuneSuisse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -49,6 +50,7 @@ public class ParametreCommunalFichierTxtDao implements ParametreCommunalDao {
 	final Logger logger = LoggerFactory.getLogger(ParametreCommunalFichierTxtDao.class);
 	private Resource fichier;
 	private String charsetName;
+    private ResidentParCommuneDao residentParCommuneDao;
 	
 	private Map<CleParametre,BigDecimal> mapPartPrivilegiee = new HashMap<CleParametre,BigDecimal>();
 	private Map<CleParametre,BigDecimal> mapCtsAdd = new HashMap<CleParametre,BigDecimal>();
@@ -74,8 +76,12 @@ public class ParametreCommunalFichierTxtDao implements ParametreCommunalDao {
 	public void setCharsetName(String charsetName) {
 		this.charsetName = charsetName;
 	}
-	
-	/**************************************************/
+
+    public void setResidentParCommuneDao(ResidentParCommuneDao residentParCommuneDao) {
+        this.residentParCommuneDao = residentParCommuneDao;
+    }
+
+/**************************************************/
     /******************* Méthodes *********************/
     /**************************************************/
 
@@ -127,7 +133,12 @@ public class ParametreCommunalFichierTxtDao implements ParametreCommunalDao {
 		return taux;
 	}
 
-	/**************************************************/
+    @Override
+    public Map<ICommuneSuisse, Integer> getRepartitionAuProrataDeLaPopulation(int annee) {
+        return residentParCommuneDao.getRepartitionAuProrataDeLaPopulation(annee);
+    }
+
+/**************************************************/
     /*********** Classes internes *********************/
     /**************************************************/
 

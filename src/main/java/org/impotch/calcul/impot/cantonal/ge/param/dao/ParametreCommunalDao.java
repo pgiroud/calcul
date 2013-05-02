@@ -15,7 +15,12 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.param.dao;
 
+import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
+import org.impotch.calcul.impot.taxation.repart.Repartition;
+import org.impotch.calcul.lieu.ICommuneSuisse;
+
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * Fournit les paramètres communaux nécessaires au calcul des impôts communaux.
@@ -23,7 +28,7 @@ import java.math.BigDecimal;
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public interface ParametreCommunalDao {
+public interface ParametreCommunalDao extends ResidentParCommuneDao {
 	
 	/**
 	 * Renvoie la part privilégiée. Il s'agit d'un nombre compris entre 0.2 et 0.8.

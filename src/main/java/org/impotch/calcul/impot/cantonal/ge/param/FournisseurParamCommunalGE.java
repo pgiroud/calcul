@@ -16,8 +16,13 @@
 package org.impotch.calcul.impot.cantonal.ge.param;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Map;
 
 import org.impotch.calcul.impot.cantonal.ge.param.dao.ParametreCommunalDao;
+import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
+import org.impotch.calcul.impot.taxation.repart.Part;
+import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICommuneSuisse;
 
 /**
@@ -60,4 +65,16 @@ public class FournisseurParamCommunalGE implements
 		return dao.getTauxCentimes(annee, commune.getNumeroOFS());
 	}
 
+    @Override
+    public Repartition<ForCommunal> getRepartitionAuProrataDeLaPopulation(int annee) {
+        int anneeCourante = Calendar.getInstance().get(Calendar.YEAR);
+        if (annee > anneeCourante) throw new IllegalArgumentException("Impossible de déterminer la répartition pour l'année '" + annee + "' dans le futur !!");
+        Map<ICommuneSuisse,Integer> population = dao.getRepartitionAuProrataDeLaPopulation(annee);
+        Repartition<ForCommunal> repartition = new Repartition<ForCommunal>();
+        for (ICommuneSuisse commune : population.keySet()) {
+            int nbreResident = population.get(commune);
+            repartition.ajouterPart(new ForCommunal(commune),new Part(BigDecimal.valueOf(nbreResident)));
+        }
+        return repartition;
+    }
 }

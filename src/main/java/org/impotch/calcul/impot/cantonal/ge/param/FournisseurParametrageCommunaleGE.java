@@ -17,6 +17,8 @@ package org.impotch.calcul.impot.cantonal.ge.param;
 
 import java.math.BigDecimal;
 
+import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
+import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICommuneSuisse;
 
 /**
@@ -43,4 +45,13 @@ public interface FournisseurParametrageCommunaleGE {
 	 * @return les centimes additionnels.
 	 */
 	BigDecimal getTauxCentimes(int annee, ICommuneSuisse commune);
+
+    /**
+     * Retourne une répartition sur toutes les communes genevoises au prorata du
+     * nombre d'habitant au 31 décembre de l'année fournie en paramètre.
+     * On consultera la site de l'OCStat pour obtenir la population résidente par commune.
+     * @param annee L'année désirée (entre 1989 et l'année courante)
+     * @return la répartition permettant ensuite de répartir un montant.
+     */
+    Repartition<ForCommunal> getRepartitionAuProrataDeLaPopulation(int annee);
 }

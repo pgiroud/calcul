@@ -16,7 +16,9 @@
 package org.impotch.calcul.impot.cantonal.ge.param.dao;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
+import org.impotch.calcul.lieu.ICommuneSuisse;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
@@ -65,4 +67,8 @@ public class ParametreCommunalJdbcRTaxPPDao extends SimpleJdbcDaoSupport impleme
 		return this.getSimpleJdbcTemplate().queryForObject(sql, BigDecimal.class, param);
 	}
 
+    @Override
+    public Map<ICommuneSuisse, Integer> getRepartitionAuProrataDeLaPopulation(int annee) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
