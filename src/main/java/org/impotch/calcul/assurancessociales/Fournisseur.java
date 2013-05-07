@@ -38,6 +38,8 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
     private ConcurrentMap<Integer,CalculCotisationsSocialesSalarie> mapCalculateurCotisationAvsAiApgSalarieISIFD = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarie>();
 	private ConcurrentMap<Integer,CalculCotisationsSocialesSalarieGE> mapCalculateurCotisationAvsAiApgSalarieGE = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarieGE>();
     private ConcurrentMap<Integer,CalculCotisationsSocialesSalarieGE> mapCalculateurCotisationAvsAiApgSalarieGEIFD = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarieGE>();
+    private ConcurrentMap<Integer,FournisseurMontantsLimitesPrevoyanceProfessionnelle> mapFournisseurMontantsLimitesPrevoyanceProfessionnelle = new ConcurrentHashMap<Integer, FournisseurMontantsLimitesPrevoyanceProfessionnelle>();
+    private ConcurrentMap<Integer,FournisseurDeductionMaxPilier3a> mapFournisseurDeducMaxPilier3a = new ConcurrentHashMap<Integer, FournisseurDeductionMaxPilier3a>();
 
 	private ConcurrentMap<Integer,CalculCotisationAvsAiApg> mapCalculateurCotisationAvsAiApgIndependant = new ConcurrentHashMap<Integer,CalculCotisationAvsAiApg>();
 	
@@ -260,4 +262,33 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 		calculateur.setRenteSimpleMensuelleMinimum(renteSimpleMensuelleMinimumParAnnee.get(annee));
 		return calculateur;
 	}
+
+    // ------------- Fournisseur montants LPP-------------------------
+
+    @Override
+    public FournisseurMontantsLimitesPrevoyanceProfessionnelle getFournisseurMontantsLimitesPrevoyanceProfessionnelle(int annee) {
+        if (!mapFournisseurMontantsLimitesPrevoyanceProfessionnelle.containsKey(annee)) mapFournisseurMontantsLimitesPrevoyanceProfessionnelle.putIfAbsent(annee,construireFournisseurMontantsLimitesPrevoyanceProfessionnelle(annee));
+        return mapFournisseurMontantsLimitesPrevoyanceProfessionnelle.get(annee);
+    }
+
+    private FournisseurMontantsLimitesPrevoyanceProfessionnelle construireFournisseurMontantsLimitesPrevoyanceProfessionnelle(int annee) {
+        FournisseurMontantsLimitesLPP fournisseur = new FournisseurMontantsLimitesLPP();
+        fournisseur.setRenteAVSMensuelleMinimale(renteSimpleMensuelleMinimumParAnnee.get(annee));
+        return fournisseur;
+    }
+
+    //------------ 3e Pilier ----------------
+
+
+    @Override
+    public FournisseurDeductionMaxPilier3a getFournisseurDeductionMaximale3ePilier(int annee) {
+        if (!mapFournisseurDeducMaxPilier3a.containsKey(annee))  mapFournisseurDeducMaxPilier3a.putIfAbsent(annee,construireFournisseurDeducMaxPilier3a(annee));
+        return mapFournisseurDeducMaxPilier3a.get(annee);
+    }
+
+    private FournisseurDeductionMaxPilier3a construireFournisseurDeducMaxPilier3a(int annee) {
+        FournisseurDeducMax3emePilier fournisseur = new FournisseurDeducMax3emePilier();
+        fournisseur.setFournisseurMontantsLimitesPrevoyanceProfessionnelle(getFournisseurMontantsLimitesPrevoyanceProfessionnelle(annee));
+        return fournisseur;
+    }
 }

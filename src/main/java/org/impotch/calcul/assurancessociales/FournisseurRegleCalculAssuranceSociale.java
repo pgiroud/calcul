@@ -30,4 +30,8 @@ public interface FournisseurRegleCalculAssuranceSociale {
 	CalculCotisationAvsAiApg getCalculateurCotisationAvsAiApgIndependant(int annee);
 	
 	CalculExtremaRentesAVS getCalculateurExtremaRenteAVS(int annee);
+
+    FournisseurMontantsLimitesPrevoyanceProfessionnelle getFournisseurMontantsLimitesPrevoyanceProfessionnelle(int annee);
+
+    FournisseurDeductionMaxPilier3a getFournisseurDeductionMaximale3ePilier(int annee);
 }
