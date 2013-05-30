@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.impotch.calcul.impot.ProducteurImpotDerivePourcent;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
@@ -37,6 +38,7 @@ import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import static org.junit.Assert.*;
 
@@ -46,6 +48,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class BaremePrestationCapital2009Test extends ProducteurImpotGEAvant2010 {
 
 	@Resource(name = "fournisseurRegleImpotCantonalGE")

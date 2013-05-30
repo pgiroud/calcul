@@ -21,7 +21,9 @@ import org.impotch.calcul.impot.taxation.pp.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -32,6 +34,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProducteurImpotIFDTest extends ProducteurImpotTst {
 
 

@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
@@ -32,10 +33,12 @@ import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.RecepteurMultipleImpot;
 import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProducteurImpotAvecRabaisTest extends ProducteurImpotGEAvant2010 {
 
 	@Resource(name = "fournisseurRegleImpotCantonalGE")

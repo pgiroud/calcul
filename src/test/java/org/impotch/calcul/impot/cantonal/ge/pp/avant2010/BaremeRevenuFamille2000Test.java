@@ -26,7 +26,9 @@ import org.junit.runners.Parameterized;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -39,6 +41,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 @RunWith(Parameterized.class)
 @ContextConfiguration(locations = "/beans.xml")
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class BaremeRevenuFamille2000Test {
 
     private TestContextManager testContextManager;

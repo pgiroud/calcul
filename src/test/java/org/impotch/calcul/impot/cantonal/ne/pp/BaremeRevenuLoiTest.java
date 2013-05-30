@@ -27,12 +27,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.impotch.calcul.impot.cantonal.ne.pp.FournisseurRegleImpotCantonalNE;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.impotch.bareme.Bareme;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class BaremeRevenuLoiTest {
 
 	@Resource(name = "fournisseurRegleImpotCantonalNE")

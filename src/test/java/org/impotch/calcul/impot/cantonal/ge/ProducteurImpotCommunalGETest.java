@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.impotch.calcul.impot.Impot;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
@@ -42,9 +43,11 @@ import org.impotch.calcul.lieu.FournisseurLieu;
 import org.impotch.calcul.lieu.ICommuneSuisse;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.calcul.util.MockExplicationDetailleeBuilder;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProducteurImpotCommunalGETest {
 
 	private FournisseurLieu fournisseurLieu;

@@ -22,7 +22,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.impotch.calcul.impot.federal.FournisseurRegleImpotFederal;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -39,6 +41,7 @@ import static junit.framework.Assert.assertNull;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProducteurRabaisEnfantTest extends ProducteurImpotTst {
 
     @Resource(name = "fournisseurRegleImpotFederal")

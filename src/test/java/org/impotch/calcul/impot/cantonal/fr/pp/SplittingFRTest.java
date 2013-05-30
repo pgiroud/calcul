@@ -29,6 +29,7 @@ import org.impotch.calcul.impot.cantonal.fr.pp.BaremeTauxEffectifLineaireParTran
 import org.impotch.calcul.impot.cantonal.fr.pp.FournisseurRegleImpotCantonalFR;
 import org.impotch.calcul.impot.cantonal.fr.pp.SplittingFR;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.impotch.bareme.Bareme;
@@ -36,9 +37,11 @@ import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
 import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.util.TypeArrondi;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")
+@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class SplittingFRTest {
 
 	@Resource(name = "fournisseurRegleImpotCantonalFR")
