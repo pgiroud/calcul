@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import org.impotch.calcul.impot.taxation.forimposition.ForImposition;
+import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.TypeArrondi;
 
 /**
@@ -85,16 +86,18 @@ public class Repartition<T extends ForImposition> {
         if (!estVide()) {
             Part partPlusGrande = liste.last().getPart();
             BigDecimal totalPart = getTotal();
-            BigDecimal totalTaux = BigDecimal.ZERO;
-            for (PartAvecFor<T> partAvecFor : liste) {
-                Part part = partAvecFor.getPart();
-                BigDecimal taux = part.getMontant().divide(totalPart,7, BigDecimal.ROUND_HALF_UP);
-                part.setTaux(taux);
-                totalTaux = totalTaux.add(taux);
-            }
-            if (0 != BigDecimal.ONE.compareTo(totalTaux)) {
-            	BigDecimal oDeltaTaux = BigDecimal.ONE.subtract(totalTaux);
-                partPlusGrande.setTaux(partPlusGrande.getTaux().add(oDeltaTaux));
+            if (BigDecimalUtil.isStrictementPositif(totalPart)) {
+                BigDecimal totalTaux = BigDecimal.ZERO;
+                for (PartAvecFor<T> partAvecFor : liste) {
+                    Part part = partAvecFor.getPart();
+                    BigDecimal taux = part.getMontant().divide(totalPart,7, BigDecimal.ROUND_HALF_UP);
+                    part.setTaux(taux);
+                    totalTaux = totalTaux.add(taux);
+                }
+                if (0 != BigDecimal.ONE.compareTo(totalTaux)) {
+                    BigDecimal oDeltaTaux = BigDecimal.ONE.subtract(totalTaux);
+                    partPlusGrande.setTaux(partPlusGrande.getTaux().add(oDeltaTaux));
+                }
             }
         }
     }

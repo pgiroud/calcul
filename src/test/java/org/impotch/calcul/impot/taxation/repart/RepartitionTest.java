@@ -192,6 +192,25 @@ public class RepartitionTest {
         repart = cle.repartirSurResteARepartir(BigDecimal.valueOf(2));
         assertThat(repart.getPart(getFor("VD")).getMontant()).isEqualTo("0");
         assertThat(repart.getPart(getFor("VS")).getMontant()).isEqualTo("1");
-        assertThat(repart.getPart(getFor("GE")).getMontant()).isEqualTo("1");    }
+        assertThat(repart.getPart(getFor("GE")).getMontant()).isEqualTo("1");
+    }
+
+    @Test
+    public void testAvec2PartsAZero() {
+        Repartition<ForCantonal> cle = creerRepartitionCantonal("VD",0);
+        ajouterPart(cle,"GE",0);
+        ajouterPart(cle,"VS",1);
+        // Répartition classique : 2 parts à 0 franc et 1 part à 2 francs
+        Repartition<ForCantonal> repart = cle.repartir(BigDecimal.valueOf(2));
+        assertThat(repart.getPart(getFor("VD")).getMontant()).isEqualTo("0");
+        assertThat(repart.getPart(getFor("GE")).getMontant()).isEqualTo("0");
+        assertThat(repart.getPart(getFor("VS")).getMontant()).isEqualTo("2");
+        // Répartition seulement sur reste à répartir : 2 parts à 0 franc et 1 part à 2 francs
+        repart = cle.repartirSurResteARepartir(BigDecimal.valueOf(2));
+        assertThat(repart.getPart(getFor("VD")).getMontant()).isEqualTo("0");
+        assertThat(repart.getPart(getFor("GE")).getMontant()).isEqualTo("0");
+        assertThat(repart.getPart(getFor("VS")).getMontant()).isEqualTo("2");
+
+    }
     
 }
