@@ -27,12 +27,28 @@ class FournisseurDeducMax3emePilier implements FournisseurDeductionMaxPilier3a {
         this.fournisseurMontantsLimitesPrevoyanceProfessionnelle = fournisseurMontantsLimitesPrevoyanceProfessionnelle;
     }
 
+    /**
+     * D'après l'alinea 1 de l'article 7 de l'ordonnance
+     * sur les déductions admises fiscalement
+     * pour les cotisations versées à des formes
+     * reconnues de prévoyance  OPP3, on peut déduire par année, jusqu'à 8 % du montant-limite supérieur fixé à l'art. 8, al. 1, LPP,
+     * s'ils sont affiliés à une institution de prévoyance au sens de l'art. 80 LPP;
+     * @return  la déduction maximale.
+     */
     @Override
     public BigDecimal getDeductionMaximaleAvecLPP() {
         BigDecimal salaireLimiteSuperieur = fournisseurMontantsLimitesPrevoyanceProfessionnelle.getLimiteSuperieureSalaireAnnuel();
         return TypeArrondi.FRANC.arrondirMontant(salaireLimiteSuperieur.multiply(BigDecimal.valueOf(8)).movePointLeft(2));
     }
 
+    /**
+     * D'après l'alinea 2 de l'article 7 de l'ordonnance
+     * sur les déductions admises fiscalement
+     * pour les cotisations versées à des formes
+     * reconnues de prévoyance  OPP3, on peut déduire par année, au maximum jusqu'à 40 % du montant-limite supérieur fixé
+     * à l'art. 8, al. 1, LPP, s'ils ne sont pas affiliés à une institution de prévoyance au sens de l'art. 80 LPP.
+     * @return la déduction maximale.
+     */
     @Override
     public BigDecimal getDeductionMaximaleSansLPP() {
         BigDecimal salaireLimiteSuperieur = fournisseurMontantsLimitesPrevoyanceProfessionnelle.getLimiteSuperieureSalaireAnnuel();

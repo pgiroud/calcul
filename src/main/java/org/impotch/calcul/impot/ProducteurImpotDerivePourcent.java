@@ -38,12 +38,16 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 	private ProducteurImpotDerive producteurDerive;
 	
 	public ProducteurImpotDerivePourcent(String nom, String taux, String codeBeneficiaire) {
-		this.nomImpot = nom;
-		this.taux = BigDecimalUtil.parseTaux(taux);
-		this.codeBeneficiaire = codeBeneficiaire;
+        this(nom,BigDecimalUtil.parseTaux(taux),codeBeneficiaire);
 	}
-	
-	/**
+
+    public ProducteurImpotDerivePourcent(String nom, BigDecimal taux, String codeBeneficiaire) {
+        this.nomImpot = nom;
+        this.taux = taux;
+        this.codeBeneficiaire = codeBeneficiaire;
+    }
+
+    /**
 	 * @return the nomImpot
 	 */
 	protected String getNomImpot() {

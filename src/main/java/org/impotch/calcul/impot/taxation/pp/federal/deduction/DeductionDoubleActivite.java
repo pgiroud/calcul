@@ -47,8 +47,12 @@ public class DeductionDoubleActivite extends ReglePeriodique implements IDeducti
     @Override
     public BigDecimal getDeduction(BigDecimal premierRevenuNet, BigDecimal secondRevenuNet) {
         BigDecimal plusPetitRevenu = premierRevenuNet.min(secondRevenuNet);
-        BigDecimal partPlusPetitRevenu = TypeArrondi.FRANC_SUP.arrondirMontant(taux.multiply(plusPetitRevenu));
-        BigDecimal deductionPossible = plancher.max(plafond.min(partPlusPetitRevenu));
-        return plusPetitRevenu.min(deductionPossible);
+        if (this.getAnnee() <= 2007) {
+            return BigDecimal.ZERO.max(plafond.min(plusPetitRevenu));
+        } else {
+            BigDecimal partPlusPetitRevenu = TypeArrondi.FRANC_SUP.arrondirMontant(taux.multiply(plusPetitRevenu));
+            BigDecimal deductionPossible = plancher.max(plafond.min(partPlusPetitRevenu));
+            return plusPetitRevenu.min(deductionPossible);
+        }
     }
 }
