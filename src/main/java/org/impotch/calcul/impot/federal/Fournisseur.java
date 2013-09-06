@@ -185,8 +185,10 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
     }
 
     private IDeductionDoubleActivite construireRegleDeductionDoubleActivite(int annee) {
-        if (annee > 2007) {
-            DeductionDoubleActivite regle = new DeductionDoubleActivite(annee);
+        DeductionDoubleActivite regle = new DeductionDoubleActivite(annee);
+        if (annee <= 2007) {
+            regle.setPlafond(7000);
+        } else {
             regle.setTaux("50 %");
             if (annee >= 2012) {
                 regle.setPlancher(8100);
@@ -195,10 +197,8 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
                 regle.setPlancher(7600);
                 regle.setPlafond(12500);
             }
-            return regle;
-        } else {
-            throw new IllegalArgumentException("Les règles de déductions pour double gain ne sont pas définies avant 2008");
         }
+        return regle;
     }
 
 	public DeductionSociale getRegleDeductionSocialeEnfant(int annee) {
