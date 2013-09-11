@@ -49,4 +49,13 @@ public class CalculateurCotisationACTest {
         assertThat(calculPartSalariee(calculateur,315000)).isEqualByComparingTo("2331");
         assertThat(calculPartSalariee(calculateur,500000)).isEqualByComparingTo("2331");
 	}
+
+    @Test
+    public void calculAC2014() {
+        CalculateurCotisationAC calculateur = new CalculateurCotisationAC(2014,126000,"2.2 %","1 %");
+        assertThat(calculPartSalariee(calculateur,10)).isEqualByComparingTo("0.1");
+        assertThat(calculPartSalariee(calculateur,120000)).isEqualByComparingTo("1320");
+        assertThat(calculPartSalariee(calculateur,126000)).isEqualByComparingTo("1386");
+        assertThat(calculPartSalariee(calculateur,500000)).isEqualByComparingTo("3256");
+    }
 }

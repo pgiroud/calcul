@@ -253,15 +253,25 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 			this.tauxACContributionHautRevenu = taux;
 			return this;
 		}
-		
+
+        public Constructeur participationHautRevenuCotisationAC(String taux) {
+            this.ratioHautRevenu = null;
+            this.tauxACContributionHautRevenu = taux;
+            return this;
+        }
+
 		
 		public CalculCotisationsSocialesSalarie construire(int annee) {
 			CalculCotisationAvsAiApgSalarie.Constructeur constructeur = new CalculCotisationAvsAiApgSalarie.Constructeur();
 			constructeur.tauxAvs(tauxAVS).tauxAi(tauxAI).tauxApg(tauxAPG);
 			
 			CalculateurCotisationAC calculateurAC;
-			if (null != ratioHautRevenu) {
-				calculateurAC = new CalculateurCotisationAC(annee,montantMax,ratioHautRevenu,tauxAC,tauxACContributionHautRevenu);
+			if (null != tauxACContributionHautRevenu) {
+                if (null != ratioHautRevenu) {
+                    calculateurAC = new CalculateurCotisationAC(annee,montantMax,ratioHautRevenu,tauxAC,tauxACContributionHautRevenu);
+                } else {
+                    calculateurAC = new CalculateurCotisationAC(annee,montantMax,tauxAC,tauxACContributionHautRevenu);
+                }
 			} else {
 				calculateurAC = new CalculateurCotisationAC(annee,montantMax,tauxAC);
 			}

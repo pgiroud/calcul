@@ -48,14 +48,23 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 		super(annee);
 		BaremeTauxMarginalConstantParTranche.Constructeur constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur();
 		constructeur.tranche(nMontantAnnuelMaximumGainAssure, nTauxCotisationAssuranceChomage);
-		int limiteHautRevenu = BigDecimal.valueOf(nMontantAnnuelMaximumGainAssure).multiply(new BigDecimal(ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu)).intValue();
-		constructeur.tranche(limiteHautRevenu,tauxParticipationHautRevenu);
-		constructeur.derniereTranche("0");
+        if (null != ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu) {
+            int limiteHautRevenu = BigDecimal.valueOf(nMontantAnnuelMaximumGainAssure).multiply(new BigDecimal(ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu)).intValue();
+            constructeur.tranche(limiteHautRevenu,tauxParticipationHautRevenu);
+            constructeur.derniereTranche("0");
+        } else {
+            constructeur.derniereTranche(tauxParticipationHautRevenu);
+        }
 		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
 		bareme = constructeur.construire();
 	}
 
-	
+    CalculateurCotisationAC(int annee,
+                            int nMontantAnnuelMaximumGainAssure,
+                            String nTauxCotisationAssuranceChomage, String tauxParticipationHautRevenu) {
+        this(annee,nMontantAnnuelMaximumGainAssure,null,nTauxCotisationAssuranceChomage,tauxParticipationHautRevenu);
+    }
+
 	
 	
 	@Override

@@ -83,7 +83,12 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
         else constructeur.montantAnnuelMaxGainAssure(126000);
 
         if (annee > 2010) {
-            constructeur.participationHautRevenuCotisationAC("2.5", "1 %").tauxAC("2.2 %");;
+            constructeur.tauxAC("2.2 %");
+            if (annee < 2014) {
+                constructeur.participationHautRevenuCotisationAC("2.5", "1 %");
+            } else {
+                constructeur.participationHautRevenuCotisationAC("1 %");
+            }
         }
         return constructeur;
     }
