@@ -99,7 +99,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 
     protected CalculCotisationsSocialesSalarie construireCalculateurSalarieISIFD(int annee) {
         CalculCotisationsSocialesSalarie.Constructeur constructeur = obtenirNouveauConstructeur(annee);
-		if (annee > 2010) {
+		if (annee > 2010 && annee < 2014) {
 			constructeur.tauxAC("2.5 %");
 		}
 		return constructeur.construire(annee);

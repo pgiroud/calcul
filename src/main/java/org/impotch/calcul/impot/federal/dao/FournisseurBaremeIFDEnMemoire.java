@@ -113,7 +113,7 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
 
     public Bareme getBaremeImpotRevenuPersonnePhysiquePourFamilleNew(int annee) {
         ConstructeurBaremeIFD constructeur = null;
-        if (2012 == annee || 2013 == annee) {
+        if (2012 == annee || 2013 == annee || 2014 == annee) {
             constructeur = this.getConstructeurBaremeImpotRevenuPersonnePhysiqueFamille2012();
         }
         if (2011 == annee) {
