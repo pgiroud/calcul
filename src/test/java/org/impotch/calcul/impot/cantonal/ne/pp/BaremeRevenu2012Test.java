@@ -26,7 +26,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/beans.xml")

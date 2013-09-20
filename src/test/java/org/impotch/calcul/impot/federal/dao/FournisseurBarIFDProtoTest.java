@@ -19,7 +19,7 @@ import org.impotch.bareme.Bareme;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import static org.fest.assertions.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class FournisseurBarIFDProtoTest {
 

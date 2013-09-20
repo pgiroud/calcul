@@ -36,7 +36,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(Parameterized.class)
