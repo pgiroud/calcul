@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.cantonal.ge.pp.indexateur;
+package org.impotch.calcul.impot.indexation;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ import java.util.Map;
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public class SimpleFournisseurIndicePeriodiqueGE implements FournisseurIndicePeriodiqueGE {
+public class SimpleFournisseurIndicePeriodique implements FournisseurIndicePeriodique {
 
 	private Map<Integer,BigDecimal> indices = new HashMap<Integer,BigDecimal>(); 
 	

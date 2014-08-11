@@ -17,7 +17,7 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ProducteurRabaisImpot;
-import org.impotch.calcul.impot.cantonal.ge.pp.indexateur.IndexateurMontant;
+import org.impotch.calcul.impot.indexation.Indexateur;
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionBeneficiaireRentesAVSAI;
@@ -36,7 +36,7 @@ public interface FournisseurRegleImpotCantonalGE {
 	ProducteurImpot getProducteurImpotsICCFortune(int annee);
 	ProducteurImpot getProducteurImpotsICCFortuneSupplementaire(int annee);
 	
-	IndexateurMontant getIndexateurBaseMai1993(int anneeBaseIndexation);
+	Indexateur getIndexateurBaseMai1993(int anneeBaseIndexation);
 	
 	/**
 	 * Retourne la règle calculant la déduction sociale sur les charges (voir article 39 de la LIPP).

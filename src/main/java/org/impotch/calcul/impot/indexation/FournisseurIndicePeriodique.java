@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.cantonal.ge.pp.indexateur;
+package org.impotch.calcul.impot.indexation;
 
 import java.math.BigDecimal;
 
@@ -26,7 +26,7 @@ import java.math.BigDecimal;
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public interface FournisseurIndicePeriodiqueGE {
+public interface FournisseurIndicePeriodique {
 	/**
 	 * Retourne un indice pour la période (année) donnée
 	 * @param periodeFiscale l'année fiscale

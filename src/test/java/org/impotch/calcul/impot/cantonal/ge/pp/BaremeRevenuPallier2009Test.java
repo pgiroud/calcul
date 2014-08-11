@@ -31,7 +31,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeTxMarginalConstantParTranche;
-import org.impotch.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE;
+import org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique;
 import org.impotch.util.TypeArrondi;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
@@ -44,7 +44,7 @@ public class BaremeRevenuPallier2009Test {
 	
 	@Before
 	public void setUp() throws Exception {
-		SimpleFournisseurIndicePeriodiqueGE fournisseur = new SimpleFournisseurIndicePeriodiqueGE();
+		SimpleFournisseurIndicePeriodique fournisseur = new SimpleFournisseurIndicePeriodique();
 		Map<Integer,BigDecimal> indices = new HashMap<Integer,BigDecimal>();
 		indices.put(2009,BigDecimal.ONE);
 		fournisseur.setIndices(indices);

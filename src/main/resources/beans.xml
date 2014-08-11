@@ -46,8 +46,8 @@
   <bean name="fournisseurBaremeIFD" class="org.impotch.calcul.impot.federal.dao.FournisseurBaremeIFDEnMemoire"/>
   <bean name="fournisseurRegleImpotFederal" class="org.impotch.calcul.impot.federal.Fournisseur"/>
 
-  <bean name="indexateurGEBaseMai1993"
-        class="org.impotch.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE">
+  <bean name="fournisseurIndiceGEBaseMai1993"
+        class="org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique">
     <property name="indices">
       <map>
         <entry key="1993" value="100.0"/>
@@ -70,8 +70,13 @@
     </property>
   </bean>
 
-  <bean name="indexateurGEBaseDecembre2005"
-        class="org.impotch.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE">
+  <bean name="indexateurGenevois2001"  class="org.impotch.calcul.impot.cantonal.ge.pp.indexateur.IndexateurGenevois">
+    <constructor-arg index="0" value="2001"/>
+    <property name="fournisseurIndice" ref="fournisseurIndiceGEBaseMai1993"></property>
+  </bean>
+
+  <bean name="fournisseurIndiceGEBaseDecembre2005"
+        class="org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique">
     <property name="indices">
       <map>
         <entry key="2009" value="102.9"/>
@@ -84,7 +89,12 @@
     </property>
   </bean>
 
-  <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
+    <bean name="indexateurGenevois2009"  class="org.impotch.calcul.impot.cantonal.ge.pp.indexateur.IndexateurGenevois">
+        <constructor-arg index="0" value="2009"/>
+        <property name="fournisseurIndice" ref="fournisseurIndiceGEBaseDecembre2005"></property>
+    </bean>
+
+    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource">
     <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
     <property name="url" value="jdbc:oracle:oci:@RAFC_PROTO"/>
     <property name="username" value="rafc_adm"/>
@@ -113,8 +123,8 @@
 
   <bean name="fournisseurRegleImpotCantonalGE"
         class="org.impotch.calcul.impot.cantonal.ge.pp.FournisseurCantonalGE">
-    <property name="fournisseurIndiceBaseMai1993" ref="indexateurGEBaseMai1993"/>
-    <property name="fournisseurIndiceBaseDecembre2005" ref="indexateurGEBaseDecembre2005"/>
+    <property name="fournisseurIndiceGEBaseMai1993" ref="fournisseurIndiceGEBaseMai1993"/>
+    <property name="fournisseurIndiceGEBaseDecembre2005" ref="fournisseurIndiceGEBaseDecembre2005"/>
     <property name="fournisseurRegleCalculCotisationAssuranceSociale" ref="fournisseurRegleCalculAssuranceSociale"/>
     <property name="fournisseurParamCommunaux" ref="fournisseurParamCommune"/>
   </bean>

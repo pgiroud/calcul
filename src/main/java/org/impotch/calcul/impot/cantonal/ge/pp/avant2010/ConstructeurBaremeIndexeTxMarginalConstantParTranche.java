@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
-import org.impotch.calcul.impot.cantonal.ge.pp.indexateur.FournisseurIndicePeriodiqueGE;
+import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.impotch.util.TypeArrondi;
 
 public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
@@ -35,7 +35,7 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 	private Integer anneeMinimumValidite;
 	private Integer anneeMaximumValidite;
 	private int anneeReference;
-	private FournisseurIndicePeriodiqueGE indexateur;
+	private FournisseurIndicePeriodique indexateur;
 	private BaremeTauxMarginalConstantParTranche.Constructeur constructeur;
 	private TypeArrondi typeArrondiTranche;
 	
@@ -70,7 +70,7 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 	 * @param indexateur un indexateur.
 	 * @return le constructeur afin d'être chaîné.
 	 */
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche indexateur(FournisseurIndicePeriodiqueGE indexateur) {
+	public ConstructeurBaremeIndexeTxMarginalConstantParTranche indexateur(FournisseurIndicePeriodique indexateur) {
 		this.indexateur = indexateur;
 		return this;
 	}

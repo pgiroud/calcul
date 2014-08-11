@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.cantonal.ge.pp.indexateur;
+package org.impotch.calcul.impot.indexation;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -21,7 +21,7 @@ import java.util.Calendar;
 import org.impotch.calcul.eco.indice.ge.BaseIndiceGenevoisPrixConsommation;
 import org.impotch.calcul.eco.indice.ge.FournisseurIndicePrixConsommation;
 
-public class FournisseurIndicePeriodiqueGEPrixConsommation implements FournisseurIndicePeriodiqueGE {
+public class FournisseurIndicePeriodiquePrixConsommation implements FournisseurIndicePeriodique {
 
 	private FournisseurIndicePrixConsommation fournisseurIndice;
 	private BaseIndiceGenevoisPrixConsommation base;

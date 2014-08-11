@@ -17,7 +17,7 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 
-import org.impotch.calcul.impot.cantonal.ge.pp.indexateur.FournisseurIndicePeriodiqueGE;
+import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ public class TauxMarginalSeul extends ReglePeriodique implements Primitivable {
     /**************************************************/
 	
 	final Logger logger = LoggerFactory.getLogger(TauxMarginalSeul.class);
-	private FournisseurIndicePeriodiqueGE indexateur;
+	private FournisseurIndicePeriodique indexateur;
 
 	private double ct;
 
@@ -77,7 +77,7 @@ public class TauxMarginalSeul extends ReglePeriodique implements Primitivable {
     /******* Accesseurs / Mutateurs *******************/
     /**************************************************/
 	
-	public void setIndexateur(FournisseurIndicePeriodiqueGE indexateur) {
+	public void setIndexateur(FournisseurIndicePeriodique indexateur) {
 		this.indexateur = indexateur;
 		double indiceReference = calculIndice(anneeReference);
 		double indiceRencherissement = calculIndice(this.getAnnee());

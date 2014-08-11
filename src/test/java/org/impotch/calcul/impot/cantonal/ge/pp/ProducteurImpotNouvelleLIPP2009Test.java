@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeTxMarginalConstantParTranche;
-import org.impotch.calcul.impot.cantonal.ge.pp.indexateur.SimpleFournisseurIndicePeriodiqueGE;
+import org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique;
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotTst;
@@ -45,7 +45,7 @@ public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
 	@Before
 	public void setUp() throws Exception {
 		// Inutile de se préoccuper du renchérissement, le barème est celui de 2009 dans la loi.
-		SimpleFournisseurIndicePeriodiqueGE fournisseur = new SimpleFournisseurIndicePeriodiqueGE();
+		SimpleFournisseurIndicePeriodique fournisseur = new SimpleFournisseurIndicePeriodique();
 		Map<Integer,BigDecimal> indices = new HashMap<Integer,BigDecimal>();
 		indices.put(2009,BigDecimal.ONE);
 		fournisseur.setIndices(indices);

@@ -28,14 +28,14 @@ import org.impotch.bareme.BaremeTauxMarginalIntegrable;
 import org.impotch.bareme.Point;
 import org.impotch.calcul.assurancessociales.FournisseurRegleCalculAssuranceSociale;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.*;
+import org.impotch.calcul.impot.indexation.Indexateur;
+import org.impotch.calcul.impot.indexation.IndexateurPeriodique;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import org.impotch.calcul.impot.ProducteurImpotDerivePourcent;
 import org.impotch.calcul.impot.cantonal.FournisseurCantonal;
 import org.impotch.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageCommunaleGE;
-import org.impotch.calcul.impot.cantonal.ge.pp.indexateur.FournisseurIndicePeriodiqueGE;
-import org.impotch.calcul.impot.cantonal.ge.pp.indexateur.IndexateurMontant;
-import org.impotch.calcul.impot.cantonal.ge.pp.indexateur.IndexateurQuadriennal;
+import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.impotch.calcul.impot.taxation.pp.*;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionBeneficiaireRentesAVSAI;
@@ -49,15 +49,19 @@ import org.impotch.util.math.Fonction;
 import org.impotch.util.math.integration.MethodeIntegration;
 import org.impotch.util.math.integration.MethodeIntegrationPointMilieu;
 
+import javax.annotation.Resource;
+
 public class FournisseurCantonalGE extends FournisseurCantonal implements FournisseurRegleImpotCantonalGE {
 
 
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale;
 
-    private FournisseurIndicePeriodiqueGE fournisseurIndiceBaseMai1993;
-    private FournisseurIndicePeriodiqueGE fournisseurIndiceBaseDecembre2005;
+    @Resource
+    private FournisseurIndicePeriodique fournisseurIndiceGEBaseMai1993;
+    @Resource
+    private FournisseurIndicePeriodique fournisseurIndiceGEBaseDecembre2005;
 
-    private IndexateurMontant indexateurBaseMai1993;
+    private Indexateur indexateurBaseMai1993;
 
     private FournisseurParametrageCommunaleGE fournisseurParamCommunaux;
 
@@ -105,26 +109,26 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         this.fournisseurParamCommunaux = fournisseurParamCommunaux;
     }
 
-    public void setFournisseurIndiceBaseMai1993(FournisseurIndicePeriodiqueGE fournisseur) {
-        fournisseurIndiceBaseMai1993 = fournisseur;
+    public void setFournisseurIndiceGEBaseMai1993(FournisseurIndicePeriodique fournisseur) {
+        fournisseurIndiceGEBaseMai1993 = fournisseur;
     }
 
-    private FournisseurIndicePeriodiqueGE getFournisseurIndiceBaseMai1993() {
-        return fournisseurIndiceBaseMai1993;
+    private FournisseurIndicePeriodique getFournisseurIndiceGEBaseMai1993() {
+        return fournisseurIndiceGEBaseMai1993;
     }
 
-    public void setFournisseurIndiceBaseDecembre2005(FournisseurIndicePeriodiqueGE fournisseur) {
-        fournisseurIndiceBaseDecembre2005 = fournisseur;
+    public void setFournisseurIndiceGEBaseDecembre2005(FournisseurIndicePeriodique fournisseur) {
+        fournisseurIndiceGEBaseDecembre2005 = fournisseur;
     }
 
-    private FournisseurIndicePeriodiqueGE getFournisseurIndiceBaseDecembre2005() {
-        return fournisseurIndiceBaseDecembre2005;
+    private FournisseurIndicePeriodique getFournisseurIndiceGEBaseDecembre2005() {
+        return fournisseurIndiceGEBaseDecembre2005;
     }
 
-    public IndexateurMontant getIndexateurBaseMai1993(int anneeBaseIndexation) {
+    public Indexateur getIndexateurBaseMai1993(int anneeBaseIndexation) {
         if (null == indexateurBaseMai1993) {
-            IndexateurQuadriennal indexateur = new IndexateurQuadriennal(anneeBaseIndexation);
-            indexateur.setFournisseurIndice(getFournisseurIndiceBaseMai1993());
+            IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation,4);
+            indexateur.setFournisseurIndice(getFournisseurIndiceGEBaseMai1993());
             indexateurBaseMai1993 = indexateur;
         }
         return indexateurBaseMai1993;
@@ -138,7 +142,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     private TauxMarginalSeul construireTauxMarginal(int annee) {
         TauxMarginalSeul txMarginal = new TauxMarginalSeul(annee);
-        txMarginal.setIndexateur(this.getFournisseurIndiceBaseMai1993());
+        txMarginal.setIndexateur(this.getFournisseurIndiceGEBaseMai1993());
         return txMarginal;
     }
 
@@ -152,7 +156,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche();
             constructeur.validite(2010);
             constructeur.anneeReferenceRencherissement(2009);
-            constructeur.indexateur(getFournisseurIndiceBaseDecembre2005());
+            constructeur.indexateur(getFournisseurIndiceGEBaseDecembre2005());
             constructeur.tranche(17493, "0 %");
             constructeur.tranche(21076, "8 %");
             constructeur.tranche(23184, "9 %");
@@ -247,7 +251,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             if (null == constructeurBaremeFortune) {
                 ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche();
                 constructeur.validite(2001, 2009);
-                constructeur.indexateur(getFournisseurIndiceBaseMai1993());
+                constructeur.indexateur(getFournisseurIndiceGEBaseMai1993());
                 constructeur.anneeReferenceRencherissement(2000);
                 constructeur.tranche(100000, "1.75 ‰");
                 constructeur.tranche(200000, "2.25 ‰");
@@ -271,7 +275,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
                 ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche(
                         bareme2009);
                 constructeur.validite(2010);
-                constructeur.indexateur(getFournisseurIndiceBaseDecembre2005());
+                constructeur.indexateur(getFournisseurIndiceGEBaseDecembre2005());
                 constructeur.anneeReferenceRencherissement(2009);
                 constructeurBaremeFortuneApres2009 = constructeur;
             }
@@ -292,7 +296,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             if (null == constructeurBaremeFortuneSupplementaire) {
                 ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche();
                 constructeur.validite(2001, 2009);
-                constructeur.indexateur(getFournisseurIndiceBaseMai1993());
+                constructeur.indexateur(getFournisseurIndiceGEBaseMai1993());
                 constructeur.anneeReferenceRencherissement(2000);
                 constructeur.tranche(100000, "0 ‰");
                 constructeur.tranche(200000, "0.1125 ‰");
@@ -314,7 +318,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
                 ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche(
                         bareme2009);
                 constructeur.validite(2010);
-                constructeur.indexateur(getFournisseurIndiceBaseDecembre2005());
+                constructeur.indexateur(getFournisseurIndiceGEBaseDecembre2005());
                 constructeur.anneeReferenceRencherissement(2009);
                 constructeurBaremeFortuneSupplementaireApres2009 = constructeur;
             }
