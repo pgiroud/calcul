@@ -49,7 +49,9 @@ public class IndexateurGenevois implements Indexateur {
     @PostConstruct
     private void renseignerIndexateur() {
         indexateurQuadriennal = new IndexateurPeriodique(anneeBase,4);
+        indexateurQuadriennal.setFournisseurIndice(fournisseurIndice);
         indexateurAnnuel = new IndexateurPeriodique(anneeBase,1);
+        indexateurAnnuel.setFournisseurIndice(fournisseurIndice);
     }
 
     @Override

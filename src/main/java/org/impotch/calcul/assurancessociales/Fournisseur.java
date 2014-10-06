@@ -122,9 +122,13 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 		CalculCotisationsSocialesSalarieGE calculateur = null;
 		if (annee < 2010) {
 			calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.02 %",getCalculateurCotisationsSocialesSalarie(annee));
-		} else {
+		} else if (annee < 2014) {
 			calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.045 %",getCalculateurCotisationsSocialesSalarie(annee));
-		}
+		} else if (annee == 2014) {
+            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.042 %",getCalculateurCotisationsSocialesSalarie(annee));
+        } else {
+            throw new IllegalArgumentException("La déduction assurance maternité n'est pas définie pour l'année " + annee + ".");
+        }
 		return calculateur;
 	}
 
@@ -133,8 +137,12 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
         CalculCotisationsSocialesSalarieGE calculateur = null;
         if (annee < 2010) {
             calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.02 %",getCalculateurCotisationsSocialesSalarieISIFD(annee));
-        } else {
+        } else if (annee < 2014) {
             calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.045 %",getCalculateurCotisationsSocialesSalarieISIFD(annee));
+        }  if (annee == 2014) {
+            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.042 %",getCalculateurCotisationsSocialesSalarieISIFD(annee));
+        } else {
+            throw new IllegalArgumentException("La déduction assurance maternité n'est pas définie pour l'année " + annee + ".");
         }
         return calculateur;
     }

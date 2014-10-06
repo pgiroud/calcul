@@ -21,6 +21,8 @@ import org.impotch.util.TypeArrondi;
 
 public class FournisseurBarIFDProto implements FournisseurBaremeIFD {
 
+
+
     @Override
     public Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee) {
         BaremeTauxMarginalConstantParTranche.Constructeur constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur();
@@ -29,7 +31,11 @@ public class FournisseurBarIFDProto implements FournisseurBaremeIFD {
         constructeur.tranche(41400,"0.88 %");
         constructeur.tranche(55200,"2.64 %");
         constructeur.tranche(72500,"2.97 %");
-        constructeur.derniereTranche("11.5 %");
+        constructeur.tranche(78100,"5.94 %");
+        constructeur.tranche(103600,"6.60 %");
+        constructeur.tranche(134600,"8.80 %");
+        constructeur.tranche(176000,"11.00 %");
+        constructeur.derniereTranche("13.20 %");
         return constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS_INF).construire();
 
 
