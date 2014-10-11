@@ -102,4 +102,47 @@ public class FournisseurDeducMaxPilier3aTest {
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5933");
         assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("29664");
     }
+
+    @Test
+    public void test1999et2000() {
+        FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1999);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5789");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("28944");
+        fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2000);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5789");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("28944");
+    }
+
+
+    @Test
+    public void test1997et1998() {
+        FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1997);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5731");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("28656");
+        fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1998);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5731");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("28656");
+    }
+
+    @Test
+    public void test1995et1996() {
+        FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1995);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5587");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("27936");
+        fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1996);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5587");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("27936");
+    }
+
+    @Test
+    public void test1993et1994() {
+        FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1993);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5414");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("27072");
+        fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1994);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5414");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("27072");
+    }
+
+
 }
