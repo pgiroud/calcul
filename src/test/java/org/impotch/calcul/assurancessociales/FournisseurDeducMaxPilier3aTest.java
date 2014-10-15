@@ -31,6 +31,15 @@ public class FournisseurDeducMaxPilier3aTest {
     @Resource(name = "fournisseurRegleCalculAssuranceSociale")
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
 
+    @Test
+    public void test2015et2016() {
+        FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2015);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6768");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("33840");
+        fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2016);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6768");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("33840");
+    }
 
 
     @Test
