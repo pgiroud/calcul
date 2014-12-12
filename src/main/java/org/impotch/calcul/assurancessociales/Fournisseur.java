@@ -124,7 +124,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 			calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.02 %",getCalculateurCotisationsSocialesSalarie(annee));
 		} else if (annee < 2014) {
 			calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.045 %",getCalculateurCotisationsSocialesSalarie(annee));
-		} else if (annee == 2014) {
+		} else if (annee == 2014 || 2015 == annee) {
             calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.042 %",getCalculateurCotisationsSocialesSalarie(annee));
         } else {
             throw new IllegalArgumentException("La déduction assurance maternité n'est pas définie pour l'année " + annee + ".");
@@ -139,7 +139,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
             calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.02 %",getCalculateurCotisationsSocialesSalarieISIFD(annee));
         } else if (annee < 2014) {
             calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.045 %",getCalculateurCotisationsSocialesSalarieISIFD(annee));
-        }  if (annee == 2014) {
+        }  if (annee == 2014 || 2015 == annee) {
             calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.042 %",getCalculateurCotisationsSocialesSalarieISIFD(annee));
         } else {
             throw new IllegalArgumentException("La déduction assurance maternité n'est pas définie pour l'année " + annee + ".");
@@ -251,6 +251,28 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
             constructeur.trancheBareme("51600", "6.8 %");
             constructeur.trancheBareme("53900", "7.1 %");
             constructeur.trancheBareme("56200", "7.4 %");
+            return constructeur.construire(annee);
+        } else if (annee < 2017) {
+            constructeur.tauxApg("0.5 %");
+            constructeur.cotisationAvsAiApgMinimum("480");
+            constructeur.trancheBareme( "9400", "4.2 %");
+            constructeur.trancheBareme("17200", "4.2 %");
+            constructeur.trancheBareme("21900", "4.3 %");
+            constructeur.trancheBareme("24200", "4.4 %");
+            constructeur.trancheBareme("26500", "4.5 %");
+            constructeur.trancheBareme("28800", "4.6 %");
+            constructeur.trancheBareme("31100", "4.7 %");
+            constructeur.trancheBareme("33400", "4.9 %");
+            constructeur.trancheBareme("35700", "5.1 %");
+            constructeur.trancheBareme("38000", "5.3 %");
+            constructeur.trancheBareme("40300", "5.5 %");
+            constructeur.trancheBareme("42600", "5.7 %");
+            constructeur.trancheBareme("44900", "5.9 %");
+            constructeur.trancheBareme("47200", "6.2 %");
+            constructeur.trancheBareme("49500", "6.5 %");
+            constructeur.trancheBareme("51800", "6.8 %");
+            constructeur.trancheBareme("54100", "7.1 %");
+            constructeur.trancheBareme("56400", "7.4 %");
             return constructeur.construire(annee);
         } else {
             throw new IllegalArgumentException("Le barème des cotisations AVS indépendants n'est pas connu pour l'année " + annee);

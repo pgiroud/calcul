@@ -72,6 +72,13 @@ public class FournisseurFrance {
             constructeur.tranche( 70830," 30 %");
             constructeur.tranche(150000, "41 %");
             constructeur.derniereTranche("45 %");
+        } else if (2013 == annee) {
+            constructeur.tranche(  6011, " 0 %");
+            constructeur.tranche( 11991,"  5.5 %");
+            constructeur.tranche( 26631," 14 %");
+            constructeur.tranche( 71397," 30 %");
+            constructeur.tranche(151200, "41 %");
+            constructeur.derniereTranche("45 %");
         } else {
 			throw new IllegalArgumentException("Pas de barème pour l'année " + annee);
 		}
