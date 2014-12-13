@@ -117,34 +117,33 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
         return mapCalculateurCotisationAvsAiApgSalarieISIFD.get(annee);
     }
 
-	protected CalculCotisationsSocialesSalarieGE construireCalculateurSalarieGE(int annee) {
-		
-		CalculCotisationsSocialesSalarieGE calculateur = null;
-		if (annee < 2010) {
-			calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.02 %",getCalculateurCotisationsSocialesSalarie(annee));
-		} else if (annee < 2014) {
-			calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.045 %",getCalculateurCotisationsSocialesSalarie(annee));
-		} else if (annee == 2014 || 2015 == annee) {
-            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.042 %",getCalculateurCotisationsSocialesSalarie(annee));
-        } else {
-            throw new IllegalArgumentException("La déduction assurance maternité n'est pas définie pour l'année " + annee + ".");
-        }
-		return calculateur;
-	}
-
-    protected CalculCotisationsSocialesSalarieGE construireCalculateurSalarieGEIFD(int annee) {
-
+    /**
+     * On décore le calculateur valable pour toute la Suisse en incorporant le calcul de l'assurance maternité
+     * qui n'est en vigueur que pour le canton de Genève.
+     * @param annee
+     * @param calculateurSuisse
+     * @return
+     */
+    private CalculCotisationsSocialesSalarieGE construireCalculateurSalarie(int annee, CalculCotisationsSocialesSalarie calculateurSuisse) {
         CalculCotisationsSocialesSalarieGE calculateur = null;
         if (annee < 2010) {
-            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.02 %",getCalculateurCotisationsSocialesSalarieISIFD(annee));
+            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.02 %",calculateurSuisse);
         } else if (annee < 2014) {
-            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.045 %",getCalculateurCotisationsSocialesSalarieISIFD(annee));
-        }  if (annee == 2014 || 2015 == annee) {
-            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.042 %",getCalculateurCotisationsSocialesSalarieISIFD(annee));
+            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.045 %",calculateurSuisse);
+        } else if (annee == 2014 || 2015 == annee) {
+            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.042 %",calculateurSuisse);
         } else {
             throw new IllegalArgumentException("La déduction assurance maternité n'est pas définie pour l'année " + annee + ".");
         }
         return calculateur;
+    }
+
+	protected CalculCotisationsSocialesSalarieGE construireCalculateurSalarieGE(int annee) {
+		return  construireCalculateurSalarie(annee,getCalculateurCotisationsSocialesSalarie(annee));
+	}
+
+    protected CalculCotisationsSocialesSalarieGE construireCalculateurSalarieGEIFD(int annee) {
+        return construireCalculateurSalarie(annee,getCalculateurCotisationsSocialesSalarieISIFD(annee));
     }
 
     @Override
