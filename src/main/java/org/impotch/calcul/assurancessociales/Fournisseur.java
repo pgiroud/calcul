@@ -21,6 +21,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.calcul.assurancessociales.ge.CalculCotisationsSocialesSalarieGE;
+import org.impotch.calcul.assurancessociales.ge.param.ParametrageCotisationAssuranceMaternite;
+import org.impotch.util.BigDecimalUtil;
+
+import javax.annotation.Resource;
 
 /**
  * Cette classe a la responsabilité de fournir les calculateurs de cotisations sociales.
@@ -46,7 +50,10 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	private ConcurrentMap<Integer,CalculExtremaRentesAVS> mapCalculateurRentesAVS = new ConcurrentHashMap<Integer,CalculExtremaRentesAVS>();
 	
 	private Map<Integer,BigDecimal> renteSimpleMensuelleMinimumParAnnee;
-	
+
+    @Resource(name = "paramCotiAssuranceMaternite")
+    private ParametrageCotisationAssuranceMaternite parametrageCotisationAssuranceMaternite;
+
     /**************************************************/
     /********** Accesseurs / Mutateurs ****************/
     /**************************************************/
@@ -117,6 +124,19 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
         return mapCalculateurCotisationAvsAiApgSalarieISIFD.get(annee);
     }
 
+
+    private String getTauxAssuranceMaternitePourImpotSourceGeneve(int annee) {
+        if (annee < 2010) {
+            return "0.02 %";
+        } else if (annee < 2014) {
+            return "0.045 %";
+        } else if (2014 == annee || 2015 == annee) {
+            return "0.042 %";
+        } else {
+            throw new IllegalArgumentException("Le taux de la déduction assurance maternité n'est pas définie pour l'année " + annee + ".");
+        }
+    }
+
     /**
      * On décore le calculateur valable pour toute la Suisse en incorporant le calcul de l'assurance maternité
      * qui n'est en vigueur que pour le canton de Genève.
@@ -124,26 +144,18 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
      * @param calculateurSuisse
      * @return
      */
-    private CalculCotisationsSocialesSalarieGE construireCalculateurSalarie(int annee, CalculCotisationsSocialesSalarie calculateurSuisse) {
-        CalculCotisationsSocialesSalarieGE calculateur = null;
-        if (annee < 2010) {
-            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.02 %",calculateurSuisse);
-        } else if (annee < 2014) {
-            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.045 %",calculateurSuisse);
-        } else if (annee == 2014 || 2015 == annee) {
-            calculateur = new CalculCotisationsSocialesSalarieGE(annee,"0.042 %",calculateurSuisse);
-        } else {
-            throw new IllegalArgumentException("La déduction assurance maternité n'est pas définie pour l'année " + annee + ".");
-        }
-        return calculateur;
+    private CalculCotisationsSocialesSalarieGE construireCalculateurSalarie(int annee, BigDecimal taux, CalculCotisationsSocialesSalarie calculateurSuisse) {
+        return new CalculCotisationsSocialesSalarieGE(annee,taux,calculateurSuisse);
     }
 
 	protected CalculCotisationsSocialesSalarieGE construireCalculateurSalarieGE(int annee) {
-		return  construireCalculateurSalarie(annee,getCalculateurCotisationsSocialesSalarie(annee));
+        BigDecimal taux = parametrageCotisationAssuranceMaternite.fournirTaux(annee);
+		return  construireCalculateurSalarie(annee,taux,getCalculateurCotisationsSocialesSalarie(annee));
 	}
 
     protected CalculCotisationsSocialesSalarieGE construireCalculateurSalarieGEIFD(int annee) {
-        return construireCalculateurSalarie(annee,getCalculateurCotisationsSocialesSalarieISIFD(annee));
+        BigDecimal taux = BigDecimalUtil.parseTaux(getTauxAssuranceMaternitePourImpotSourceGeneve(annee));
+        return construireCalculateurSalarie(annee,taux,getCalculateurCotisationsSocialesSalarieISIFD(annee));
     }
 
     @Override

@@ -34,7 +34,7 @@ import org.impotch.util.BigDecimalUtil;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class BaremeRevenuFamille2005Test {
 	@Resource(name = "fournisseurRegleImpotCantonalGE")

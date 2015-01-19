@@ -55,14 +55,29 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
     /*************** Constructeurs ********************/
     /**************************************************/
 
+
 	/**
 	 * Construit un calculateur des cotisations sociales pour les salaires perçus sur
 	 * le cantonal de Genève.
-	 * 
+	 *
 	 * @param annee L'année pour laquelle ce calculateur est valide
-	 * @param nTaux le taux de cotisation à l'assurance maternité adoption.
+	 * @param taux le taux de cotisation à l'assurance maternité adoption.
 	 * @param nCalculateurSuisse le calculateur des cotisations fédérales.
 	 */
+	public CalculCotisationsSocialesSalarieGE(int annee, BigDecimal taux, CalculCotisationsSocialesSalarie nCalculateurSuisse) {
+		super(annee);
+		this.taux = taux;
+		calculateurSuisse = nCalculateurSuisse;
+	}
+
+		/**
+         * Construit un calculateur des cotisations sociales pour les salaires perçus sur
+         * le cantonal de Genève.
+         *
+         * @param annee L'année pour laquelle ce calculateur est valide
+         * @param nTaux le taux de cotisation à l'assurance maternité adoption.
+         * @param nCalculateurSuisse le calculateur des cotisations fédérales.
+         */
 	public CalculCotisationsSocialesSalarieGE(int annee, String nTaux, CalculCotisationsSocialesSalarie nCalculateurSuisse) {
 		super(annee);
 		try {

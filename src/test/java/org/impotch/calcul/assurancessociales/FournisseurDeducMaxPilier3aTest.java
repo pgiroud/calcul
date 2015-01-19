@@ -25,10 +25,10 @@ import javax.annotation.Resource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
 public class FournisseurDeducMaxPilier3aTest {
 
-    @Resource(name = "fournisseurRegleCalculAssuranceSociale")
+    @Resource
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
 
     @Test

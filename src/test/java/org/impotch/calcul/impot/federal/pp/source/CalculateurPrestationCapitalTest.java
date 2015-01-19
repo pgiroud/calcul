@@ -32,11 +32,11 @@ import org.impotch.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestati
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = "/beansCH_IFD.xml")
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class CalculateurPrestationCapitalTest {
 
-	@Resource(name = "fournisseurRegleImpotFederal")
+	@Resource
 	private FournisseurRegleImpotFederal constructeur;
 	
 	@Test

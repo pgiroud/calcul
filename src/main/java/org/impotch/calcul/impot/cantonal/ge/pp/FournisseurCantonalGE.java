@@ -54,6 +54,7 @@ import javax.annotation.Resource;
 public class FournisseurCantonalGE extends FournisseurCantonal implements FournisseurRegleImpotCantonalGE {
 
 
+    @Resource
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale;
 
     @Resource

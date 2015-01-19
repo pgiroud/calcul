@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class IndexateurGenevoisTest {
 

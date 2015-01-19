@@ -15,7 +15,6 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
-import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.cantonal.ge.pp.ChargeurFichierEconometre;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.impotch.util.TypeArrondi;
@@ -27,7 +26,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import javax.annotation.Resource;
@@ -40,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(Parameterized.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class BaremeRevenuFamille2000Test {
 

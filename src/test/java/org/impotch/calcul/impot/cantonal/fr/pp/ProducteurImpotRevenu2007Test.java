@@ -46,7 +46,7 @@ import org.impotch.calcul.lieu.ICommuneSuisse;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = "/beansCH_FR.xml")
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProducteurImpotRevenu2007Test extends ProducteurImpotTst {
 

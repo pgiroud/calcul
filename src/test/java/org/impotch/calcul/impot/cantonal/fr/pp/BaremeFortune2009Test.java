@@ -34,7 +34,7 @@ import org.impotch.bareme.Bareme;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = "/beansCH_FR.xml")
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class BaremeFortune2009Test {
 

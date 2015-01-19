@@ -32,7 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class CalculExtremaRenteAVSTest {
 

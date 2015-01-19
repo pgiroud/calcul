@@ -33,12 +33,12 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = "/beansCH_IFD.xml")
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProducteurImpotIFDTest extends ProducteurImpotTst {
 
 
-    @Resource(name = "fournisseurRegleImpotFederal")
+    @Resource
     private FournisseurRegleImpotFederal constructeur;
     private Map<String,String> libelleImpotTaxe = new HashMap<String,String>();
 

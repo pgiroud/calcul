@@ -27,11 +27,11 @@ import javax.annotation.Resource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beans.xml")
+@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class FournisseurLPPTest {
 
-    @Resource(name = "fournisseurRegleCalculAssuranceSociale")
+    @Resource
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
 
 
