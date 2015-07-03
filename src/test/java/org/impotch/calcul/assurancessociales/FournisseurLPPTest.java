@@ -52,4 +52,15 @@ public class FournisseurLPPTest {
         assertThat(fournisseur.getDeductionCoordination()).isEqualTo("24570");
         assertThat(fournisseur.getLimiteSuperieureSalaireAnnuel()).isEqualTo("84240");
     }
+
+    @Test
+    public void test2015() {
+        FournisseurMontantsLimitesPrevoyanceProfessionnelle fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurMontantsLimitesPrevoyanceProfessionnelle(2015);
+        assertThat(fournisseur.getSalaireMinimalAnnuel()).isEqualTo("21150");
+        assertThat(fournisseur.getSalaireCoordonneMinimalAnnuel()).isEqualTo("3525");
+        assertThat(fournisseur.getDeductionCoordination()).isEqualTo("24675");
+        assertThat(fournisseur.getLimiteSuperieureSalaireAnnuel()).isEqualTo("84600");
+    }
+
+
 }
