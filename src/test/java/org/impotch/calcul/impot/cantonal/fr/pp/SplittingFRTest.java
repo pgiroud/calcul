@@ -18,11 +18,14 @@ package org.impotch.calcul.impot.cantonal.fr.pp;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Resource;
 
 import static org.junit.Assert.assertEquals;
+
+import org.impotch.calcul.impot.taxation.pp.Contribuable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.impotch.calcul.impot.cantonal.fr.pp.BaremeTauxEffectifLineaireParTranche;
@@ -370,15 +373,24 @@ public class SplittingFRTest {
 	private SituationFamiliale getSituation(final boolean famille) {
 		return new SituationFamiliale() {
 
-			@Override
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return famille ? Optional.of(new Contribuable() {
+                }) : Optional.<Contribuable>empty();
+            }
+
+            @Override
 			public Set<EnfantACharge> getEnfants() {return Collections.emptySet();}
 
 			@Override
 			public Set<PersonneACharge> getPersonnesNecessiteuses() {return Collections.emptySet();}
 
-			@Override
-			public boolean isCouple() {return famille;}
-			
 		};
 	}
 	

@@ -17,16 +17,12 @@ package org.impotch.calcul.impot.federal.pp.source;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
-import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
-import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
-import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
-import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
-import org.impotch.calcul.impot.taxation.pp.RecepteurImpotSomme;
-import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
+import org.impotch.calcul.impot.taxation.pp.*;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -58,15 +54,24 @@ public class CalculateurImpotSourcePrestationCapitalIFD extends ReglePeriodique 
 	
 	private SituationFamiliale creerSituation() {
 		return new SituationFamiliale() {
-			@Override
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.of(new Contribuable() {
+                });
+            }
+
+            @Override
 			public Set<EnfantACharge> getEnfants() {return Collections.emptySet();}
 
 			@Override
 			public Set<PersonneACharge> getPersonnesNecessiteuses() {return Collections.emptySet();}
 
-			@Override
-			public boolean isCouple() {return true;}
-			
 		};
 	}
 	

@@ -17,7 +17,9 @@
   <bean name="paramCotiAssuranceMaternite" class="org.impotch.calcul.assurancessociales.ge.param.ParametrageEnMemoireCotisationAssuranceMaternite">
     <property name="tauxParAnnee">
       <map>
-        <entry key="2001" value="0.02 %"/>
+        <entry key="2003" value="0.15 %"/>
+        <entry key="2004" value="0.13 %"/>
+        <entry key="2006" value="0.02 %"/>
         <entry key="2010" value="0.045 %"/>
         <entry key="2013" value="0.042 %"/>
         <entry key="2014" value="0.041 %"/>

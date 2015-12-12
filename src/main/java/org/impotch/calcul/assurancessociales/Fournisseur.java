@@ -68,9 +68,16 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 
 	//--------------- Salariés --------------------
 
+    private String tauxAPG(int annee) {
+        if (annee < 2011) return "0.3 %";
+        if (annee < 2016) return "0.5 %";
+        else return "0.45 %";
+    }
+
     private CalculCotisationsSocialesSalarie.Constructeur obtenirNouveauConstructeur(int annee) {
         CalculCotisationsSocialesSalarie.Constructeur constructeur = new CalculCotisationsSocialesSalarie.Constructeur();
-        constructeur.tauxAvs("8.4 %").tauxAi("1.4 %").tauxApg(annee < 2011 ? "0.3 %" : "0.5 %")
+
+        constructeur.tauxAvs("8.4 %").tauxAi("1.4 %").tauxApg(tauxAPG(annee))
             .tauxAC("2 %");
 
         // La loi fédérale sur l'assurance-accidents stipule qu' «en règle générale,
@@ -87,7 +94,8 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
         else if (annee < 2008) constructeur.montantAnnuelMaxGainAssure(106800);
         // Décision du 27 juin 2007 du conseil fédéral (RO 2007 3667 Annexe 1)
         // la maximum passe de 106800 à 126000
-        else constructeur.montantAnnuelMaxGainAssure(126000);
+        else if (annee < 2016) constructeur.montantAnnuelMaxGainAssure(126000);
+        else  constructeur.montantAnnuelMaxGainAssure(148200);
 
         if (annee > 2010) {
             constructeur.tauxAC("2.2 %");
@@ -130,7 +138,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
             return "0.02 %";
         } else if (annee < 2014) {
             return "0.045 %";
-        } else if (2014 == annee || 2015 == annee) {
+        } else if (2014 == annee || 2015 == annee || 2016 == annee) {
             return "0.042 %";
         } else {
             throw new IllegalArgumentException("Le taux de la déduction assurance maternité n'est pas définie pour l'année " + annee + ".");

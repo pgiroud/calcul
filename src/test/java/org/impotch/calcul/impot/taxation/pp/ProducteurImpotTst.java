@@ -16,11 +16,7 @@
 package org.impotch.calcul.impot.taxation.pp;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
@@ -58,14 +54,20 @@ public class ProducteurImpotTst {
 	protected SituationFamiliale creerSituationCelibataireSansEnfant() {
 		SituationFamiliale situation = new SituationFamiliale() {
 
-			@Override
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.empty();
+            }
+
+            @Override
 			public Set<EnfantACharge> getEnfants() {
 				return Collections.emptySet();
-			}
-
-			@Override
-			public boolean isCouple() {
-				return false;
 			}
 
 			/* (non-Javadoc)
@@ -84,15 +86,22 @@ public class ProducteurImpotTst {
 	protected SituationFamiliale creerSituationFamilleAvecEnfant(final int... ageEnfant) {
 		SituationFamiliale situation = new SituationFamiliale() {
 
-			@Override
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.of(new Contribuable() {
+                });
+            }
+
+            @Override
 			public Set<EnfantACharge> getEnfants() {
 				return creerEnfant(ageEnfant);
 			}
-
-			@Override
-			public boolean isCouple() {
-				return true;
-			};
 
 			/* (non-Javadoc)
 			 * @see SituationFamiliale#getPersonnesNecessiteuses()

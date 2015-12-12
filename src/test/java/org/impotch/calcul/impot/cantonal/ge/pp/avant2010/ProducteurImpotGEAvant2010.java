@@ -17,15 +17,12 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 
 
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
-import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
-import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
-import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
-import org.impotch.calcul.impot.taxation.pp.ProducteurImpotTst;
-import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
+import org.impotch.calcul.impot.taxation.pp.*;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -37,7 +34,18 @@ public class ProducteurImpotGEAvant2010 extends ProducteurImpotTst {
 	protected SituationFamiliale creerSituationCelibataireSansEnfant() {
 		SituationFamilialeGE situation = new SituationFamilialeGE() {
 
-			/* (non-Javadoc)
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.empty();
+            }
+
+            /* (non-Javadoc)
 			 * @see org.impotch.calcul.impot.cantonal.ge.pp.SituationFamilialeGE#isConjointFonctionnaireInternational()
 			 */
 			@Override
@@ -58,11 +66,6 @@ public class ProducteurImpotGEAvant2010 extends ProducteurImpotTst {
 			@Override
 			public Set<EnfantACharge> getEnfants() {
 				return Collections.emptySet();
-			}
-
-			@Override
-			public boolean isCouple() {
-				return false;
 			}
 
 			/* (non-Javadoc)
@@ -82,7 +85,19 @@ public class ProducteurImpotGEAvant2010 extends ProducteurImpotTst {
 	protected SituationFamiliale creerSituationFamilleAvecEnfant(final int... ageEnfant) {
 		SituationFamilialeGE situation = new SituationFamilialeGE() {
 
-			/* (non-Javadoc)
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.of(new Contribuable() {
+                });
+            }
+
+            /* (non-Javadoc)
 			 * @see org.impotch.calcul.impot.cantonal.ge.pp.SituationFamilialeGE#isConjointFonctionnaireInternational()
 			 */
 			@Override
@@ -102,11 +117,6 @@ public class ProducteurImpotGEAvant2010 extends ProducteurImpotTst {
 			public Set<EnfantACharge> getEnfants() {
 				return creerEnfant(ageEnfant);
 			}
-
-			@Override
-			public boolean isCouple() {
-				return true;
-			};
 
 			/* (non-Javadoc)
 			 * @see SituationFamiliale#getPersonnesNecessiteuses()

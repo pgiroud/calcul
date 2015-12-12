@@ -15,17 +15,8 @@
  */
 package org.impotch.calcul.impot.taxation.pp;
 
-import java.util.Optional;
-import java.util.Set;
-
-public interface SituationFamiliale {
-    Contribuable getContribuable();
-    Optional<Contribuable> getConjoint();
-
-	default boolean isCouple() {
-        return getConjoint().isPresent();
-    }
-
-	Set<EnfantACharge> getEnfants();
-	Set<PersonneACharge> getPersonnesNecessiteuses();
+/**
+ * Created by patrick on 12/02/15.
+ */
+public interface Contribuable {
 }

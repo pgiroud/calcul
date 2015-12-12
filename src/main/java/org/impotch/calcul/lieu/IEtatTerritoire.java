@@ -13,19 +13,10 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.taxation.pp;
+package org.impotch.calcul.lieu;
 
-import java.util.Optional;
-import java.util.Set;
-
-public interface SituationFamiliale {
-    Contribuable getContribuable();
-    Optional<Contribuable> getConjoint();
-
-	default boolean isCouple() {
-        return getConjoint().isPresent();
-    }
-
-	Set<EnfantACharge> getEnfants();
-	Set<PersonneACharge> getPersonnesNecessiteuses();
+/**
+ * Created by patrick on 12/02/15.
+ */
+public interface IEtatTerritoire extends ILieuOFS {
 }

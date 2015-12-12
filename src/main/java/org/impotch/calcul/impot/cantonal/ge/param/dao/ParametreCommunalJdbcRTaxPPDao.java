@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.impotch.calcul.lieu.ICommuneSuisse;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 /**
  * Cette classe fournit les paramètres communaux en se basant sur les données de la
@@ -31,7 +31,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public class ParametreCommunalJdbcRTaxPPDao extends SimpleJdbcDaoSupport implements ParametreCommunalDao {
+public class ParametreCommunalJdbcRTaxPPDao extends JdbcDaoSupport implements ParametreCommunalDao {
 
 	/**************************************************/
     /*************** Champs statiques *****************/
@@ -55,7 +55,7 @@ public class ParametreCommunalJdbcRTaxPPDao extends SimpleJdbcDaoSupport impleme
 		MapSqlParameterSource param = new MapSqlParameterSource();
 		param.addValue("periode", annee);
 		param.addValue("noOFS", noOFSCommune);
-		return this.getSimpleJdbcTemplate().queryForObject(sql, BigDecimal.class, param);
+		return this.getJdbcTemplate().queryForObject(sql, BigDecimal.class, param);
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class ParametreCommunalJdbcRTaxPPDao extends SimpleJdbcDaoSupport impleme
 		MapSqlParameterSource param = new MapSqlParameterSource();
 		param.addValue("periode", annee);
 		param.addValue("noOFS", noOFSCommune);
-		return this.getSimpleJdbcTemplate().queryForObject(sql, BigDecimal.class, param);
+		return this.getJdbcTemplate().queryForObject(sql, BigDecimal.class, param);
 	}
 
     @Override

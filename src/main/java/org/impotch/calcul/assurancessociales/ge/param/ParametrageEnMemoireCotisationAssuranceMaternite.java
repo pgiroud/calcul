@@ -43,7 +43,7 @@ public class ParametrageEnMemoireCotisationAssuranceMaternite implements Paramet
         List<Integer> annees = new ArrayList<>(taux.keySet());
         Collections.sort(annees);
         premiereAnnee = annees.get(0);
-        derniereAnnee = Integer.max(anneeCourante(),annees.get(annees.size()-1));
+        derniereAnnee = Integer.max(1+anneeCourante(),annees.get(annees.size()-1));
         tauxParAnnee = new HashMap<>();
         BigDecimal dernierTaux = null;
         for (int i = premiereAnnee; i <= derniereAnnee; i++) {

@@ -17,307 +17,335 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.impotch.calcul.impot.Souverainete;
+import org.impotch.calcul.impot.taxation.pp.Contribuable;
 import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
 import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
 
 public class ConstructeurSituationFamilialeGE {
 
-	public SituationFamilialeGE creerCelibataireSansCharge() {
-		SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
+    public SituationFamilialeGE creerCelibataireSansCharge() {
+        SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
 
-			/* (non-Javadoc)
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.empty();
+            }
+
+            /* (non-Javadoc)
+             * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isCoupleDomicilieGeneve()
+			 */
+            @Override
+            public boolean isCoupleDomicilieGeneve() {
+                return false;
+            }
+
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getEnfants()
+             */
+            @Override
+            public Set<EnfantACharge> getEnfants() {
+                return Collections.emptySet();
+            }
+
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getPersonnesNecessiteuses()
+             */
+            @Override
+            public Set<PersonneACharge> getPersonnesNecessiteuses() {
+                return Collections.emptySet();
+            }
+
+            /* (non-Javadoc)
+             * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
+             */
+            @Override
+            public boolean isConjointFonctionnaireInternational() {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+
+        };
+        return fournisseur;
+    }
+
+
+    public SituationFamilialeGE creerCelibataireAvecCharge(final int nbreEnfant, final boolean auMoinsUnPetit) {
+        SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
+
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.empty();
+            }
+
+            /* (non-Javadoc)
 			 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isCoupleDomicilieGeneve()
 			 */
-			@Override
-			public boolean isCoupleDomicilieGeneve() {
-				return false;
-			}
+            @Override
+            public boolean isCoupleDomicilieGeneve() {
+                return true;
+            }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getEnfants()
-			 */
-			@Override
-			public Set<EnfantACharge> getEnfants() {
-				return Collections.emptySet();
-			}
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getEnfants()
+             */
+            @Override
+            public Set<EnfantACharge> getEnfants() {
+                int[] age = new int[nbreEnfant];
+                if (auMoinsUnPetit) age[0] = 6;
+                else age[0] = 14;
+                for (int i = 1; i < nbreEnfant; i++) age[i] = 14;
+                return creerEnfant(false, age);
+            }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getPersonnesNecessiteuses()
-			 */
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {
-				return Collections.emptySet();
-			}
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getPersonnesNecessiteuses()
+             */
+            @Override
+            public Set<PersonneACharge> getPersonnesNecessiteuses() {
+                return Collections.emptySet();
+            }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#isCouple()
-			 */
-			@Override
-			public boolean isCouple() {
-				return false;
-			}
+            /* (non-Javadoc)
+             * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
+             */
+            @Override
+            public boolean isConjointFonctionnaireInternational() {
+                // TODO Auto-generated method stub
+                return false;
+            }
 
-			/* (non-Javadoc)
-			 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
-			 */
-			@Override
-			public boolean isConjointFonctionnaireInternational() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			
-			
-		};
-		return fournisseur;
-	}
-	
-	
-	public SituationFamilialeGE creerCelibataireAvecCharge(final int nbreEnfant, final boolean auMoinsUnPetit) {
-		SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
 
-			/* (non-Javadoc)
+        };
+        return fournisseur;
+    }
+
+    public SituationFamilialeGE creerCoupleSansDoubleActiviteSansCharge() {
+        SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
+
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.of(new Contribuable() {
+                });
+            }
+
+            /* (non-Javadoc)
 			 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isCoupleDomicilieGeneve()
 			 */
-			@Override
-			public boolean isCoupleDomicilieGeneve() {
-				return true;
-			}
+            @Override
+            public boolean isCoupleDomicilieGeneve() {
+                return true;
+            }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getEnfants()
-			 */
-			@Override
-			public Set<EnfantACharge> getEnfants() {
-				int[] age = new int[nbreEnfant];
-				if (auMoinsUnPetit) age[0] = 6;
-				else age[0] = 14;
-				for (int i = 1; i < nbreEnfant; i++) age[i] = 14;
-				return creerEnfant(false,age);
-			}
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getEnfants()
+             */
+            @Override
+            public Set<EnfantACharge> getEnfants() {
+                return Collections.emptySet();
+            }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getPersonnesNecessiteuses()
-			 */
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {
-				return Collections.emptySet();
-			}
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getPersonnesNecessiteuses()
+             */
+            @Override
+            public Set<PersonneACharge> getPersonnesNecessiteuses() {
+                return Collections.emptySet();
+            }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#isCouple()
-			 */
-			@Override
-			public boolean isCouple() {
-				return false;
-			}
+            /* (non-Javadoc)
+             * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
+             */
+            @Override
+            public boolean isConjointFonctionnaireInternational() {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        };
+        return fournisseur;
+    }
 
-			/* (non-Javadoc)
-			 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
-			 */
-			@Override
-			public boolean isConjointFonctionnaireInternational() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-			
-			
-			
-		};
-		return fournisseur;
-	}
-	
-	public SituationFamilialeGE creerCoupleSansDoubleActiviteSansCharge() {
-		SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
+    private Set<EnfantACharge> creerEnfant(final boolean demiCharge, final int... ageEnfant) {
+        Set<EnfantACharge> enfants = new HashSet<EnfantACharge>();
+        for (final int age : ageEnfant) {
+            enfants.add(new EnfantACharge() {
 
-			/* (non-Javadoc)
-			 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isCoupleDomicilieGeneve()
-			 */
-			@Override
-			public boolean isCoupleDomicilieGeneve() {
-				return true;
-			}
+                @Override
+                public int getAge(int anneeFiscale) {
+                    return age;
+                }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getEnfants()
-			 */
-			@Override
-			public Set<EnfantACharge> getEnfants() {
-				return Collections.emptySet();
-			}
+                @Override
+                public boolean isDemiPart(Souverainete souverainete) {
+                    return demiCharge;
+                }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getPersonnesNecessiteuses()
-			 */
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {
-				return Collections.emptySet();
-			}
+            });
+        }
+        return enfants;
+    }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#isCouple()
-			 */
-			@Override
-			public boolean isCouple() {
-				return true;
-			}
-			/* (non-Javadoc)
-			 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
-			 */
-			@Override
-			public boolean isConjointFonctionnaireInternational() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		};
-		return fournisseur;
-	}
-	
-	private Set<EnfantACharge> creerEnfant(final boolean demiCharge, final int... ageEnfant) {
-		Set<EnfantACharge> enfants = new HashSet<EnfantACharge>();
-		for (final int age : ageEnfant) {
-			enfants.add(new EnfantACharge(){
+    private Set<EnfantACharge> creerEnfant(final boolean demiChargeICC, final boolean demiChargeIFD, final int... ageEnfant) {
+        Set<EnfantACharge> enfants = new HashSet<EnfantACharge>();
+        for (final int age : ageEnfant) {
+            enfants.add(new EnfantACharge() {
 
-				@Override
-				public int getAge(int anneeFiscale) {
-					return age;
-				}
+                @Override
+                public int getAge(int anneeFiscale) {
+                    return age;
+                }
 
-				@Override
-				public boolean isDemiPart(Souverainete souverainete) {
-					return demiCharge;
-				}
-				
-			});
-		}
-		return enfants;
-	}
+                @Override
+                public boolean isDemiPart(Souverainete souverainete) {
+                    if (Souverainete.CH_CANTONALE_GE.equals(souverainete)) return demiChargeICC;
+                    return demiChargeIFD;
+                }
 
-	private Set<EnfantACharge> creerEnfant(final boolean demiChargeICC, final boolean demiChargeIFD, final int... ageEnfant) {
-		Set<EnfantACharge> enfants = new HashSet<EnfantACharge>();
-		for (final int age : ageEnfant) {
-			enfants.add(new EnfantACharge(){
+            });
+        }
+        return enfants;
+    }
 
-				@Override
-				public int getAge(int anneeFiscale) {
-					return age;
-				}
 
-				@Override
-				public boolean isDemiPart(Souverainete souverainete) {
-					if (Souverainete.CH_CANTONALE_GE.equals(souverainete)) return demiChargeICC;
-					return demiChargeIFD;
-				}
-				
-			});
-		}
-		return enfants;
-	}
+    public SituationFamilialeGE creerCoupleSansDoubleActiviteAvecEnfant(final int nbreEnfant, final boolean auMoinsUnPetit, final boolean domicilieGE) {
+        SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
 
-	
-	
-	public SituationFamilialeGE creerCoupleSansDoubleActiviteAvecEnfant(final int nbreEnfant, final boolean auMoinsUnPetit, final boolean domicilieGE) {
-		SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
 
-		/* (non-Javadoc)
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.of(new Contribuable() {
+                });
+            }
+
+            /* (non-Javadoc)
 		 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isCoupleDomicilieGeneve()
 		 */
-		@Override
-		public boolean isCoupleDomicilieGeneve() {
-			return domicilieGE;
-		}
+            @Override
+            public boolean isCoupleDomicilieGeneve() {
+                return domicilieGE;
+            }
 
-		/* (non-Javadoc)
-		 * @see SituationFamiliale#getEnfants()
-		 */
-		@Override
-		public Set<EnfantACharge> getEnfants() {
-			int[] age = new int[nbreEnfant];
-			if (auMoinsUnPetit) age[0] = 6;
-			else age[0] = 14;
-			for (int i = 1; i < nbreEnfant; i++) age[i] = 14;
-			return creerEnfant(false,age);
-		}
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getEnfants()
+             */
+            @Override
+            public Set<EnfantACharge> getEnfants() {
+                int[] age = new int[nbreEnfant];
+                if (auMoinsUnPetit) age[0] = 6;
+                else age[0] = 14;
+                for (int i = 1; i < nbreEnfant; i++) age[i] = 14;
+                return creerEnfant(false, age);
+            }
 
-		/* (non-Javadoc)
-		 * @see SituationFamiliale#getPersonnesNecessiteuses()
-		 */
-		@Override
-		public Set<PersonneACharge> getPersonnesNecessiteuses() {
-			return Collections.emptySet();
-		}
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getPersonnesNecessiteuses()
+             */
+            @Override
+            public Set<PersonneACharge> getPersonnesNecessiteuses() {
+                return Collections.emptySet();
+            }
 
-		/* (non-Javadoc)
-		 * @see SituationFamiliale#isCouple()
-		 */
-		@Override
-		public boolean isCouple() {
-			return true;
-		}
-		/* (non-Javadoc)
-		 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
-		 */
-		@Override
-		public boolean isConjointFonctionnaireInternational() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-	};
-	return fournisseur;
-	}
-	
-	public SituationFamilialeGE creerCoupleDontUnFonctionnaireInternational(final int nbreEnfant, final boolean auMoinsUnPetit) {
-		SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
+            /* (non-Javadoc)
+             * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
+             */
+            @Override
+            public boolean isConjointFonctionnaireInternational() {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        };
+        return fournisseur;
+    }
 
-			/* (non-Javadoc)
+    public SituationFamilialeGE creerCoupleDontUnFonctionnaireInternational(final int nbreEnfant, final boolean auMoinsUnPetit) {
+        SituationFamilialeGE fournisseur = new SituationFamilialeGE() {
+
+            @Override
+            public Contribuable getContribuable() {
+                return new Contribuable() {
+                };
+            }
+
+            @Override
+            public Optional<Contribuable> getConjoint() {
+                return Optional.of(new Contribuable() {
+                });
+            }
+
+            /* (non-Javadoc)
 			 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isCoupleDomicilieGeneve()
 			 */
-			@Override
-			public boolean isCoupleDomicilieGeneve() {
-				return false;
-			}
+            @Override
+            public boolean isCoupleDomicilieGeneve() {
+                return false;
+            }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getEnfants()
-			 */
-			@Override
-			public Set<EnfantACharge> getEnfants() {
-				if (0 >= nbreEnfant) return Collections.emptySet();
-				int[] age = new int[nbreEnfant];
-				if (auMoinsUnPetit) age[0] = 6;
-				else age[0] = 14;
-				for (int i = 1; i < nbreEnfant; i++) age[i] = 14;
-				return creerEnfant(true,false,age);
-			}
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getEnfants()
+             */
+            @Override
+            public Set<EnfantACharge> getEnfants() {
+                if (0 >= nbreEnfant) return Collections.emptySet();
+                int[] age = new int[nbreEnfant];
+                if (auMoinsUnPetit) age[0] = 6;
+                else age[0] = 14;
+                for (int i = 1; i < nbreEnfant; i++) age[i] = 14;
+                return creerEnfant(true, false, age);
+            }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getPersonnesNecessiteuses()
-			 */
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {
-				return Collections.emptySet();
-			}
+            /* (non-Javadoc)
+             * @see SituationFamiliale#getPersonnesNecessiteuses()
+             */
+            @Override
+            public Set<PersonneACharge> getPersonnesNecessiteuses() {
+                return Collections.emptySet();
+            }
 
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#isCouple()
-			 */
-			@Override
-			public boolean isCouple() {
-				return false;
-			}
-			/* (non-Javadoc)
-			 * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
-			 */
-			@Override
-			public boolean isConjointFonctionnaireInternational() {
-				return true;
-			}
-		};
-		return fournisseur;
-	}
-	
-	
+            /* (non-Javadoc)
+             * @see SituationFamiliale#isCouple()
+             */
+            @Override
+            public boolean isCouple() {
+                return false;
+            }
+
+            /* (non-Javadoc)
+             * @see org.impotch.calcul.impot.cantonal.ge.pp.FournisseurAssietteRabaisImpot#isConjointFonctionnaireInternational()
+             */
+            @Override
+            public boolean isConjointFonctionnaireInternational() {
+                return true;
+            }
+        };
+        return fournisseur;
+    }
+
+
 }
