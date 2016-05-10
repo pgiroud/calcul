@@ -45,7 +45,14 @@ public interface FournisseurRegleImpotCantonalGE {
 	 * @return la règle calculant la déduction sociale sur les charges.
 	 */
 	DeductionSociale getRegleDeductionSocialeCharge(int annee);
-	
+
+	/**
+	 * Retourne la règle calculant la déduction en cas d'activité lucrative des 2 conjoints
+	 * @param annee L'année pour laquelle la règle va s'appliquer
+	 * @return la règle de calcul
+     */
+	DeductionSociale getRegleDeductionDoubleActivite(int annee);
+
 	/**
 	 * Retourne la déduction sociale pour les bénéficiaires de rentes AVS ou AI.
 	 * Voir article 40 de la LIPP.

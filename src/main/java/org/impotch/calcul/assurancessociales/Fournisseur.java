@@ -132,19 +132,6 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
         return mapCalculateurCotisationAvsAiApgSalarieISIFD.get(annee);
     }
 
-
-    private String getTauxAssuranceMaternitePourImpotSourceGeneve(int annee) {
-        if (annee < 2010) {
-            return "0.02 %";
-        } else if (annee < 2014) {
-            return "0.045 %";
-        } else if (2014 == annee || 2015 == annee || 2016 == annee) {
-            return "0.042 %";
-        } else {
-            throw new IllegalArgumentException("Le taux de la déduction assurance maternité n'est pas définie pour l'année " + annee + ".");
-        }
-    }
-
     /**
      * On décore le calculateur valable pour toute la Suisse en incorporant le calcul de l'assurance maternité
      * qui n'est en vigueur que pour le canton de Genève.
@@ -162,7 +149,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	}
 
     protected CalculCotisationsSocialesSalarieGE construireCalculateurSalarieGEIFD(int annee) {
-        BigDecimal taux = BigDecimalUtil.parseTaux(getTauxAssuranceMaternitePourImpotSourceGeneve(annee));
+        BigDecimal taux = parametrageCotisationAssuranceMaternite.fournirTaux(annee);
         return construireCalculateurSalarie(annee,taux,getCalculateurCotisationsSocialesSalarieISIFD(annee));
     }
 

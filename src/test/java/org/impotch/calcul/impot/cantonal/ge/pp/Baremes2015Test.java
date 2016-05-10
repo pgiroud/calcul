@@ -60,6 +60,12 @@ public class Baremes2015Test {
     }
 
     @Test
+    public void exempleRevenu() {
+        Bareme bareme = fournisseur.getBaremeRevenu(2015);
+        assertThat(bareme.calcul(BigDecimal.valueOf(47602))).isEqualTo("3609.85");
+    }
+
+    @Test
     public void borneBaremeFortune() {
         Bareme bareme = fournisseur.getBaremeFortune(2015);
         assertThat(bareme.calcul(BigDecimal.valueOf(112138))).isEqualTo("196.25");

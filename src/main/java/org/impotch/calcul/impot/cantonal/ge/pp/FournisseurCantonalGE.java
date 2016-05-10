@@ -40,6 +40,7 @@ import org.impotch.calcul.impot.taxation.pp.*;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionBeneficiaireRentesAVSAI;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionChargeFamille;
+import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionDoubleActivite;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionRentierAVS;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais.ProducteurBaseRabaisImpot;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
@@ -81,6 +82,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
 
     private ConcurrentMap<Integer, DeductionSociale> deducSocialeCharge = new ConcurrentHashMap<Integer, DeductionSociale>();
+    private ConcurrentMap<Integer, DeductionDoubleActivite> deducDoubleActivite = new ConcurrentHashMap<>();
     private ConcurrentMap<Integer, DeductionBeneficiaireRentesAVSAI> deducSocialeRentier = new ConcurrentHashMap<Integer, DeductionBeneficiaireRentesAVSAI>();
 
     private ConcurrentMap<Integer, ProducteurRabaisImpot> producteursRabaisImpot = new ConcurrentHashMap<Integer, ProducteurRabaisImpot>();
@@ -637,6 +639,26 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         if (2010 == annee) deduction.setMontantParCharge(new BigDecimal("9000"));
         else if (annee < 2013) deduction.setMontantParCharge(new BigDecimal("10000"));
         else if (annee < 2017) deduction.setMontantParCharge(new BigDecimal("10078"));
+        return deduction;
+    }
+
+    @Override
+    public DeductionSociale getRegleDeductionDoubleActivite(int annee) {
+        if (!deducDoubleActivite.containsKey(annee)) {
+            DeductionDoubleActivite deduction = construireRegleDeductionDoubleActivite(annee);
+            // Attention, la ConcurrentMap n'aime pas les nulls !!
+            if (null != deduction) deducDoubleActivite.putIfAbsent(annee, deduction);
+        }
+        return deducDoubleActivite.get(annee);
+    }
+
+    private DeductionDoubleActivite construireRegleDeductionDoubleActivite(int annee) {
+        int montantDeduction = 0;
+        if (annee >= 2009) montantDeduction = 500;
+        if (annee >= 2013) montantDeduction = 504;
+        if (annee >= 2017) throw new IllegalArgumentException("Le montant de la déduction double activité pour l'année '"
+                + annee + "' doit être adapté !");
+        DeductionDoubleActivite deduction = new DeductionDoubleActivite(montantDeduction);
         return deduction;
     }
 
