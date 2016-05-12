@@ -37,7 +37,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml"})
+@ContextConfiguration(locations = {"/beansCH_GE.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProducteurImpotAvecRabaisTest extends ProducteurImpotGEAvant2010 {
 

@@ -16,12 +16,14 @@
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.calcul.assurancessociales.ge.CalculCotisationsSocialesSalarieGE;
 import org.impotch.calcul.assurancessociales.ge.param.ParametrageCotisationAssuranceMaternite;
+import org.impotch.calcul.assurancessociales.ge.param.ParametrageEnMemoireCotisationAssuranceMaternite;
 import org.impotch.util.BigDecimalUtil;
 
 import javax.annotation.Resource;
@@ -51,17 +53,12 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	
 	private Map<Integer,BigDecimal> renteSimpleMensuelleMinimumParAnnee;
 
-    @Resource(name = "paramCotiAssuranceMaternite")
-    private ParametrageCotisationAssuranceMaternite parametrageCotisationAssuranceMaternite;
+    private ParametrageCotisationAssuranceMaternite parametrageCotisationAssuranceMaternite = new ParametrageEnMemoireCotisationAssuranceMaternite();
 
-    /**************************************************/
-    /********** Accesseurs / Mutateurs ****************/
-    /**************************************************/
+    public Fournisseur() {
+        renseignerRenteSimpleMensuelleMinimumParAnnee();
+    }
 
-	public void setRenteSimpleMensuelleMinimumParAnnee(Map<Integer,BigDecimal> rentes) {
-		this.renteSimpleMensuelleMinimumParAnnee = rentes;
-	}
-	
     /**************************************************/
     /******************* Méthodes *********************/
     /**************************************************/
@@ -292,7 +289,43 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	}
 	
 	// --------- Calculateur des rentes minimales ou maximales
-	
+
+    private void renseignerRenteSimpleMensuelleMinimumParAnnee() {
+        /** Conformément à l'article 33ter de la loi sur l'assurance-vieillesse
+        et survivants (LAVS; RS 831.10), le Conseil fédéral procède en règle
+        générale tous les deux ans à une adaptation des rentes AVS/AI à l'indice
+        mixte. Cependant, une adaptation peut avoir lieu plus tôt, lorsque l'indice
+        suisse des prix à la consommation a augmenté de plus de 4 pour cent
+        au cours d'une année. Le renchérissement du mois de juin par rapport
+        à l'année précédente est dans ce cas déterminant (art. 51ter du
+        règlement sur l'assurance-vieillesse et survivants, RAVS; RS 831.101). */
+        renteSimpleMensuelleMinimumParAnnee = new HashMap<>();
+        renteSimpleMensuelleMinimumParAnnee.put(1993,BigDecimal.valueOf(940));
+        renteSimpleMensuelleMinimumParAnnee.put(1994,BigDecimal.valueOf(940));
+        renteSimpleMensuelleMinimumParAnnee.put(1995,BigDecimal.valueOf(970));
+        renteSimpleMensuelleMinimumParAnnee.put(1996,BigDecimal.valueOf(970));
+        renteSimpleMensuelleMinimumParAnnee.put(1997,BigDecimal.valueOf(995));
+        renteSimpleMensuelleMinimumParAnnee.put(1998,BigDecimal.valueOf(995));
+        renteSimpleMensuelleMinimumParAnnee.put(1999,BigDecimal.valueOf(1005));
+        renteSimpleMensuelleMinimumParAnnee.put(2000,BigDecimal.valueOf(1005));
+        renteSimpleMensuelleMinimumParAnnee.put(2001,BigDecimal.valueOf(1030));
+        renteSimpleMensuelleMinimumParAnnee.put(2002,BigDecimal.valueOf(1030));
+        renteSimpleMensuelleMinimumParAnnee.put(2003,BigDecimal.valueOf(1055));
+        renteSimpleMensuelleMinimumParAnnee.put(2004,BigDecimal.valueOf(1055));
+        renteSimpleMensuelleMinimumParAnnee.put(2005,BigDecimal.valueOf(1075));
+        renteSimpleMensuelleMinimumParAnnee.put(2006,BigDecimal.valueOf(1075));
+        renteSimpleMensuelleMinimumParAnnee.put(2007,BigDecimal.valueOf(1105));
+        renteSimpleMensuelleMinimumParAnnee.put(2008,BigDecimal.valueOf(1105));
+        renteSimpleMensuelleMinimumParAnnee.put(2009,BigDecimal.valueOf(1140));
+        renteSimpleMensuelleMinimumParAnnee.put(2010,BigDecimal.valueOf(1140));
+        renteSimpleMensuelleMinimumParAnnee.put(2011,BigDecimal.valueOf(1160));
+        renteSimpleMensuelleMinimumParAnnee.put(2012,BigDecimal.valueOf(1160));
+        renteSimpleMensuelleMinimumParAnnee.put(2013,BigDecimal.valueOf(1170));
+        renteSimpleMensuelleMinimumParAnnee.put(2014,BigDecimal.valueOf(1170));
+        renteSimpleMensuelleMinimumParAnnee.put(2015,BigDecimal.valueOf(1175));
+        renteSimpleMensuelleMinimumParAnnee.put(2016,BigDecimal.valueOf(1175));
+    }
+
 	public CalculExtremaRentesAVS getCalculateurExtremaRenteAVS(int annee) {
 		if (!mapCalculateurRentesAVS.containsKey(annee)) mapCalculateurRentesAVS.putIfAbsent(annee, construireCalculateurExtremaRenteAVS(annee));
 		return mapCalculateurRentesAVS.get(annee);

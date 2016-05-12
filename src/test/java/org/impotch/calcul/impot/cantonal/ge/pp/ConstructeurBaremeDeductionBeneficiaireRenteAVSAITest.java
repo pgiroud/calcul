@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml" , "/beans-test.xml"})
+@ContextConfiguration(locations = {"/beansCH_GE.xml", "/beans-test.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAITest {
 

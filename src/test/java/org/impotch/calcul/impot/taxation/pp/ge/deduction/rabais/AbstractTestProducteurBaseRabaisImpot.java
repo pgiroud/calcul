@@ -52,13 +52,9 @@ class AbstractTestProducteurBaseRabaisImpot {
 		
 		
 		producteur.setRegleAge(contruireRegleAge());
-		
-		
+
+
 		Fournisseur fournisseurCotSociale = new Fournisseur();
-		Map<Integer,BigDecimal> rentesMinimumParAnnee = new HashMap<Integer,BigDecimal>();
-		rentesMinimumParAnnee.put(2008, new BigDecimal("1105"));
-		
-		fournisseurCotSociale.setRenteSimpleMensuelleMinimumParAnnee(rentesMinimumParAnnee);
 		if (annee > 2006) producteur.setRegleRenteMaxi(fournisseurCotSociale.getCalculateurExtremaRenteAVS(annee));
 		return producteur;
 	}

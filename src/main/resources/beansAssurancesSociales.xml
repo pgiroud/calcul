@@ -14,56 +14,7 @@
 
   <context:annotation-config/>
 
-  <bean name="paramCotiAssuranceMaternite" class="org.impotch.calcul.assurancessociales.ge.param.ParametrageEnMemoireCotisationAssuranceMaternite">
-    <property name="tauxParAnnee">
-      <map>
-        <entry key="2003" value="0.15 %"/>
-        <entry key="2004" value="0.13 %"/>
-        <entry key="2006" value="0.02 %"/>
-        <entry key="2010" value="0.045 %"/>
-        <entry key="2013" value="0.042 %"/>
-        <entry key="2014" value="0.041 %"/>
-      </map>
-    </property>
-  </bean>
-
   <bean name="fournisseurRegleCalculAssuranceSociale" class="org.impotch.calcul.assurancessociales.Fournisseur">
-    <property name="renteSimpleMensuelleMinimumParAnnee">
-      <map>
-        <!--  Conformément à l'article 33ter de la loi sur l'assurance-vieillesse
-        et survivants (LAVS; RS 831.10), le Conseil fédéral procède en règle
-        générale tous les deux ans à une adaptation des rentes AVS/AI à l'indice
-        mixte. Cependant, une adaptation peut avoir lieu plus tôt, lorsque l'indice
-        suisse des prix à la consommation a augmenté de plus de 4 pour cent
-        au cours d'une année. Le renchérissement du mois de juin par rapport
-        à l'année précédente est dans ce cas déterminant (art. 51ter du
-        règlement sur l'assurance-vieillesse et survivants, RAVS; RS 831.101). -->
-        <entry key="1993" value="940"/>
-        <entry key="1994" value="940"/>
-        <entry key="1995" value="970"/>
-        <entry key="1996" value="970"/>
-        <entry key="1997" value="995"/>
-        <entry key="1998" value="995"/>
-        <entry key="1999" value="1005"/>
-        <entry key="2000" value="1005"/>
-        <entry key="2001" value="1030"/>
-        <entry key="2002" value="1030"/>
-        <entry key="2003" value="1055"/>
-        <entry key="2004" value="1055"/>
-        <entry key="2005" value="1075"/>
-        <entry key="2006" value="1075"/>
-        <entry key="2007" value="1105"/>
-        <entry key="2008" value="1105"/>
-        <entry key="2009" value="1140"/>
-        <entry key="2010" value="1140"/>
-        <entry key="2011" value="1160"/>
-        <entry key="2012" value="1160"/>
-        <entry key="2013" value="1170"/>
-        <entry key="2014" value="1170"/>
-        <entry key="2015" value="1175"/>
-        <entry key="2016" value="1175"/>
-      </map>
-    </property>
   </bean>
 
 

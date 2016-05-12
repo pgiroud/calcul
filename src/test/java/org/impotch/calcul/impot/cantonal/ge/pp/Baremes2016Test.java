@@ -35,7 +35,7 @@ import java.util.Collection;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Parameterized.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml"})
+@ContextConfiguration(locations = {"/beansCH_GE.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class Baremes2016Test {
 

@@ -7,6 +7,7 @@
 
   <context:annotation-config/>
 
+  <import resource="beansAssurancesSociales.xml"/>
 
   <bean name="fournisseurIndiceGEBaseMai1993"
         class="org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique">
@@ -80,6 +81,7 @@
     <property name="fichier" value="classpath:parametrage/ge/ExtractionTauxPP.txt"/>
     <property name="residentParCommuneDao" ref="residentParCommuneDao"/>
   </bean>
+
 
   <bean name="fournisseurParamCommune" class="org.impotch.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE">
     <property name="dao" ref="paramCommuneDao"/>

@@ -46,7 +46,7 @@ import org.impotch.calcul.util.MockExplicationDetailleeBuilder;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml"})
+@ContextConfiguration(locations = {"/beansCH_GE.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProducteurImpotCommunalGETest {
 

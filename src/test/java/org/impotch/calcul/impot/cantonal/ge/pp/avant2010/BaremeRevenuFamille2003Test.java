@@ -35,7 +35,7 @@ import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml"})
+@ContextConfiguration(locations = {"/beansCH_GE.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class BaremeRevenuFamille2003Test {
 

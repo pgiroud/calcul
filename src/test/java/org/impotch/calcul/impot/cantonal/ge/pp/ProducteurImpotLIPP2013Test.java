@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml" , "/beans-test.xml"})
+@ContextConfiguration(locations = {"/beansCH_GE.xml", "/beans-test.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProducteurImpotLIPP2013Test extends ProducteurImpotTst {
 

@@ -18,11 +18,7 @@ package org.impotch.calcul.assurancessociales.ge;
 import java.math.BigDecimal;
 
 import org.impotch.calcul.ReglePeriodique;
-import org.impotch.calcul.assurancessociales.CalculCotisationAssuranceChomage;
-import org.impotch.calcul.assurancessociales.CalculCotisationAvsAiApg;
-import org.impotch.calcul.assurancessociales.CalculCotisationsAssuranceAccidentsNonProfessionnels;
-import org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie;
-import org.impotch.calcul.assurancessociales.CalculPartSalarieeCotisationAvsAiApg;
+import org.impotch.calcul.assurancessociales.*;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.TypeArrondi;
 

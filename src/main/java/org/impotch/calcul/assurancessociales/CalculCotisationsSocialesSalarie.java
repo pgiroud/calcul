@@ -18,6 +18,8 @@ package org.impotch.calcul.assurancessociales;
 import java.math.BigDecimal;
 
 import org.impotch.calcul.ReglePeriodique;
+import org.impotch.util.BigDecimalUtil;
+import org.impotch.util.StringUtil;
 import org.impotch.util.TypeArrondi;
 
 /**
@@ -37,7 +39,7 @@ import org.impotch.util.TypeArrondi;
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements CalculCotisationAvsAiApg, CalculPartSalarieeCotisationAvsAiApg, CalculCotisationAssuranceChomage, CalculCotisationsAssuranceAccidentsNonProfessionnels {
+public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements CalculCotisationAvsAiApg, CalculPartSalarieeCotisationAvsAiApg, CalculCotisationAssuranceChomage, CalculCotisationsAssuranceAccidentsNonProfessionnels, CalculCotisationsAssuranceMaterniteAdoption {
 
     /**************************************************/
     /****************** Attributs *********************/
@@ -46,7 +48,11 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	private CalculCotisationAvsAiApgSalarie calculateurAvsAiApg;
 	private BigDecimal montantAnnuelMaximumGainAssure; 
 	private CalculCotisationAssuranceChomage calculateurAC;
-	
+	/**
+	 * Le taux de cotisation à l'assurance maternité adoption
+	 */
+	private BigDecimal tauxAssuranceMaterniteAdoption;
+
 	
     /**************************************************/
     /*************** Constructeurs ********************/
@@ -71,7 +77,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 		calculateurAvsAiApg = nCalculateurAvsAiApg;
 	}
 
-	protected void setCalculateurAC(CalculCotisationAssuranceChomage calculateurAC) {
+	private void setCalculateurAC(CalculCotisationAssuranceChomage calculateurAC) {
 		this.calculateurAC = calculateurAC;
 	}
 	
@@ -79,11 +85,26 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 		montantAnnuelMaximumGainAssure = montant;
 	}
 
-
+	private void setTauxAssuranceMaterniteAdoption(BigDecimal taux) {
+		this.tauxAssuranceMaterniteAdoption = taux;
+	}
 
     /**************************************************/
     /******************* Méthodes *********************/
     /**************************************************/
+
+	//-------- Implémentation de l'interface CalculCotisationsAssuranceMaterniteAdoption
+
+	@Override
+	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant) {
+		if (BigDecimalUtil.isStrictementPositif(this.tauxAssuranceMaterniteAdoption)) {
+			BigDecimal cotisation = montantDeterminant.multiply(tauxAssuranceMaterniteAdoption);
+			return TypeArrondi.CINQ_CTS.arrondirMontant(cotisation);
+		} else {
+			return BigDecimal.ZERO;
+		}
+	}
+
 
 	//------ Implémentation de l'interface CalculPartSalarieeCotisationAvsAiApg
 
@@ -202,7 +223,9 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 		private String tauxAC;
 		private String ratioHautRevenu;
 		private String tauxACContributionHautRevenu;
-		
+
+		private String tauxAssuranceMaterniteAdoption;
+
 		/**
 		 * Spécifie le taux de cotisation total (part employeur + part salariée).
 		 * @param taux le taux de cotisation AVS
@@ -260,6 +283,10 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
             return this;
         }
 
+		public Constructeur tauxAssuranceMaterniteAdoption(String taux) {
+			this.tauxAssuranceMaterniteAdoption = taux;
+			return this;
+		}
 		
 		public CalculCotisationsSocialesSalarie construire(int annee) {
 			CalculCotisationAvsAiApgSalarie.Constructeur constructeur = new CalculCotisationAvsAiApgSalarie.Constructeur();
@@ -280,6 +307,9 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 			calculateur.setMontantAnnuelMaximumGainAssure(new BigDecimal(montantMax));
 			calculateur.setCalculateurAC(calculateurAC);
 			calculateur.setCalculateurAvsAiApg(constructeur.construire(annee));
+			if (StringUtil.hasText(this.tauxAssuranceMaterniteAdoption)) {
+				calculateur.setTauxAssuranceMaterniteAdoption(BigDecimalUtil.parseTaux(tauxAssuranceMaterniteAdoption));
+			}
 			return calculateur;
 		}
 	}

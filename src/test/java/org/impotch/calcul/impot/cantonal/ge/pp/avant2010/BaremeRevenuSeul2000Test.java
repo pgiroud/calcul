@@ -39,7 +39,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Parameterized.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml"})
+@ContextConfiguration(locations = {"/beansCH_GE.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class BaremeRevenuSeul2000Test {
 

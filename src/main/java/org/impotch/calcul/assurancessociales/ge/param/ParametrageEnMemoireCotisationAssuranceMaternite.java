@@ -29,8 +29,18 @@ public class ParametrageEnMemoireCotisationAssuranceMaternite implements Paramet
     private int premiereAnnee;
     private int derniereAnnee;
 
+    public ParametrageEnMemoireCotisationAssuranceMaternite() {
+        Map<Integer,String> taux = new HashMap<>();
+        taux.put(2003,"0.15 %");
+        taux.put(2004,"0.13 %");
+        taux.put(2006,"0.02 %");
+        taux.put(2010,"0.045 %");
+        taux.put(2013,"0.042 %");
+        taux.put(2014,"0.041 %");
+        setTauxParAnnee(taux);
+    }
 
-    /**************************************************/
+/**************************************************/
     /********** Accesseurs / Mutateurs ****************/
     /**************************************************/
 

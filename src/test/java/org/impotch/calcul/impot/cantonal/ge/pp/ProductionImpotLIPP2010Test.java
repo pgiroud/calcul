@@ -40,7 +40,7 @@ import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml","/beansAssurancesSociales.xml" , "/beans-test.xml"})
+@ContextConfiguration(locations = {"/beansCH_GE.xml", "/beans-test.xml"})
 @TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
 
