@@ -633,12 +633,13 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     private DeductionSociale construireRegleDeductionSocialeCharge(int annee) {
         if (annee < 2010) return null;
-        if (annee > 2016) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
+        if (annee > 2017) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
                 + annee + "' doit être adapté !");
         DeductionChargeFamille deduction = new DeductionChargeFamille(annee);
         if (2010 == annee) deduction.setMontantParCharge(new BigDecimal("9000"));
         else if (annee < 2013) deduction.setMontantParCharge(new BigDecimal("10000"));
         else if (annee < 2017) deduction.setMontantParCharge(new BigDecimal("10078"));
+        else if (annee < 2018) deduction.setMontantParCharge(new BigDecimal("9980"));
         return deduction;
     }
 
@@ -656,7 +657,8 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         int montantDeduction = 0;
         if (annee >= 2009) montantDeduction = 500;
         if (annee >= 2013) montantDeduction = 504;
-        if (annee >= 2017) throw new IllegalArgumentException("Le montant de la déduction double activité pour l'année '"
+        if (annee >= 2017) montantDeduction = 499;
+        if (annee >= 2018) throw new IllegalArgumentException("Le montant de la déduction double activité pour l'année '"
                 + annee + "' doit être adapté !");
         DeductionDoubleActivite deduction = new DeductionDoubleActivite(montantDeduction);
         return deduction;
@@ -680,13 +682,25 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     protected BaremeConstantParTranche construireBaremeDeductionBeneficiaireRentesAvsAi(int annee) {
         BaremeConstantParTranche bareme = new BaremeConstantParTranche();
-        bareme.ajouterTranche(50000, 10000);
-        bareme.ajouterTranche(56700, 8000);
-        bareme.ajouterTranche(64000, 6000);
-        bareme.ajouterTranche(71500, 4000);
-        bareme.ajouterTranche(80000, 2000);
+        // Voir le détail dans D 3 08.05: Règlement relatif à la compensation des effets de la progression à froid (RCEPF)
+        // Art. 6
+        if (annee < 2013) {
+            bareme.ajouterTranche(50000, 10000);
+            bareme.ajouterTranche(56700, 8000);
+            bareme.ajouterTranche(64000, 6000);
+            bareme.ajouterTranche(71500, 4000);
+            bareme.ajouterTranche(80000, 2000);
+        } else if (annee < 2017) {
+            bareme.ajouterTranche(57947, 10078);
+            bareme.ajouterTranche(65707, 8062);
+            bareme.ajouterTranche(74172, 6047);
+            bareme.ajouterTranche(82839, 4031);
+            bareme.ajouterTranche(92715, 2016);
+        } else {
+            throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2017 !!");
+        }
         bareme.ajouterDerniereTranche(0);
-        return bareme;
+    return bareme;
     }
 
 }
