@@ -55,7 +55,35 @@ public class ConstructeurSituationFamiliale {
 		};
 		return situation;
 	}
-	
+
+	public SituationFamiliale creerPersonneSeuleAvecEnfants(final int nbreEnfant) {
+		SituationFamiliale situation = new SituationFamiliale() {
+
+			@Override
+			public Contribuable getContribuable() {
+				return new Contribuable() {
+				};
+			}
+
+			@Override
+			public Optional<Contribuable> getConjoint() {
+				return Optional.empty();
+			}
+
+			@Override
+			public Set<EnfantACharge> getEnfants() {
+				int[] age = new int[nbreEnfant];
+				for (int i = 0; i < nbreEnfant; i++) age[i] = 14;
+				return creerEnfant(false,age);
+			}
+
+			@Override
+			public Set<PersonneACharge> getPersonnesNecessiteuses() {return Collections.emptySet();}
+
+		};
+		return situation;
+	}
+
 	public SituationFamiliale creerCoupleSansCharge() {
 		SituationFamiliale situation = new SituationFamiliale() {
 
