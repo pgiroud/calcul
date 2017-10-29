@@ -168,5 +168,33 @@ public class BaremeFortuneTest {
 		assertEquals("Fortune de 1665879",new BigDecimal("834.65"),bareme.calcul(new BigDecimal("1665879")));
 		assertEquals("Fortune de 3331758",new BigDecimal("2707.85"),bareme.calcul(new BigDecimal("3331758")));
 	}
-	
+
+	@Test
+	public void fortune2018() {
+		Bareme baremeFortune = fournisseur.getBaremeFortune(2018);
+		assertEquals("Fortune de 111167",new BigDecimal("194.55"),baremeFortune.calcul(new BigDecimal("111167")));
+		assertEquals("Fortune de 222333",new BigDecimal("444.65"),baremeFortune.calcul(new BigDecimal("222333")));
+		assertEquals("Fortune de 333500",new BigDecimal("750.35"),baremeFortune.calcul(new BigDecimal("333500")));
+		assertEquals("Fortune de 444666",new BigDecimal("1083.85"),baremeFortune.calcul(new BigDecimal("444666")));
+		assertEquals("Fortune de 667000",new BigDecimal("1806.45"),baremeFortune.calcul(new BigDecimal("667000")));
+		assertEquals("Fortune de 889332",new BigDecimal("2584.60"),baremeFortune.calcul(new BigDecimal("889332")));
+		assertEquals("Fortune de 1111665",new BigDecimal("3418.35"),baremeFortune.calcul(new BigDecimal("1111665")));
+		assertEquals("Fortune de 1333998",new BigDecimal("4307.70"),baremeFortune.calcul(new BigDecimal("1333998")));
+		assertEquals("Fortune de 1667498",new BigDecimal("5725.10"),baremeFortune.calcul(new BigDecimal("1667498")));
+	}
+
+	@Test
+	public void fortuneSupplementaire2018() {
+		Bareme bareme = fournisseur.getBaremeFortuneSupplementaire(2018);
+		assertEquals("Fortune de 111167",new BigDecimal("0.00"),bareme.calcul(new BigDecimal("111167")));
+		assertEquals("Fortune de 222333",new BigDecimal("12.50"),bareme.calcul(new BigDecimal("222333")));
+		assertEquals("Fortune de 333500",new BigDecimal("27.80"),bareme.calcul(new BigDecimal("333500")));
+		assertEquals("Fortune de 444666",new BigDecimal("61.15"),bareme.calcul(new BigDecimal("444666")));
+		assertEquals("Fortune de 667000",new BigDecimal("133.40"),bareme.calcul(new BigDecimal("667000")));
+		assertEquals("Fortune de 889332",new BigDecimal("250.10"),bareme.calcul(new BigDecimal("889332")));
+		assertEquals("Fortune de 1111665",new BigDecimal("375.15"),bareme.calcul(new BigDecimal("1111665")));
+		assertEquals("Fortune de 1333998",new BigDecimal("553.00"),bareme.calcul(new BigDecimal("1333998")));
+		assertEquals("Fortune de 1667498",new BigDecimal("836.50"),bareme.calcul(new BigDecimal("1667498")));
+		assertEquals("Fortune de 3334996",new BigDecimal("2712.45"),bareme.calcul(new BigDecimal("3334996")));
+	}
 }
