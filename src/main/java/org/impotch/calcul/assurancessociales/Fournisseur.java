@@ -326,6 +326,8 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
         renteSimpleMensuelleMinimumParAnnee.put(2016,BigDecimal.valueOf(1175));
         renteSimpleMensuelleMinimumParAnnee.put(2017,BigDecimal.valueOf(1175));
         renteSimpleMensuelleMinimumParAnnee.put(2018,BigDecimal.valueOf(1175));
+        renteSimpleMensuelleMinimumParAnnee.put(2019,BigDecimal.valueOf(1185));
+        renteSimpleMensuelleMinimumParAnnee.put(2020,BigDecimal.valueOf(1185));
     }
 
 	public CalculExtremaRentesAVS getCalculateurExtremaRenteAVS(int annee) {

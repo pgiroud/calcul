@@ -63,4 +63,13 @@ public class FournisseurLPPTest {
     }
 
 
+    @Test
+    public void test2019() {
+        FournisseurMontantsLimitesPrevoyanceProfessionnelle fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurMontantsLimitesPrevoyanceProfessionnelle(2019);
+        assertThat(fournisseur.getSalaireMinimalAnnuel()).isEqualTo("21330");
+        assertThat(fournisseur.getSalaireCoordonneMinimalAnnuel()).isEqualTo("3555");
+        assertThat(fournisseur.getDeductionCoordination()).isEqualTo("24885");
+        assertThat(fournisseur.getLimiteSuperieureSalaireAnnuel()).isEqualTo("85320");
+    }
+
 }

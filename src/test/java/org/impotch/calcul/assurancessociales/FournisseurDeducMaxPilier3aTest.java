@@ -32,6 +32,16 @@ public class FournisseurDeducMaxPilier3aTest {
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
 
     @Test
+    public void test2019et2020() {
+        FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2019);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6826");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("34128");
+        fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2020);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6826");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("34128");
+    }
+
+    @Test
     public void test2017et2018() {
         FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2017);
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6768");
