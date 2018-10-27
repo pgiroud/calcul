@@ -24,9 +24,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.impotch.calcul.assurancessociales.ge.CalculCotisationsSocialesSalarieGE;
 import org.impotch.calcul.assurancessociales.ge.param.ParametrageCotisationAssuranceMaternite;
 import org.impotch.calcul.assurancessociales.ge.param.ParametrageEnMemoireCotisationAssuranceMaternite;
-import org.impotch.util.BigDecimalUtil;
 
-import javax.annotation.Resource;
 
 /**
  * Cette classe a la responsabilité de fournir les calculateurs de cotisations sociales.
