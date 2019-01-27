@@ -271,7 +271,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             }
             return constructeurBaremeFortune;
         } else {
-            // Après 2009, on change l'indexateur pour se basé sur les indices
+            // Après 2009, on change l'indexateur pour se baser sur les indices
             // dont la base est
             // décembre 2005.
             if (null == constructeurBaremeFortuneApres2009) {
@@ -640,7 +640,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         if (2010 == annee) deduction.setMontantParCharge(new BigDecimal("9000"));
         else if (annee < 2013) deduction.setMontantParCharge(new BigDecimal("10000"));
         else if (annee < 2017) deduction.setMontantParCharge(new BigDecimal("10078"));
-        else if (annee < 2018) deduction.setMontantParCharge(new BigDecimal("9980"));
+        else if (annee < 2020) deduction.setMontantParCharge(new BigDecimal("9980"));
         return deduction;
     }
 
@@ -659,7 +659,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         if (annee >= 2009) montantDeduction = 500;
         if (annee >= 2013) montantDeduction = 504;
         if (annee >= 2017) montantDeduction = 499;
-        if (annee >= 2018) throw new IllegalArgumentException("Le montant de la déduction double activité pour l'année '"
+        if (annee >= 2020) throw new IllegalArgumentException("Le montant de la déduction double activité pour l'année '"
                 + annee + "' doit être adapté !");
         DeductionDoubleActivite deduction = new DeductionDoubleActivite(montantDeduction);
         return deduction;
@@ -697,8 +697,14 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             bareme.ajouterTranche(74172, 6047);
             bareme.ajouterTranche(82839, 4031);
             bareme.ajouterTranche(92715, 2016);
+        } else if (annee < 2020) {
+            bareme.ajouterTranche(57388, 9981);
+            bareme.ajouterTranche(65073, 7984);
+            bareme.ajouterTranche(73457, 5988);
+            bareme.ajouterTranche(82040, 3992);
+            bareme.ajouterTranche(91821, 1996);
         } else {
-            throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2017 !!");
+            throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2020 !!");
         }
         bareme.ajouterDerniereTranche(0);
     return bareme;
