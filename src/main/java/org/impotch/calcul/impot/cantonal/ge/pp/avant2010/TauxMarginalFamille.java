@@ -25,7 +25,7 @@ import org.impotch.util.math.Fonction;
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public class TauxMarginalFamille extends ReglePeriodique implements Fonction {
+public strictfp class TauxMarginalFamille extends ReglePeriodique implements Fonction {
 
 	/**************************************************/
 	/****************** Attributs *********************/

@@ -33,7 +33,7 @@ import org.impotch.util.math.integration.Primitivable;
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public class TauxMarginalSeul extends ReglePeriodique implements Primitivable {
+public strictfp class TauxMarginalSeul extends ReglePeriodique implements Primitivable {
 
     /**************************************************/
     /****************** Attributs *********************/
