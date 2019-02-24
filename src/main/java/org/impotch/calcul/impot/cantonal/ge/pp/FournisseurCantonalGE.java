@@ -634,7 +634,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     private DeductionSociale construireRegleDeductionSocialeCharge(int annee) {
         if (annee < 2010) return null;
-        if (annee > 2017) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
+        if (annee > 2019) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
                 + annee + "' doit être adapté !");
         DeductionChargeFamille deduction = new DeductionChargeFamille(annee);
         if (2010 == annee) deduction.setMontantParCharge(new BigDecimal("9000"));
