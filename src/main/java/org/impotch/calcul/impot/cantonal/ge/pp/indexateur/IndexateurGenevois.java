@@ -16,6 +16,7 @@
 package org.impotch.calcul.impot.cantonal.ge.pp.indexateur;
 
 import org.impotch.bareme.BaremeConstantParTranche;
+import org.impotch.bareme.BaremeParTranche;
 import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.impotch.calcul.impot.indexation.Indexateur;
@@ -60,7 +61,7 @@ public class IndexateurGenevois implements Indexateur {
     }
 
     @Override
-    public BaremeConstantParTranche indexer(BaremeConstantParTranche bareme, int annee, TypeArrondi arrondi) {
+    public BaremeParTranche indexer(BaremeParTranche bareme, int annee, TypeArrondi arrondi) {
         return indexateurQuadriennal.indexer(bareme,annee,arrondi);
     }
 
@@ -69,22 +70,6 @@ public class IndexateurGenevois implements Indexateur {
         return indexateurAnnuel.indexer(bareme,annee,arrondi);
     }
 
-// En java 8, il conviendra d'implémenter ces méthodes par défaut dans l'interface
 
-
-    @Override
-    public BigDecimal indexer(BigDecimal montantBase,
-                              int annee) {
-        return indexer(montantBase, annee, TypeArrondi.FRANC);
-    }
-    @Override
-    public BaremeConstantParTranche indexer(BaremeConstantParTranche bareme, int annee) {
-        return indexer(bareme,annee,TypeArrondi.FRANC);
-    }
-
-    @Override
-    public BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee) {
-        return indexer(bareme,annee,TypeArrondi.FRANC);
-    }
 
 }

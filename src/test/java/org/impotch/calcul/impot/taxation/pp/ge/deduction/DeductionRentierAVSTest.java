@@ -17,6 +17,8 @@ package org.impotch.calcul.impot.taxation.pp.ge.deduction;
 
 import java.math.BigDecimal;
 
+import org.impotch.bareme.BaremeParTranche;
+import org.impotch.bareme.ConstructeurBareme;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -31,14 +33,14 @@ public class DeductionRentierAVSTest {
 	
 	@Before
 	public void init() {
-		BaremeConstantParTranche bareme = new BaremeConstantParTranche();
-		bareme.ajouterTranche(50000, 10000);
-		bareme.ajouterTranche(56700,  8000);
-		bareme.ajouterTranche(64000,  6000);
-		bareme.ajouterTranche(71500,  4000);
-		bareme.ajouterTranche(80000,  2000);
-		bareme.ajouterDerniereTranche(0);
-		
+		ConstructeurBareme cons = new ConstructeurBareme()
+				.tranche(50000, 10000)
+				.tranche(56700,  8000)
+				.tranche(64000,  6000)
+				.tranche(71500,  4000)
+				.tranche(80000,  2000)
+				.derniereTranche(0);
+		BaremeParTranche bareme = cons.construireBaremeParTranche();
 		regle = new DeductionRentierAVS(2009,bareme, new BigDecimal("1.15"));
 	}
 	

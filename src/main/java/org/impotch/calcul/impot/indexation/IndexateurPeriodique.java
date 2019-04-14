@@ -18,6 +18,7 @@ package org.impotch.calcul.impot.indexation;
 import java.math.BigDecimal;
 
 import org.impotch.bareme.BaremeConstantParTranche;
+import org.impotch.bareme.BaremeParTranche;
 import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
 import org.impotch.util.TypeArrondi;
 
@@ -86,9 +87,9 @@ public class IndexateurPeriodique implements Indexateur {
     }
 
     @Override
-    public BaremeConstantParTranche indexer(BaremeConstantParTranche bareme, int annee, TypeArrondi arrondi) {
+    public BaremeParTranche indexer(BaremeParTranche bareme, int annee, TypeArrondi arrondi) {
         BigDecimal rapport = obtenirRapportRencherissement(annee);
-        BaremeConstantParTranche baremeCible = bareme.homothetieTranche(rapport,arrondi);
+        BaremeParTranche baremeCible = bareme.homothetie(rapport,arrondi);
         baremeCible = baremeCible.homothetieValeur(rapport,arrondi);
         return baremeCible;
     }
@@ -96,26 +97,8 @@ public class IndexateurPeriodique implements Indexateur {
     @Override
     public BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee, TypeArrondi arrondi) {
         BigDecimal rapport = obtenirRapportRencherissement(annee);
-        return bareme.homothetie(rapport, arrondi);
+        return (BaremeTauxMarginalConstantParTranche)bareme.homothetie(rapport, arrondi);
     }
 
-
-    // En java 8, il conviendra d'implémenter ces méthodes par défaut dans l'interface
-
-
-    @Override
-    public BigDecimal indexer(BigDecimal montantBase,
-                              int annee) {
-        return indexer(montantBase, annee, TypeArrondi.FRANC);
-    }
-    @Override
-    public BaremeConstantParTranche indexer(BaremeConstantParTranche bareme, int annee) {
-        return indexer(bareme,annee,TypeArrondi.FRANC);
-    }
-
-    @Override
-    public BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee) {
-        return indexer(bareme,annee,TypeArrondi.FRANC);
-    }
 
 }

@@ -16,6 +16,7 @@
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.bareme.BaremeConstantParTranche;
+import org.impotch.bareme.BaremeParTranche;
 import org.impotch.calcul.impot.indexation.Indexateur;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,14 +50,14 @@ public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAITest {
 
     @Test
     public void baremeSeul2014() {
-        BaremeConstantParTranche bareme = constructeur.construireBaremeSeul(2014);
+        BaremeParTranche bareme = constructeur.construireBaremeSeul(2014);
         assertThat(bareme.calcul(BigDecimal.valueOf(50000))).isEqualTo("10078");
         assertThat(bareme.calcul(BigDecimal.valueOf(100000))).isEqualTo("0");
     }
 
     @Test
     public void coupleDeuxRentes2014() {
-        BaremeConstantParTranche bareme = constructeur.construireBaremeCoupleDeuxRentes(2014);
+        BaremeParTranche bareme = constructeur.construireBaremeCoupleDeuxRentes(2014);
         assertThat(bareme.calcul(BigDecimal.valueOf(57947))).isEqualTo("11589");
         assertThat(bareme.calcul(BigDecimal.valueOf(57948))).isEqualTo("9272");
     }

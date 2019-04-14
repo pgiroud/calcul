@@ -18,6 +18,7 @@ package org.impotch.calcul.impot.taxation.pp.ge.deduction;
 import java.math.BigDecimal;
 
 import org.impotch.bareme.BaremeConstantParTranche;
+import org.impotch.bareme.BaremeParTranche;
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.util.TypeArrondi;
 
@@ -27,14 +28,14 @@ import org.impotch.util.TypeArrondi;
  */
 public class DeductionRentierAVS extends ReglePeriodique implements DeductionBeneficiaireRentesAVSAI {
 
-	private BaremeConstantParTranche baremeSeul;
-	private BaremeConstantParTranche baremeCoupleUnSeulRentier;
-	private BaremeConstantParTranche baremeCoupleDeuxRentiers;
+	private BaremeParTranche baremeSeul;
+	private BaremeParTranche baremeCoupleUnSeulRentier;
+	private BaremeParTranche baremeCoupleDeuxRentiers;
 	
-	public DeductionRentierAVS(int annee, BaremeConstantParTranche bareme, BigDecimal rapport) {
+	public DeductionRentierAVS(int annee, BaremeParTranche bareme, BigDecimal rapport) {
 		super(annee);
 		baremeSeul = bareme;
-		baremeCoupleUnSeulRentier = bareme.homothetieTranche(rapport, TypeArrondi.CENT_FRANC_INF);
+		baremeCoupleUnSeulRentier = bareme.homothetie(rapport, TypeArrondi.CENT_FRANC_INF);
 		baremeCoupleDeuxRentiers = baremeCoupleUnSeulRentier.homothetieValeur(rapport, TypeArrondi.CENT_FRANC_INF);
 	}
 

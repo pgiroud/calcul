@@ -16,7 +16,7 @@
 package org.impotch.calcul.impot.cantonal.ne.pp;
 
 import org.impotch.bareme.Bareme;
-import org.impotch.bareme.BaremeTxMarginalEtEffectifParTranche;
+import org.impotch.bareme.ConstructeurBaremeTauxMarginal;
 import org.impotch.calcul.impot.cantonal.FournisseurCantonal;
 import org.impotch.util.TypeArrondi;
 
@@ -40,7 +40,7 @@ public class FournisseurCantonalNE extends FournisseurCantonal implements
 	 */
 	@Override
 	protected Bareme construireBaremeFortune(int annee) {
-        BaremeTxMarginalEtEffectifParTranche.Constructeur constructeur = new BaremeTxMarginalEtEffectifParTranche.Constructeur();
+        ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
         constructeur.tranche(   50000,  "0");
         constructeur.tranche(  200000,  "3 ‰");
         constructeur.tranche(  350000,  "4 ‰");
@@ -56,7 +56,7 @@ public class FournisseurCantonalNE extends FournisseurCantonal implements
 	 */
 	@Override
 	protected Bareme construireBaremeRevenu(int annee) {
-		BaremeTxMarginalEtEffectifParTranche.Constructeur constructeur = new BaremeTxMarginalEtEffectifParTranche.Constructeur();
+		ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
 		constructeur.tranche(   5000,  "0");
 		constructeur.tranche(  10000,  "2 %");
 		constructeur.tranche(  15000,  "4 %");

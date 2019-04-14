@@ -20,12 +20,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.impotch.bareme.Bareme;
-import org.impotch.bareme.BaremeConstantParTranche;
-import org.impotch.bareme.BaremeDiscretiseEtInterpolationLineaire;
-import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
-import org.impotch.bareme.BaremeTauxMarginalIntegrable;
-import org.impotch.bareme.Point;
+import org.impotch.bareme.*;
 import org.impotch.calcul.assurancessociales.FournisseurRegleCalculAssuranceSociale;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.*;
 import org.impotch.calcul.impot.indexation.Indexateur;
@@ -681,33 +676,33 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         return deduction;
     }
 
-    protected BaremeConstantParTranche construireBaremeDeductionBeneficiaireRentesAvsAi(int annee) {
-        BaremeConstantParTranche bareme = new BaremeConstantParTranche();
+    protected BaremeParTranche construireBaremeDeductionBeneficiaireRentesAvsAi(int annee) {
+        ConstructeurBareme cons = new ConstructeurBareme();
         // Voir le détail dans D 3 08.05: Règlement relatif à la compensation des effets de la progression à froid (RCEPF)
         // Art. 6
         if (annee < 2013) {
-            bareme.ajouterTranche(50000, 10000);
-            bareme.ajouterTranche(56700, 8000);
-            bareme.ajouterTranche(64000, 6000);
-            bareme.ajouterTranche(71500, 4000);
-            bareme.ajouterTranche(80000, 2000);
+            cons.tranche(50000, 10000)
+                    .tranche(56700, 8000)
+                    .tranche(64000, 6000)
+                    .tranche(71500, 4000)
+                    .tranche(80000, 2000);
         } else if (annee < 2017) {
-            bareme.ajouterTranche(57947, 10078);
-            bareme.ajouterTranche(65707, 8062);
-            bareme.ajouterTranche(74172, 6047);
-            bareme.ajouterTranche(82839, 4031);
-            bareme.ajouterTranche(92715, 2016);
+            cons.tranche(57947, 10078)
+                    .tranche(65707, 8062)
+                    .tranche(74172, 6047)
+                    .tranche(82839, 4031)
+                    .tranche(92715, 2016);
         } else if (annee < 2020) {
-            bareme.ajouterTranche(57388, 9981);
-            bareme.ajouterTranche(65073, 7984);
-            bareme.ajouterTranche(73457, 5988);
-            bareme.ajouterTranche(82040, 3992);
-            bareme.ajouterTranche(91821, 1996);
+            cons.tranche(57388, 9981)
+                    .tranche(65073, 7984)
+                    .tranche(73457, 5988)
+                    .tranche(82040, 3992)
+                    .tranche(91821, 1996);
         } else {
             throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2020 !!");
         }
-        bareme.ajouterDerniereTranche(0);
-    return bareme;
+        cons.derniereTranche(0);
+    return cons.construireBaremeParTranche();
     }
 
 }

@@ -16,6 +16,8 @@
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.bareme.BaremeConstantParTranche;
+import org.impotch.bareme.BaremeParTranche;
+import org.impotch.bareme.ConstructeurBareme;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.impotch.calcul.impot.indexation.Indexateur;
 import org.impotch.util.TypeArrondi;
@@ -41,9 +43,9 @@ public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAI {
     private Integer anneeMaximumValidite;
     private int anneeReference;
     private Indexateur indexateur;
-    private BaremeConstantParTranche baremeBaseSeul;
-    private BaremeConstantParTranche baremeBaseCoupleUneSeuleRente;
-    private BaremeConstantParTranche baremeBaseCoupleDeuxRentes;
+    private BaremeParTranche baremeBaseSeul;
+    private BaremeParTranche baremeBaseCoupleUneSeuleRente;
+    private BaremeParTranche baremeBaseCoupleDeuxRentes;
 
 
     public ConstructeurBaremeDeductionBeneficiaireRenteAVSAI() {
@@ -52,24 +54,24 @@ public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAI {
         baremeBaseCoupleDeuxRentes = construireBaremeBaseCoupleDeuxRentes();
     }
 
-    private BaremeConstantParTranche construireBaremeBaseSeul() {
-        BaremeConstantParTranche bareme = new BaremeConstantParTranche();
-        bareme.ajouterTranche(50000, 10000);
-        bareme.ajouterTranche(56700, 8000);
-        bareme.ajouterTranche(64000, 6000);
-        bareme.ajouterTranche(71500, 4000);
-        bareme.ajouterTranche(80000, 2000);
-        bareme.ajouterDerniereTranche(0);
-        return bareme;
+    private BaremeParTranche construireBaremeBaseSeul() {
+        ConstructeurBareme cons = new ConstructeurBareme();
+        cons.tranche(50000, 10000);
+        cons.tranche(56700, 8000);
+        cons.tranche(64000, 6000);
+        cons.tranche(71500, 4000);
+        cons.tranche(80000, 2000);
+        cons.derniereTranche(0);
+        return cons.construireBaremeParTranche();
     }
 
-    private BaremeConstantParTranche construireBaremeBaseCoupleUneSeuleRente() {
-        BaremeConstantParTranche bareme = construireBaremeBaseSeul();
-        return bareme.homothetieTranche(rapportEntreDeductionSeuleEtCouple, TypeArrondi.CENT_FRANC);
+    private BaremeParTranche construireBaremeBaseCoupleUneSeuleRente() {
+        BaremeParTranche bareme = construireBaremeBaseSeul();
+        return bareme.homothetie(rapportEntreDeductionSeuleEtCouple, TypeArrondi.CENT_FRANC);
     }
 
-    private BaremeConstantParTranche construireBaremeBaseCoupleDeuxRentes() {
-        BaremeConstantParTranche bareme = construireBaremeBaseCoupleUneSeuleRente();
+    private BaremeParTranche construireBaremeBaseCoupleDeuxRentes() {
+        BaremeParTranche bareme = construireBaremeBaseCoupleUneSeuleRente();
         return bareme.homothetieValeur(rapportEntreDeductionSeuleEtCouple, TypeArrondi.FRANC);
     }
 
@@ -96,19 +98,19 @@ public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAI {
         logger.debug("Construction barème indexé " + annee);
     }
 
-    private BaremeConstantParTranche construireBareme(int annee, BaremeConstantParTranche base) {
+    private BaremeParTranche construireBareme(int annee, BaremeParTranche base) {
         return indexateur.indexer(base,annee);
     }
 
-    public BaremeConstantParTranche construireBaremeSeul(int annee) {
+    public BaremeParTranche construireBaremeSeul(int annee) {
         return construireBareme(annee,baremeBaseSeul);
     }
 
-    public BaremeConstantParTranche construireBaremeCoupleUneSeuleRente(int annee) {
+    public BaremeParTranche construireBaremeCoupleUneSeuleRente(int annee) {
         return construireBareme(annee,baremeBaseCoupleUneSeuleRente);
     }
 
-    public BaremeConstantParTranche construireBaremeCoupleDeuxRentes(int annee) {
+    public BaremeParTranche construireBaremeCoupleDeuxRentes(int annee) {
         return construireBareme(annee,baremeBaseCoupleDeuxRentes);
     }
 

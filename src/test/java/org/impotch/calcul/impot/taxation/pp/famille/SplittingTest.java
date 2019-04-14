@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
+import org.impotch.bareme.ConstructeurBaremeTauxMarginal;
 import org.impotch.calcul.impot.taxation.pp.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,14 +37,14 @@ public class SplittingTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		BaremeTauxMarginalConstantParTranche.Constructeur constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur();
-		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
-		constructeur.tranche(1000, "1 %");
-		constructeur.tranche(2000, "2 %");
-		constructeur.tranche(3000, "3 %");
-		constructeur.tranche(4000, "4 %");
-		constructeur.derniereTranche("5 %");
-		splitting = new Splitting(constructeur.construire(),"50 %");
+		ConstructeurBaremeTauxMarginal cons = new ConstructeurBaremeTauxMarginal();
+		cons.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS)
+			.tranche(1000, "1 %")
+			.tranche(2000, "2 %")
+			.tranche(3000, "3 %")
+			.tranche(4000, "4 %")
+			.derniereTranche("5 %");
+		splitting = new Splitting(cons.construire(),"50 %");
 	}
 
 	

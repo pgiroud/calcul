@@ -18,7 +18,9 @@ package org.impotch.calcul.impot.cantonal.fr.pp;
 import static java.math.BigDecimal.ZERO;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import org.impotch.bareme.BaremeParTranche;
 import org.impotch.bareme.BaremeTauxEffectifParTranche;
 import org.impotch.bareme.TrancheBareme;
 import org.impotch.util.BigDecimalUtil;
@@ -29,8 +31,17 @@ import org.impotch.util.BigDecimalUtil;
  */
 public class BaremeTauxEffectifLineaireParTranche extends BaremeTauxEffectifParTranche {
 
+	public BaremeTauxEffectifLineaireParTranche() {
+		super();
+	}
+
+	public BaremeTauxEffectifLineaireParTranche(List<TrancheBareme> tranches) {
+		super();
+		setTranches(tranches);
+	}
+
 	public BigDecimal getMontantImposablePremiereTranche() {
-		return getTranches().get(0).getMontantMaxTranche();
+		return getTranches().get(0).getIntervalle().getFin();
 	}
 	
 	public BigDecimal getTauxMinimum() {
@@ -40,91 +51,18 @@ public class BaremeTauxEffectifLineaireParTranche extends BaremeTauxEffectifParT
 		throw new IllegalStateException("Il faut qu'il existe des tranches avant d'invoquer cette méthode !!");
 	}
 	
-	public void ajouterTranche(int montant, String taux, String tauxEnPlusPar100Francs) {
-		ajouterTranche(new BigDecimal(montant),
-				BigDecimalUtil.parseTaux(taux),BigDecimalUtil.parseTaux(tauxEnPlusPar100Francs).movePointLeft(2));
-	}
-	
-	private void ajouterTranche(BigDecimal montant, BigDecimal taux, BigDecimal tauxEnPlusPar100Francs) {
-		getTranches().add(new TrancheBaremeLineaire(montant,taux,tauxEnPlusPar100Francs));
-	}
-	
-	public void ajouterDerniereTranche(String taux) {
-		getTranches().add(new TrancheBaremeLineaire.DerniereTrancheBaremeLineaire(BigDecimalUtil.parseTaux(taux)));
-	}
-	
 	/* (non-Javadoc)
 	 * @see ch.ge.afc.calcul.impot.bareme.BaremeTauxEffectif#getTaux(java.math.BigDecimal)
 	 */
 	@Override
 	public BigDecimal getTaux(BigDecimal assiette) {
-		BigDecimal resultat = ZERO;
-		BigDecimal montantMaxTranchePrecedente = ZERO;
-		for (TrancheBareme tranche : getTranches()) {
-			resultat = resultat.add(tranche.calcul(montantMaxTranchePrecedente,assiette));
-			montantMaxTranchePrecedente = tranche.getMontantMaxTranche();
-		}
-		return resultat;
+		return getTranches().stream().map(t -> t.calcul(assiette)).reduce(BigDecimal.ZERO,BigDecimal::add);
 	}
-	
-	protected static class TrancheBaremeLineaire extends TrancheBareme {
 
-		private final BigDecimal pente;
-		
-		public TrancheBaremeLineaire(BigDecimal montantImposableMax,
-				BigDecimal taux, BigDecimal pente) {
-			super(montantImposableMax, taux);
-			this.pente = pente;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			// Attention, il n'est en général pas conseillé de surcharger
-			// la méthode equals dans une sous-classe.
-			// On se le permet ici car cette classe est sufisamment isolée.
-			if (!(obj instanceof TrancheBaremeLineaire)) return false;
-			TrancheBaremeLineaire tranche = (TrancheBaremeLineaire)obj;
-			if (0 != pente.compareTo(tranche.pente)) return false;
-			return super.equals(obj);
-		}
-
-		/* (non-Javadoc)
-		 * @see ch.ge.afc.calcul.impot.bareme.TrancheBareme#calcul(java.math.BigDecimal, java.math.BigDecimal)
-		 */
-		@Override
-		public BigDecimal calcul(
-				BigDecimal montantImposableMaxTranchePrecedente,
-				BigDecimal montantImposable) {
-			if (0 <= montantImposable.compareTo(montantImposableMaxTranchePrecedente)
-					&&
-				0 > montantImposable.compareTo(this.getMontantMaxTranche())) {
-				return this.getTauxOuMontant().add(pente.multiply(montantImposable.subtract(montantImposableMaxTranchePrecedente)));
-			}
-			return BigDecimal.ZERO;
-		}
-
-		protected static class DerniereTrancheBaremeLineaire extends DerniereTrancheBareme {
-			 
-			public DerniereTrancheBaremeLineaire(BigDecimal taux) {
-				super(taux);
-			}
-
-			/* (non-Javadoc)
-			 * @see BaremeTauxEffectifLineaireParTranche.TrancheBaremeLineaire#calcul(java.math.BigDecimal, java.math.BigDecimal)
-			 */
-			@Override
-			public BigDecimal calcul(
-					BigDecimal montantImposableMaxTranchePrecedente,
-					BigDecimal montantImposable) {
-				if (0 <= montantImposable.compareTo(montantImposableMaxTranchePrecedente)) {
-					return this.getTauxOuMontant();
-				}
-				return BigDecimal.ZERO;
-			}
-			
-			
-		}
-		
+	@Override
+	protected BaremeParTranche newBaremeParTranche() {
+		return new BaremeTauxEffectifLineaireParTranche();
 	}
-	
+
+
 }

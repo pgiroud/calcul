@@ -18,15 +18,29 @@ package org.impotch.calcul.impot.indexation;
 import java.math.BigDecimal;
 
 import org.impotch.bareme.BaremeConstantParTranche;
+import org.impotch.bareme.BaremeParTranche;
 import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
 import org.impotch.util.TypeArrondi;
 
 public interface Indexateur {
-	BigDecimal indexer(BigDecimal montantBase, int annee);
 	BigDecimal indexer(BigDecimal montantBase, int annee, TypeArrondi arrondi);
-    BaremeConstantParTranche indexer(BaremeConstantParTranche bareme, int annee);
-    BaremeConstantParTranche indexer(BaremeConstantParTranche bareme, int annee, TypeArrondi arrondi);
-    BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee);
+    BaremeParTranche indexer(BaremeParTranche bareme, int annee, TypeArrondi arrondi);
     BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee, TypeArrondi arrondi);
+
+
+
+    default BigDecimal indexer(BigDecimal montantBase,
+                              int annee) {
+        return indexer(montantBase, annee, TypeArrondi.FRANC);
+    }
+
+    default BaremeParTranche indexer(BaremeParTranche bareme, int annee) {
+        return indexer(bareme,annee,TypeArrondi.FRANC);
+    }
+
+
+    default BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee) {
+        return indexer(bareme,annee,TypeArrondi.FRANC);
+    }
 
 }

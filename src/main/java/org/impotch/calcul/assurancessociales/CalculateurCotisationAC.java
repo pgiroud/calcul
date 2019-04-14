@@ -17,14 +17,16 @@ package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
 
+import org.impotch.bareme.Bareme;
 import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
+import org.impotch.bareme.ConstructeurBaremeTauxMarginal;
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.util.TypeArrondi;
 
 public class CalculateurCotisationAC extends ReglePeriodique implements
 		CalculCotisationAssuranceChomage {
 
-	private final BaremeTauxMarginalConstantParTranche bareme;
+	private final Bareme bareme;
 	
 	
     /**************************************************/
@@ -35,7 +37,7 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 			int nMontantAnnuelMaximumGainAssure,
 			String nTauxCotisationAssuranceChomage) {
 		super(annee);
-		BaremeTauxMarginalConstantParTranche.Constructeur constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur();
+		ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
 		constructeur.tranche(nMontantAnnuelMaximumGainAssure, nTauxCotisationAssuranceChomage);
 		constructeur.derniereTranche("0");
 		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
@@ -46,7 +48,7 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 			int nMontantAnnuelMaximumGainAssure,String ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu,
 			String nTauxCotisationAssuranceChomage, String tauxParticipationHautRevenu) {
 		super(annee);
-		BaremeTauxMarginalConstantParTranche.Constructeur constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur();
+		ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
 		constructeur.tranche(nMontantAnnuelMaximumGainAssure, nTauxCotisationAssuranceChomage);
         if (null != ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu) {
             int limiteHautRevenu = BigDecimal.valueOf(nMontantAnnuelMaximumGainAssure).multiply(new BigDecimal(ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu)).intValue();

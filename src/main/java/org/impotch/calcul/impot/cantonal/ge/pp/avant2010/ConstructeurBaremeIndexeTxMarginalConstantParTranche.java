@@ -17,6 +17,7 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 
+import org.impotch.bareme.ConstructeurBaremeTauxMarginal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +37,7 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 	private Integer anneeMaximumValidite;
 	private int anneeReference;
 	private FournisseurIndicePeriodique indexateur;
-	private BaremeTauxMarginalConstantParTranche.Constructeur constructeur;
+	private ConstructeurBaremeTauxMarginal constructeur;
 	private TypeArrondi typeArrondiTranche;
 	
     /**************************************************/
@@ -45,7 +46,7 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 
 	public ConstructeurBaremeIndexeTxMarginalConstantParTranche() {
 		super();
-		constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur();
+		constructeur = new ConstructeurBaremeTauxMarginal();
 	}
 
 	/**
@@ -53,7 +54,7 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 	 */
 	public ConstructeurBaremeIndexeTxMarginalConstantParTranche(BaremeTauxMarginalConstantParTranche bareme) {		
 		super();
-		constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur(bareme);
+		constructeur = new ConstructeurBaremeTauxMarginal(bareme);
 	}
 	
     /**************************************************/
@@ -132,8 +133,8 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 		BigDecimal rapportRencherissement = indiceRencherissement.divide(indiceReference, 15, BigDecimal.ROUND_HALF_UP);
 		
 		constructeur.typeArrondiSurChaqueTranche(this.typeArrondiTranche);
-		BaremeTauxMarginalConstantParTranche bareme = constructeur.construire();
-		return bareme.homothetie(rapportRencherissement, TypeArrondi.FRANC);
+		BaremeTauxMarginalConstantParTranche bareme = (BaremeTauxMarginalConstantParTranche)constructeur.construire();
+		return (BaremeTauxMarginalConstantParTranche)bareme.homothetie(rapportRencherissement, TypeArrondi.FRANC);
 	}
 	
 }

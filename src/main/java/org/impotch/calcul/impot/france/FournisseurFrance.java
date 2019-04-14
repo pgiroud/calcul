@@ -17,6 +17,7 @@ package org.impotch.calcul.impot.france;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
+import org.impotch.bareme.ConstructeurBaremeTauxMarginal;
 import org.impotch.util.TypeArrondi;
 
 /**
@@ -26,7 +27,7 @@ import org.impotch.util.TypeArrondi;
 public class FournisseurFrance {
 
 	public Bareme getBaremeRevenu(int annee) {
-		BaremeTauxMarginalConstantParTranche.Constructeur constructeur = new BaremeTauxMarginalConstantParTranche.Constructeur();
+		ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
 		if (2005 == annee) {
 			constructeur.tranche( 4412, "  0 %");
 			constructeur.tranche( 8677, "  6.83 %");

@@ -127,7 +127,8 @@ public class BaremeIFDPersonnePhysiqueTest {
     @Test
     public void postNumerandoCelibataire2012() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2012);
-        assertEquals("Revenu de 41600",new BigDecimal("223.15"), bareme.calcul(new BigDecimal("41600")));
+        assertEquals("Revenu de 41600",new BigDecimal("223.15"), bareme.calcul(BigDecimal.valueOf(41600)));
+        assertEquals("Revenu de 755200", new BigDecimal("86848.00"),bareme.calcul(BigDecimal.valueOf(755200)));
     }
 
     @Test
@@ -136,5 +137,12 @@ public class BaremeIFDPersonnePhysiqueTest {
         assertEquals("Revenu de 896000",new BigDecimal("103040.00"), bareme.calcul(new BigDecimal("896000")));
     }
 
+    @Test
+    public void prestationCapitalSource2016() {
+	    Bareme bareme = fournisseur.getBaremeImpotSourcePrestationCapital(2016);
+	    assertEquals("Prestation de 74'300 CHF",new BigDecimal("182.00"),bareme.calcul(BigDecimal.valueOf(74_300)));
+        assertEquals("Prestation de 675'000 CHF",new BigDecimal("14875.00"),bareme.calcul(BigDecimal.valueOf(675_000)));
+        assertEquals("Prestation de 2'000'000 CHF",new BigDecimal("46000.00"),bareme.calcul(BigDecimal.valueOf(2_000_000)));
+    }
 
 }
