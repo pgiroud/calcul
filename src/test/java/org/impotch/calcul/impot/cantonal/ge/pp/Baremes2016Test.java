@@ -67,7 +67,6 @@ public class Baremes2016Test {
         assertThat(bareme.calcul(BigDecimal.valueOf(revenu))).isEqualTo(impot);
     }
 
-
     @Parameterized.Parameters
     public static Collection<Object []> data() throws IOException {
         ChargeurFichierEconometre2016 chargeur = new ChargeurFichierEconometre2016();

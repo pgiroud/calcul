@@ -43,6 +43,7 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
 
     private final TypeArrondi arrondiSurAssiette;
     private BigDecimal taux = BigDecimal.ZERO;
+    private BigDecimal debutTranche = BigDecimal.ZERO;
     private BigDecimal valeurEnDebutTranche = BigDecimal.ZERO;
     private BigDecimal tauxEffectifMax;
 
@@ -58,23 +59,37 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
         this.arrondiSurAssiette = arrondiSurAssiette;
     }
 
-
-
-    public ConstructeurBaremeIFD jusqua(int montant) {
-        return pour(montant);
-    }
-
-
-    public ConstructeurBaremeIFD pour(int montant) {
+    private void controleAbsenceTauxEffectif() {
         if (null != tauxEffectifMax)
             throw new RuntimeException("Impossible de définir une nouvelle tranche après la spécification du taux effectif maximal");
-        BigDecimal finTranche = BigDecimal.valueOf(montant);
-        TrancheBaremeIFD tranche =new TrancheBaremeIFD(construireIntervalle(finTranche), taux, valeurEnDebutTranche,arrondiSurAssiette);
-        tranches.add(tranche);
+    }
+
+    private void initialiserTrancheSuivante(BigDecimal finTranche) {
         // Les valeurs pour la tranche suivante. On ne peut malheureusement pas utiliser la tranche construite car l'intervalle est ouvert
         // en fin de tranche. Ceci est nécessaire pour l'algo de calcul.
-        valeurEnDebutTranche = valeurEnDebutTranche.add(ARRONDI_SUR_CHAQUE_TRANCHE.arrondirMontant(taux.multiply(finTranche.subtract(montantMaxPrecedent))));
-        montantMaxPrecedent = finTranche;
+        // La valeur en début de tranche peut bien sûr être modifiée en cas de fixation d'arrondi (les 11.5 % doivent être atteints)
+        valeurEnDebutTranche = valeurEnDebutTranche.add(ARRONDI_SUR_CHAQUE_TRANCHE.arrondirMontant(taux.multiply(finTranche.subtract(debutTranche))));
+        debutTranche = finTranche;
+    }
+
+    public ConstructeurBaremeIFD jusqua(int montant) {
+        controleAbsenceTauxEffectif();
+        BigDecimal finTranche = BigDecimal.valueOf(montant);
+        super.premiereTranche(finTranche,taux);
+        initialiserTrancheSuivante(finTranche);
+        return this;
+    }
+
+    @Override
+    protected TrancheBareme construireTranche(Intervalle inter, BigDecimal montantOuTaux) {
+        return new TrancheBaremeIFD(inter, montantOuTaux,valeurEnDebutTranche,arrondiSurAssiette);
+    }
+
+    public ConstructeurBaremeIFD pour(int montant) {
+        controleAbsenceTauxEffectif();
+        BigDecimal finTranche = BigDecimal.valueOf(montant);
+        super.tranche(debutTranche,finTranche,taux);
+        initialiserTrancheSuivante(finTranche);
         return this;
     }
 
@@ -105,9 +120,12 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
     }
 
 
+
+
     @Override
-    public Bareme construire() {
-        tranches.add(new DerniereTrancheIFD(construireDernierIntervalle(), taux, valeurEnDebutTranche, tauxEffectifMax, arrondiSurAssiette));
+    public BaremeTauxMarginalConstantParTranche construire() {
+        Intervalle intervalle = construireDernierIntervalle(debutTranche);
+        ajouterTranche(new DerniereTrancheIFD(intervalle, taux, valeurEnDebutTranche, tauxEffectifMax, arrondiSurAssiette));
         return super.construire();
     }
 
@@ -126,7 +144,10 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
         public BigDecimal calcul(BigDecimal montant) {
             if (this.getIntervalle().encadre(montant)) {
                 BigDecimal montantArrondi = arrondiSurAssiette.arrondirMontant(montant);
-                BigDecimal montantImposableDansLaTranche = montantArrondi.subtract(getIntervalle().getDebut());
+                BigDecimal montantImposableDansLaTranche = montantArrondi;
+                if (null != getIntervalle().getDebut()) {
+                    montantImposableDansLaTranche = montantImposableDansLaTranche.subtract(getIntervalle().getDebut());
+                }
                 BigDecimal impotDansLatranche = montantImposableDansLaTranche.multiply(this.getTauxOuMontant());
                 return montantImpotEnDebutTranche.add(impotDansLatranche);
             } else {

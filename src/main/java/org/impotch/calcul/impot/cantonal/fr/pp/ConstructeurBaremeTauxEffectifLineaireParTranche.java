@@ -30,50 +30,54 @@ public class ConstructeurBaremeTauxEffectifLineaireParTranche extends Constructe
         this.fermeAGauche();
     }
 
-    protected TrancheBaremeLineaire construireTranche(Intervalle inter, BigDecimal montantOuTaux, BigDecimal incrementTaux) {
-        return new TrancheBaremeLineaire(inter,montantOuTaux,incrementTaux);
+
+    protected TrancheBareme construireTranche(Intervalle inter, BigDecimal montantOuTaux) {
+        // Utilisé pour construire la première et la dernière tranche
+        return new TrancheBaremeLineaire(inter,montantOuTaux);
     }
 
 
+    private TrancheBaremeLineaire construireTranche(Intervalle inter, BigDecimal montantOuTaux, BigDecimal incrementTaux) {
+        return new TrancheBaremeLineaire(inter,montantOuTaux,incrementTaux);
+    }
 
-    protected TrancheBaremeLineaire construireTranche(BigDecimal montant, BigDecimal montantOuTaux, BigDecimal incrementTaux) {
-        Intervalle inter = construireIntervalle(montant);
+    public ConstructeurBaremeTauxEffectifLineaireParTranche premiereTranche(BigDecimal jusqua, BigDecimal taux) {
+        super.premiereTranche(jusqua,taux);
+        return this;
+    }
+
+    public ConstructeurBaremeTauxEffectifLineaireParTranche premiereTranche(int jusqua, String taux) {
+        return premiereTranche(BigDecimal.valueOf(jusqua),BigDecimalUtil.parseTaux(taux));
+    }
+
+
+    private TrancheBaremeLineaire construireTranche(BigDecimal de, BigDecimal a, BigDecimal montantOuTaux, BigDecimal incrementTaux) {
+        Intervalle inter = construireIntervalle(de,a);
         TrancheBaremeLineaire tranche = construireTranche(inter,montantOuTaux,incrementTaux);
-        montantMaxPrecedent = montant;
         return tranche;
     }
 
 
-
-    public final ConstructeurBaremeTauxEffectifLineaireParTranche tranche(BigDecimal montant, BigDecimal taux, BigDecimal incrementTaux) {
-        Intervalle intervalle = construireIntervalle(montant);
+    public final ConstructeurBaremeTauxEffectifLineaireParTranche tranche(BigDecimal de, BigDecimal a, BigDecimal taux, BigDecimal incrementTaux) {
+        Intervalle intervalle = construireIntervalle(de,a);
         if (tranches.size() > 0) {
             TrancheBareme derniereTranche = tranches.get(tranches.size()-1);
             if (0 == derniereTranche.getTauxOuMontant().compareTo(taux)) {
                 Intervalle inter = intervalle.union(derniereTranche.getIntervalle());
                 tranches.set(tranches.size()-1,construireTranche(inter,taux,incrementTaux));
-                montantMaxPrecedent = montant;
             } else {
-                tranches.add(construireTranche(montant,taux,incrementTaux));
+                ajouterTranche(construireTranche(de,a,taux,incrementTaux));
             }
         } else {
-            tranches.add(construireTranche(montant,taux,incrementTaux));
+            ajouterTranche(construireTranche(de,a,taux,incrementTaux));
         }
         return this;
     }
 
 
-
-    public final ConstructeurBaremeTauxEffectifLineaireParTranche tranche(int montant, String taux, String tauxEnPlusPar100Francs) {
-        return this.tranche(BigDecimal.valueOf(montant), BigDecimalUtil.parseTaux(taux),BigDecimalUtil.parseTaux(tauxEnPlusPar100Francs).movePointLeft(2));
+    public final ConstructeurBaremeTauxEffectifLineaireParTranche tranche(int de, int a, String taux, String tauxEnPlusPar100Francs) {
+        return this.tranche(BigDecimal.valueOf(de),BigDecimal.valueOf(a), BigDecimalUtil.parseTaux(taux),BigDecimalUtil.parseTaux(tauxEnPlusPar100Francs).movePointLeft(2));
     }
-
-    protected TrancheBaremeLineaire construireTranche(BigDecimal taux) {
-        Intervalle.Cons cons = new Intervalle.Cons().de(montantMaxPrecedent).inclus();
-        Intervalle intervalle = cons.aPlusInfini().intervalle();
-        return new TrancheBaremeLineaire(intervalle,taux);
-    }
-
 
     public Bareme construire() {
         BaremeTauxEffectifLineaireParTranche bareme = new BaremeTauxEffectifLineaireParTranche(tranches);
@@ -85,20 +89,20 @@ public class ConstructeurBaremeTauxEffectifLineaireParTranche extends Constructe
     protected static class TrancheBaremeLineaire extends TrancheBareme {
 
         private final BigDecimal pente;
-        private final boolean isDerniere;
+        private final boolean isPremiereOuDerniere;
 
         public TrancheBaremeLineaire(Intervalle intervalle,
                                      BigDecimal taux, BigDecimal pente) {
             super(intervalle, taux);
             this.pente = pente;
-            this.isDerniere = false;
+            this.isPremiereOuDerniere = false;
         }
 
         public TrancheBaremeLineaire(Intervalle intervalle,
                                      BigDecimal taux) {
             super(intervalle, taux);
             this.pente = null;
-            this.isDerniere = true;
+            this.isPremiereOuDerniere = true;
         }
 
 
@@ -107,10 +111,9 @@ public class ConstructeurBaremeTauxEffectifLineaireParTranche extends Constructe
          */
         @Override
         public BigDecimal calcul(BigDecimal montant) {
-
             if (getIntervalle().encadre(montant) && BigDecimalUtil.isStrictementPositif(this.getTauxOuMontant())) {
                 BigDecimal largeur = montant.subtract(getIntervalle().getDebut());
-                if (isDerniere) {
+                if (isPremiereOuDerniere) {
                     return this.getTauxOuMontant();
                 } else {
                     return this.getTauxOuMontant().add(pente.multiply(largeur));

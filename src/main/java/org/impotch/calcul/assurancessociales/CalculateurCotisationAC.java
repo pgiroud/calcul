@@ -38,8 +38,9 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 			String nTauxCotisationAssuranceChomage) {
 		super(annee);
 		ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
-		constructeur.tranche(nMontantAnnuelMaximumGainAssure, nTauxCotisationAssuranceChomage);
-		constructeur.derniereTranche("0");
+		constructeur.premiereTranche(0,0);
+		constructeur.tranche(0,nMontantAnnuelMaximumGainAssure, nTauxCotisationAssuranceChomage);
+		constructeur.derniereTranche(nMontantAnnuelMaximumGainAssure,"0");
 		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
 		bareme = constructeur.construire();
 	}
@@ -49,13 +50,14 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 			String nTauxCotisationAssuranceChomage, String tauxParticipationHautRevenu) {
 		super(annee);
 		ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
-		constructeur.tranche(nMontantAnnuelMaximumGainAssure, nTauxCotisationAssuranceChomage);
+		constructeur.premiereTranche(0,0);
+		constructeur.tranche(0,nMontantAnnuelMaximumGainAssure, nTauxCotisationAssuranceChomage);
         if (null != ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu) {
             int limiteHautRevenu = BigDecimal.valueOf(nMontantAnnuelMaximumGainAssure).multiply(new BigDecimal(ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu)).intValue();
-            constructeur.tranche(limiteHautRevenu,tauxParticipationHautRevenu);
-            constructeur.derniereTranche("0");
+            constructeur.tranche(nMontantAnnuelMaximumGainAssure,limiteHautRevenu,tauxParticipationHautRevenu);
+            constructeur.derniereTranche(limiteHautRevenu,"0");
         } else {
-            constructeur.derniereTranche(tauxParticipationHautRevenu);
+            constructeur.derniereTranche(nMontantAnnuelMaximumGainAssure,tauxParticipationHautRevenu);
         }
 		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
 		bareme = constructeur.construire();

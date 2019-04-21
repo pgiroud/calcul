@@ -56,12 +56,12 @@ public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAI {
 
     private BaremeParTranche construireBaremeBaseSeul() {
         ConstructeurBareme cons = new ConstructeurBareme();
-        cons.tranche(50000, 10000);
-        cons.tranche(56700, 8000);
-        cons.tranche(64000, 6000);
-        cons.tranche(71500, 4000);
-        cons.tranche(80000, 2000);
-        cons.derniereTranche(0);
+        cons.premiereTranche(50000, 10000);
+        cons.tranche(50000,56700, 8000);
+        cons.tranche(56700,64000, 6000);
+        cons.tranche(64000,71500, 4000);
+        cons.tranche(71500, 80000, 2000);
+        cons.derniereTranche(80000,0);
         return cons.construireBaremeParTranche();
     }
 

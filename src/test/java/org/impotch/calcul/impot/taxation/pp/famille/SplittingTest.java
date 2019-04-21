@@ -39,11 +39,11 @@ public class SplittingTest {
 	public void setUp() throws Exception {
 		ConstructeurBaremeTauxMarginal cons = new ConstructeurBaremeTauxMarginal();
 		cons.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS)
-			.tranche(1000, "1 %")
-			.tranche(2000, "2 %")
-			.tranche(3000, "3 %")
-			.tranche(4000, "4 %")
-			.derniereTranche("5 %");
+			.premiereTranche(1000, "1 %")
+			.tranche(1000,2000, "2 %")
+			.tranche(2000,3000, "3 %")
+			.tranche(3000,4000, "4 %")
+			.derniereTranche(4000,"5 %");
 		splitting = new Splitting(cons.construire(),"50 %");
 	}
 

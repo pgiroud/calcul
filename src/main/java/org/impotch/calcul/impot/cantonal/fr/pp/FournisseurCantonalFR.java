@@ -56,29 +56,29 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
     protected Bareme construireBaremeRevenu(int annee) {
         ConstructeurBaremeTauxEffectifLineaireParTranche cons = new ConstructeurBaremeTauxEffectifLineaireParTranche();
         if (annee > 2005 && annee < 2009) {
-            cons.tranche(4900, "0", "0")
-                    .tranche(16600, "1 %", "0.0272 %")
-                    .tranche(29800, "4.1707 %", "0.0155 %")
-                    .tranche(45800, "6.2127 %", "0.0115 %")
-                    .tranche(60500, "8.0484 %", "0.0072 %")
-                    .tranche(74100, "9.1063 %", "0.0067 %")
-                    .tranche(142700, "10.0144 %", "0.0036 %")
-                    .tranche(169900, "12.4826 %", "0.0022 %")
-                    .tranche(196200, "13.0804 %", "0.0016 %")
-                    .derniereTranche("13.5 %");
+            cons.premiereTranche(               4900,   "0")
+                    .tranche(           4900,   16600,  "1 %",      "0.0272 %")
+                    .tranche(           16600,  29800,  "4.1707 %", "0.0155 %")
+                    .tranche(           29800,  45800,  "6.2127 %", "0.0115 %")
+                    .tranche(           45800,  60500,  "8.0484 %", "0.0072 %")
+                    .tranche(           60500,  74100,  "9.1063 %", "0.0067 %")
+                    .tranche(           74100,  142700, "10.0144 %","0.0036 %")
+                    .tranche(           142700, 169900, "12.4826 %","0.0022 %")
+                    .tranche(           169900, 196200, "13.0804 %","0.0016 %")
+                    .derniereTranche(196200,            "13.5 %");
         } else {
-            cons.tranche(5100, "0", "0")
-                    .tranche(17300, "1 %", "0.0261 %")
-                    .tranche(31000, "4.1730 %", "0.0149 %")
-                    .tranche(47700, "6.2104 %", "0.0110 %")
-                    .tranche(63000, "8.0433 %", "0.0069 %")
-                    .tranche(76700, "9.0986 %", "0.0065 %")
-                    .tranche(100900, "9.9862 %", "0.0036 %")
-                    .tranche(127200, "10.8571 %", "0.0033 %")
-                    .tranche(154200, "11.7247 %", "0.0030 %")
-                    .tranche(178900, "12.5340 %", "0.0023 %")
-                    .tranche(203900, "13.1014 %", "0.0016 %")
-                    .derniereTranche("13.5 %");
+            cons.premiereTranche(               5100,   "0")
+                    .tranche(           5100,   17300,  "1 %",      "0.0261 %")
+                    .tranche(           17300,  31000,  "4.1730 %", "0.0149 %")
+                    .tranche(           31000,  47700,  "6.2104 %", "0.0110 %")
+                    .tranche(           47700,  63000,  "8.0433 %", "0.0069 %")
+                    .tranche(           63000,  76700,  "9.0986 %", "0.0065 %")
+                    .tranche(           76700,  100900, "9.9862 %", "0.0036 %")
+                    .tranche(           100900, 127200, "10.8571 %","0.0033 %")
+                    .tranche(           127200, 154200, "11.7247 %","0.0030 %")
+                    .tranche(           154200, 178900, "12.5340 %","0.0023 %")
+                    .tranche(           178900, 203900, "13.1014 %","0.0016 %")
+                    .derniereTranche(203900,            "13.5 %");
         }
         cons.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
         return cons.construire();
@@ -123,42 +123,42 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
         ConstructeurBareme cons = new ConstructeurBareme().fermeAGauche();
         if (annee < 2009) {
             // valable de 2006 (au moins) à 2008 inclus
-            cons.tranche(15000, "0")
-                    .tranche(20100, "1 ‰")
-                    .tranche(30100, "1.25 ‰")
-                    .tranche(50100, "1.50 ‰")
-                    .tranche(75100, "1.75 ‰")
-                    .tranche(100100, "2.00 ‰")
-                    .tranche(150100, "2.25 ‰")
-                    .tranche(200100, "2.50 ‰")
-                    .tranche(300100, "2.60 ‰")
-                    .tranche(400100, "2.70 ‰")
-                    .tranche(500100, "2.80 ‰")
-                    .tranche(600100, "3.00 ‰")
-                    .tranche(700100, "3.10 ‰")
-                    .tranche(800100, "3.20 ‰")
-                    .tranche(900100, "3.30 ‰")
-                    .tranche(1000100, "3.40 ‰")
-                    .derniereTranche("3.50 ‰");
+            cons.premiereTranche(15000, "0")
+                    .tranche(15000,20100, "1 ‰")
+                    .tranche(20100,30100, "1.25 ‰")
+                    .tranche(30100,50100, "1.50 ‰")
+                    .tranche(50100,75100, "1.75 ‰")
+                    .tranche(75100,100100, "2.00 ‰")
+                    .tranche(100100,150100, "2.25 ‰")
+                    .tranche(150100,200100, "2.50 ‰")
+                    .tranche(200100,300100, "2.60 ‰")
+                    .tranche(300100,400100, "2.70 ‰")
+                    .tranche(400100,500100, "2.80 ‰")
+                    .tranche(500100,600100, "3.00 ‰")
+                    .tranche(600100,700100, "3.10 ‰")
+                    .tranche(700100,800100, "3.20 ‰")
+                    .tranche(800100,900100, "3.30 ‰")
+                    .tranche(900100,1000100, "3.40 ‰")
+                    .derniereTranche(1000100,"3.50 ‰");
         } else {
             // Il s'agit des barèmes 2009
-            cons.tranche(20000, "0")
-                    .tranche(25100, "1 ‰")
-                    .tranche(35100, "1.25 ‰")
-                    .tranche(55100, "1.50 ‰")
-                    .tranche(85100, "1.75 ‰")
-                    .tranche(125100, "2.00 ‰")
-                    .tranche(175100, "2.25 ‰")
-                    .tranche(225100, "2.50 ‰")
-                    .tranche(325100, "2.60 ‰")
-                    .tranche(450100, "2.70 ‰")
-                    .tranche(550100, "2.80 ‰")
-                    .tranche(650100, "3.00 ‰")
-                    .tranche(775100, "3.10 ‰")
-                    .tranche(875100, "3.20 ‰")
-                    .tranche(975100, "3.30 ‰")
-                    .tranche(1100100, "3.40 ‰")
-                    .derniereTranche("3.50 ‰");
+            cons.premiereTranche(20000, "0")
+                    .tranche(20000,25100, "1 ‰")
+                    .tranche(25100,35100, "1.25 ‰")
+                    .tranche(35100,55100, "1.50 ‰")
+                    .tranche(55100,85100, "1.75 ‰")
+                    .tranche(85100,125100, "2.00 ‰")
+                    .tranche(125100,175100, "2.25 ‰")
+                    .tranche(175100,225100, "2.50 ‰")
+                    .tranche(225100,325100, "2.60 ‰")
+                    .tranche(325100,450100, "2.70 ‰")
+                    .tranche(450100,550100, "2.80 ‰")
+                    .tranche(550100,650100, "3.00 ‰")
+                    .tranche(650100,775100, "3.10 ‰")
+                    .tranche(775100,875100, "3.20 ‰")
+                    .tranche(875100,975100, "3.30 ‰")
+                    .tranche(975100,1100100, "3.40 ‰")
+                    .derniereTranche(1100100,"3.50 ‰");
         }
         cons.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS);
         return cons.construireBaremeTauxEffectifConstantParTranche();

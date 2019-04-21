@@ -13,6 +13,21 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
+/**
+ * This file is part of impotch/calcul.
+ * <p>
+ * impotch/calcul is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ * <p>
+ * impotch/calcul is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
@@ -85,8 +100,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
 
     /**
-     * @param fournisseurRegleCalculCotisationAssuranceSociale
-     *         the fournisseurRegleCalculCotisationAssuranceSociale to set
+     * @param fournisseurRegleCalculCotisationAssuranceSociale the fournisseurRegleCalculCotisationAssuranceSociale to set
      */
     public void setFournisseurRegleCalculCotisationAssuranceSociale(
             FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale) {
@@ -126,7 +140,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     public Indexateur getIndexateurBaseMai1993(int anneeBaseIndexation) {
         if (null == indexateurBaseMai1993) {
-            IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation,4);
+            IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation, 4);
             indexateur.setFournisseurIndice(getFournisseurIndiceGEBaseMai1993());
             indexateurBaseMai1993 = indexateur;
         }
@@ -152,29 +166,29 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             bareme.setTauxMarginal(construireTauxMarginal(annee));
             return bareme;
         } else {
-            ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche();
-            constructeur.validite(2010);
-            constructeur.anneeReferenceRencherissement(2009);
-            constructeur.indexateur(getFournisseurIndiceGEBaseDecembre2005());
-            constructeur.tranche(17493, "0 %");
-            constructeur.tranche(21076, "8 %");
-            constructeur.tranche(23184, "9 %");
-            constructeur.tranche(25291, "10 %");
-            constructeur.tranche(27399, "11 %");
-            constructeur.tranche(32668, "12 %");
-            constructeur.tranche(36883, "13 %");
-            constructeur.tranche(41099, "14 %");
-            constructeur.tranche(45314, "14.5 %");
-            constructeur.tranche(72713, "15 %");
-            constructeur.tranche(119081, "15.5 %");
-            constructeur.tranche(160179, "16 %");
-            constructeur.tranche(181256, "16.5 %");
-            constructeur.tranche(259238, "17 %");
-            constructeur.tranche(276099, "17.5 %");
-            constructeur.tranche(388857, "18 %");
-            constructeur.tranche(609103, "18.5 %");
-            constructeur.derniereTranche("19 %");
-            return constructeur.typeArrondiTranche(TypeArrondi.CINQ_CTS).construire(annee);
+            return new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
+                    .valideDepuis(2010)
+                    .anneeReferenceRencherissement(2009)
+                    .indexateur(getFournisseurIndiceGEBaseDecembre2005())
+                    .premiereTranche(17493, "0 %")
+                    .tranche(17493, 21076, "8 %")
+                    .tranche(21076, 23184, "9 %")
+                    .tranche(23184, 25291, "10 %")
+                    .tranche(25291, 27399, "11 %")
+                    .tranche(27399, 32668, "12 %")
+                    .tranche(32668, 36883, "13 %")
+                    .tranche(36883, 41099, "14 %")
+                    .tranche(41099, 45314, "14.5 %")
+                    .tranche(45314, 72713, "15 %")
+                    .tranche(72713, 119081, "15.5 %")
+                    .tranche(119081, 160179, "16 %")
+                    .tranche(160179, 181256, "16.5 %")
+                    .tranche(181256, 259238, "17 %")
+                    .tranche(259238, 276099, "17.5 %")
+                    .tranche(276099, 388857, "18 %")
+                    .tranche(388857, 609103, "18.5 %")
+                    .derniereTranche(609103, "19 %")
+                    .typeArrondiTranche(TypeArrondi.CINQ_CTS).construire(annee);
         }
     }
 
@@ -248,20 +262,20 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             int annee) {
         if (annee < 2010) {
             if (null == constructeurBaremeFortune) {
-                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche();
-                constructeur.validite(2001, 2009);
-                constructeur.indexateur(getFournisseurIndiceGEBaseMai1993());
-                constructeur.anneeReferenceRencherissement(2000);
-                constructeur.tranche(100000, "1.75 ‰");
-                constructeur.tranche(200000, "2.25 ‰");
-                constructeur.tranche(300000, "2.75 ‰");
-                constructeur.tranche(400000, "3 ‰");
-                constructeur.tranche(600000, "3.25 ‰");
-                constructeur.tranche(800000, "3.5 ‰");
-                constructeur.tranche(1000000, "3.75 ‰");
-                constructeur.tranche(1200000, "4 ‰");
-                constructeur.tranche(1500000, "4.25 ‰");
-                constructeur.derniereTranche("4.5 ‰");
+                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
+                        .valideEntre(2001, 2009)
+                        .indexateur(getFournisseurIndiceGEBaseMai1993())
+                        .anneeReferenceRencherissement(2000)
+                        .premiereTranche(100000, "1.75 ‰")
+                        .tranche(100000, 200000, "2.25 ‰")
+                        .tranche(200000, 300000, "2.75 ‰")
+                        .tranche(300000, 400000, "3 ‰")
+                        .tranche(400000, 600000, "3.25 ‰")
+                        .tranche(600000, 800000, "3.5 ‰")
+                        .tranche(800000, 1000000, "3.75 ‰")
+                        .tranche(1000000, 1200000, "4 ‰")
+                        .tranche(1200000, 1500000, "4.25 ‰")
+                        .derniereTranche(1500000, "4.5 ‰");
                 constructeurBaremeFortune = constructeur;
             }
             return constructeurBaremeFortune;
@@ -272,10 +286,10 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             if (null == constructeurBaremeFortuneApres2009) {
                 BaremeTauxMarginalConstantParTranche bareme2009 = construireBaremeFortune(2009);
                 ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche(
-                        bareme2009);
-                constructeur.validite(2010);
-                constructeur.indexateur(getFournisseurIndiceGEBaseDecembre2005());
-                constructeur.anneeReferenceRencherissement(2009);
+                        bareme2009)
+                        .valideDepuis(2010)
+                        .indexateur(getFournisseurIndiceGEBaseDecembre2005())
+                        .anneeReferenceRencherissement(2009);
                 constructeurBaremeFortuneApres2009 = constructeur;
             }
             return constructeurBaremeFortuneApres2009;
@@ -293,32 +307,31 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             int annee) {
         if (annee < 2010) {
             if (null == constructeurBaremeFortuneSupplementaire) {
-                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche();
-                constructeur.validite(2001, 2009);
-                constructeur.indexateur(getFournisseurIndiceGEBaseMai1993());
-                constructeur.anneeReferenceRencherissement(2000);
-                constructeur.tranche(100000, "0 ‰");
-                constructeur.tranche(200000, "0.1125 ‰");
-                constructeur.tranche(300000, "0.1375 ‰");
-                constructeur.tranche(400000, "0.3 ‰");
-                constructeur.tranche(600000, "0.325 ‰");
-                constructeur.tranche(800000, "0.525 ‰");
-                constructeur.tranche(1000000, "0.5625 ‰");
-                constructeur.tranche(1200000, "0.8 ‰");
-                constructeur.tranche(1500000, "0.85 ‰");
-                constructeur.tranche(3000000, "1.125 ‰");
-                constructeur.derniereTranche("1.35 ‰");
+                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
+                        .valideEntre(2001, 2009)
+                        .indexateur(getFournisseurIndiceGEBaseMai1993())
+                        .anneeReferenceRencherissement(2000)
+                        .premiereTranche(100000, "0 ‰")
+                        .tranche(100000, 200000, "0.1125 ‰")
+                        .tranche(200000, 300000, "0.1375 ‰")
+                        .tranche(300000, 400000, "0.3 ‰")
+                        .tranche(400000, 600000, "0.325 ‰")
+                        .tranche(600000, 800000, "0.525 ‰")
+                        .tranche(800000, 1000000, "0.5625 ‰")
+                        .tranche(1000000, 1200000, "0.8 ‰")
+                        .tranche(1200000, 1500000, "0.85 ‰")
+                        .tranche(1500000, 3000000, "1.125 ‰")
+                        .derniereTranche(3000000, "1.35 ‰");
                 constructeurBaremeFortuneSupplementaire = constructeur;
             }
             return constructeurBaremeFortuneSupplementaire;
         } else {
             if (null == constructeurBaremeFortuneSupplementaireApres2009) {
                 BaremeTauxMarginalConstantParTranche bareme2009 = construireBaremeFortuneSupplementaire(2009);
-                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche(
-                        bareme2009);
-                constructeur.validite(2010);
-                constructeur.indexateur(getFournisseurIndiceGEBaseDecembre2005());
-                constructeur.anneeReferenceRencherissement(2009);
+                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche(bareme2009)
+                        .valideDepuis(2010)
+                        .indexateur(getFournisseurIndiceGEBaseDecembre2005())
+                        .anneeReferenceRencherissement(2009);
                 constructeurBaremeFortuneSupplementaireApres2009 = constructeur;
             }
             return constructeurBaremeFortuneSupplementaireApres2009;
@@ -531,7 +544,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     public ProducteurImpot construireProducteurImpotsCantonauxRevenu(int annee, TypeArrondi typeArrondi) {
         String codeBeneficiaire = "CAN-GE";
-        ProducteurImpot producteur = construireProducteurImpotCantonalBaseRevenu(annee,codeBeneficiaire);
+        ProducteurImpot producteur = construireProducteurImpotCantonalBaseRevenu(annee, codeBeneficiaire);
         completerProducteurImpotsCantonaux(producteur, codeBeneficiaire, annee, typeArrondi);
         return producteur;
 
@@ -654,8 +667,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         if (annee >= 2009) montantDeduction = 500;
         if (annee >= 2013) montantDeduction = 504;
         if (annee >= 2017) montantDeduction = 499;
-        if (annee >= 2020) throw new IllegalArgumentException("Le montant de la déduction double activité pour l'année '"
-                + annee + "' doit être adapté !");
+        if (annee >= 2020)
+            throw new IllegalArgumentException("Le montant de la déduction double activité pour l'année '"
+                    + annee + "' doit être adapté !");
         DeductionDoubleActivite deduction = new DeductionDoubleActivite(montantDeduction);
         return deduction;
     }
@@ -681,28 +695,30 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         // Voir le détail dans D 3 08.05: Règlement relatif à la compensation des effets de la progression à froid (RCEPF)
         // Art. 6
         if (annee < 2013) {
-            cons.tranche(50000, 10000)
-                    .tranche(56700, 8000)
-                    .tranche(64000, 6000)
-                    .tranche(71500, 4000)
-                    .tranche(80000, 2000);
+            cons.premiereTranche(50000, 10000)
+                    .tranche(50000, 56700, 8000)
+                    .tranche(56700, 64000, 6000)
+                    .tranche(64000, 71500, 4000)
+                    .tranche(71500, 80000, 2000)
+                    .derniereTranche(80000, 0);
         } else if (annee < 2017) {
-            cons.tranche(57947, 10078)
-                    .tranche(65707, 8062)
-                    .tranche(74172, 6047)
-                    .tranche(82839, 4031)
-                    .tranche(92715, 2016);
-        } else if (annee < 2020) {
-            cons.tranche(57388, 9981)
-                    .tranche(65073, 7984)
-                    .tranche(73457, 5988)
-                    .tranche(82040, 3992)
-                    .tranche(91821, 1996);
+            cons.premiereTranche(57947, 10078)
+                    .tranche(57947, 65707, 8062)
+                    .tranche(65707, 74172, 6047)
+                    .tranche(74172, 82839, 4031)
+                    .tranche(82839, 92715, 2016)
+                    .derniereTranche(92715, 0);
+        } else if (annee < 2021) {
+            cons.premiereTranche(57388, 9981)
+                    .tranche(57388, 65073, 7984)
+                    .tranche(65073, 73457, 5988)
+                    .tranche(73457, 82040, 3992)
+                    .tranche(82040, 91821, 1996)
+                    .derniereTranche(91821, 0);
         } else {
-            throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2020 !!");
+            throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2021 !!");
         }
-        cons.derniereTranche(0);
-    return cons.construireBaremeParTranche();
+        return cons.construireBaremeParTranche();
     }
 
 }

@@ -41,11 +41,11 @@ public class FournisseurCantonalNE extends FournisseurCantonal implements
 	@Override
 	protected Bareme construireBaremeFortune(int annee) {
         ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
-        constructeur.tranche(   50000,  "0");
-        constructeur.tranche(  200000,  "3 ‰");
-        constructeur.tranche(  350000,  "4 ‰");
-        constructeur.tranche(  500000,  "5 ‰");
-        constructeur.derniereTranche( "3.6 ‰");
+        constructeur.premiereTranche(   50000,  "0");
+        constructeur.tranche(  50000, 200000,  "3 ‰");
+        constructeur.tranche(  200000,350000,  "4 ‰");
+        constructeur.tranche(  350000,500000,  "5 ‰");
+        constructeur.derniereTranche( 500000,"3.6 ‰");
         constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS_INF).seuil(25);
         return constructeur.construire();
 	}
@@ -57,18 +57,18 @@ public class FournisseurCantonalNE extends FournisseurCantonal implements
 	@Override
 	protected Bareme construireBaremeRevenu(int annee) {
 		ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
-		constructeur.tranche(   5000,  "0");
-		constructeur.tranche(  10000,  "2 %");
-		constructeur.tranche(  15000,  "4 %");
-		constructeur.tranche(  20000,  "8 %");
-		constructeur.tranche(  30000, "12 %");
-		constructeur.tranche(  40000, "13 %");
-		constructeur.tranche(  55000, "14 %");
-		constructeur.tranche(  75000, "15 %");
-		constructeur.tranche( 110000, "16 %");
-		constructeur.tranche( 150000, "17 %");
-		constructeur.tranche( 180000, "18 %");
-		constructeur.derniereTranche( "14.5 %");
+		constructeur.premiereTranche(   5000,  "0");
+		constructeur.tranche(  5000,10000,  "2 %");
+		constructeur.tranche(  10000,15000,  "4 %");
+		constructeur.tranche(  15000,20000,  "8 %");
+		constructeur.tranche(  20000,30000, "12 %");
+		constructeur.tranche(  30000,40000, "13 %");
+		constructeur.tranche(  40000,55000, "14 %");
+		constructeur.tranche(  55000,75000, "15 %");
+		constructeur.tranche( 75000,110000, "16 %");
+		constructeur.tranche( 110000,150000, "17 %");
+		constructeur.tranche( 150000,180000, "18 %");
+		constructeur.derniereTranche( 180000,"14.5 %");
 		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS_INF).seuil(25);
 		return constructeur.construire();
 	}

@@ -86,16 +86,24 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 		return indexateur.getIndice(annee);
 	}
 
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche validite(int anneeMinimum) {
+
+
+	public ConstructeurBaremeIndexeTxMarginalConstantParTranche valideDepuis(int anneeMinimum) {
 		this.anneeMinimumValidite = anneeMinimum;
 		return this;
 	}
 	
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche validite(int anneeMinimum, int anneeMaximum) {
+	public ConstructeurBaremeIndexeTxMarginalConstantParTranche valideEntre(int anneeMinimum, int anneeMaximum) {
 		this.anneeMinimumValidite = anneeMinimum;
 		this.anneeMaximumValidite = anneeMaximum;
 		return this;
 	}
+
+	public ConstructeurBaremeIndexeTxMarginalConstantParTranche valideJusqua(int anneeMaximum) {
+		this.anneeMaximumValidite = anneeMaximum;
+		return this;
+	}
+
 	/**
 	 * Précise l'année de référence pour prendre en compte le renchérissement.
 	 * @param annee l'année de référence. 
@@ -106,13 +114,19 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 		return this;
 	}
 
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche tranche(int fortuneImposable, String taux) {
-		constructeur.tranche(fortuneImposable, taux);
+	public ConstructeurBaremeIndexeTxMarginalConstantParTranche premiereTranche(int jusqua, String taux) {
+		constructeur.premiereTranche(jusqua, taux);
+		return this;
+	}
+
+
+	public ConstructeurBaremeIndexeTxMarginalConstantParTranche tranche(int de, int a, String taux) {
+		constructeur.tranche(de,a, taux);
 		return this;
 	}
 	
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche derniereTranche(String taux) {
-		constructeur.derniereTranche(taux);
+	public ConstructeurBaremeIndexeTxMarginalConstantParTranche derniereTranche(int de, String taux) {
+		constructeur.derniereTranche(de, taux);
 		return this;
 	}
 	

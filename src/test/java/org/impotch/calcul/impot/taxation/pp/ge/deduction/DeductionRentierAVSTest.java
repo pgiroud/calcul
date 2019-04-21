@@ -34,12 +34,12 @@ public class DeductionRentierAVSTest {
 	@Before
 	public void init() {
 		ConstructeurBareme cons = new ConstructeurBareme()
-				.tranche(50000, 10000)
-				.tranche(56700,  8000)
-				.tranche(64000,  6000)
-				.tranche(71500,  4000)
-				.tranche(80000,  2000)
-				.derniereTranche(0);
+				.premiereTranche(50000, 10000)
+				.tranche(50000,56700,  8000)
+				.tranche(56700,64000,  6000)
+				.tranche(64000,71500,  4000)
+				.tranche(71500,80000,  2000)
+				.derniereTranche(80000,0);
 		BaremeParTranche bareme = cons.construireBaremeParTranche();
 		regle = new DeductionRentierAVS(2009,bareme, new BigDecimal("1.15"));
 	}
