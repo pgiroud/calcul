@@ -16,27 +16,25 @@
 package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml"})
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+
+@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenuFamille2001Test {
 
 	@Resource(name = "fournisseurRegleImpotCantonalGE")
@@ -44,12 +42,12 @@ public class BaremeRevenuFamille2001Test {
 
 	private Bareme bareme;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		bareme = fournisseur.getBaremeRevenuFamille(2001);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void deltaAvecBaremeRefonte() {
 		// Sur les tranches ci-dessous, il existe un écart de 1 centime
@@ -66,11 +64,12 @@ public class BaremeRevenuFamille2001Test {
 		 // Sur cette dernière tranche, l'écart est de 2 centimes !!
 		 testEgalite("176762.93",bareme.calcul(new BigDecimal(1000000)));
 	}
-	
+
 	private void testEgalite(String montantNonFormatte, BigDecimal montant) {
-		assertEquals(new BigDecimal(montantNonFormatte),montant);
+		assertThat(montant).isEqualTo(new BigDecimal(montantNonFormatte.trim()).setScale(2));
 	}
-	
+
+
 	
 	@Test
 	public void baremeDiscretise() {

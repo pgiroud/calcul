@@ -16,30 +16,23 @@
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.bareme.Bareme;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestContextManager;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(Parameterized.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml"})
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+//@RunWith(Parameterized.class)
+//@ContextConfiguration(locations = {"/beansCH_GE.xml"})
+//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class Baremes2016Test {
 
-    private TestContextManager testContextManager;
+//    private TestContextManager testContextManager;
 
 
     @Resource(name = "fournisseurRegleImpotCantonalGE")
@@ -47,31 +40,17 @@ public class Baremes2016Test {
 
     private Bareme bareme;
 
-    private int revenu;
-    private BigDecimal impot;
 
-    public Baremes2016Test(int revenu, BigDecimal impot) {
-        this.revenu = revenu;
-        this.impot = impot;
-    }
-
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        this.testContextManager = new TestContextManager(getClass());
-        this.testContextManager.prepareTestInstance(this);
         bareme = fournisseur.getBaremeRevenu(2016);
     }
 
-    @Test
-    public void baremeRevenu() {
-        assertThat(bareme.calcul(BigDecimal.valueOf(revenu))).isEqualTo(impot);
-    }
-
-    @Parameterized.Parameters
-    public static Collection<Object []> data() throws IOException {
-        ChargeurFichierEconometre2016 chargeur = new ChargeurFichierEconometre2016();
-        chargeur.setFichier(new ClassPathResource("ge/BasImp2016.csv"));
-        return Arrays.asList(chargeur.charger(false));
+    @ParameterizedTest
+    @CsvFileSource(resources = "/ge/BasImp2016.csv", delimiter = '\t', numLinesToSkip = 1)
+    public void baremeRevenu(int revenu, String impotSeul, String impotFamille) {
+        BigDecimal impot = new BigDecimal(impotSeul.replace(',','.')).setScale(2);
+        assertThat(bareme.calcul(new BigDecimal(revenu))).isEqualTo(impot);
     }
 
 }

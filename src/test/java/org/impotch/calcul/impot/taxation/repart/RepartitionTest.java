@@ -20,14 +20,11 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import org.impotch.calcul.impot.taxation.forimposition.ForCantonal;
-import org.impotch.calcul.impot.taxation.repart.Part;
-import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICanton;
 import org.impotch.calcul.lieu.ICommuneSuisse;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -60,7 +57,7 @@ public class RepartitionTest {
 		});
 	}
 	
-	@Before
+	@BeforeEach
 	public void remplirCantonCommune() {
 		this.remplirCanton("VD","Vaud",9022);
 		this.remplirCommune("VD","Lausanne",5586);

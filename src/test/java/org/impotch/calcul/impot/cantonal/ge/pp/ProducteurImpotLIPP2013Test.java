@@ -17,24 +17,17 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.calcul.impot.Impot;
 import org.impotch.calcul.impot.taxation.pp.*;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml", "/beans-test.xml"})
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class ProducteurImpotLIPP2013Test extends ProducteurImpotTst {
 
     @Resource(name = "fournisseurRegleImpotCantonalGE")
@@ -72,11 +65,11 @@ public class ProducteurImpotLIPP2013Test extends ProducteurImpotTst {
     }
 
     private void verifierMontantImpot(RecepteurMultipleImpot recepteur, String codeImpotTaxe, String montantAttendu) {
-        assertEquals(codeImpotTaxe + " : " + libelleImpotTaxe.get(codeImpotTaxe),new BigDecimal(montantAttendu),getValeur(recepteur,codeImpotTaxe));
+        assertThat(getValeur(recepteur,codeImpotTaxe)).isEqualTo(new BigDecimal(montantAttendu));
     }
 
     private void verifierAbsenceImpot(RecepteurMultipleImpot recepteur, String codeImpotTaxe) {
-        assertNull(codeImpotTaxe + " : " + libelleImpotTaxe.get(codeImpotTaxe),getValeur(recepteur,codeImpotTaxe));
+        assertThat(getValeur(recepteur,codeImpotTaxe)).isNull();
     }
 
     @Test

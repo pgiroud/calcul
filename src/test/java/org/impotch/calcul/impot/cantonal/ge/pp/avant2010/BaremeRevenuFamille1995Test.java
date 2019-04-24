@@ -18,66 +18,47 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 import org.impotch.calcul.impot.cantonal.ge.pp.ChargeurFichierEconometre;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.impotch.util.TypeArrondi;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestContextManager;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(Parameterized.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml"})
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenuFamille1995Test {
 
-    private TestContextManager testContextManager;
 
     @Resource(name = "fournisseurRegleImpotCantonalGE")
     private FournisseurRegleImpotCantonalGE fournisseur;
 
     private BaremeFamille baremeCouple;
 
-    private int revenu;
-    private BigDecimal impot;
-
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        this.testContextManager = new TestContextManager(getClass());
-        this.testContextManager.prepareTestInstance(this);
         baremeCouple = (BaremeFamille)fournisseur.getBaremeRevenuFamille(1995);
         baremeCouple.setArrondi(TypeArrondi.DIXIEME_CT);
     }
 
-    public BaremeRevenuFamille1995Test(int revenu, BigDecimal impot) {
-        this.revenu = revenu;
-        this.impot = impot;
+    @ParameterizedTest
+    @MethodSource
+    public void couple(ChargeurFichierEconometre.Point point) {
+        assertThat(baremeCouple.calcul(BigDecimal.valueOf(point.revenu))).isEqualTo(point.impot);
     }
 
-
-    @Parameterized.Parameters
-    public static Collection<Object []> data() throws IOException {
+    private static Stream<ChargeurFichierEconometre.Point> couple() throws IOException {
         ChargeurFichierEconometre chargeur = new ChargeurFichierEconometre();
-        chargeur.setFichier(new ClassPathResource("ge/BASEIMP.CSV"));
-        return Arrays.asList(chargeur.charger(1995,true));
+        return chargeur.points(1995, true);
     }
-
-    @Test
-    public void couple() {
-        //TypeArrondi arrond = TypeArrondi.CINQ_CTS;
-        assertThat(baremeCouple.calcul(BigDecimal.valueOf(revenu))).isEqualTo(impot);
-    }
-
 
 
 }

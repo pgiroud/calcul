@@ -19,21 +19,22 @@ import java.math.BigDecimal;
 import javax.annotation.Resource;
 
 import org.impotch.util.TauxAssert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
+//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = "/beansAssurancesSociales.xml")
 public class CalculCotisationAvsAiApgIndependantTest {
 	
 	@Resource(name = "fournisseurRegleCalculAssuranceSociale")
@@ -44,7 +45,7 @@ public class CalculCotisationAvsAiApgIndependantTest {
     private CalculCotisationAvsAiApgIndependant calculateur2011;
     private CalculCotisationAvsAiApgIndependant calculateur2013;
 
-    @Before
+    @BeforeEach
 	public void initialise() throws Exception {
 		calculateur2008 = (CalculCotisationAvsAiApgIndependant)fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationAvsAiApgIndependant(2008);
 		calculateur2009 = (CalculCotisationAvsAiApgIndependant)fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationAvsAiApgIndependant(2009);

@@ -15,11 +15,9 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.param.dao;
 
-import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
-import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICommuneSuisse;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -32,7 +30,7 @@ public class ResidentParCommuneFichierTxtDaoTest {
 
     private ResidentParCommuneFichierTxtDao dao;
 
-    @Before
+    @BeforeEach
     public void init() {
         dao = new ResidentParCommuneFichierTxtDao();
         dao.setCharsetName("UTF-8");

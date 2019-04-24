@@ -100,10 +100,16 @@
             <artifactId>javax.annotation-api</artifactId>
             <version>1.3.2</version>
         </dependency>
-        <dependency>
+        <!-- dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -116,10 +122,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <compileSource>1.8</compileSource>
-        <junit.version>4.12</junit.version>
-        <spring.version>4.2.2.RELEASE</spring.version>
-        <slf4j.version>1.7.12</slf4j.version>
-        <assertj.version>3.2.0</assertj.version>
+        <!-- junit.version>4.12</junit.version -->
+        <junit.jupiter.version>5.4.2</junit.jupiter.version>
+        <assertj.version>3.11.1</assertj.version>
+        <spring.version>5.1.6.RELEASE</spring.version>
+        <slf4j.version>1.7.26</slf4j.version>
     </properties>
 
     <!-- Build Settings -->

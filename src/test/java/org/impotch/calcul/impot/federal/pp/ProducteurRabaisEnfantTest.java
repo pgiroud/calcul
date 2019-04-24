@@ -18,53 +18,40 @@ package org.impotch.calcul.impot.federal.pp;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotTst;
 import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.impotch.calcul.impot.federal.FournisseurRegleImpotFederal;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by IntelliJ IDEA.
- * User: patrick
- * Date: 17 avr. 2010
- * Time: 21:19:55
- * To change this template use File | Settings | File Templates.
- */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beansCH_IFD.xml")
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+
+@SpringJUnitConfig(locations = {"/beansCH_IFD.xml"})
 public class ProducteurRabaisEnfantTest extends ProducteurImpotTst {
 
     @Resource
     private FournisseurRegleImpotFederal constructeur;
 
     @Test
-    public void pasRabaisAvant2011() {
+    public void montant_rabais_2010_pour_1_enfant_doit_être_null() {
         RecepteurUniqueImpot recepteur = new RecepteurUniqueImpot("RI");
         ProducteurImpot prod;
         prod= constructeur.getProducteurImpotsFederauxPP(2010);
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(8),this.creerAssiettes(2011,100000),recepteur);
-        assertNull("Montant rabais 2010 pour 1 enfant doit être null", recepteur.getValeur());
+        assertThat(recepteur.getValeur()).isNull();
     }
 
 
     
 
     @Test
-    public void unEnfant() {
+    public void montant_rabais_2011_pour_1_enfant() {
         RecepteurUniqueImpot recepteur = new RecepteurUniqueImpot("RI");
         ProducteurImpot prod;
         prod= constructeur.getProducteurImpotsFederauxPP(2011);
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(8),this.creerAssiettes(2011,100000),recepteur);
-        assertEquals("Montant rabais 2011 pour 1 enfant", new BigDecimal("-250.00"),recepteur.getValeur().getMontant());
+        assertThat(recepteur.getValeur().getMontant()).isEqualTo(new BigDecimal("-250.00"));
     }
 }

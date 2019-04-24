@@ -15,36 +15,36 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
-import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.impotch.bareme.Bareme;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml"})
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeFortune2011Test {
 	@Resource(name = "fournisseurRegleImpotCantonalGE")
 	private FournisseurRegleImpotCantonalGE fournisseur;
 
 	@Test
-	public void baremeSource() {
+	@DisplayName("Barème fortune 2011 pour 1 million")
+	public void baremePour1million() {
 		Bareme bareme = fournisseur.getBaremeFortune(2011);
-		assertEquals("Pour 1000000 francs",new BigDecimal("2994.50"),bareme.calcul(new BigDecimal("1000000")));
-		bareme = fournisseur.getBaremeFortuneSupplementaire(2011);
-		assertEquals("Pour 1000000 francs",new BigDecimal("310.70"),bareme.calcul(new BigDecimal("1000000")));
-		
+		assertThat(bareme.calcul(BigDecimal.valueOf(1_000_000))).isEqualTo(new BigDecimal("2994.50"));
+	}
+
+	@Test
+	@DisplayName("Barème fortune supplémentaire 2011 pour 1 million")
+	public void baremeSupplementairePour1million() {
+		Bareme bareme = fournisseur.getBaremeFortuneSupplementaire(2011);
+		assertThat(bareme.calcul(BigDecimal.valueOf(1_000_000))).isEqualTo(new BigDecimal("310.70"));
 	}
 
 }

@@ -15,22 +15,20 @@
  */
 package org.impotch.calcul.impot.cantonal.ne.pp;
 
-import org.impotch.bareme.Bareme;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-
-import javax.annotation.Resource;
 import java.math.BigDecimal;
+import javax.annotation.Resource;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.impotch.bareme.Bareme;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beansCH_NE.xml")
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "/beansCH_NE.xml")
+//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = "/beansCH_NE.xml")
 public class BaremeRevenu2012Test {
 
     @Resource(name = "fournisseurRegleImpotCantonalNE")
@@ -38,7 +36,7 @@ public class BaremeRevenu2012Test {
 
     private Bareme bareme;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         bareme = fournisseur.getBaremeRevenu(2012);
     }

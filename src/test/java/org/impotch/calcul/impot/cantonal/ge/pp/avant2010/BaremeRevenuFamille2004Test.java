@@ -16,26 +16,21 @@
 package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 
-import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml"})
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+import static org.assertj.core.api.Fail.fail;
+
+@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenuFamille2004Test {
 
 	@Resource(name = "fournisseurRegleImpotCantonalGE")
@@ -43,7 +38,7 @@ public class BaremeRevenuFamille2004Test {
 	private static final BigDecimal DIX_CTS = new BigDecimal("0.10");
 	private Bareme bareme;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		bareme = fournisseur.getBaremeRevenuFamille(2004);
 	}

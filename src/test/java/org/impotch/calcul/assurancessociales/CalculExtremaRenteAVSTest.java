@@ -15,25 +15,21 @@
  */
 package org.impotch.calcul.assurancessociales;
 
-
-import static org.junit.Assert.assertEquals;
-
 import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.assertj.core.api.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+import static org.assertj.core.api.Assertions.assertThat;
+
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
+//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = "/beansAssurancesSociales.xml")
 public class CalculExtremaRenteAVSTest {
 
 	@Resource(name = "fournisseurRegleCalculAssuranceSociale")
@@ -41,13 +37,14 @@ public class CalculExtremaRenteAVSTest {
 	
 	private CalculExtremaRentesAVS calculateur;
 	
-	@Before
+	@BeforeEach
 	public void initialise() throws Exception {
 		calculateur = fournisseurRegleCalculAssuranceSociale.getCalculateurExtremaRenteAVS(2009);
 	}
 
 	@Test
 	public void calculRenteSimpleMaximum() {
-		Assert.assertEquals("Rente simple maximale annuelle", new BigDecimal("27360"), calculateur.getRenteSimple().getMontantAnnuelMaximum());
+		assertThat(calculateur.getRenteSimple().getMontantAnnuelMaximum()).isEqualTo(BigDecimal.valueOf(27360));
+		//Assert.assertEquals("Rente simple maximale annuelle", new BigDecimal("27360"), calculateur.getRenteSimple().getMontantAnnuelMaximum());
 	}
 }

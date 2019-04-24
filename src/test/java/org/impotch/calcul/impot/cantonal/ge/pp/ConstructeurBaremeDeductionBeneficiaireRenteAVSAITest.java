@@ -15,34 +15,26 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
-import org.impotch.bareme.BaremeConstantParTranche;
 import org.impotch.bareme.BaremeParTranche;
 import org.impotch.calcul.impot.indexation.Indexateur;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml", "/beans-test.xml"})
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = {"/beansCH_GE.xml", "/beans-test.xml"})
 public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAITest {
 
-    @Resource(name = "fournisseurRegleImpotCantonalGE")
-    private FournisseurCantonalGE fournisseur;
+
     @Resource(name="indexateurGenevois2009")
     private Indexateur indexateur;
     private  ConstructeurBaremeDeductionBeneficiaireRenteAVSAI constructeur;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         constructeur = new ConstructeurBaremeDeductionBeneficiaireRenteAVSAI();
         constructeur.indexateur(indexateur);

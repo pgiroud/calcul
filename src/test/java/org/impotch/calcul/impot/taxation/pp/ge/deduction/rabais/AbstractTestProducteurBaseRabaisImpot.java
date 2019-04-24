@@ -16,10 +16,9 @@
 package org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.impotch.calcul.assurancessociales.SituationAVS;
+import org.impotch.calcul.assurancessociales.StatutAVS;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.SituationFamilialeGE;
 import org.impotch.calcul.impot.taxation.pp.RegleAgeEnfant;
@@ -32,7 +31,15 @@ import org.impotch.calcul.assurancessociales.Fournisseur;
 class AbstractTestProducteurBaseRabaisImpot {
 
 	private ConstructeurSituationFamilialeGE constructeurSituation = new ConstructeurSituationFamilialeGE();
-	
+	private ProducteurBaseRabaisImpot producteur;
+
+	protected void initProducteurBaseRabaisImpot(int annee, int montantParEpoux, int deducDoubleActivite,
+												 int plafondFaibleRevenu, int deducDoubleActivitePourFaibleRevenu,
+												 int montantParDemiCharge, int demiMontantFraisGarde) {
+		this.producteur = construireProducteur(annee,montantParEpoux,deducDoubleActivite,plafondFaibleRevenu
+				,deducDoubleActivitePourFaibleRevenu,montantParDemiCharge,demiMontantFraisGarde);
+	}
+
 	protected RegleAgeEnfant contruireRegleAge() {
 		RegleAgeEnfant regleAge = new RegleAgeEnfant();
 		regleAge.setAgeLimiteJeuneEnfant(12);
@@ -41,7 +48,7 @@ class AbstractTestProducteurBaseRabaisImpot {
 		return regleAge;
 	}
 	
-	protected ProducteurBaseRabaisImpot construireProducteur(int annee, int montantParEpoux, int deducDoubleActivite, int plafondFaibleRevenu, int deducDoubleActivitePourFaibleRevenu, int montantParDemiCharge, int demiMontantFraisGarde) {
+	private ProducteurBaseRabaisImpot construireProducteur(int annee, int montantParEpoux, int deducDoubleActivite, int plafondFaibleRevenu, int deducDoubleActivitePourFaibleRevenu, int montantParDemiCharge, int demiMontantFraisGarde) {
 		ProducteurBaseRabaisImpot producteur = new ProducteurBaseRabaisImpot(annee);
 		producteur.setMontantParEpoux(new BigDecimal(montantParEpoux));
 		producteur.setMontantDeducDoubleActivite(new BigDecimal(deducDoubleActivite));
@@ -90,6 +97,20 @@ class AbstractTestProducteurBaseRabaisImpot {
 			
 		};
 		return fournisseur;
+	}
+
+
+	protected BigDecimal calculRabais(SituationFamilialeGE situation) {
+		FournisseurMontantRabaisImpot fournisseur = creerFournisseurMontant();
+		return producteur.produireMontantDeterminantRabais(situation, fournisseur);
+	}
+
+	protected BigDecimal montantAdditionnelRenteAVSAI(StatutAVS statut, boolean isComplementaireEpouse, int nombreOrphelin
+			, final int renteAVSPercu, final int revenuPourMontantAdditionnelRenteAVS) {
+		SituationAVS situation = new SituationAVS(statut,isComplementaireEpouse,nombreOrphelin);
+		FournisseurMontantRabaisImpot fournisseur = creerFournisseurMontant(situation
+				,BigDecimal.valueOf(renteAVSPercu),BigDecimal.valueOf(revenuPourMontantAdditionnelRenteAVS));
+		return producteur.produireMontantAdditionnelRenteAVSAI(fournisseur);
 	}
 
 	/**

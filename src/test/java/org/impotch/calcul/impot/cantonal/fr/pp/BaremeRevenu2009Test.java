@@ -17,25 +17,19 @@ package org.impotch.calcul.impot.cantonal.fr.pp;
 
 
 import java.math.BigDecimal;
-
 import javax.annotation.Resource;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.impotch.calcul.impot.cantonal.fr.pp.FournisseurRegleImpotCantonalFR;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.junit.Assert.*;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.impotch.bareme.Bareme;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beansCH_FR.xml")
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+import static org.assertj.core.api.Assertions.assertThat;
+
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "/beansCH_FR.xml")
+//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = "/beansCH_FR.xml")
 public class BaremeRevenu2009Test {
 
 	@Resource(name = "fournisseurRegleImpotCantonalFR")
@@ -43,14 +37,15 @@ public class BaremeRevenu2009Test {
 	
 	private Bareme bareme;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		bareme = fournisseur.getBaremeRevenu(2009);
 	}
 
 	private void calcul(int montantImposable, String attendu) {
-		String retour = bareme.calcul(new BigDecimal(montantImposable)).toPlainString();
-	    assertEquals("Barème pour " + montantImposable,attendu,retour);
+		assertThat(bareme.calcul(new BigDecimal(montantImposable))).isEqualTo(new BigDecimal(attendu));
+//		String retour = bareme.calcul(new BigDecimal(montantImposable)).toPlainString();
+//	    assertEquals("Barème pour " + montantImposable,attendu,retour);
 	}
 	
 	@Test

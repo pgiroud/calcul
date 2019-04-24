@@ -31,29 +31,24 @@
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 
-import static org.junit.Assert.assertEquals;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeTxMarginalConstantParTranche;
 import org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique;
 import org.impotch.util.TypeArrondi;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml"})
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+import static org.assertj.core.api.Assertions.assertThat;
+
+
+@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenuPallier2009Test {
 
     private BaremeTauxMarginalConstantParTranche bareme;
@@ -66,7 +61,7 @@ public class BaremeRevenuPallier2009Test {
         return fournisseur;
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         bareme = new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
                 // Attention, ce barème n'a jamais été utilisé.
@@ -96,7 +91,7 @@ public class BaremeRevenuPallier2009Test {
     }
 
     private void rev(int revenu, String impot) {
-        assertEquals("Revenu de " + revenu, new BigDecimal(impot), bareme.calcul(new BigDecimal(revenu)));
+        assertThat(bareme.calcul(BigDecimal.valueOf(revenu))).isEqualTo(new BigDecimal(impot));
     }
 
     @Test

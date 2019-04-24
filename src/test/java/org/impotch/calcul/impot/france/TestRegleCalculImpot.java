@@ -15,13 +15,11 @@
  */
 package org.impotch.calcul.impot.france;
 
+import org.junit.jupiter.api.Test;
+
 import java.math.BigDecimal;
 
-import org.junit.Test;
-import org.impotch.calcul.impot.france.RegleCalculImpot;
-
-import static org.junit.Assert.*;
-
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -33,7 +31,7 @@ public class TestRegleCalculImpot {
 	public void decote() {
 		RegleCalculImpot regle = new RegleCalculImpot(2008);
 		regle.setMontantDecote(new BigDecimal("862"));
-		
-		assertEquals("Montant apres decote", new BigDecimal("619"),regle.decote(new BigDecimal("700")));
+		assertThat(regle.decote(BigDecimal.valueOf(700))).isEqualTo(BigDecimal.valueOf(619));
+//		assertEquals("Montant apres decote", new BigDecimal("619"),regle.decote(new BigDecimal("700")));
 	}
 }

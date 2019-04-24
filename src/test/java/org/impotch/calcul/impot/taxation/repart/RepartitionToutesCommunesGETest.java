@@ -15,18 +15,18 @@
  */
 package org.impotch.calcul.impot.taxation.repart;
 
-import org.impotch.calcul.impot.taxation.forimposition.ForCantonal;
 import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
 import org.impotch.calcul.lieu.ICanton;
 import org.impotch.calcul.lieu.ICommuneSuisse;
 import org.impotch.util.TypeArrondi;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 
 public class RepartitionToutesCommunesGETest {
@@ -138,11 +138,11 @@ public class RepartitionToutesCommunesGETest {
         Part oPart = repart.getPart(getFor(codeCommune));
         if (null == oPart)
         {
-            Assert.fail("La commune " + codeCommune + " n'a pas été trouvée dans la répartition");
+            fail("La commune " + codeCommune + " n'a pas été trouvée dans la répartition");
         }
         else
         {
-            Assert.assertEquals("Comparaison mnt " + codeCommune,montantAttendu,oPart.getMontant());
+            assertThat(oPart.getMontant()).isEqualTo(montantAttendu);
         }
     }
 

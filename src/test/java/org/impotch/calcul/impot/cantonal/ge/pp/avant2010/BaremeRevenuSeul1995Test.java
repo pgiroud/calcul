@@ -18,22 +18,16 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.impotch.util.TypeArrondi;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/beansCH_GE.xml"})
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenuSeul1995Test {
 
     @Resource(name = "fournisseurRegleImpotCantonalGE")
@@ -42,7 +36,7 @@ public class BaremeRevenuSeul1995Test {
     private Bareme bareme;
     private Bareme baremeCouple;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         bareme = fournisseur.getBaremeRevenu(1995);
         baremeCouple = fournisseur.getBaremeRevenuFamille(1995);

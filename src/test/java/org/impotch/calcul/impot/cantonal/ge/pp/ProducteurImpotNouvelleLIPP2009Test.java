@@ -31,7 +31,6 @@
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 
-import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -39,8 +38,6 @@ import java.util.Map;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
-import org.junit.Before;
-import org.junit.Test;
 
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeTxMarginalConstantParTranche;
@@ -54,6 +51,10 @@ import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
 
@@ -69,7 +70,7 @@ public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
     }
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Bareme bareme = new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
                 // Attention, ce barème n'a jamais été utilisé.
@@ -115,7 +116,7 @@ public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
         FournisseurAssiettePeriodique fournisseur = this.creerAssiettes(periodeFiscale, montantImposable);
         RecepteurUniqueImpot recepteurIBR = new RecepteurUniqueImpot("IBR");
         producteur.produireImpot(situation, fournisseur, recepteurIBR);
-        assertEquals("Revenu de " + montantImposable, new BigDecimal(montantImpot), recepteurIBR.getValeur().getMontant());
+        assertThat(recepteurIBR.getValeur().getMontant()).isEqualTo(new BigDecimal(montantImpot));
     }
 
     @Test

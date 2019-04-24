@@ -16,23 +16,17 @@
 package org.impotch.calcul.impot.cantonal.fr.pp;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.impotch.calcul.impot.FournisseurAssietteCommunale;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import org.impotch.calcul.impot.Impot;
+import org.impotch.calcul.impot.FournisseurAssietteCommunale;
 import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
@@ -43,11 +37,13 @@ import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
 import org.impotch.calcul.impot.taxation.repart.Part;
 import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICommuneSuisse;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/beansCH_FR.xml")
-@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+import static org.assertj.core.api.Assertions.assertThat;
+
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "/beansCH_FR.xml")
+//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
+@SpringJUnitConfig(locations = "/beansCH_FR.xml")
 public class ProducteurImpotRevenu2007Test extends ProducteurImpotTst {
 
 	@Resource(name = "fournisseurRegleImpotCantonalFR")
@@ -78,11 +74,13 @@ public class ProducteurImpotRevenu2007Test extends ProducteurImpotTst {
 	}
 	
 	private void verifierMontantImpot(RecepteurMultipleImpot recepteur, String codeImpotTaxe, String montantAttendu) {
-		assertEquals(codeImpotTaxe + " : " + libelleImpotTaxe.get(codeImpotTaxe),new BigDecimal(montantAttendu),getValeur(recepteur,codeImpotTaxe));
+		assertThat(getValeur(recepteur,codeImpotTaxe)).isEqualTo(new BigDecimal(montantAttendu));
+//		assertEquals(codeImpotTaxe + " : " + libelleImpotTaxe.get(codeImpotTaxe),new BigDecimal(montantAttendu),getValeur(recepteur,codeImpotTaxe));
 	}
 	
 	private void verifierAbsenceImpot(RecepteurMultipleImpot recepteur, String codeImpotTaxe) {
-		assertNull(codeImpotTaxe + " : " + libelleImpotTaxe.get(codeImpotTaxe),getValeur(recepteur,codeImpotTaxe));
+		assertThat(getValeur(recepteur,codeImpotTaxe)).isNull();
+//		assertNull(codeImpotTaxe + " : " + libelleImpotTaxe.get(codeImpotTaxe),getValeur(recepteur,codeImpotTaxe));
 	}
 	
 	@Test
