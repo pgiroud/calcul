@@ -22,13 +22,21 @@ import javax.annotation.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
 @SpringJUnitConfig(locations = "/beansAssurancesSociales.xml")
 public class FournisseurDeducMaxPilier3aTest {
 
     @Resource
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
+
+    @Test
+    public void test2021et2022() {
+        FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2021);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6883");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("34416");
+        fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2022);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6883");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("34416");
+    }
 
     @Test
     public void test2019et2020() {
