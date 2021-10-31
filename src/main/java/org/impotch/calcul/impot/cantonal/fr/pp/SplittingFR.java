@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
+import org.impotch.bareme.BaremeTauxEffectifLineaireParTranche;
 
 /**
  * Le splitting à Fribourg est intimememt lié au barème à taux effectif linéaire par tranche.

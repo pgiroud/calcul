@@ -41,6 +41,7 @@ import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.impotch.bareme.Bareme;
+import org.impotch.bareme.BaremeTauxEffectifLineaireParTranche;
 import org.impotch.calcul.impot.taxation.pp.Contribuable;
 import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
 import org.impotch.calcul.impot.taxation.pp.PersonneACharge;

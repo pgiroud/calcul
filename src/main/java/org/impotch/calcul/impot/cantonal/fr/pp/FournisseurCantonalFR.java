@@ -34,7 +34,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.bareme.Bareme;
-import org.impotch.bareme.BaremeTauxEffectifConstantParTranche;
+import org.impotch.bareme.ConstructeurBaremeTauxEffectifLineaireParTranche;
+import org.impotch.bareme.BaremeTauxEffectifLineaireParTranche;
 import org.impotch.bareme.ConstructeurBareme;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import org.impotch.calcul.impot.cantonal.FournisseurCantonal;
