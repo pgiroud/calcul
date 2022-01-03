@@ -41,9 +41,9 @@ class IFDPostNumerando {
 
     /* ---------------------- Personne seule -------------------------------*/
     public Bareme personneSeule(int annee) {
-        if (annee >= 2020)
+        if (annee >= 2023)
             throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas encore défini pour l'année " + annee);
-        if (2012 <= annee && 2019 >= annee) {
+        if (2012 <= annee && 2022 >= annee) {
             return personneSeule2012();
         }
         if (2011 == annee) {
@@ -139,9 +139,9 @@ class IFDPostNumerando {
 
 
     public Bareme famille(int annee) {
-        if (annee >= 2020)
+        if (annee >= 2023)
             throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas encore défini pour l'année " + annee);
-        if (2012 <= annee && 2019 >= annee) {
+        if (2012 <= annee && 2022 >= annee) {
             return famille2012();
         }
         if (2011 == annee) {

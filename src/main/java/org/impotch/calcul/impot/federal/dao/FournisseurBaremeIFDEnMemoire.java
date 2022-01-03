@@ -45,6 +45,8 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
         return praeNumerando.famille(annee);
     }
 
+
+
     /**
      * Barèmes définis dans l'ordonnance sur l'impôt à la source (appendice 3)
      * @param annee l'année durant laquelle est perçue la prestation
@@ -53,8 +55,18 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
     @Override
     public Bareme getBaremeImpotSourcePrestationCapital(int annee) {
         ConstructeurBaremeISPrestationCapital cons = new ConstructeurBaremeISPrestationCapital();
-        if (2020 <= annee) throw new RuntimeException("Barème pas encore défini pour l'année " + annee);
-        if (2012 <= annee && 2019 >= annee) {
+        if (2023 <= annee) throw new RuntimeException("Barème pas encore défini pour l'année " + annee);
+        if (2021 <= annee && 2022 >= annee) {
+            cons
+                    .surLesPremier(25000).taux("0 %")
+                    .surLesProchains(25000).taux("0.35 %")
+                    .surLesProchains(25000).taux("0.65 %")
+                    .surLesProchains(25000).taux("1.30 %")
+                    .surLesProchains(25000).taux("1.70 %")
+                    .surLesProchains(25000).taux("2.00 %")
+                    .etFinalementTaux("2.60 %")
+                    .tauxEffectifMax("2.30 %");
+        } else if (2012 <= annee && 2019 >= annee) {
             cons
                     .surLesPremier(25000).taux("0 %")
                     .surLesProchains(25000).taux("0.20 %")
@@ -98,4 +110,21 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
         return cons.construire();
     }
 
+    @Override
+    public Bareme getBaremeImpotSourcePrestationCapitalCouple(int annee) {
+        if (annee <= 2020) return this.getBaremeImpotSourcePrestationCapital(annee);
+        else {
+            ConstructeurBaremeISPrestationCapital cons = new ConstructeurBaremeISPrestationCapital();
+            cons
+                    .surLesPremier(25000).taux("0 %")
+                    .surLesProchains(25000).taux("0.20 %")
+                    .surLesProchains(25000).taux("0.50 %")
+                    .surLesProchains(25000).taux("0.90 %")
+                    .surLesProchains(25000).taux("1.25 %")
+                    .surLesProchains(25000).taux("2.00 %")
+                    .etFinalementTaux("2.60 %")
+                    .tauxEffectifMax("2.30 %");
+            return cons.construire();
+        }
+    }
 }

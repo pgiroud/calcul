@@ -53,6 +53,9 @@
         <entry key="2017" value="102.7"/>
         <entry key="2018" value="103.0"/>
         <entry key="2019" value="104.2"/>
+        <entry key="2020" value="105.0"/>
+        <entry key="2021" value="104.4"/>
+        <entry key="2022" value="104.1"/>
       </map>
     </property>
   </bean>

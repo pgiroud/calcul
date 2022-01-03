@@ -642,13 +642,14 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     private DeductionSociale construireRegleDeductionSocialeCharge(int annee) {
         if (annee < 2010) return null;
-        if (annee > 2019) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
+        if (annee > 2022) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
                 + annee + "' doit être adapté !");
         DeductionChargeFamille deduction = new DeductionChargeFamille(annee);
         if (2010 == annee) deduction.setMontantParCharge(new BigDecimal("9000"));
         else if (annee < 2013) deduction.setMontantParCharge(new BigDecimal("10000"));
         else if (annee < 2017) deduction.setMontantParCharge(new BigDecimal("10078"));
-        else if (annee < 2020) deduction.setMontantParCharge(new BigDecimal("9980"));
+        else if (annee < 2021) deduction.setMontantParCharge(new BigDecimal("9980"));
+        else if (annee < 2023) deduction.setMontantParCharge(BigDecimal.valueOf(13000));
         return deduction;
     }
 
@@ -667,7 +668,8 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         if (annee >= 2009) montantDeduction = 500;
         if (annee >= 2013) montantDeduction = 504;
         if (annee >= 2017) montantDeduction = 499;
-        if (annee >= 2020)
+        if (annee >= 2021) montantDeduction = 1000;
+        if (annee >= 2023)
             throw new IllegalArgumentException("Le montant de la déduction double activité pour l'année '"
                     + annee + "' doit être adapté !");
         DeductionDoubleActivite deduction = new DeductionDoubleActivite(montantDeduction);

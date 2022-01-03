@@ -54,4 +54,6 @@ public interface FournisseurBaremeIFD {
      */
     Bareme getBaremeImpotSourcePrestationCapital(int annee);
 
+    Bareme getBaremeImpotSourcePrestationCapitalCouple(int annee);
+
 }

@@ -66,13 +66,19 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
     private String tauxAPG(int annee) {
         if (annee < 2011) return "0.3 %";
         if (annee < 2016) return "0.5 %";
-        else return "0.45 %";
+        if (annee < 2021) return "0.45 %";
+        else return "0.5 %";
+    }
+
+    private String tauxAVS(int annee) {
+        if (annee < 2020) return "8.4 %";
+        else return "8.7 %";
     }
 
     private CalculCotisationsSocialesSalarie.Constructeur obtenirNouveauConstructeur(int annee) {
         CalculCotisationsSocialesSalarie.Constructeur constructeur = new CalculCotisationsSocialesSalarie.Constructeur();
 
-        constructeur.tauxAvs("8.4 %").tauxAi("1.4 %").tauxApg(tauxAPG(annee))
+        constructeur.tauxAvs(tauxAVS(annee)).tauxAi("1.4 %").tauxApg(tauxAPG(annee))
             .tauxAC("2 %");
 
         // La loi fédérale sur l'assurance-accidents stipule qu' «en règle générale,

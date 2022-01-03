@@ -37,7 +37,7 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 	private Integer anneeMaximumValidite;
 	private int anneeReference;
 	private FournisseurIndicePeriodique indexateur;
-	private ConstructeurBaremeTauxMarginal constructeur;
+	private final ConstructeurBaremeTauxMarginal constructeur;
 	private TypeArrondi typeArrondiTranche;
 	
     /**************************************************/

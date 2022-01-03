@@ -37,6 +37,8 @@ public class ParametrageEnMemoireCotisationAssuranceMaternite implements Paramet
         taux.put(2010,"0.045 %");
         taux.put(2013,"0.042 %");
         taux.put(2014,"0.041 %");
+        taux.put(2018,"0.046 %");
+        taux.put(2021,"0.043 %");
         setTauxParAnnee(taux);
     }
 
