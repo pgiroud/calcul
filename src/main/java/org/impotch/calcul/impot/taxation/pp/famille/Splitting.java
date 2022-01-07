@@ -74,7 +74,8 @@ public class Splitting extends ImpositionFamilleSansAvantage implements Strategi
 		BigDecimal determinantApresSplitting = typeArrondi.arrondirMontant(tauxSplitting.multiply(determinantArrondi));
 		BigDecimal impotDeterminantApresSplitting = getBareme().calcul(determinantApresSplitting);
 		impotDeterminantApresSplitting = typeArrondiImpot.arrondirMontant(impotDeterminantApresSplitting);
-		return typeArrondiImpot.arrondirMontant(impotDeterminantApresSplitting.multiply(determinantArrondi).divide(determinantApresSplitting,10,BigDecimal.ROUND_HALF_UP));
+		if (0 == BigDecimal.ZERO.compareTo(impotDeterminantApresSplitting)) return impotDeterminantApresSplitting;
+		else return typeArrondiImpot.arrondirMontant(impotDeterminantApresSplitting.multiply(determinantArrondi).divide(determinantApresSplitting,10,BigDecimal.ROUND_HALF_UP));
 	}
 	
 	
