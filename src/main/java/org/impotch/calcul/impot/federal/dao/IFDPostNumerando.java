@@ -41,8 +41,11 @@ class IFDPostNumerando {
 
     /* ---------------------- Personne seule -------------------------------*/
     public Bareme personneSeule(int annee) {
-        if (annee >= 2023)
+        if (annee >= 2024)
             throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas encore défini pour l'année " + annee);
+        if (2023 <= annee) {
+            return personneSeule2023();
+        }
         if (2012 <= annee && 2022 >= annee) {
             return personneSeule2012();
         }
@@ -56,6 +59,25 @@ class IFDPostNumerando {
             return personneSeule1996();
         }
         throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas défini pour l'année " + annee);
+    }
+
+    /**
+     * Adapté à l'indice de juin 2022: 165,2
+     * barème 2012 étiré de 2.04 %
+     * @return Constructeur pour les périodes fiscales 2023
+     */
+    private Bareme personneSeule2023() {
+        return new ConstructeurBaremeIFD()
+                .jusqua(14800).a("0.00").etPar100FrancsEnPlus("0.77")
+                .pour(32200).a("133.95").etPar100FrancsEnPlus("0.88")
+                .pour(42200).a("221.95").etPar100FrancsEnPlus("2.64")
+                .pour(56200).a("591.55").etPar100FrancsEnPlus("2.97")
+                .pour(73900).a("1117.20").etPar100FrancsEnPlus("5.94")
+                .pour(79_600).a("1455.75").etPar100FrancsEnPlus("6.60")
+                .pour(105_500).a("3165.15").etPar100FrancsEnPlus("8.80")
+                .pour(137_200).a("5954.75").etPar100FrancsEnPlus("11.00")
+                .pour(179_400).a("10596.75").etPar100FrancsEnPlus("13.20")
+                .tauxEffectifMax("11.5 %").construire();
     }
 
     /**

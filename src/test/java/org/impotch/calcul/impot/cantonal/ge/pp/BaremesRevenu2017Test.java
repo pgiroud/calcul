@@ -22,10 +22,8 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
