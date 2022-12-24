@@ -55,7 +55,18 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
     @Override
     public Bareme getBaremeImpotSourcePrestationCapital(int annee) {
         ConstructeurBaremeISPrestationCapital cons = new ConstructeurBaremeISPrestationCapital();
-        if (2023 <= annee) throw new RuntimeException("Barème pas encore défini pour l'année " + annee);
+        if (2024 <= annee) throw new RuntimeException("Barème pas encore défini pour l'année " + annee);
+        if (2023 == annee) {
+            cons
+                    .surLesPremier(25000).taux("0 %")
+                    .surLesProchains(25000).taux("0.35 %")
+                    .surLesProchains(25000).taux("0.60 %")
+                    .surLesProchains(25000).taux("1.30 %")
+                    .surLesProchains(25000).taux("1.70 %")
+                    .surLesProchains(25000).taux("2.00 %")
+                    .etFinalementTaux("2.60 %")
+                    .tauxEffectifMax("2.30 %");
+        }
         if (2021 <= annee && 2022 >= annee) {
             cons
                     .surLesPremier(25000).taux("0 %")
@@ -115,15 +126,29 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
         if (annee <= 2020) return this.getBaremeImpotSourcePrestationCapital(annee);
         else {
             ConstructeurBaremeISPrestationCapital cons = new ConstructeurBaremeISPrestationCapital();
-            cons
-                    .surLesPremier(25000).taux("0 %")
-                    .surLesProchains(25000).taux("0.20 %")
-                    .surLesProchains(25000).taux("0.50 %")
-                    .surLesProchains(25000).taux("0.90 %")
-                    .surLesProchains(25000).taux("1.25 %")
-                    .surLesProchains(25000).taux("2.00 %")
-                    .etFinalementTaux("2.60 %")
-                    .tauxEffectifMax("2.30 %");
+            if (annee <=2022) {
+                cons
+                        .surLesPremier(25000).taux("0 %")
+                        .surLesProchains(25000).taux("0.20 %")
+                        .surLesProchains(25000).taux("0.50 %")
+                        .surLesProchains(25000).taux("0.90 %")
+                        .surLesProchains(25000).taux("1.25 %")
+                        .surLesProchains(25000).taux("2.00 %")
+                        .etFinalementTaux("2.60 %")
+                        .tauxEffectifMax("2.30 %");
+            } else if (2023 == annee) {
+                cons
+                        .surLesPremier(25000).taux("0 %")
+                        .surLesProchains(25000).taux("0.20 %")
+                        .surLesProchains(25000).taux("0.50 %")
+                        .surLesProchains(25000).taux("0.85 %")
+                        .surLesProchains(25000).taux("1.20 %")
+                        .surLesProchains(25000).taux("1.90 %")
+                        .etFinalementTaux("2.60 %")
+                        .tauxEffectifMax("2.30 %");
+            } else {
+                throw new RuntimeException("Barème pas encore défini pour l'année " + annee);
+            }
             return cons.construire();
         }
     }

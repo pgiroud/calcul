@@ -68,11 +68,11 @@ class IFDPostNumerando {
      */
     private Bareme personneSeule2023() {
         return new ConstructeurBaremeIFD()
-                .jusqua(14800).a("0.00").etPar100FrancsEnPlus("0.77")
-                .pour(32200).a("133.95").etPar100FrancsEnPlus("0.88")
-                .pour(42200).a("221.95").etPar100FrancsEnPlus("2.64")
-                .pour(56200).a("591.55").etPar100FrancsEnPlus("2.97")
-                .pour(73900).a("1117.20").etPar100FrancsEnPlus("5.94")
+                .jusqua(14_800).a("0.00").etPar100FrancsEnPlus("0.77")
+                .pour(32_200).a("133.95").etPar100FrancsEnPlus("0.88")
+                .pour(42_200).a("221.95").etPar100FrancsEnPlus("2.64")
+                .pour(56_200).a("591.55").etPar100FrancsEnPlus("2.97")
+                .pour(73_900).a("1117.20").etPar100FrancsEnPlus("5.94")
                 .pour(79_600).a("1455.75").etPar100FrancsEnPlus("6.60")
                 .pour(105_500).a("3165.15").etPar100FrancsEnPlus("8.80")
                 .pour(137_200).a("5954.75").etPar100FrancsEnPlus("11.00")
@@ -161,8 +161,11 @@ class IFDPostNumerando {
 
 
     public Bareme famille(int annee) {
-        if (annee >= 2023)
+        if (annee >= 2024)
             throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas encore défini pour l'année " + annee);
+        if (2023 <= annee) {
+            return famille2023();
+        }
         if (2012 <= annee && 2022 >= annee) {
             return famille2012();
         }
@@ -176,6 +179,29 @@ class IFDPostNumerando {
             return famille1996();
         }
         throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas défini pour l'année " + annee);
+    }
+
+    /**
+     * Adapté à l'indice de juin 2022: 165.2
+     * barème 2012 étiré de 2.04 %
+     * @return Constructeur pour les périodes fiscales >= 2023
+     */
+    private Bareme famille2023() {
+        return new ConstructeurBaremeIFD()
+                .jusqua(28_800).a("0.00").etPar100FrancsEnPlus("1.00")
+                .pour(51_800).a("230.00").etPar100FrancsEnPlus("2.00")
+                .pour(59_400).a("382.00").etPar100FrancsEnPlus("3.00")
+                .pour(76_700).a("901.00").etPar100FrancsEnPlus("4.00")
+                .pour(92_000).a("1513.00").etPar100FrancsEnPlus("5.00")
+                .pour(105_400).a("2183.00").etPar100FrancsEnPlus("6.00")
+                .pour(116_900).a("2873.00").etPar100FrancsEnPlus("7.00")
+                .pour(126_500).a("3545.00").etPar100FrancsEnPlus("8.00")
+                .pour(134_200).a("4161.00").etPar100FrancsEnPlus("9.00")
+                .pour(139_900).a("4674.00").etPar100FrancsEnPlus("10.00")
+                .pour(143_800).a("5064.00").etPar100FrancsEnPlus("11.00")
+                .pour(145_800).a("5284.00").etPar100FrancsEnPlus("12.00")
+                .pour(147_700).a("5512.00").etPar100FrancsEnPlus("13.00")
+                .tauxEffectifMax("11.5 %").construire();
     }
 
     /**
