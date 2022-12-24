@@ -40,9 +40,6 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
-//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
 @SpringJUnitConfig(locations = "/beansAssurancesSociales.xml")
 public class CalculCotisationAvsAiApgSalarieTest {
 
