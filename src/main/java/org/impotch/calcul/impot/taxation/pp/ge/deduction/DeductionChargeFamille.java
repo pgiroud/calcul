@@ -16,6 +16,7 @@
 package org.impotch.calcul.impot.taxation.pp.ge.deduction;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.calcul.impot.Souverainete;
@@ -40,7 +41,11 @@ public class DeductionChargeFamille extends ReglePeriodique implements Deduction
 	public void setMontantParCharge(BigDecimal montantDeduction) {
 		montantCharge = montantDeduction;
 	}
-	
+
+	public void setMontantParCharge(int montantDeduction) {
+		setMontantParCharge(BigDecimal.valueOf(montantDeduction));
+	}
+
 	protected BigDecimal getNombreCharge(SituationFamiliale situation) {
 		BigDecimal nombre = BigDecimal.ZERO;
 		for (EnfantACharge enfant : situation.getEnfants()) {
@@ -54,7 +59,7 @@ public class DeductionChargeFamille extends ReglePeriodique implements Deduction
 	@Override
 	public BigDecimal getMontantDeduction(SituationFamiliale situation) {
 		BigDecimal nombreCharge = getNombreCharge(situation);
-		return montantCharge.multiply(nombreCharge);
+		return montantCharge.multiply(nombreCharge).setScale(0, RoundingMode.HALF_UP);
 	}
 
     @Override

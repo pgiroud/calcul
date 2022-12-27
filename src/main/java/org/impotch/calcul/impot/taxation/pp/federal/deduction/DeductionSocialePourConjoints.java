@@ -35,8 +35,12 @@ public class DeductionSocialePourConjoints  extends ReglePeriodique implements D
 	/**
 	 * @param deducConjointsIFD the deducConjointsIFD to set
 	 */
-	public void setDeducConjointsIFD(BigDecimal deducConjointsIFD) {
+	private void setDeducConjointsIFD(BigDecimal deducConjointsIFD) {
 		this.deducConjointsIFD = deducConjointsIFD;
+	}
+
+	public void setDeducConjointsIFD(int deducConjointsIFD) {
+		setDeducConjointsIFD(BigDecimal.valueOf(deducConjointsIFD));
 	}
 
 

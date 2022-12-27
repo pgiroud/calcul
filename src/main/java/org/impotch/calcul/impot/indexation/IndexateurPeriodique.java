@@ -16,6 +16,7 @@
 package org.impotch.calcul.impot.indexation;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.impotch.bareme.BaremeConstantParTranche;
 import org.impotch.bareme.BaremeParTranche;
@@ -79,11 +80,11 @@ public class IndexateurPeriodique implements Indexateur {
                               TypeArrondi arrondi) {
         return (getAnneeIndice(annee) == getAnneeBase()) ?
                 montantBase
-                : arrondi.arrondirMontant(montantBase.multiply(getIndiceDerniereRevalorisation(annee)).divide(getIndiceBase(),15,BigDecimal.ROUND_HALF_UP));
+                : arrondi.arrondirMontant(montantBase.multiply(getIndiceDerniereRevalorisation(annee)).divide(getIndiceBase(),15, RoundingMode.HALF_UP));
 	}
 
     private BigDecimal obtenirRapportRencherissement(int annee) {
-        return getIndiceDerniereRevalorisation(annee).divide(getIndiceBase(), 15, BigDecimal.ROUND_HALF_UP);
+        return getIndiceDerniereRevalorisation(annee).divide(getIndiceBase(), 15, RoundingMode.HALF_UP);
     }
 
     @Override

@@ -22,7 +22,12 @@
 
   <bean name="fournisseurParamCommuneTest"
         class="org.impotch.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE">
-    <property name="dao" ref="paramCommuneDao"/>
+    <property name="dao" ref="paramCommuneDaoTest"/>
+  </bean>
+
+  <bean name="fournisseurRegleImpotCantonalGETest"
+        class="org.impotch.calcul.impot.cantonal.ge.pp.FournisseurCantonalGE">
+    <property name="fournisseurParamCommunaux" ref="fournisseurParamCommuneTest"/>
   </bean>
 
   <!--bean id="chargeurFichierEconometreGE" class="org.impotch.calcul.impot.cantonal.ge.pp.ChargeurFichierEconometre">

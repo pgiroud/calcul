@@ -13,19 +13,19 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.cantonal.ge.pp.indexateur;
+package org.impotch.calcul.impot.indexation.ge;
 
-import org.impotch.bareme.BaremeConstantParTranche;
+
 import org.impotch.bareme.BaremeParTranche;
 import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.impotch.calcul.impot.indexation.Indexateur;
 import org.impotch.calcul.impot.indexation.IndexateurPeriodique;
 import org.impotch.util.TypeArrondi;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
+
 import java.math.BigDecimal;
 
 /**

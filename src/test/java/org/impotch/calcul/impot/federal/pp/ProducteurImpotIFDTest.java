@@ -35,7 +35,7 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
 
     @Resource
     private FournisseurRegleImpotFederal constructeur;
-    private Map<String,String> libelleImpotTaxe = new HashMap<String,String>();
+    private Map<String,String> libelleImpotTaxe = new HashMap<>();
 
     public ProducteurImpotIFDTest() {
         libelleImpotTaxe.put("IBR","Impôt fédéral de base sur le revenu");
@@ -76,5 +76,14 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
         verifierMontantImpot(recepteur,"TOTAL","5.00");
     }
 
+    @Test
+    public void produireImpotIFD2021() {
+        ProducteurImpot prod = constructeur.getProducteurImpotsFederauxPP(2021);
+        RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
+        prod.produireImpot(this.creerSituationFamilleAvecEnfant(16,13), this.creerAssiettes(2021, 120400, 105300), recepteur);
+        verifierMontantImpot(recepteur,"IBR",  "2574.95");
+        verifierMontantImpot(recepteur,"RI", "-502.00");
+        verifierMontantImpot(recepteur,"TOTAL","2072.95");
+    }
 
 }

@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class SimpleFournisseurIndicePeriodique implements FournisseurIndicePeriodique {
 
-	private Map<Integer,BigDecimal> indices = new HashMap<Integer,BigDecimal>(); 
+	private Map<Integer,BigDecimal> indices = new HashMap<>();
 	
 	/**
 	 * Spécifie les indices par année. Attention, il ne s'agit pas de moyenne annuel d'indices
@@ -40,10 +40,39 @@ public class SimpleFournisseurIndicePeriodique implements FournisseurIndicePerio
 	public void setIndices(Map<Integer, BigDecimal> nIndices) {
 		indices = nIndices;
 	}
-	
+
+
+
 	@Override
 	public BigDecimal getIndice(int periodeFiscale) {
 		return indices.get(periodeFiscale);
+	}
+
+	public static class Constructeur {
+
+		private final Map<Integer,BigDecimal> indices = new HashMap<>();
+		private int annee = -1;
+
+		public Constructeur pour(int annee) {
+			this.annee = annee;
+			return this;
+		}
+
+		public Constructeur valeur(String valeur) {
+			if (-1 == annee) {
+				throw new RuntimeException("Il faut absolument commencer par précise une année !");
+			}
+			// TODO ajouter exception si on met n'importe quoi dans la valeur!
+			indices.put(annee,new BigDecimal(valeur));
+			annee = -1;
+			return this;
+		}
+
+		public SimpleFournisseurIndicePeriodique cons() {
+			SimpleFournisseurIndicePeriodique four = new SimpleFournisseurIndicePeriodique();
+			four.setIndices(indices);
+			return four;
+		}
 	}
 
 }

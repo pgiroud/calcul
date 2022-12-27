@@ -31,6 +31,10 @@ public class DeductionDoubleActivite implements DeductionSociale {
         montantDeduction = BigDecimal.valueOf(montant);
     }
 
+    public DeductionDoubleActivite(BigDecimal montant) {
+        montantDeduction = montant;
+    }
+
     @Override
     public BigDecimal getMontantDeduction(SituationFamiliale situation) {
         if (situation.isCouple()) return montantDeduction;

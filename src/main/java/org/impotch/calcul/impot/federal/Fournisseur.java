@@ -124,10 +124,12 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
             };
         } else {
             ProducteurRabaisEnfantPersonneNecessiteuse producteurRabais = new  ProducteurRabaisEnfantPersonneNecessiteuse();
-            if (annee > 2011) {
-                producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal.valueOf(251));
+			if (annee > 2022) {
+				producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(255);
+			} else if (annee > 2011) {
+                producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(251);
             } else {
-                producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal.valueOf(250));
+                producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(250);
             }
 
             ProducteurImpotAvecRabais prodAvecRabais = new ProducteurImpotAvecRabais("IBR","RI","") {
@@ -190,7 +192,10 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
             regle.setPlafond(7000);
         } else {
             regle.setTaux("50 %");
-            if (annee >= 2012) {
+			if (annee >= 2023) {
+				regle.setPlancher(8300);
+				regle.setPlafond(13600);
+			} else if (annee >= 2012) {
                 regle.setPlancher(8100);
                 regle.setPlafond(13400);
             } else {
@@ -210,14 +215,16 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 
 	protected DeductionSociale construireRegleDeductionSocialeEnfant(int annee) {
 		DeductionSocialeParEnfant deduction = new DeductionSocialeParEnfant(annee);
-		if (annee > 2011) {
-			deduction.setDeductionSocialeParEnfant(new BigDecimal("6500"));
+		if (annee > 2022) {
+			deduction.setDeductionSocialeParEnfant(6600);
+		} else if (annee > 2011) {
+			deduction.setDeductionSocialeParEnfant(6500);
 		} else if (annee > 2010) {
-			deduction.setDeductionSocialeParEnfant(new BigDecimal("6400"));
+			deduction.setDeductionSocialeParEnfant(6400);
 		} else if (annee > 2005) {
-			deduction.setDeductionSocialeParEnfant(new BigDecimal("6100"));
+			deduction.setDeductionSocialeParEnfant(6100);
 		} else {
-			deduction.setDeductionSocialeParEnfant(new BigDecimal("5600"));
+			deduction.setDeductionSocialeParEnfant(5600);
 		}
 		return deduction;
 	}
@@ -234,10 +241,12 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 
 	protected DeductionSociale construireRegleDeductionSocialeConjoint(int annee) {
 		DeductionSocialePourConjoints deduction = new DeductionSocialePourConjoints(annee);
-		if (annee > 2010) {
-			deduction.setDeducConjointsIFD(new BigDecimal("2600"));
+		if (annee > 2022) {
+			deduction.setDeducConjointsIFD(2700);
+		} else if (annee > 2010) {
+			deduction.setDeducConjointsIFD(2600);
 		} else {
-			deduction.setDeducConjointsIFD(new BigDecimal("2500"));
+			deduction.setDeducConjointsIFD(2500);
 		}
 		return deduction;
 	}

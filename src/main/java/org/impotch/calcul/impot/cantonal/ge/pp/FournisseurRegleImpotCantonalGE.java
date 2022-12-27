@@ -37,7 +37,7 @@ public interface FournisseurRegleImpotCantonalGE {
 	ProducteurImpot getProducteurImpotsICCFortuneSupplementaire(int annee);
 	
 	Indexateur getIndexateurBaseMai1993(int anneeBaseIndexation);
-	
+	Indexateur getIndexateurBaseDec2005(int anneeBaseIndexation);
 	/**
 	 * Retourne la règle calculant la déduction sociale sur les charges (voir article 39 de la LIPP).
 	 * 
@@ -68,5 +68,6 @@ public interface FournisseurRegleImpotCantonalGE {
 	 * @return le producteur des montants de rabais d'impôts
 	 */
 	ProducteurRabaisImpot getProducteurRabaisImpot(int annee);
-	
+
+
 }

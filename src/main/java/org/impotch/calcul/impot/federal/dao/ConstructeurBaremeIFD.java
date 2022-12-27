@@ -13,21 +13,6 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- * <p>
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- * <p>
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.impotch.calcul.impot.federal.dao;
 
 import org.impotch.bareme.*;
@@ -36,10 +21,11 @@ import org.impotch.util.TypeArrondi;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 
 class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
 
-    private static TypeArrondi ARRONDI_SUR_CHAQUE_TRANCHE = TypeArrondi.CINQ_CTS_INF;
+    private static final TypeArrondi ARRONDI_SUR_CHAQUE_TRANCHE = TypeArrondi.CINQ_CTS_INF;
 
     private final TypeArrondi arrondiSurAssiette;
     private BigDecimal taux = BigDecimal.ZERO;
@@ -102,7 +88,6 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
      *
      * De plus les barèmes dans la loi sont écrit en mentionnant ce montant d'impôt en début de tranche.
      * @param montant Il s'agit du montant d'impôt en début de tranche.
-     * @return
      */
     public ConstructeurBaremeIFD a(String montant) {
         valeurEnDebutTranche = new BigDecimal(montant);
@@ -129,6 +114,8 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
         return super.construire();
     }
 
+
+
     protected static class TrancheBaremeIFD extends TrancheBareme {
 
         private final BigDecimal montantImpotEnDebutTranche;
@@ -138,6 +125,10 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
             super(intervalle, taux);
             this.montantImpotEnDebutTranche = montantImpotEnDebutTranche;
             this.arrondiSurAssiette = arrondiSurAssiette;
+        }
+
+        protected TypeArrondi getArrondiSurAssiette() {
+            return arrondiSurAssiette;
         }
 
         @Override
@@ -155,6 +146,46 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
             }
         }
 
+        @Override
+        public TrancheBareme homothetie(BigDecimal rapport, TypeArrondi typeArrondi) {
+            // Première tranche
+            Intervalle inter = this.getIntervalle();
+            if (inter.isDebutMoinsInfini() && inter.isFinPlusInfini()) return this;
+            if (inter.encadre(BigDecimal.ZERO)) {
+                Intervalle newInter = new Intervalle.Cons().deMoinsInfini().a(inter.getFin().subtract(BigDecimal.valueOf(100))).exclus().intervalle();
+                return new TrancheBaremeIFD(inter, getTauxOuMontant(), montantImpotEnDebutTranche, arrondiSurAssiette);
+            } else {
+                BigDecimal debutTranche = typeArrondi.arrondirMontant(inter.getDebut().multiply(rapport));
+                BigDecimal montantImpotEtire = inter.longueur().multiply(this.getTauxOuMontant()).multiply(rapport);
+                BigDecimal finTranche = debutTranche;
+                BigDecimal impot = BigDecimal.ZERO;
+                while (impot.compareTo(montantImpotEtire) < 0) {
+                    finTranche = finTranche.add(BigDecimal.valueOf(100));
+                    impot = impot.add(BigDecimal.valueOf(100).multiply(getTauxOuMontant()));
+                }
+                Intervalle newInter = new Intervalle.Cons().de(debutTranche).inclus().a(finTranche.subtract(BigDecimal.valueOf(100))).exclus().intervalle();
+                return new TrancheBaremeIFD(newInter, getTauxOuMontant(), montantImpotEnDebutTranche, arrondiSurAssiette);
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+            TrancheBaremeIFD that = (TrancheBaremeIFD) o;
+            return montantImpotEnDebutTranche.equals(that.montantImpotEnDebutTranche) && arrondiSurAssiette == that.arrondiSurAssiette;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(super.hashCode(), montantImpotEnDebutTranche, arrondiSurAssiette);
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " à " + montantImpotEnDebutTranche + " CHF en début de tranche et arrondi = " + arrondiSurAssiette;
+        }
     }
 
     protected static class DerniereTrancheIFD extends TrancheBaremeIFD {
@@ -176,6 +207,28 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
             } else {
                 return BigDecimal.ZERO;
             }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            if (!super.equals(o)) return false;
+            DerniereTrancheIFD that = (DerniereTrancheIFD) o;
+            return tauxEffectifMax.equals(that.tauxEffectifMax);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(super.hashCode(), tauxEffectifMax);
+        }
+
+        @Override
+        public TrancheBareme homothetie(BigDecimal rapport, TypeArrondi typeArrondi) {
+            BigDecimal debutTranche = typeArrondi.arrondirMontant(getIntervalle().getDebut().multiply(rapport));
+            Intervalle newInter = new Intervalle.Cons().de(debutTranche).inclus().aPlusInfini().intervalle();
+            BigDecimal montantImpotDebutTranche = BigDecimal.ZERO;
+            return new DerniereTrancheIFD(newInter,getTauxOuMontant(),montantImpotDebutTranche,this.tauxEffectifMax,this.getArrondiSurAssiette());
         }
     }
 

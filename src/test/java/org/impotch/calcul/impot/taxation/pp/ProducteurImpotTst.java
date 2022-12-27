@@ -32,7 +32,7 @@ public class ProducteurImpotTst {
 	protected FournisseurLieu fournisseurLieu = new FournisseurLieu();
 	
 	protected Set<EnfantACharge> creerEnfant(final int... ageEnfant) {
-		Set<EnfantACharge> enfants = new HashSet<EnfantACharge>();
+		Set<EnfantACharge> enfants = new HashSet<>();
 		for (final int age : ageEnfant) {
 			enfants.add(new EnfantACharge(){
 
@@ -52,7 +52,7 @@ public class ProducteurImpotTst {
 	}
 	
 	protected SituationFamiliale creerSituationCelibataireSansEnfant() {
-		SituationFamiliale situation = new SituationFamiliale() {
+		return new SituationFamiliale() {
 
             @Override
             public Contribuable getContribuable() {
@@ -76,15 +76,12 @@ public class ProducteurImpotTst {
 			@Override
 			public Set<PersonneACharge> getPersonnesNecessiteuses() {
 				return Collections.emptySet();
-			};
-			
-			
+			}
 		};
-		return situation;
 	}
 	
 	protected SituationFamiliale creerSituationFamilleAvecEnfant(final int... ageEnfant) {
-		SituationFamiliale situation = new SituationFamiliale() {
+		return new SituationFamiliale() {
 
             @Override
             public Contribuable getContribuable() {
@@ -112,14 +109,13 @@ public class ProducteurImpotTst {
 			};
 			
 		};
-		return situation;
 	}
 	
 	protected FournisseurAssietteCommunale creerAssietteCommunaleSurUneSeuleCommune(final int annee, final ICommuneSuisse commune) {
 		return new FournisseurAssietteCommunale() {
 			@Override
 			public Map<ICommuneSuisse, Integer> getNbreJourDomicileSurCommune() {
-				Map<ICommuneSuisse, Integer> map = new HashMap<ICommuneSuisse, Integer>();
+				Map<ICommuneSuisse, Integer> map = new HashMap<>();
 				map.put(commune, 360);
 				return map;
 			}
@@ -127,7 +123,7 @@ public class ProducteurImpotTst {
 			public int getPeriodeFiscale() {return annee;}
 			@Override
 			public Repartition<ForCommunal> getRepartition() {
-				Repartition<ForCommunal> repart = new Repartition<ForCommunal>();
+				Repartition<ForCommunal> repart = new Repartition<>();
 				repart.ajouterPart(new ForCommunal(commune),new Part(BigDecimal.ONE));
 				return repart;
 			}
@@ -136,7 +132,11 @@ public class ProducteurImpotTst {
 	}
 
 	protected FournisseurAssiettePeriodique creerAssiettes(final int periodeFiscale, final int montantImposable) {
-		FournisseurAssiettePeriodique assietteFournisseur = new FournisseurAssiettePeriodique() {
+		return 	creerAssiettes(periodeFiscale,montantImposable,montantImposable);
+	}
+
+	protected FournisseurAssiettePeriodique creerAssiettes(final int periodeFiscale, final int montantImposable, final int montantDeterminant) {
+		return new FournisseurAssiettePeriodique() {
 
 			@Override
 			public FournisseurAssietteCommunale getFournisseurAssietteCommunale() {
@@ -155,7 +155,7 @@ public class ProducteurImpotTst {
 
 			@Override
 			public BigDecimal getMontantDeterminant() {
-				return new BigDecimal(montantImposable);
+				return new BigDecimal(montantDeterminant);
 			}
 
 			@Override
@@ -164,7 +164,6 @@ public class ProducteurImpotTst {
 			}
 			
 		};
-		return assietteFournisseur;
 	}
 	
 	

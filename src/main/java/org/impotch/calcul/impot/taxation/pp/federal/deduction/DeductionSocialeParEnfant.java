@@ -16,6 +16,7 @@
 package org.impotch.calcul.impot.taxation.pp.federal.deduction;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.calcul.impot.Souverainete;
@@ -43,8 +44,12 @@ public class DeductionSocialeParEnfant extends ReglePeriodique implements Deduct
 	 * Spécifie le montant que l'on peut déduire par enfant.
 	 * @param deductionSocialeParEnfant le montant déductible (6'100 francs en 2008)
 	 */
-	public void setDeductionSocialeParEnfant(BigDecimal deductionSocialeParEnfant) {
+	private void setDeductionSocialeParEnfant(BigDecimal deductionSocialeParEnfant) {
 		this.deductionSocialeParEnfant = deductionSocialeParEnfant;
+	}
+
+	public void setDeductionSocialeParEnfant(int deductionSocialeParEnfant) {
+		setDeductionSocialeParEnfant(BigDecimal.valueOf(deductionSocialeParEnfant));
 	}
 
 
@@ -52,7 +57,7 @@ public class DeductionSocialeParEnfant extends ReglePeriodique implements Deduct
 	public BigDecimal getMontantDeduction(SituationFamiliale situation) {
 		BigDecimal deducSocialeEnfant = BigDecimal.ZERO; 
 		for (EnfantACharge enfant : situation.getEnfants()) {
-			deducSocialeEnfant = deducSocialeEnfant.add(enfant.isDemiPart(Souverainete.CH_FEDERALE) ? deductionSocialeParEnfant.divide(new BigDecimal(2), 0, BigDecimal.ROUND_HALF_UP) : deductionSocialeParEnfant);
+			deducSocialeEnfant = deducSocialeEnfant.add(enfant.isDemiPart(Souverainete.CH_FEDERALE) ? deductionSocialeParEnfant.divide(new BigDecimal(2), 0, RoundingMode.HALF_UP) : deductionSocialeParEnfant);
 		}
 		return deducSocialeEnfant; 
 	}

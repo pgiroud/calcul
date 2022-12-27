@@ -32,11 +32,14 @@ public class ProducteurRabaisEnfantPersonneNecessiteuse implements ProducteurImp
     private BigDecimal montantRabaisParEnfant;
     private BigDecimal montantRabaisParPersonneNecessiteuse;
 
-    public void setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal montant) {
+    private void setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal montant) {
         montantRabaisParEnfant = montant;
         montantRabaisParPersonneNecessiteuse = montant;
     }
 
+    public void setMontantRabaisParEnfantEtPersonneNecessiteuse(int montant) {
+        setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal.valueOf(montant));
+    }
 
 
     @Override
