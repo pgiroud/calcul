@@ -17,32 +17,26 @@ package org.impotch.calcul.impot.indexation.ge;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
 
 import org.impotch.calcul.impot.indexation.Indexateur;
 
-import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.impotch.util.TypeArrondi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class IndexateurGenevoisTest {
 
-	@Resource(name = "fournisseurRegleImpotCantonalGE")
-	private FournisseurRegleImpotCantonalGE fournisseur;
 
 	private Indexateur indexateurBaseMai93;
 	private Indexateur indexateurBaseDec05;
 
 	@BeforeEach
 	void initIndexateur() {
-
+		FournisseurIndexGenevois fournisseur = new FournisseurIndexGenevoisEnMemoire();
 		indexateurBaseMai93 = fournisseur.getIndexateurBaseMai1993(2001);
 		indexateurBaseDec05 = fournisseur.getIndexateurBaseDec2005(2009);
 	}

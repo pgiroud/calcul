@@ -19,18 +19,15 @@ import org.impotch.bareme.BaremeParTranche;
 import org.impotch.calcul.impot.indexation.Indexateur;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml", "/beans-test.xml"})
 public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAITest {
 
 
-    @Resource(name="indexateurGenevois2009")
-    private Indexateur indexateur;
+    private Indexateur indexateur = CTX_TST_GE.getFournisseurIndex().getIndexateurBaseDec2005(2009);
+
     private  ConstructeurBaremeDeductionBeneficiaireRenteAVSAI constructeur;
 
 

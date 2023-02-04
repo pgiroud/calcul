@@ -32,20 +32,16 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
 import org.impotch.bareme.Bareme;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeFortuneTest {
 
-    @Resource(name = "fournisseurRegleImpotCantonalGE")
-    private FournisseurRegleImpotCantonalGE fournisseur;
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
 
     @Test
     public void fortune2007() {

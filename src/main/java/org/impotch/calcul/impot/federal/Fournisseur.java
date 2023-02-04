@@ -24,13 +24,8 @@ import org.impotch.calcul.impot.federal.dao.FournisseurBaremeIFD;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotAvecRabais;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import org.impotch.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
-import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.famille.DoubleBareme;
-import org.impotch.calcul.impot.taxation.pp.federal.deduction.DeductionDoubleActivite;
-import org.impotch.calcul.impot.taxation.pp.federal.deduction.DeductionSocialeParEnfant;
-import org.impotch.calcul.impot.taxation.pp.federal.deduction.DeductionSocialePourConjoints;
-import org.impotch.calcul.impot.taxation.pp.federal.deduction.IDeductionDoubleActivite;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
@@ -39,13 +34,9 @@ import javax.annotation.Resource;
 
 public class Fournisseur implements FournisseurRegleImpotFederal {
 	
-	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsFederauxPP = new ConcurrentHashMap<Integer, ProducteurImpot>();
-	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<Integer, ProducteurImpot>();
-	private ConcurrentMap<Integer, ProducteurImpot> producteurImpotSourcePrestationCapital = new ConcurrentHashMap<Integer, ProducteurImpot>();
-
-    private ConcurrentMap<Integer,IDeductionDoubleActivite> deducDoubleActivite = new ConcurrentHashMap<Integer, IDeductionDoubleActivite>();
-	private ConcurrentMap<Integer,DeductionSociale> deducSocialeEnfant = new ConcurrentHashMap<Integer,DeductionSociale>(); 
-	private ConcurrentMap<Integer,DeductionSociale> deducSocialeConjoint = new ConcurrentHashMap<Integer,DeductionSociale>(); 
+	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsFederauxPP = new ConcurrentHashMap<>();
+	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<>();
+	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotSourcePrestationCapital = new ConcurrentHashMap<>();
 
     @Resource(name = "fournisseurBaremeIFD")
     private FournisseurBaremeIFD fournisseurBaremeIFD;
@@ -179,78 +170,6 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		return producteur;
 	}
 
-    public IDeductionDoubleActivite getDeductionDoubleActivite(int annee) {
-        if (!deducDoubleActivite.containsKey(annee)) {
-            deducDoubleActivite.putIfAbsent(annee, construireRegleDeductionDoubleActivite(annee));
-        }
-        return deducDoubleActivite.get(annee);
-    }
-
-    private IDeductionDoubleActivite construireRegleDeductionDoubleActivite(int annee) {
-        DeductionDoubleActivite regle = new DeductionDoubleActivite(annee);
-        if (annee <= 2007) {
-            regle.setPlafond(7000);
-        } else {
-            regle.setTaux("50 %");
-			if (annee >= 2023) {
-				regle.setPlancher(8300);
-				regle.setPlafond(13600);
-			} else if (annee >= 2012) {
-                regle.setPlancher(8100);
-                regle.setPlafond(13400);
-            } else {
-                regle.setPlancher(7600);
-                regle.setPlafond(12500);
-            }
-        }
-        return regle;
-    }
-
-	public DeductionSociale getRegleDeductionSocialeEnfant(int annee) {
-		if (!deducSocialeEnfant.containsKey(annee)) {
-			deducSocialeEnfant.putIfAbsent(annee, construireRegleDeductionSocialeEnfant(annee));
-		}
-		return deducSocialeEnfant.get(annee);
-	}
-
-	protected DeductionSociale construireRegleDeductionSocialeEnfant(int annee) {
-		DeductionSocialeParEnfant deduction = new DeductionSocialeParEnfant(annee);
-		if (annee > 2022) {
-			deduction.setDeductionSocialeParEnfant(6600);
-		} else if (annee > 2011) {
-			deduction.setDeductionSocialeParEnfant(6500);
-		} else if (annee > 2010) {
-			deduction.setDeductionSocialeParEnfant(6400);
-		} else if (annee > 2005) {
-			deduction.setDeductionSocialeParEnfant(6100);
-		} else {
-			deduction.setDeductionSocialeParEnfant(5600);
-		}
-		return deduction;
-	}
-
-
-
-	public DeductionSociale getRegleDeductionSocialeConjoint(int annee) {
-		if (annee < 2008) return null;
-		if (!deducSocialeConjoint.containsKey(annee)) {
-			deducSocialeConjoint.putIfAbsent(annee, construireRegleDeductionSocialeConjoint(annee));
-		}
-		return deducSocialeConjoint.get(annee);
-	}
-
-	protected DeductionSociale construireRegleDeductionSocialeConjoint(int annee) {
-		DeductionSocialePourConjoints deduction = new DeductionSocialePourConjoints(annee);
-		if (annee > 2022) {
-			deduction.setDeducConjointsIFD(2700);
-		} else if (annee > 2010) {
-			deduction.setDeducConjointsIFD(2600);
-		} else {
-			deduction.setDeducConjointsIFD(2500);
-		}
-		return deduction;
-	}
-	
 	public CalculateurImpotSourcePrestationCapitalIFD getCalculateurImpotSourcePrestationCapitalIFD(int annee) {
 		CalculateurImpotSourcePrestationCapitalIFD calculateur = new CalculateurImpotSourcePrestationCapitalIFD(annee);
 		calculateur.setProducteurImpot(this.getProducteurImpotSourcePrestationCapital(annee));

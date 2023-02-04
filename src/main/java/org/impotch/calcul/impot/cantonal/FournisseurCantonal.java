@@ -22,8 +22,8 @@ import org.impotch.bareme.Bareme;
 
 public abstract class FournisseurCantonal {
 
-	private ConcurrentMap<Integer, Bareme> mapBaremeRevenu = new ConcurrentHashMap<Integer, Bareme>();
-	private ConcurrentMap<Integer, Bareme> baremesFortune = new ConcurrentHashMap<Integer, Bareme>();
+	private ConcurrentMap<Integer, Bareme> mapBaremeRevenu = new ConcurrentHashMap<>();
+	private ConcurrentMap<Integer, Bareme> baremesFortune = new ConcurrentHashMap<>();
 	
 	public Bareme getBaremeRevenu(int annee) {
 		if (!mapBaremeRevenu.containsKey(annee))

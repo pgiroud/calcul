@@ -16,29 +16,19 @@
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
-import javax.annotation.Resource;
 
 import org.impotch.util.TauxAssert;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
-//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
-@SpringJUnitConfig(locations = "/beansAssurancesSociales.xml")
 public class CalculCotisationAvsAiApgIndependantTest {
 	
-	@Resource(name = "fournisseurRegleCalculAssuranceSociale")
-	private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale;
+
+	private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale = new Fournisseur();
 	
 	private CalculCotisationAvsAiApgIndependant calculateur2008;
 	private CalculCotisationAvsAiApgIndependant calculateur2009;

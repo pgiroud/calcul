@@ -18,20 +18,15 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-
-
 import org.impotch.bareme.Bareme;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeFortune2011Test {
-	@Resource(name = "fournisseurRegleImpotCantonalGE")
-	private FournisseurRegleImpotCantonalGE fournisseur;
+	private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
 
 	@Test
 	@DisplayName("Barème fortune 2011 pour 1 million")

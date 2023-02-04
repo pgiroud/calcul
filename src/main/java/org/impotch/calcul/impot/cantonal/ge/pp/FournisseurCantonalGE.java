@@ -36,25 +36,20 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.bareme.*;
+import org.impotch.calcul.assurancessociales.Fournisseur;
 import org.impotch.calcul.assurancessociales.FournisseurRegleCalculAssuranceSociale;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.*;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
-import org.impotch.calcul.impot.indexation.ge.MontantIndexe;
-import org.impotch.calcul.impot.indexation.Indexateur;
-import org.impotch.calcul.impot.indexation.IndexateurPeriodique;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import org.impotch.calcul.impot.ProducteurImpotDerivePourcent;
 import org.impotch.calcul.impot.cantonal.FournisseurCantonal;
 import org.impotch.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageCommunaleGE;
-import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.impotch.calcul.impot.taxation.pp.*;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionBeneficiaireRentesAVSAI;
-import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionChargeFamille;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionDoubleActivite;
-import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionRentierAVS;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais.ProducteurBaseRabaisImpot;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
@@ -72,30 +67,28 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     @Resource
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale;
 
-    private FournisseurIndexGenevois fournisseurIndexGenevois = new FournisseurIndexGenevoisEnMemoire();
+    private final FournisseurIndexGenevois fournisseurIndexGenevois = new FournisseurIndexGenevoisEnMemoire();
 
     private FournisseurParametrageCommunaleGE fournisseurParamCommunaux;
 
-    private ConcurrentMap<Integer, Bareme> mapBaremeRevenuMarie = new ConcurrentHashMap<Integer, Bareme>();
+    private final ConcurrentMap<Integer, Bareme> mapBaremeRevenuMarie = new ConcurrentHashMap<>();
 
     private ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeurBaremeFortune;
     private ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeurBaremeFortuneApres2009;
 
     private ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeurBaremeFortuneSupplementaire;
     private ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeurBaremeFortuneSupplementaireApres2009;
-    private ConcurrentMap<Integer, Bareme> baremesFortuneSupplementaire = new ConcurrentHashMap<Integer, Bareme>();
+    private ConcurrentMap<Integer, Bareme> baremesFortuneSupplementaire = new ConcurrentHashMap<>();
 
-    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCRevenu = new ConcurrentHashMap<Integer, ProducteurImpot>();
-    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortune = new ConcurrentHashMap<Integer, ProducteurImpot>();
-    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortuneSupplementaire = new ConcurrentHashMap<Integer, ProducteurImpot>();
-
-
-    private ConcurrentMap<Integer, DeductionSociale> deducSocialeCharge = new ConcurrentHashMap<Integer, DeductionSociale>();
-    private ConcurrentMap<Integer, DeductionDoubleActivite> deducDoubleActivite = new ConcurrentHashMap<>();
-    private ConcurrentMap<Integer, DeductionBeneficiaireRentesAVSAI> deducSocialeRentier = new ConcurrentHashMap<Integer, DeductionBeneficiaireRentesAVSAI>();
+    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCRevenu = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortune = new ConcurrentHashMap<>();
+    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortuneSupplementaire = new ConcurrentHashMap<>();
 
     private ConcurrentMap<Integer, ProducteurRabaisImpot> producteursRabaisImpot = new ConcurrentHashMap<Integer, ProducteurRabaisImpot>();
 
+    public FournisseurCantonalGE(FournisseurRegleCalculAssuranceSociale regleAssurance) {
+        this.fournisseurRegleCalculCotisationAssuranceSociale = regleAssurance;
+    }
 
     /**
      * @param fournisseurRegleCalculCotisationAssuranceSociale the fournisseurRegleCalculCotisationAssuranceSociale to set
@@ -120,14 +113,6 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         this.fournisseurParamCommunaux = fournisseurParamCommunaux;
     }
 
-
-    public Indexateur getIndexateurBaseMai1993(int anneeBaseIndexation) {
-        return fournisseurIndexGenevois.getIndexateurBaseMai1993(anneeBaseIndexation);
-    }
-
-    public Indexateur getIndexateurBaseDec2005(int anneeBaseIndexation) {
-        return fournisseurIndexGenevois.getIndexateurBaseDec2005(anneeBaseIndexation);
-    }
 
     private IExplicationDetailleeBuilder getNewExplicationBuilder() {
         return new ExplicationDetailleTexteBuilder();
@@ -608,97 +593,6 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         };
         producteur.setProducteurBase(producteurImpotBase);
         return producteur;
-    }
-
-
-    @Override
-    public DeductionSociale getRegleDeductionSocialeCharge(int annee) {
-        if (!deducSocialeCharge.containsKey(annee)) {
-            DeductionSociale deduction = construireRegleDeductionSocialeCharge(annee);
-            // Attention, la ConcurrentMap n'aime pas les nulls !!
-            if (null != deduction) deducSocialeCharge.putIfAbsent(annee, deduction);
-        }
-        return deducSocialeCharge.get(annee);
-    }
-
-    private DeductionSociale construireRegleDeductionSocialeCharge(int annee) {
-        if (annee < 2010) return null;
-        if (annee > 2024) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
-                + annee + "' doit être adapté !");
-        DeductionChargeFamille deduction = new DeductionChargeFamille(annee);
-        if (2010 == annee) deduction.setMontantParCharge(9000);
-        else if (annee < 2013) deduction.setMontantParCharge(10000);
-        else if (annee < 2017) deduction.setMontantParCharge(10078);
-        else if (annee < 2021) deduction.setMontantParCharge(9980);
-        else if (annee < 2025) deduction.setMontantParCharge(13000);
-        return deduction;
-    }
-
-    @Override
-    public DeductionSociale getRegleDeductionDoubleActivite(int annee) {
-        if (!deducDoubleActivite.containsKey(annee)) {
-            DeductionDoubleActivite deduction = construireRegleDeductionDoubleActivite(annee);
-            // Attention, la ConcurrentMap n'aime pas les nulls !!
-            if (null != deduction) deducDoubleActivite.putIfAbsent(annee, deduction);
-        }
-        return deducDoubleActivite.get(annee);
-    }
-
-    private DeductionDoubleActivite construireRegleDeductionDoubleActivite(int annee) {
-        MontantIndexe montantIndexe
-                = (annee < 2021 ) ? // LIPP Art. 72 alinea 15
-                    new MontantIndexe(500,getIndexateurBaseDec2005(2009))
-                    : new MontantIndexe(1000, getIndexateurBaseDec2005(2021));
-        BigDecimal montantDeduction = montantIndexe.getMontantIndexe(annee);
-        DeductionDoubleActivite deduction = new DeductionDoubleActivite(montantDeduction);
-        return deduction;
-    }
-
-    public DeductionBeneficiaireRentesAVSAI getDeductionBeneficiaireRenteAVSAI(int annee) {
-        if (annee < 2010)
-            throw new IllegalArgumentException("Cette déduction ne peut pas être utilisé pour l'année " + annee);
-        if (!deducSocialeRentier.containsKey(annee)) {
-            DeductionBeneficiaireRentesAVSAI deduction = construireRegleDeductionRentierAVSAI(annee);
-            // Attention, la ConcurrentMap n'aime pas les nulls !!
-            if (null != deduction) deducSocialeRentier.putIfAbsent(annee, deduction);
-        }
-        return deducSocialeRentier.get(annee);
-    }
-
-    protected DeductionBeneficiaireRentesAVSAI construireRegleDeductionRentierAVSAI(int annee) {
-        DeductionRentierAVS deduction = new DeductionRentierAVS(annee, construireBaremeDeductionBeneficiaireRentesAvsAi(annee), new BigDecimal("1.15"));
-        return deduction;
-    }
-
-    protected BaremeParTranche construireBaremeDeductionBeneficiaireRentesAvsAi(int annee) {
-        ConstructeurBareme cons = new ConstructeurBareme();
-        // Voir le détail dans D 3 08.05: Règlement relatif à la compensation des effets de la progression à froid (RCEPF)
-        // Art. 6
-        if (annee < 2013) {
-            cons.premiereTranche(50000, 10000)
-                    .tranche(50000, 56700, 8000)
-                    .tranche(56700, 64000, 6000)
-                    .tranche(64000, 71500, 4000)
-                    .tranche(71500, 80000, 2000)
-                    .derniereTranche(80000, 0);
-        } else if (annee < 2017) {
-            cons.premiereTranche(57947, 10078)
-                    .tranche(57947, 65707, 8062)
-                    .tranche(65707, 74172, 6047)
-                    .tranche(74172, 82839, 4031)
-                    .tranche(82839, 92715, 2016)
-                    .derniereTranche(92715, 0);
-        } else if (annee < 2021) {
-            cons.premiereTranche(57388, 9981)
-                    .tranche(57388, 65073, 7984)
-                    .tranche(65073, 73457, 5988)
-                    .tranche(73457, 82040, 3992)
-                    .tranche(82040, 91821, 1996)
-                    .derniereTranche(91821, 0);
-        } else {
-            throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2021 !!");
-        }
-        return cons.construireBaremeParTranche();
     }
 
 }

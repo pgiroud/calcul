@@ -7,9 +7,9 @@
 
   <context:annotation-config/>
 
-  <import resource="beansAssurancesSociales.xml"/>
+  <bean name="fournisseurRegleCalculAssuranceSociale" class="org.impotch.calcul.assurancessociales.Fournisseur"/>
 
-  <bean name="fournisseurIndiceGEBaseMai1993"
+  <!--bean name="fournisseurIndiceGEBaseMai1993"
         class="org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique">
     <property name="indices">
       <map>
@@ -63,7 +63,7 @@
     <bean name="indexateurGenevois2009"  class="org.impotch.calcul.impot.indexation.ge.IndexateurGenevois">
         <constructor-arg index="0" value="2009"/>
         <property name="fournisseurIndice" ref="fournisseurIndiceGEBaseDecembre2005"></property>
-    </bean>
+    </bean-->
 
   <bean name="fournisseurIndexGenevois" class="org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire">
 
@@ -99,7 +99,7 @@
 
   <bean name="fournisseurRegleImpotCantonalGE"
         class="org.impotch.calcul.impot.cantonal.ge.pp.FournisseurCantonalGE">
-
+    <constructor-arg index="0" ref="fournisseurRegleCalculAssuranceSociale"/>
     <property name="fournisseurParamCommunaux" ref="fournisseurParamCommune"/>
   </bean>
 

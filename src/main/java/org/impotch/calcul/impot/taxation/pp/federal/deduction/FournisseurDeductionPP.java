@@ -13,14 +13,16 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.federal;
+package org.impotch.calcul.impot.taxation.pp.federal.deduction;
 
-import org.impotch.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
-import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
+import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 
-public interface FournisseurRegleImpotFederal {
+public interface FournisseurDeductionPP {
 
-	ProducteurImpot getProducteurImpotsFederauxPP(int annee);
+    IDeductionDoubleActivite getDeductionDoubleActivite(int annee);
 
-	CalculateurImpotSourcePrestationCapitalIFD getCalculateurImpotSourcePrestationCapitalIFD(int annee);
+    DeductionSociale getRegleDeductionSocialeEnfant(int annee);
+
+    DeductionSociale getRegleDeductionSocialeConjoint(int annee);
+
 }

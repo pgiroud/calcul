@@ -23,9 +23,6 @@ import org.impotch.calcul.impot.indexation.Indexateur;
 import org.impotch.calcul.impot.indexation.IndexateurPeriodique;
 import org.impotch.util.TypeArrondi;
 
-
-import javax.annotation.PostConstruct;
-
 import java.math.BigDecimal;
 
 /**
@@ -39,15 +36,14 @@ public class IndexateurGenevois implements Indexateur {
     private IndexateurPeriodique indexateurQuadriennal;
     private IndexateurPeriodique indexateurAnnuel;
 
-    public IndexateurGenevois(int anneeBase) {
-        this.anneeBase = anneeBase;
-    }
-
-    public void setFournisseurIndice(FournisseurIndicePeriodique fournisseurIndice) {
+    public IndexateurGenevois(int anneeBase, FournisseurIndicePeriodique fournisseurIndice) {
+        super();
         this.fournisseurIndice = fournisseurIndice;
+        this.anneeBase = anneeBase;
+        renseignerIndexateur();
     }
 
-    @PostConstruct
+
     private void renseignerIndexateur() {
         indexateurQuadriennal = new IndexateurPeriodique(anneeBase,4);
         indexateurQuadriennal.setFournisseurIndice(fournisseurIndice);
