@@ -43,12 +43,10 @@ import org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique;
 import org.impotch.util.TypeArrondi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenuPallier2009Test {
 
     private BaremeTauxMarginalConstantParTranche bareme;

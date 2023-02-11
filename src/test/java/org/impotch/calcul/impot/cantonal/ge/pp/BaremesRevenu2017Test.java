@@ -19,20 +19,14 @@ import org.impotch.bareme.Bareme;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremesRevenu2017Test {
 
-
-
-    @Resource(name = "fournisseurRegleImpotCantonalGE")
-    private FournisseurRegleImpotCantonalGE fournisseur;
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
 
     private Bareme bareme;
 

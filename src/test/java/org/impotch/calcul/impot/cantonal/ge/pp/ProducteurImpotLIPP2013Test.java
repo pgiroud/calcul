@@ -18,20 +18,16 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 import org.impotch.calcul.impot.Impot;
 import org.impotch.calcul.impot.taxation.pp.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class ProducteurImpotLIPP2013Test extends ProducteurImpotTst {
 
-    @Resource(name = "fournisseurRegleImpotCantonalGE")
-    private FournisseurRegleImpotCantonalGE fournisseur;
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
     private Map<String,String> libelleImpotTaxe = new HashMap<String,String>();
 
     public ProducteurImpotLIPP2013Test() {

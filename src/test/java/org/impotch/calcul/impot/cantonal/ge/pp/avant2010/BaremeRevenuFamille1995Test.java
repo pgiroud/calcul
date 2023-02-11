@@ -19,27 +19,19 @@ import org.impotch.calcul.impot.cantonal.ge.pp.ChargeurFichierEconometre;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.impotch.util.TypeArrondi;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenuFamille1995Test {
 
 
-    @Resource(name = "fournisseurRegleImpotCantonalGE")
-    private FournisseurRegleImpotCantonalGE fournisseur;
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
 
     private BaremeFamille baremeCouple;
 

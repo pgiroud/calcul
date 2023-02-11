@@ -33,8 +33,6 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-
 import org.impotch.calcul.impot.ProducteurImpotDerivePourcent;
 
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
@@ -49,16 +47,14 @@ import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremePrestationCapital2009Test extends ProducteurImpotGEAvant2010 {
 
-    @Resource(name = "fournisseurRegleImpotCantonalGE")
-    private FournisseurRegleImpotCantonalGE fournisseur;
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
 
     private ProducteurImpot producteur2009;
     private SituationFamilialeGE situationCelibataire;

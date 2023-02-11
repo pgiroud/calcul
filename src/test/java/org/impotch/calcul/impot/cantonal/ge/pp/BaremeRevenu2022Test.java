@@ -17,17 +17,13 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.bareme.Bareme;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenu2022Test {
-    @Resource(name = "fournisseurRegleImpotCantonalGE")
-    private FournisseurRegleImpotCantonalGE fournisseur;
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
 
     @Test
     public void borneBareme() {

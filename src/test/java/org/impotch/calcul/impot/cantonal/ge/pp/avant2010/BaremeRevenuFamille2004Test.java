@@ -19,22 +19,18 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 
 import static org.assertj.core.api.Fail.fail;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenuFamille2004Test {
 
-	@Resource(name = "fournisseurRegleImpotCantonalGE")
-	private FournisseurRegleImpotCantonalGE fournisseur;
+	private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
 	private static final BigDecimal DIX_CTS = new BigDecimal("0.10");
 	private Bareme bareme;
 	

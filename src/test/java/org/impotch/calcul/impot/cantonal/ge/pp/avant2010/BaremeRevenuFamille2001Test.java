@@ -16,11 +16,7 @@
 package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.math.BigDecimal;
-
-import javax.annotation.Resource;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -29,16 +25,13 @@ import org.junit.jupiter.api.Test;
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class BaremeRevenuFamille2001Test {
 
-	@Resource(name = "fournisseurRegleImpotCantonalGE")
-	private FournisseurRegleImpotCantonalGE fournisseur;
+	private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
 
 	private Bareme bareme;
 	

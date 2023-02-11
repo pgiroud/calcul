@@ -9,61 +9,6 @@
 
   <bean name="fournisseurRegleCalculAssuranceSociale" class="org.impotch.calcul.assurancessociales.Fournisseur"/>
 
-  <!--bean name="fournisseurIndiceGEBaseMai1993"
-        class="org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique">
-    <property name="indices">
-      <map>
-        <entry key="1993" value="100.0"/>
-        <entry key="1995" value="100.9"/>
-        <entry key="1996" value="100.9"/>
-        <entry key="1997" value="100.9"/>
-        <entry key="1998" value="104.3"/>
-        <entry key="1999" value="105.3"/>
-        <entry key="2000" value="105.8"/>
-        <entry key="2001" value="107.3"/>
-        <entry key="2002" value="108.7"/>
-        <entry key="2003" value="109.4"/>
-        <entry key="2004" value="110.5"/>
-        <entry key="2005" value="111.5"/>
-        <entry key="2006" value="113.2"/>
-        <entry key="2007" value="114.6"/>
-        <entry key="2008" value="114.9"/>
-        <entry key="2009" value="117.5"/>
-      </map>
-    </property>
-  </bean>
-
-  <bean name="indexateurGenevois2001"  class="org.impotch.calcul.impot.indexation.ge.IndexateurGenevois">
-    <constructor-arg index="0" value="2001"/>
-    <property name="fournisseurIndice" ref="fournisseurIndiceGEBaseMai1993"></property>
-  </bean>
-
-  <bean name="fournisseurIndiceGEBaseDecembre2005"
-        class="org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique">
-    <property name="indices">
-      <map>
-        <entry key="2009" value="102.9"/>
-        <entry key="2010" value="103.1"/>
-        <entry key="2011" value="103.7"/>
-        <entry key="2012" value="104.2"/>
-        <entry key="2013" value="103.7"/>
-        <entry key="2014" value="103.8"/>
-        <entry key="2015" value="103.9"/>
-        <entry key="2016" value="103.2"/>
-        <entry key="2017" value="102.7"/>
-        <entry key="2018" value="103.0"/>
-        <entry key="2019" value="104.2"/>
-        <entry key="2020" value="105.0"/>
-        <entry key="2021" value="104.4"/>
-        <entry key="2022" value="104.1"/>
-      </map>
-    </property>
-  </bean>
-
-    <bean name="indexateurGenevois2009"  class="org.impotch.calcul.impot.indexation.ge.IndexateurGenevois">
-        <constructor-arg index="0" value="2009"/>
-        <property name="fournisseurIndice" ref="fournisseurIndiceGEBaseDecembre2005"></property>
-    </bean-->
 
   <bean name="fournisseurIndexGenevois" class="org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire">
 

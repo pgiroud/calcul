@@ -33,9 +33,6 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-
-
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
@@ -43,16 +40,14 @@ import org.impotch.calcul.impot.taxation.pp.RecepteurMultipleImpot;
 import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
 
 
-@SpringJUnitConfig(locations = {"/beansCH_GE.xml"})
 public class ProducteurImpotAvecRabaisTest extends ProducteurImpotGEAvant2010 {
 
-    @Resource(name = "fournisseurRegleImpotCantonalGE")
-    private FournisseurRegleImpotCantonalGE fournisseur;
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
 
 
     private void testFamilleAvecEnfant(final int periodeFiscale, final int montantImposable, final String montantImpot, int montantDeterminantRabais, String montantRabaisImpot, final int... ageEnfant) {

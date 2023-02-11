@@ -56,13 +56,11 @@ import org.impotch.calcul.util.MockExplicationDetailleeBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig(locations = "/beansCH_GE.xml")
 public class ProducteurImpotCommunalGETest {
 
     private FournisseurLieu fournisseurLieu;
 
-    @Resource(name = "fournisseurParamCommune")
-    private FournisseurParametrageCommunaleGE fournisseur;
+    private FournisseurParametrageCommunaleGE fournisseur = ContexteTestGE.CTX_TST_GE.getFournisseurParametrageCommunaleGE();
 
 
     @BeforeEach
