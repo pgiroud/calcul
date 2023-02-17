@@ -19,22 +19,18 @@ import org.impotch.calcul.impot.Impot;
 import org.impotch.calcul.impot.federal.FournisseurRegleImpotFederal;
 import org.impotch.calcul.impot.taxation.pp.*;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.federal.ContexteTest_CH.CTX_TST_CH;
 
 
-@SpringJUnitConfig(locations = "/beansCH_IFD.xml")
 public class ProducteurImpotIFDTest extends ProducteurImpotTst {
 
 
-    @Resource
-    private FournisseurRegleImpotFederal constructeur;
+    private FournisseurRegleImpotFederal constructeur = CTX_TST_CH.getFournisseurRegleImpotFederal();
     private Map<String,String> libelleImpotTaxe = new HashMap<>();
 
     public ProducteurImpotIFDTest() {

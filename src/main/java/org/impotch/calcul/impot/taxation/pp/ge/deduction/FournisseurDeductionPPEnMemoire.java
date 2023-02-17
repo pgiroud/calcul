@@ -21,9 +21,7 @@ import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
 import org.impotch.calcul.impot.indexation.ge.MontantIndexe;
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
-import org.springframework.context.annotation.Bean;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

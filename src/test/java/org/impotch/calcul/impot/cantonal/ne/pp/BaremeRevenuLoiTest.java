@@ -16,23 +16,16 @@
 package org.impotch.calcul.impot.cantonal.ne.pp;
 
 import java.math.BigDecimal;
-import javax.annotation.Resource;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.impotch.bareme.Bareme;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ne.ContexteTestCH_NE.CTX_TST_CH_NE;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "/beansCH_NE.xml")
-//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
-@SpringJUnitConfig(locations = "/beansCH_NE.xml")
 public class BaremeRevenuLoiTest {
 
-	@Resource(name = "fournisseurRegleImpotCantonalNE")
-	private FournisseurRegleImpotCantonalNE fournisseur;
+	private FournisseurRegleImpotCantonalNE fournisseur = CTX_TST_CH_NE.getFournisseurRegleImpotCantonalNE();
 	
 	private Bareme bareme;
 	
@@ -43,8 +36,6 @@ public class BaremeRevenuLoiTest {
 
 	private void calcul(int montantImposable, String attendu) {
 		assertThat(bareme.calcul(BigDecimal.valueOf(montantImposable))).isEqualTo(new BigDecimal(attendu));
-//		String retour = bareme.calcul(new BigDecimal(montantImposable)).toPlainString();
-//	    assertEquals("Barème pour " + montantImposable,attendu,retour);
 	}
 	
 	@Test

@@ -27,11 +27,11 @@ import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.impotch.util.BigDecimalUtil;
 
 import static org.assertj.core.api.Assertions.fail;
-import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 
 public class BaremeRevenuFamille2006Test {
 
-	private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
+	private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
 	private Bareme bareme;
 	
 	@BeforeEach

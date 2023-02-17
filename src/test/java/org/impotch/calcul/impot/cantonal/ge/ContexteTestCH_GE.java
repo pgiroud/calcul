@@ -26,21 +26,18 @@ import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
 import org.impotch.calcul.lieu.FournisseurLieu;
-import org.impotch.calcul.lieu.ICommuneSuisse;
 
-import java.math.BigDecimal;
-
-public enum ContexteTestGE {
+public enum ContexteTestCH_GE {
 
 
-    CTX_TST_GE;
+    CTX_TST_CH_GE;
 
     private FournisseurIndexGenevois fournisseurIndex;
     private FournisseurRegleImpotCantonalGE fournisseurRegleImpotCantonalGE;
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
     private FournisseurParametrageCommunaleGE fournisseurParametrageCommunaleGE;
 
-    ContexteTestGE() {
+    ContexteTestCH_GE() {
         fournisseurIndex = new FournisseurIndexGenevoisEnMemoire();
         fournisseurRegleCalculAssuranceSociale = new Fournisseur();
 
@@ -64,16 +61,16 @@ public enum ContexteTestGE {
 
         ConstructeurParametreCommunalEnMemoire constructeur = new ConstructeurParametreCommunalEnMemoire();
         constructeur
-                .annee(2007).commune(airelaVille).partPrivilegiee(new BigDecimal("0.74")).ctsAdd(new BigDecimal("0.5"))
-                .annee(2007).commune(carouge).partPrivilegiee(new BigDecimal("0.29")).ctsAdd(new BigDecimal("0.39"))
-                .annee(2007).commune(geneve).partPrivilegiee(new BigDecimal("0.26")).ctsAdd(new BigDecimal("0.455"))
-                .annee(2009).commune(cheneBougerie).partPrivilegiee(new BigDecimal("0.27")).ctsAdd(new BigDecimal("0.34"))
-                .annee(2009).commune(geneve).partPrivilegiee(new BigDecimal("0.26")).ctsAdd(new BigDecimal("0.455"))
-                .annee(2009).commune(meyrin).partPrivilegiee(new BigDecimal("0.38")).ctsAdd(new BigDecimal("0.45"))
-                .annee(2009).commune(presinge).partPrivilegiee(new BigDecimal("0.28")).ctsAdd(new BigDecimal("0.39"))
-                .annee(2010).commune(geneve).partPrivilegiee(new BigDecimal("0.27")).ctsAdd(new BigDecimal("0.455"))
-                .annee(2013).commune(geneve).partPrivilegiee(new BigDecimal("0.2")).ctsAdd(new BigDecimal("0.439"))
-                .annee(2021).commune(geneve).partPrivilegiee(new BigDecimal("0.28")).ctsAdd(new BigDecimal("0.4549"));
+                .annee(2007).commune(airelaVille).partPrivilegiee("74 %").centimes("50")
+                .annee(2007).commune(carouge).partPrivilegiee("29 %").centimes("39")
+                .annee(2007).commune(geneve).partPrivilegiee("26 %").centimes("45.5")
+                .annee(2009).commune(cheneBougerie).partPrivilegiee("27 %").centimes("34")
+                .annee(2009).commune(geneve).partPrivilegiee("26 %").centimes("45.5")
+                .annee(2009).commune(meyrin).partPrivilegiee("38 %").centimes("45")
+                .annee(2009).commune(presinge).partPrivilegiee("28 %").centimes("39")
+                .annee(2010).commune(geneve).partPrivilegiee("27 %").centimes("45.5")
+                .annee(2013).commune(geneve).partPrivilegiee("20 %").centimes("43.9")
+                .annee(2021).commune(geneve).partPrivilegiee("28 %").centimes("45.49");
         return constructeur.cons();
     }
 

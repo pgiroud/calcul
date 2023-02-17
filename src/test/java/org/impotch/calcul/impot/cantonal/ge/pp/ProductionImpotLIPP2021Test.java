@@ -23,10 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 
 public class ProductionImpotLIPP2021Test extends ProducteurImpotTst {
-    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
     private Map<String, String> libelleImpotTaxe = new HashMap<>();
 
     public ProductionImpotLIPP2021Test() {

@@ -17,23 +17,15 @@ package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.assurancessociales.ContexteTestAssurancesSociales.CTX_TST_AS;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
-//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
-@SpringJUnitConfig(locations = "/beansAssurancesSociales.xml")
 public class CalculExtremaRenteAVSTest {
 
-	@Resource(name = "fournisseurRegleCalculAssuranceSociale")
-	private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
+	private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale = CTX_TST_AS.getFournisseurRegleCalculAssuranceSociale();
 	
 	private CalculExtremaRentesAVS calculateur;
 	

@@ -32,7 +32,7 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
 
-import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 
 import org.impotch.bareme.Bareme;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BaremeFortuneTest {
 
-    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
 
     @Test
     public void fortune2007() {

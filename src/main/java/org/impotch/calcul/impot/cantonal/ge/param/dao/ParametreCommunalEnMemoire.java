@@ -23,8 +23,10 @@ import java.util.Map;
 
 class ParametreCommunalEnMemoire implements ParametreCommunalDao {
 
-    private final Map<ParametreCommunalEnMemoire.CleParametre, BigDecimal> mapPartPrivilegiee = new HashMap<>();
-    private final Map<ParametreCommunalEnMemoire.CleParametre,BigDecimal> mapCtsAdd = new HashMap<>();
+    private final Map<CleParametre, BigDecimal> mapPartPrivilegiee = new HashMap<>();
+    private final Map<CleParametre,BigDecimal> mapCtsAdd = new HashMap<>();
+
+    private Map<CleParametre,Integer> mapNbreResidentAu31Decembre = new HashMap<>();
 
     void partPrivilegiee(int annee, int noOFSCommune, BigDecimal part) {
         mapPartPrivilegiee.put(new CleParametre(annee, noOFSCommune), part);
@@ -32,6 +34,10 @@ class ParametreCommunalEnMemoire implements ParametreCommunalDao {
 
     void centimes(int annee, int noOFSCommune, BigDecimal taux) {
         mapCtsAdd.put(new CleParametre(annee, noOFSCommune), taux);
+    }
+
+    void nbreResidentAu31Decembre(int annee, int noOFSCommune, int nbreResident) {
+        mapNbreResidentAu31Decembre.put(new CleParametre(annee, noOFSCommune),Integer.valueOf(nbreResident));
     }
 
     //-------- Implémentation de l'interface ParametreCommunalDao
@@ -50,10 +56,11 @@ class ParametreCommunalEnMemoire implements ParametreCommunalDao {
         return taux;
     }
 
-
     @Override
-    public Map<ICommuneSuisse, Integer> getRepartitionAuProrataDeLaPopulation(int annee) {
-        return null;
+    public int getNombreResidentAu31decembre(int annee, int noOFSCommune) {
+        Integer nbre = mapNbreResidentAu31Decembre.get(new CleParametre(annee,noOFSCommune));
+        if (null == nbre) throw new RuntimeException("Le nombre de résident pour l’année " + annee + " et la commune " + noOFSCommune + " n'est pas chargé !");
+        return nbre.intValue();
     }
 
 /**************************************************/
@@ -66,7 +73,7 @@ class ParametreCommunalEnMemoire implements ParametreCommunalDao {
         private final int noOFS;
 
         public CleParametre(int annee, int noOFS) {
-            if (annee < 2000) throw new IllegalArgumentException("L'année " + annee + " ne peut pas être inférieure à 2000");
+            if (annee < 1980) throw new IllegalArgumentException("L'année " + annee + " ne peut pas être inférieure à 1980");
             if (noOFS > 6700 || noOFS < 6600) throw new IllegalArgumentException("Le numéro OFS " + noOFS + " ne peut pas être plus petit que 6600 ou plus grand que 6700");
             this.annee = annee;
             this.noOFS = noOFS;

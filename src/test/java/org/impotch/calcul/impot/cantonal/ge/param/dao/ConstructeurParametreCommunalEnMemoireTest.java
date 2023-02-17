@@ -15,20 +15,20 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.param.dao;
 
-import org.impotch.calcul.lieu.ICommuneSuisse;
+import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Map;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public interface ResidentParCommuneDao {
-
-    /**
-     * Retourne le nombre de résident au 31 décembre de l'année fournie en paramètre dans la commune fournie en paramètre
-     * @param annee L'année dqns le calendrier grégorien
-     * @param noOFSCommune Le numéro de la commune genvoise tel que spécifié par l'Office Fédéral de la Statistique
-     * @return le nombre de résident dans la commune au 31 décembre de l’année
-     */
-    int getNombreResidentAu31decembre(int annee, int noOFSCommune);
+public class ConstructeurParametreCommunalEnMemoireTest {
 
 
+
+    @Test
+    public void testContructionDepuisClasspath() throws IOException {
+        ConstructeurParametreCommunalEnMemoire cons = new ConstructeurParametreCommunalEnMemoire();
+        ParametreCommunalDao dao = cons.partPrivilegieeEtCtsAdddepuisClassPath("parametrage/ge/ExtractionTauxPPTest.txt").cons();
+        assertThat(dao.getPartPrivilegiee(2001,6615)).isEqualTo(new BigDecimal("0.8"));
+    }
 }

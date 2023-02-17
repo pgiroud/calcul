@@ -49,12 +49,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 
 
 public class BaremePrestationCapital2009Test extends ProducteurImpotGEAvant2010 {
 
-    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_GE.getFournisseurRegleImpotCantonalGE();
+    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
 
     private ProducteurImpot producteur2009;
     private SituationFamilialeGE situationCelibataire;

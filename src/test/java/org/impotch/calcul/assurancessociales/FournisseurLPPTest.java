@@ -16,20 +16,13 @@
 package org.impotch.calcul.assurancessociales;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import javax.annotation.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.assurancessociales.ContexteTestAssurancesSociales.CTX_TST_AS;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "/beansAssurancesSociales.xml")
-//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
-@SpringJUnitConfig(locations = "/beansAssurancesSociales.xml")
 public class FournisseurLPPTest {
 
-    @Resource
-    private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
+    private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale = CTX_TST_AS.getFournisseurRegleCalculAssuranceSociale();
 
 
     @Test

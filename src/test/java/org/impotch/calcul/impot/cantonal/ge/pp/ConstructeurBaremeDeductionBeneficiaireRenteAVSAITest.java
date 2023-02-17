@@ -21,12 +21,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.impotch.calcul.impot.cantonal.ge.ContexteTestGE.CTX_TST_GE;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 
 public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAITest {
 
 
-    private Indexateur indexateur = CTX_TST_GE.getFournisseurIndex().getIndexateurBaseDec2005(2009);
+    private Indexateur indexateur = CTX_TST_CH_GE.getFournisseurIndex().getIndexateurBaseDec2005(2009);
 
     private  ConstructeurBaremeDeductionBeneficiaireRenteAVSAI constructeur;
 

@@ -36,10 +36,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.annotation.Resource;
-
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.impotch.bareme.Bareme;
 import org.impotch.bareme.BaremeTauxEffectifLineaireParTranche;
 import org.impotch.calcul.impot.taxation.pp.Contribuable;
@@ -49,12 +46,11 @@ import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.util.TypeArrondi;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.fr.ContexteTestCH_FR.CTX_TST_CH_FR;
 
-@SpringJUnitConfig(locations = "/beansCH_FR.xml")
 public class SplittingFRTest {
 
-    @Resource(name = "fournisseurRegleImpotCantonalFR")
-    private FournisseurRegleImpotCantonalFR fournisseur;
+    private FournisseurRegleImpotCantonalFR fournisseur = CTX_TST_CH_FR.getFournisseurRegleImpotCantonalFR();
 
     @Test
     public void splitting2009() {

@@ -66,15 +66,8 @@ public class FournisseurParamCommunalGE implements
 	}
 
     @Override
-    public Repartition<ForCommunal> getRepartitionAuProrataDeLaPopulation(int annee) {
-        int anneeCourante = Calendar.getInstance().get(Calendar.YEAR);
-        if (annee > anneeCourante) throw new IllegalArgumentException("Impossible de déterminer la répartition pour l'année '" + annee + "' dans le futur !!");
-        Map<ICommuneSuisse,Integer> population = dao.getRepartitionAuProrataDeLaPopulation(annee);
-        Repartition<ForCommunal> repartition = new Repartition<ForCommunal>();
-        for (ICommuneSuisse commune : population.keySet()) {
-            int nbreResident = population.get(commune);
-            repartition.ajouterPart(new ForCommunal(commune),new Part(BigDecimal.valueOf(nbreResident)));
-        }
-        return repartition;
+    public int getNombreResidentAu31decembre(int annee, ICommuneSuisse commune) {
+        if (!"GE".equals(commune.getCanton().getCodeIso2())) throw new IllegalArgumentException("La commune " + commune + " n'est pas une commune genevoise !");
+        return dao.getNombreResidentAu31decembre(annee, commune.getNumeroOFS());
     }
 }

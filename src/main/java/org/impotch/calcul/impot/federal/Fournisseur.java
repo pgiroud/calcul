@@ -30,16 +30,17 @@ import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
 
-import javax.annotation.Resource;
-
 public class Fournisseur implements FournisseurRegleImpotFederal {
 	
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsFederauxPP = new ConcurrentHashMap<>();
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<>();
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotSourcePrestationCapital = new ConcurrentHashMap<>();
 
-    @Resource(name = "fournisseurBaremeIFD")
-    private FournisseurBaremeIFD fournisseurBaremeIFD;
+    private final FournisseurBaremeIFD fournisseurBaremeIFD;
+
+	public Fournisseur(FournisseurBaremeIFD fournisseurBaremeIFD) {
+		this.fournisseurBaremeIFD = fournisseurBaremeIFD;
+	}
 
 	public ProducteurImpot getProducteurImpotsFederauxPP(int annee) {
 		if (!producteurImpotsFederauxPP.containsKey(annee))

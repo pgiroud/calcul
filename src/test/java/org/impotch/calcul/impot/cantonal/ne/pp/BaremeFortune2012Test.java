@@ -15,24 +15,19 @@
  */
 package org.impotch.calcul.impot.cantonal.ne.pp;
 
-import javax.annotation.Resource;
+
 import java.math.BigDecimal;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.impotch.bareme.Bareme;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ne.ContexteTestCH_NE.CTX_TST_CH_NE;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "/beansCH_NE.xml")
-//@TestExecutionListeners(DependencyInjectionTestExecutionListener.class)
-@SpringJUnitConfig(locations = "/beansCH_NE.xml")
 public class BaremeFortune2012Test {
 
-    @Resource(name = "fournisseurRegleImpotCantonalNE")
-    private FournisseurRegleImpotCantonalNE fournisseur;
+    private FournisseurRegleImpotCantonalNE fournisseur = CTX_TST_CH_NE.getFournisseurRegleImpotCantonalNE();
 
     private Bareme bareme;
 

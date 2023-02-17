@@ -21,7 +21,6 @@ import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
 import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.math.BigDecimal;
 import java.util.Collections;

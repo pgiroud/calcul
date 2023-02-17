@@ -33,20 +33,15 @@ package org.impotch.calcul.impot.federal.pp.source;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-
-
 import org.impotch.calcul.impot.federal.FournisseurRegleImpotFederal;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.federal.ContexteTest_CH.CTX_TST_CH;
 
-@SpringJUnitConfig(locations = {"/beansCH_IFD.xml"})
 public class CalculateurPrestationCapitalTest {
 
-    @Resource
-    private FournisseurRegleImpotFederal constructeur;
+    private FournisseurRegleImpotFederal constructeur = CTX_TST_CH.getFournisseurRegleImpotFederal();
 
     @Test
     public void test2009JusquaCentVingCinqMille() {

@@ -35,11 +35,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import org.impotch.calcul.impot.Impot;
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
@@ -60,7 +57,7 @@ public class ProducteurImpotCommunalGETest {
 
     private FournisseurLieu fournisseurLieu;
 
-    private FournisseurParametrageCommunaleGE fournisseur = ContexteTestGE.CTX_TST_GE.getFournisseurParametrageCommunaleGE();
+    private FournisseurParametrageCommunaleGE fournisseur = ContexteTestCH_GE.CTX_TST_CH_GE.getFournisseurParametrageCommunaleGE();
 
 
     @BeforeEach

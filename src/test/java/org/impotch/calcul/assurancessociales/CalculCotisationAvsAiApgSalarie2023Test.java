@@ -16,18 +16,14 @@
 package org.impotch.calcul.assurancessociales;
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.assurancessociales.ContexteTestAssurancesSociales.CTX_TST_AS;
 
-@SpringJUnitConfig(locations = "/beansAssurancesSociales.xml")
 public class CalculCotisationAvsAiApgSalarie2023Test {
-    @Resource(name = "fournisseurRegleCalculAssuranceSociale")
-    private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale;
+    private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale = CTX_TST_AS.getFournisseurRegleCalculAssuranceSociale();
 
     private CalculCotisationsSocialesSalarie calculateur;
 

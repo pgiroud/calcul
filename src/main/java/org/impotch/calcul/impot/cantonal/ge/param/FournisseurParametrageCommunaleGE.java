@@ -46,12 +46,11 @@ public interface FournisseurParametrageCommunaleGE {
 	 */
 	BigDecimal getTauxCentimes(int annee, ICommuneSuisse commune);
 
-    /**
-     * Retourne une répartition sur toutes les communes genevoises au prorata du
-     * nombre d'habitant au 31 décembre de l'année fournie en paramètre.
-     * On consultera la site de l'OCStat pour obtenir la population résidente par commune.
-     * @param annee L'année désirée (entre 1989 et l'année courante)
-     * @return la répartition permettant ensuite de répartir un montant.
-     */
-    Repartition<ForCommunal> getRepartitionAuProrataDeLaPopulation(int annee);
+	/**
+	 * Retourne le nombre de résident au 31 décembre de l'année fournie en paramètre dans la commune fournie en paramètre
+	 * @param annee L'année dqns le calendrier grégorien
+	 * @param commune La commune genevoise
+	 * @return le nombre de résident dans la commune au 31 décembre de l’année
+	 */
+	int getNombreResidentAu31decembre(int annee, ICommuneSuisse commune);
 }

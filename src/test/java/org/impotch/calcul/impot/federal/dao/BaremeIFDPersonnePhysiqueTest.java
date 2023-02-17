@@ -32,20 +32,14 @@ package org.impotch.calcul.impot.federal.dao;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-
-
 import org.impotch.bareme.Bareme;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-@SpringJUnitConfig(locations = {"/beansCH_IFD.xml"})
+import static org.impotch.calcul.impot.federal.ContexteTest_CH.CTX_TST_CH;
 public class BaremeIFDPersonnePhysiqueTest {
 
-    @Resource
-    private FournisseurBaremeIFD fournisseur;
+    private FournisseurBaremeIFD fournisseur = CTX_TST_CH.getFournisseurBaremeIFD();
 
     @Test
     public void postNumerandoCelibataire2006() {

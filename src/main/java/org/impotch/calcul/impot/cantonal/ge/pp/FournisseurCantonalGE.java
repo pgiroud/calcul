@@ -58,13 +58,9 @@ import org.impotch.util.math.Fonction;
 import org.impotch.util.math.integration.MethodeIntegration;
 import org.impotch.util.math.integration.MethodeIntegrationPointMilieu;
 
-
-import javax.annotation.Resource;
-
 public class FournisseurCantonalGE extends FournisseurCantonal implements FournisseurRegleImpotCantonalGE {
 
 
-    @Resource
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale;
 
     private final FournisseurIndexGenevois fournisseurIndexGenevois = new FournisseurIndexGenevoisEnMemoire();
@@ -90,15 +86,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         this.fournisseurRegleCalculCotisationAssuranceSociale = regleAssurance;
     }
 
-    /**
-     * @param fournisseurRegleCalculCotisationAssuranceSociale the fournisseurRegleCalculCotisationAssuranceSociale to set
-     */
-    public void setFournisseurRegleCalculCotisationAssuranceSociale(
-            FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale) {
-        this.fournisseurRegleCalculCotisationAssuranceSociale = fournisseurRegleCalculCotisationAssuranceSociale;
-    }
-
-    /**
+   /**
      * @return the fournisseurParamCommunaux
      */
     public FournisseurParametrageCommunaleGE getFournisseurParamCommunaux() {

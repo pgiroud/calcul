@@ -20,19 +20,15 @@ import org.impotch.calcul.impot.taxation.pp.ProducteurImpotTst;
 import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
 import org.impotch.calcul.impot.federal.FournisseurRegleImpotFederal;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.federal.ContexteTest_CH.CTX_TST_CH;
 
 
-@SpringJUnitConfig(locations = {"/beansCH_IFD.xml"})
 public class ProducteurRabaisEnfantTest extends ProducteurImpotTst {
 
-    @Resource
-    private FournisseurRegleImpotFederal constructeur;
+    private FournisseurRegleImpotFederal constructeur = CTX_TST_CH.getFournisseurRegleImpotFederal();
 
     @Test
     public void montant_rabais_2010_pour_1_enfant_doit_être_null() {
