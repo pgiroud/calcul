@@ -136,14 +136,14 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant) {
 		if (isInferieurMinimum(montantDeterminant))
 			return getCotisationMinimumAi();
-		return TypeArrondi.CINQ_CTS.arrondirMontant(getTauxAi(
+		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(getTauxAi(
 				montantDeterminant).multiply(montantDeterminant));
 	}
 
 	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant) {
 		if (isInferieurMinimum(montantDeterminant))
 			return getCotisationMinimumApg();
-		return TypeArrondi.CINQ_CTS.arrondirMontant(getTauxApg(
+		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(getTauxApg(
 				montantDeterminant).multiply(montantDeterminant));
 	}
 
@@ -158,7 +158,7 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant) {
 		if (isInferieurMinimum(montantDeterminant))
 			return getCotisationMinimumAvsAiApg();
-		return TypeArrondi.CINQ_CTS.arrondirMontant(getTauxTotal(
+		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(getTauxTotal(
 				montantDeterminant).multiply(montantDeterminant));
 	}
 
@@ -172,14 +172,14 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 	}
 
 	private BigDecimal getCotisationMinimumAi() {
-		return TypeArrondi.CINQ_CTS
+		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES
 				.arrondirMontant(montantCotisationMinimumAvsAiApg.multiply(
 						this.getTauxAi()).divide(this.getTauxTotal(), 10,
 						BigDecimal.ROUND_HALF_UP));
 	}
 
 	private BigDecimal getCotisationMinimumApg() {
-		return TypeArrondi.CINQ_CTS
+		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES
 				.arrondirMontant(montantCotisationMinimumAvsAiApg.multiply(
 						this.getTauxApg()).divide(this.getTauxTotal(), 10,
 						BigDecimal.ROUND_HALF_UP));

@@ -75,7 +75,7 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 			@Override
 			public BigDecimal calcul(BigDecimal assiette) {
 				BigDecimal impot = bareme.calcul(assiette);
-				return TypeArrondi.CINQ_CTS.arrondirMontant(impot.multiply(new BigDecimal("0.2")));
+				return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot.multiply(new BigDecimal("0.2")));
 			}
 			
 		};
@@ -103,9 +103,9 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
 		producteurImpotBase.setStrategieProductionImpotFamille(new DoubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee)));
 
-		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
-		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
-		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS_INF);
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENTAINE_INF);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENTAINE_INF);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_INF);
 		
 		
         ProducteurImpot producteur = null;
@@ -139,9 +139,9 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
 		producteurImpotBase.setStrategieProductionImpotFamille(new DoubleBareme(getBaremePrestationCapital(annee), getBaremePrestationCapitalFamille(annee)));
 
-		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
-		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
-		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS_INF);
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENTAINE_INF);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENTAINE_INF);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_INF);
 		
 		
 		
@@ -159,9 +159,9 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
 		producteurImpotBase.setBareme(fournisseurBaremeIFD.getBaremeImpotSourcePrestationCapital(annee));
 
-		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENT_FRANC_INF);
-		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENT_FRANC_INF);
-		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS_INF);
+		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENTAINE_INF);
+		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENTAINE_INF);
+		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_INF);
 
 		ProducteurImpot producteur = new ProducteurImpot("IBR",""){
 			@Override

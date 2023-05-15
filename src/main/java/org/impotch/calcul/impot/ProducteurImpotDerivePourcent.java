@@ -32,7 +32,7 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 	private final String nomImpot;
 	private final BigDecimal taux;
 	private final String codeBeneficiaire;
-	private TypeArrondi typeArrondi = TypeArrondi.CINQ_CTS;
+	private TypeArrondi typeArrondi = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 	private String explicationDetailleePattern;
 
 	private ProducteurImpotDerive producteurDerive;

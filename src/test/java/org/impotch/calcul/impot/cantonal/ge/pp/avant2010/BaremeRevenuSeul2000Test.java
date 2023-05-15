@@ -42,7 +42,7 @@ public class BaremeRevenuSeul2000Test {
     @BeforeEach
     public void setUp() throws Exception {
         bareme = (BaremeTauxMarginalIntegrable)fournisseur.getBaremeRevenu(2000);
-        bareme.setTypeArrondi(TypeArrondi.DIXIEME_CT);
+        bareme.setTypeArrondi(TypeArrondi.MILLIEME_LE_PLUS_PROCHE);
     }
 
     @ParameterizedTest

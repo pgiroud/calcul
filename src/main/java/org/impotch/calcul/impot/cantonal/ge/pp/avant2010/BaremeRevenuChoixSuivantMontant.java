@@ -61,7 +61,7 @@ public class BaremeRevenuChoixSuivantMontant implements Bareme {
 		if (null == pAssiette) return null;
 		if (pAssiette.intValue() >= limiteBaremeFamille) {
 			BigDecimal impot = getConstanteEntreMarieEtCelibataire().add(baremeSeul.calcul(pAssiette));
-			return TypeArrondi.CINQ_CTS.arrondirMontant(impot);
+			return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot);
 		} else return baremeFamille.calcul(pAssiette);
 	}
 

@@ -134,6 +134,12 @@ public class BaremeIFDPersonnePhysiqueTest {
     }
 
     @Test
+    public void postNumerandoCelibataire2023AvecAssietteNonArrondie() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2023);
+        assertThat(bareme.calcul(BigDecimal.valueOf(32227))).isEqualTo(new BigDecimal("133.95"));
+    }
+
+    @Test
     public void postNumerandoCelibataire2023AuLimiteDeTranche() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2023);
         assertThat(bareme.calcul(BigDecimal.valueOf(14800))).isEqualTo(new BigDecimal("0.00"));
@@ -173,8 +179,8 @@ public class BaremeIFDPersonnePhysiqueTest {
     @Test
     public void prestationCapitalSource2016() {
         Bareme bareme = fournisseur.getBaremeImpotSourcePrestationCapital(2016);
-        assertThat(bareme.calcul(BigDecimal.valueOf(74300))).isEqualTo(new BigDecimal("182.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(675000))).isEqualTo(new BigDecimal("14875.00"));
+        assertThat(bareme.calcul(BigDecimal.valueOf(74_300))).isEqualTo(new BigDecimal("182.00"));
+        assertThat(bareme.calcul(BigDecimal.valueOf(675_000))).isEqualTo(new BigDecimal("14875.00"));
         assertThat(bareme.calcul(BigDecimal.valueOf(2_000_000))).isEqualTo(new BigDecimal("46000.00"));
     }
 

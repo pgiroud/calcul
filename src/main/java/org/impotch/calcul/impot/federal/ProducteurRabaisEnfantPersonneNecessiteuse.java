@@ -55,6 +55,6 @@ public class ProducteurRabaisEnfantPersonneNecessiteuse implements ProducteurImp
         BigDecimal nbrePersonneNecessiteuse = BigDecimal.valueOf(situation.getPersonnesNecessiteuses().size());
         BigDecimal rabais = nbreEnfant.multiply(montantRabaisParEnfant);
         rabais = rabais.add(nbrePersonneNecessiteuse.multiply(montantRabaisParPersonneNecessiteuse));
-        return TypeArrondi.CINQ_CTS.arrondirMontant(rabais);
+        return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(rabais);
     }
 }

@@ -35,8 +35,8 @@ public class DeductionRentierAVS extends ReglePeriodique implements DeductionBen
 	public DeductionRentierAVS(int annee, BaremeParTranche bareme, BigDecimal rapport) {
 		super(annee);
 		baremeSeul = bareme;
-		baremeCoupleUnSeulRentier = bareme.homothetie(rapport, TypeArrondi.CENT_FRANC_INF);
-		baremeCoupleDeuxRentiers = baremeCoupleUnSeulRentier.homothetieValeur(rapport, TypeArrondi.CENT_FRANC_INF);
+		baremeCoupleUnSeulRentier = bareme.homothetie(rapport, TypeArrondi.CENTAINE_INF);
+		baremeCoupleDeuxRentiers = baremeCoupleUnSeulRentier.homothetieValeur(rapport, TypeArrondi.CENTAINE_INF);
 	}
 
 	public BigDecimal getMontantDeduction(BigDecimal revenuNet, boolean isSeule, boolean doubleRentier) {

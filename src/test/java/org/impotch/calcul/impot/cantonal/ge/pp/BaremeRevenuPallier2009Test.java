@@ -37,8 +37,8 @@ import java.util.Map;
 
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 
-import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
-import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeTxMarginalConstantParTranche;
+import org.impotch.bareme.Bareme;
+import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeParTrancheIndexe;
 import org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique;
 import org.impotch.util.TypeArrondi;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +49,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BaremeRevenuPallier2009Test {
 
-    private BaremeTauxMarginalConstantParTranche bareme;
+    private Bareme bareme;
 
     private FournisseurIndicePeriodique construireIndexateurSurBaseIndice() {
         SimpleFournisseurIndicePeriodique fournisseur = new SimpleFournisseurIndicePeriodique();
@@ -61,7 +61,7 @@ public class BaremeRevenuPallier2009Test {
 
     @BeforeEach
     public void setUp() throws Exception {
-        bareme = new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
+        bareme = new ConstructeurBaremeParTrancheIndexe()
                 // Attention, ce barème n'a jamais été utilisé.
                 // Il a simplement servi de base pour les barèmes 2010, 2011, ...
                 .valideDepuis(2009)
@@ -85,7 +85,7 @@ public class BaremeRevenuPallier2009Test {
                 .tranche(276099, 388857, "18 %")
                 .tranche(388857, 609103, "18.5 %")
                 .derniereTranche(609103, "19 %")
-                .typeArrondiTranche(TypeArrondi.CINQ_CTS).construire(2009);
+                .typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES).construire(2009);
     }
 
     private void rev(int revenu, String impot) {

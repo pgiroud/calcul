@@ -31,6 +31,8 @@ import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_
 
 public class BaremeRevenuFamille2006Test {
 
+	private static BigDecimal CINQ_CTS = new BigDecimal("0.05");
+
 	private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
 	private Bareme bareme;
 	
@@ -42,7 +44,7 @@ public class BaremeRevenuFamille2006Test {
 	private void testEgalite(String montantNonFormatte, BigDecimal montant) {
 		// On teste avec un delta de 10 cts
 		BigDecimal delta = new BigDecimal(montantNonFormatte).subtract(montant).abs();
-		if (0 < delta.compareTo(BigDecimalUtil.CINQ_CTS)) {
+		if (0 < delta.compareTo(CINQ_CTS)) {
 			fail("Montant attendu " + montantNonFormatte + ", montant calculé " + montant);
 		}
 	}

@@ -40,7 +40,7 @@ import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
-import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeIndexeTxMarginalConstantParTranche;
+import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeParTrancheIndexe;
 import org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique;
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
@@ -72,7 +72,7 @@ public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Bareme bareme = new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
+        Bareme bareme = new ConstructeurBaremeParTrancheIndexe()
                 // Attention, ce barème n'a jamais été utilisé.
                 // Il a simplement servi de base pour les barèmes 2010, 2011, ...
                 .valideDepuis(2009)
@@ -96,7 +96,7 @@ public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
                 .tranche(276099, 388857, "18 %")
                 .tranche(388857, 609103, "18.5 %")
                 .derniereTranche(609103, "19 %")
-                .typeArrondiTranche(TypeArrondi.CINQ_CTS).construire(2009);
+                .typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES).construire(2009);
 
         ProducteurImpotBaseProgressif producteurBase = new ProducteurImpotBaseProgressif();
         producteurBase.setStrategieProductionImpotFamille(new Splitting(bareme, "50 %"));

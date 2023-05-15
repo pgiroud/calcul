@@ -36,7 +36,7 @@ public class DiscretisationBaremeMarie {
 
 	private MethodeIntegration methodeIntegration;
 	private Fonction tauxMarginal;
-	private TypeArrondi arrondi = TypeArrondi.CINQ_CTS;
+	private TypeArrondi arrondi = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 	
 	private int largeurCourante = -1;
 	private List<PasDiscretisation> pas = new ArrayList<PasDiscretisation>();

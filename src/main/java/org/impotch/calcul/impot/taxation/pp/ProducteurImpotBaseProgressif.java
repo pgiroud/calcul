@@ -40,9 +40,9 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 
 	final Logger logger = LoggerFactory.getLogger(ProducteurImpotBaseProgressif.class);
 
-	private TypeArrondi typeArrondiImposable	= TypeArrondi.FRANC;
-	private TypeArrondi typeArrondiDeterminant	= TypeArrondi.FRANC;
-	private TypeArrondi typeArrondiImpot		= TypeArrondi.CINQ_CTS;
+	private TypeArrondi typeArrondiImposable	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
+	private TypeArrondi typeArrondiDeterminant	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
+	private TypeArrondi typeArrondiImpot		= TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 	
 	private StrategieProductionImpotFamille impositionFamille;
 	/**

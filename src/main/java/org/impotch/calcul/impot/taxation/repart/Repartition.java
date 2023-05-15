@@ -152,7 +152,7 @@ public class Repartition<T extends ForImposition> {
     }
 
     public Repartition<T> repartir(BigDecimal inoMontant) {
-        return repartir(inoMontant, TypeArrondi.FRANC);
+        return repartir(inoMontant, TypeArrondi.UNITE_LA_PLUS_PROCHE);
     }
 
     private Repartition<T> repartir(TypeCalculRepartition type, BigDecimal montantARepartir, TypeArrondi typeArrondi) {
@@ -196,7 +196,7 @@ public class Repartition<T extends ForImposition> {
     }
 
     public Repartition<T> repartirSurResteARepartir(BigDecimal montantARepartir) {
-        return repartirSurResteARepartir(montantARepartir,TypeArrondi.FRANC);
+        return repartirSurResteARepartir(montantARepartir,TypeArrondi.UNITE_LA_PLUS_PROCHE);
     }
 
     public Repartition<T> repartirSurResteARepartir(BigDecimal montantARepartir, TypeArrondi typeArrondi) {

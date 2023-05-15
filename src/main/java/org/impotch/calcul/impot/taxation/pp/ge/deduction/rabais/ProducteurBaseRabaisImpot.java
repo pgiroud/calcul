@@ -197,7 +197,7 @@ public class ProducteurBaseRabaisImpot extends ReglePeriodique implements Produc
 		else if (rapport.compareTo(new BigDecimal(2)) > 0) coefficient = new BigDecimal("0.3");
 		else if (rapport.compareTo(new BigDecimal("1.5")) > 0) coefficient = new BigDecimal("0.4");
 		else coefficient = new BigDecimal("0.5");
-		return fournisseur.getMontantRenteAVSPercu().min(TypeArrondi.FRANC.arrondirMontant(renteMaximum.multiply(coefficient)));
+		return fournisseur.getMontantRenteAVSPercu().min(TypeArrondi.UNITE_LA_PLUS_PROCHE.arrondirMontant(renteMaximum.multiply(coefficient)));
 	}
 	
 	

@@ -45,7 +45,7 @@ public class RegleCalculImpot extends ReglePeriodique {
 	protected BigDecimal decote(BigDecimal montantImpot) {
 		if (0 >= montantDecote.compareTo(montantImpot)) return montantImpot;
 		BigDecimal deduction = montantDecote.subtract(montantImpot).divide(BigDecimalUtil.DEUX,2,BigDecimal.ROUND_HALF_UP);
-		deduction = TypeArrondi.FRANC_INF.arrondirMontant(deduction);
+		deduction = TypeArrondi.UNITE_INF.arrondirMontant(deduction);
 		return montantImpot.subtract(deduction);
 	}
 	

@@ -68,7 +68,7 @@ public class IndexateurGenevoisTest {
 	@Test
 	@DisplayName("2006 déduc. double activité")
     public void indexation2006DeducDoubleActivite() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(3500), 2006, TypeArrondi.DIX_FRANC)).isEqualTo(BigDecimal.valueOf(3640));
+		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(3500), 2006, TypeArrondi.DIZAINE_LA_PLUS_PROCHE)).isEqualTo(BigDecimal.valueOf(3640));
     }
 
 
@@ -81,13 +81,13 @@ public class IndexateurGenevoisTest {
 	@Test
 	@DisplayName("2007 plafond faible revenu")
     public void indexation2007PlafondFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(50000), 2007, TypeArrondi.MILLE_FRANC_SUP)).isEqualTo(BigDecimal.valueOf(52000));
+		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(50000), 2007, TypeArrondi.MILLE_SUP)).isEqualTo(BigDecimal.valueOf(52000));
     }
 
 	@Test
 	@DisplayName("2010 plafond faible revenu")
     public void indexation2010PlafondFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(50000), 2010, TypeArrondi.MILLE_FRANC_SUP)).isEqualTo(BigDecimal.valueOf(55000));
+		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(50000), 2010, TypeArrondi.MILLE_SUP)).isEqualTo(BigDecimal.valueOf(55000));
     }
 
 	@Test
@@ -99,13 +99,13 @@ public class IndexateurGenevoisTest {
 	@Test
 	@DisplayName("2008 déduc. double activité pour faible revenu")
     public void indexation2008DeducDoubleActivitePourFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(5000), 2008, TypeArrondi.CENT_FRANC_SUP)).isEqualTo(BigDecimal.valueOf(5200));
+		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(5000), 2008, TypeArrondi.CENTAINE_SUP)).isEqualTo(BigDecimal.valueOf(5200));
     }
 
 	@Test
 	@DisplayName("2009 déduc. double activité pour faible revenu")
     public void indexation2009DeducDoubleActivitePourFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(5000), 2009, TypeArrondi.CENT_FRANC_SUP)).isEqualTo(BigDecimal.valueOf(5500));
+		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(5000), 2009, TypeArrondi.CENTAINE_SUP)).isEqualTo(BigDecimal.valueOf(5500));
     }
 
 

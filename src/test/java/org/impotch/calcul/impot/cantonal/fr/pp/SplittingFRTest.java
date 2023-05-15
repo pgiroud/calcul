@@ -36,9 +36,10 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
+import org.impotch.bareme.BaremeTauxEffectifParTranche;
 import org.junit.jupiter.api.Test;
 import org.impotch.bareme.Bareme;
-import org.impotch.bareme.BaremeTauxEffectifLineaireParTranche;
+
 import org.impotch.calcul.impot.taxation.pp.Contribuable;
 import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
 import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
@@ -47,6 +48,7 @@ import org.impotch.util.TypeArrondi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.calcul.impot.cantonal.fr.ContexteTestCH_FR.CTX_TST_CH_FR;
+import static org.impotch.calcul.impot.cantonal.fr.pp.SplittingFR.unSplittingFribourgeois;
 
 public class SplittingFRTest {
 
@@ -54,9 +56,12 @@ public class SplittingFRTest {
 
     @Test
     public void splitting2009() {
+
         Bareme bareme = fournisseur.getBaremeRevenu(2009);
-        SplittingFR splitting = new SplittingFR((BaremeTauxEffectifLineaireParTranche) bareme, "56 %");
-        splitting.setTypeArrondi(TypeArrondi.CENT_FRANC_INF);
+        SplittingFR splitting = unSplittingFribourgeois((BaremeTauxEffectifParTranche) bareme, "56 %")
+                .montantImposableMinimum(5100)
+                        .tauxMinimum("1 %").construire();
+
 
         testSplitting(splitting, 5100, "51.00");
         testSplitting(splitting, 5200, "52.00");
@@ -207,8 +212,9 @@ public class SplittingFRTest {
     @Test
     public void sansSplitting2009() {
         Bareme bareme = fournisseur.getBaremeRevenu(2009);
-        SplittingFR splitting = new SplittingFR((BaremeTauxEffectifLineaireParTranche) bareme, "56 %");
-        splitting.setTypeArrondi(TypeArrondi.CENT_FRANC_INF);
+        SplittingFR splitting = unSplittingFribourgeois((BaremeTauxEffectifParTranche) bareme, "56 %")
+                .montantImposableMinimum(5100)
+                .tauxMinimum("1 %").construire();
 
         testSansSplitting(splitting, 5100, "51.00");
         testSansSplitting(splitting, 5200, "53.35");
@@ -361,7 +367,7 @@ public class SplittingFRTest {
     private void testSplitting(SplittingFR splitting, int assiette, String montantAttendu) {
         BigDecimal assietteBG = new BigDecimal(assiette);
         BigDecimal impot = splitting.produireImpotAnnuel(getSituation(true), assietteBG, assietteBG);
-        impot = TypeArrondi.CINQ_CTS.arrondirMontant(impot);
+        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot);
         assertThat(impot).isEqualTo(new BigDecimal(montantAttendu));
 //		assertEquals("Splitting",new BigDecimal(montantAttendu),impot);
     }
@@ -369,7 +375,7 @@ public class SplittingFRTest {
     private void testSansSplitting(SplittingFR splitting, int assiette, String montantAttendu) {
         BigDecimal assietteBG = new BigDecimal(assiette);
         BigDecimal impot = splitting.produireImpotAnnuel(getSituation(false), assietteBG, assietteBG);
-        impot = TypeArrondi.CINQ_CTS.arrondirMontant(impot);
+        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot);
         assertThat(impot).isEqualTo(new BigDecimal(montantAttendu));
 //		assertEquals("Splitting",new BigDecimal(montantAttendu),impot);
     }

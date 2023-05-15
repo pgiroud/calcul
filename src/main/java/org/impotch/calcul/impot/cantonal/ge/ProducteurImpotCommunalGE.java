@@ -124,13 +124,13 @@ public abstract class ProducteurImpotCommunalGE implements ProducteurImpotCommun
 				builder.nouvelleLigne();
 			} 
 			Repartition<ForCommunal> repartitionAssiette = fournisseur.getRepartition();
-			Repartition<ForCommunal> repartition = repartitionAssiette.repartir(partARepartir,TypeArrondi.CINQ_CTS);
+			Repartition<ForCommunal> repartition = repartitionAssiette.repartir(partARepartir,TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
 			for (ForCommunal forComm : repartition.getForImposition()) {
 				Part part = repartition.getPart(forComm);
 				ICommuneSuisse commune = forComm.getLieu();
 				BigDecimal baseCalcul = part.getMontant();
 				BigDecimal taux = fournisseurParametre.getTauxCentimes(fournisseur.getPeriodeFiscale(),commune);
-				BigDecimal impot = TypeArrondi.CINQ_CTS.arrondirMontant(baseCalcul.multiply(taux));
+				BigDecimal impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(baseCalcul.multiply(taux));
 				if (BigDecimalUtil.isStrictementPositif(impot)) {
 					// Explication de calcul
 					builder.ajouter("Part de la commune " + commune.getNom());

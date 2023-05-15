@@ -36,7 +36,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.bareme.*;
-import org.impotch.calcul.assurancessociales.Fournisseur;
 import org.impotch.calcul.assurancessociales.FournisseurRegleCalculAssuranceSociale;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.*;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
@@ -48,8 +47,6 @@ import org.impotch.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageCommunaleGE;
 import org.impotch.calcul.impot.taxation.pp.*;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
-import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionBeneficiaireRentesAVSAI;
-import org.impotch.calcul.impot.taxation.pp.ge.deduction.DeductionDoubleActivite;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais.ProducteurBaseRabaisImpot;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
@@ -69,11 +66,11 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     private final ConcurrentMap<Integer, Bareme> mapBaremeRevenuMarie = new ConcurrentHashMap<>();
 
-    private ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeurBaremeFortune;
-    private ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeurBaremeFortuneApres2009;
+    private ConstructeurBaremeParTrancheIndexe constructeurBaremeFortune;
+    private ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneApres2009;
 
-    private ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeurBaremeFortuneSupplementaire;
-    private ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeurBaremeFortuneSupplementaireApres2009;
+    private ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneSupplementaire;
+    private ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneSupplementaireApres2009;
     private ConcurrentMap<Integer, Bareme> baremesFortuneSupplementaire = new ConcurrentHashMap<>();
 
     private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCRevenu = new ConcurrentHashMap<>();
@@ -116,14 +113,16 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     protected Bareme construireBaremeRevenu(int annee) {
         if (annee < 2010) {
             BaremeTauxMarginalIntegrable bareme = new BaremeTauxMarginalIntegrable();
-            bareme.setTypeArrondi(TypeArrondi.CINQ_CTS);
+            bareme.setTypeArrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
             bareme.setTauxMarginal(construireTauxMarginal(annee));
             return bareme;
         } else {
-            return new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
+            return new ConstructeurBaremeParTrancheIndexe()
                     .valideDepuis(2010)
                     .anneeReferenceRencherissement(2009)
                     .indexateur(fournisseurIndexGenevois.getFournisseurIndiceGEBaseDecembre2005())
+                    .typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                    .typeArrondiGlobal(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
                     .premiereTranche(17493, "0 %")
                     .tranche(17493, 21076, "8 %")
                     .tranche(21076, 23184, "9 %")
@@ -142,7 +141,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
                     .tranche(276099, 388857, "18 %")
                     .tranche(388857, 609103, "18.5 %")
                     .derniereTranche(609103, "19 %")
-                    .typeArrondiTranche(TypeArrondi.CINQ_CTS).construire(annee);
+                    .construire(annee);
         }
     }
 
@@ -167,7 +166,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
                 BaremeFamille bareme = new BaremeFamille();
                 bareme.setMethodeIntegration(methode);
                 bareme.setTauxMarginal(tauxMarginal);
-                bareme.setArrondi(TypeArrondi.CINQ_CTS);
+                bareme.setArrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
                 return bareme;
             } else {
                 DiscretisationBaremeMarie discretisateur = new DiscretisationBaremeMarie();
@@ -175,9 +174,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
                 discretisateur.setMethodeIntegration(methode);
                 if (2001 == annee || 2002 == annee) {
                     discretisateur.largeur(200).jusqua(1000000);
-                    discretisateur.setArrondi(TypeArrondi.CT);
+                    discretisateur.setArrondi(TypeArrondi.CENTIEME_LE_PLUS_PROCHE);
                 } else {
-                    discretisateur.setArrondi(TypeArrondi.CINQ_CTS);
+                    discretisateur.setArrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
                     if (2003 == annee) {
                         discretisateur.largeur(100).jusqua(30000)
                                 .largeur(200).jusqua(50000)
@@ -212,14 +211,16 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     }
 
 
-    private ConstructeurBaremeIndexeTxMarginalConstantParTranche getConstructeurBaremeFortuneGenevois(
+    private ConstructeurBaremeParTrancheIndexe getConstructeurBaremeFortuneGenevois(
             int annee) {
         if (annee < 2010) {
             if (null == constructeurBaremeFortune) {
-                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
+                ConstructeurBaremeParTrancheIndexe constructeur = new ConstructeurBaremeParTrancheIndexe()
                         .valideEntre(2001, 2009)
                         .indexateur(fournisseurIndexGenevois.getFournisseurIndiceGEBaseMai1993())
                         .anneeReferenceRencherissement(2000)
+                        .typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                        .typeArrondiGlobal(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
                         .premiereTranche(100000, "1.75 ‰")
                         .tranche(100000, 200000, "2.25 ‰")
                         .tranche(200000, 300000, "2.75 ‰")
@@ -238,8 +239,8 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             // dont la base est
             // décembre 2005.
             if (null == constructeurBaremeFortuneApres2009) {
-                BaremeTauxMarginalConstantParTranche bareme2009 = construireBaremeFortune(2009);
-                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche(
+                BaremeParTranche bareme2009 = construireBaremeFortune(2009);
+                ConstructeurBaremeParTrancheIndexe constructeur = new ConstructeurBaremeParTrancheIndexe(
                         bareme2009)
                         .valideDepuis(2010)
                         .indexateur(fournisseurIndexGenevois.getFournisseurIndiceGEBaseDecembre2005())
@@ -250,18 +251,17 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         }
     }
 
-    protected BaremeTauxMarginalConstantParTranche construireBaremeFortune(
+    protected BaremeParTranche construireBaremeFortune(
             int annee) {
-        BaremeTauxMarginalConstantParTranche bareme = getConstructeurBaremeFortuneGenevois(
-                annee).typeArrondiTranche(TypeArrondi.CINQ_CTS).construire(annee);
-        return bareme;
+        return getConstructeurBaremeFortuneGenevois(
+                annee).typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES).construire(annee);
     }
 
-    private ConstructeurBaremeIndexeTxMarginalConstantParTranche getConstructeurBaremeFortuneSupplementaire(
+    private ConstructeurBaremeParTrancheIndexe getConstructeurBaremeFortuneSupplementaire(
             int annee) {
         if (annee < 2010) {
             if (null == constructeurBaremeFortuneSupplementaire) {
-                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche()
+                ConstructeurBaremeParTrancheIndexe constructeur = new ConstructeurBaremeParTrancheIndexe()
                         .valideEntre(2001, 2009)
                         .indexateur(fournisseurIndexGenevois.getFournisseurIndiceGEBaseMai1993())
                         .anneeReferenceRencherissement(2000)
@@ -281,8 +281,8 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             return constructeurBaremeFortuneSupplementaire;
         } else {
             if (null == constructeurBaremeFortuneSupplementaireApres2009) {
-                BaremeTauxMarginalConstantParTranche bareme2009 = construireBaremeFortuneSupplementaire(2009);
-                ConstructeurBaremeIndexeTxMarginalConstantParTranche constructeur = new ConstructeurBaremeIndexeTxMarginalConstantParTranche(bareme2009)
+                BaremeParTranche bareme2009 = construireBaremeFortuneSupplementaire(2009);
+                ConstructeurBaremeParTrancheIndexe constructeur = new ConstructeurBaremeParTrancheIndexe(bareme2009)
                         .valideDepuis(2010)
                         .indexateur(fournisseurIndexGenevois.getFournisseurIndiceGEBaseDecembre2005())
                         .anneeReferenceRencherissement(2009);
@@ -300,9 +300,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         return baremesFortuneSupplementaire.get(annee);
     }
 
-    private BaremeTauxMarginalConstantParTranche construireBaremeFortuneSupplementaire(
+    private BaremeParTranche construireBaremeFortuneSupplementaire(
             int annee) {
-        return getConstructeurBaremeFortuneSupplementaire(annee).typeArrondiTranche(TypeArrondi.CINQ_CTS)
+        return getConstructeurBaremeFortuneSupplementaire(annee).typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
                 .construire(annee);
     }
 
@@ -384,9 +384,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         }
         producteur.setStrategieProductionImpotFamille(strategie);
 
-        producteur.setTypeArrondiImposable(TypeArrondi.FRANC);
-        producteur.setTypeArrondiDeterminant(TypeArrondi.FRANC);
-        producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+        producteur.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteur.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
         return producteur;
     }
 
@@ -401,9 +401,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         }
         producteur.setStrategieProductionImpotFamille(strategie);
 
-        producteur.setTypeArrondiImposable(TypeArrondi.FRANC);
-        producteur.setTypeArrondiDeterminant(TypeArrondi.FRANC);
-        producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+        producteur.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteur.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
         return producteur;
     }
 
@@ -468,7 +468,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             };
         }
         producteur.setProducteurBase(producteurImpotBase);
-        completerProducteurImpotsCantonaux(producteur, codeBeneficiaire, annee, TypeArrondi.CINQ_CTS);
+        completerProducteurImpotsCantonaux(producteur, codeBeneficiaire, annee, TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
         return producteur;
     }
 
@@ -505,7 +505,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     }
 
     private ProducteurImpot construireProducteurImpotsICCRevenu(int annee) {
-        ProducteurImpot producteur = construireProducteurImpotsCantonauxRevenu(annee, TypeArrondi.CINQ_CTS);
+        ProducteurImpot producteur = construireProducteurImpotsCantonauxRevenu(annee, TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
 
         // On ajoute ensuite les impôts communaux
         ProducteurImpotCommunalGE prodComm = new ProducteurImpotCommunalGEPersPhysique("PPR", "COR") {
@@ -522,9 +522,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     private ProducteurImpot construireProducteurImpotsICCFortune(int annee) {
         ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
         producteurImpotBase.setBareme(this.getBaremeFortune(annee));
-        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.FRANC);
-        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.FRANC);
-        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
 
 
         String codeBeneficiaire = "CAN-GE";
@@ -567,9 +567,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     private ProducteurImpot construireProducteurImpotsICCFortuneSupplementaire(int annee) {
         ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
         producteurImpotBase.setBareme(this.getBaremeFortuneSupplementaire(annee));
-        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.FRANC);
-        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.FRANC);
-        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
 
 
         String codeBeneficiaire = "CAN-GE";

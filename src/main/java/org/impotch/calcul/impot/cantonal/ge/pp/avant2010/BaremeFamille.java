@@ -29,7 +29,7 @@ public class BaremeFamille implements Bareme {
     private MethodeIntegration methodeIntegration;
     private Fonction tauxMarginal;
     private SortedMap<Long,Double> cache = new TreeMap<Long, Double>();
-    private TypeArrondi arrondi = TypeArrondi.CINQ_CTS;
+    private TypeArrondi arrondi = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
     public BaremeFamille() {
         cache.put(0L,0.0d);
@@ -62,7 +62,7 @@ public class BaremeFamille implements Bareme {
 
     private Double calculFlottant(BigDecimal revenu) {
         // On recherche dans le cache la valeur inférieure
-        BigDecimal arrondiMilleFrancsInf = TypeArrondi.MILLE_FRANC_INF.arrondirMontant(revenu);
+        BigDecimal arrondiMilleFrancsInf = TypeArrondi.MILLE_INF.arrondirMontant(revenu);
         Long arrondi = arrondiMilleFrancsInf.longValue();
         if (!cache.containsKey(arrondi)) {
             chargerCacheJusqua(arrondi);

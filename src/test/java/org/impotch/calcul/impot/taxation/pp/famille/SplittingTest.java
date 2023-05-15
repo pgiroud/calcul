@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-import org.impotch.bareme.ConstructeurBaremeTauxMarginal;
+
 import org.impotch.calcul.impot.taxation.pp.*;
 
 import org.impotch.util.TypeArrondi;
@@ -44,28 +44,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
 public class SplittingTest {
 
     private StrategieProductionImpotFamille splitting;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ConstructeurBaremeTauxMarginal cons = new ConstructeurBaremeTauxMarginal();
-        cons.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CTS)
-                .premiereTranche(1000, "1 %")
-                .tranche(1000, 2000, "2 %")
-                .tranche(2000, 3000, "3 %")
-                .tranche(3000, 4000, "4 %")
-                .derniereTranche(4000, "5 %");
-        splitting = new Splitting(cons.construire(), "50 %");
+        splitting = new Splitting(unBaremeATauxMarginal()
+                .typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .jusqua(1000).taux("1 %")
+                .puisJusqua(2000).taux("2 %")
+                .puisJusqua(3000).taux("3 %")
+                .puisJusqua(4000).taux("4 %")
+                .puis().taux("5 %")
+                .construire(), "50 %");
     }
 
 
     @Test
     public void produireImpot() {
         BigDecimal impot = splitting.produireImpotAnnuel(getFamille(), new BigDecimal("2000"), new BigDecimal("2000"));
-        impot = TypeArrondi.CINQ_CTS.arrondirMontant(impot);
+        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot);
         assertThat(impot).isEqualTo(new BigDecimal("20.00"));
 //		assertEquals("Transfo Impot",new BigDecimal("20.00"),impot);
     }

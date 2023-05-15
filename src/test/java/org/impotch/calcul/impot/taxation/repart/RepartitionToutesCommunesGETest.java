@@ -150,7 +150,7 @@ public class RepartitionToutesCommunesGETest {
     @Test
     public void testRepartSurToutesCommunes() {
         Repartition<ForCommunal> cle = creerRepartitionToutesCommunesGESuivantPopulationFin2012();
-        Repartition<ForCommunal> repart = cle.repartirSurResteARepartir(new BigDecimal("0.60"), TypeArrondi.CINQ_CTS);
+        Repartition<ForCommunal> repart = cle.repartirSurResteARepartir(new BigDecimal("0.60"), TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
         // Carouge (GE) : 0.05
         controlePresence(repart,6608,new BigDecimal("0.05"));
         // Meyrin : 0.05

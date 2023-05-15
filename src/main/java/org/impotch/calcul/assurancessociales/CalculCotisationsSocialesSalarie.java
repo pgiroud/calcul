@@ -22,6 +22,7 @@ import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.StringUtil;
 import org.impotch.util.TypeArrondi;
 
+import static org.impotch.calcul.assurancessociales.CalculateurCotisationAC.unCalculateur;
 /**
  * Calcule les cotisations sociales des salariés. Les montants retournés sont ceux 
  * dus par l'employé. En général, il s'agit de la moitié du montant global. La seconde moitié
@@ -99,7 +100,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant) {
 		if (BigDecimalUtil.isStrictementPositif(this.tauxAssuranceMaterniteAdoption)) {
 			BigDecimal cotisation = montantDeterminant.multiply(tauxAssuranceMaterniteAdoption);
-			return TypeArrondi.CINQ_CTS.arrondirMontant(cotisation);
+			return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisation);
 		} else {
 			return BigDecimal.ZERO;
 		}
@@ -204,7 +205,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	public BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(BigDecimal tauxCotisationAssuranceAccidentsNonProfessionnels, BigDecimal montantDeterminant) {
 		BigDecimal plafond = montantAnnuelMaximumGainAssure.min(montantDeterminant);
 		BigDecimal cotisations =  plafond.multiply(tauxCotisationAssuranceAccidentsNonProfessionnels);
-		return TypeArrondi.CINQ_CTS.arrondirMontant(cotisations);
+		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisations);
 	}
 
     /**************************************************/
@@ -222,7 +223,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 		private int montantMax;
 		private String tauxAC;
 		private String ratioHautRevenu;
-		private String tauxACContributionHautRevenu;
+		private String tauxACContributionHautRevenu = "0";
 
 		private String tauxAssuranceMaterniteAdoption;
 
@@ -292,20 +293,14 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 			CalculCotisationAvsAiApgSalarie.Constructeur constructeur = new CalculCotisationAvsAiApgSalarie.Constructeur();
 			constructeur.tauxAvs(tauxAVS).tauxAi(tauxAI).tauxApg(tauxAPG);
 			
-			CalculateurCotisationAC calculateurAC;
-			if (null != tauxACContributionHautRevenu) {
-                if (null != ratioHautRevenu) {
-                    calculateurAC = new CalculateurCotisationAC(annee,montantMax,ratioHautRevenu,tauxAC,tauxACContributionHautRevenu);
-                } else {
-                    calculateurAC = new CalculateurCotisationAC(annee,montantMax,tauxAC,tauxACContributionHautRevenu);
-                }
-			} else {
-				calculateurAC = new CalculateurCotisationAC(annee,montantMax,tauxAC);
-			}
-			
 			CalculCotisationsSocialesSalarie calculateur = new CalculCotisationsSocialesSalarie(annee);
 			calculateur.setMontantAnnuelMaximumGainAssure(new BigDecimal(montantMax));
-			calculateur.setCalculateurAC(calculateurAC);
+
+			calculateur.setCalculateurAC(unCalculateur(annee,montantMax,tauxAC)
+					.tauxParticipationHautRevenu(tauxACContributionHautRevenu)
+					.ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu(ratioHautRevenu).construire());
+
+
 			calculateur.setCalculateurAvsAiApg(constructeur.construire(annee));
 			if (StringUtil.hasText(this.tauxAssuranceMaterniteAdoption)) {
 				calculateur.setTauxAssuranceMaterniteAdoption(BigDecimalUtil.parseTaux(tauxAssuranceMaterniteAdoption));

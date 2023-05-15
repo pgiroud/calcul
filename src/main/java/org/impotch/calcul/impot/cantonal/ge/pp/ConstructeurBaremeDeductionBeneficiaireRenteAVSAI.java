@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-
+import static org.impotch.bareme.ConstructeurBareme.unBareme;
 /**
  * Created by patrick on 12/06/14.
  */
@@ -55,24 +55,23 @@ public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAI {
     }
 
     private BaremeParTranche construireBaremeBaseSeul() {
-        ConstructeurBareme cons = new ConstructeurBareme();
-        cons.premiereTranche(50000, 10000);
-        cons.tranche(50000,56700, 8000);
-        cons.tranche(56700,64000, 6000);
-        cons.tranche(64000,71500, 4000);
-        cons.tranche(71500, 80000, 2000);
-        cons.derniereTranche(80000,0);
-        return cons.construireBaremeParTranche();
+        return unBareme()
+                .jusqua(50000).valeur(10000)
+                .de(50000).a(56700).valeur(8000)
+                .de(56700).a(64000).valeur(6000)
+                .de(64000).a(71500).valeur(4000)
+                .de(71500).a(80000).valeur(2000)
+                .plusDe(80000).valeur(0).construire();
     }
 
     private BaremeParTranche construireBaremeBaseCoupleUneSeuleRente() {
         BaremeParTranche bareme = construireBaremeBaseSeul();
-        return bareme.homothetie(rapportEntreDeductionSeuleEtCouple, TypeArrondi.CENT_FRANC);
+        return bareme.homothetie(rapportEntreDeductionSeuleEtCouple, TypeArrondi.CENTAINE_LA_PLUS_PROCHE);
     }
 
     private BaremeParTranche construireBaremeBaseCoupleDeuxRentes() {
         BaremeParTranche bareme = construireBaremeBaseCoupleUneSeuleRente();
-        return bareme.homothetieValeur(rapportEntreDeductionSeuleEtCouple, TypeArrondi.FRANC);
+        return bareme.homothetieValeur(rapportEntreDeductionSeuleEtCouple, TypeArrondi.UNITE_LA_PLUS_PROCHE);
     }
 
     public ConstructeurBaremeDeductionBeneficiaireRenteAVSAI indexateur(Indexateur indexateur) {

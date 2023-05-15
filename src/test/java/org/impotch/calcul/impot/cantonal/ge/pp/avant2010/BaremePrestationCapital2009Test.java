@@ -69,9 +69,9 @@ public class BaremePrestationCapital2009Test extends ProducteurImpotGEAvant2010 
         ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
         producteurImpotBase.setBareme(fournisseur.getBaremeRevenu(2009));
 
-        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.FRANC);
-        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.FRANC);
-        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CTS);
+        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
 
 
         ProducteurImpot producteur;

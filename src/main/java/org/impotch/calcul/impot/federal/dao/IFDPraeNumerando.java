@@ -31,6 +31,7 @@
 package org.impotch.calcul.impot.federal.dao;
 
 import org.impotch.bareme.Bareme;
+import static org.impotch.calcul.impot.federal.dao.ConstructeurBaremeIFD.unBaremeIFD;
 
 class IFDPraeNumerando {
 
@@ -65,7 +66,7 @@ class IFDPraeNumerando {
      * @return Constructeur pour les périodes fiscales 2012 et 2013
      */
     private Bareme personneSeule2012() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(13200).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(28700).a("119.35").etPar100FrancsEnPlus("0.88")
                 .pour(37600).a("197.65").etPar100FrancsEnPlus("2.64")
@@ -85,7 +86,7 @@ class IFDPraeNumerando {
      * @return Constructeur pour la période fiscale 2011
      */
     private Bareme personneSeule2011() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(13100).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(28600).a("119.35").etPar100FrancsEnPlus("0.88")
                 .pour(37400).a("196.75").etPar100FrancsEnPlus("2.64")
@@ -104,7 +105,7 @@ class IFDPraeNumerando {
      * @return Constructeur pour les périodes fiscales 2007, 2008, 2009, 2010
      */
     private Bareme personneSeule2007() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(12600).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(27400).a("113.95").etPar100FrancsEnPlus("0.88")
                 .pour(35900).a("188.75").etPar100FrancsEnPlus("2.64")
@@ -203,7 +204,7 @@ class IFDPraeNumerando {
     }
 
     private Bareme famille2007() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(24500).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(44000).a("195.00").etPar100FrancsEnPlus("2.00")
                 .pour(50500).a("325.00").etPar100FrancsEnPlus("3.00")

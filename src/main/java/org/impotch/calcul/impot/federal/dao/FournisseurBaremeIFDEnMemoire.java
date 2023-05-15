@@ -16,8 +16,7 @@
 package org.impotch.calcul.impot.federal.dao;
 
 import org.impotch.bareme.Bareme;
-import org.impotch.bareme.ConstructeurBaremeTauxMarginal;
-import org.impotch.util.TypeArrondi;
+
 
 public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
 

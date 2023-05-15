@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.impotch.calcul.assurancessociales.CalculateurCotisationAC.unCalculateur;
 
 
 public class CalculateurCotisationACTest {
@@ -32,7 +32,9 @@ public class CalculateurCotisationACTest {
 	
 	@Test
 	public void calculCotisationAC2010() {
-		CalculateurCotisationAC calculateur = new CalculateurCotisationAC(2010,126000,"2 %");
+		CalculateurCotisationAC calculateur = unCalculateur(2010,126000,"2 %")
+                .construire();
+
         assertThat(calculPartSalariee(calculateur,10)).isEqualByComparingTo("0.1");
         assertThat(calculPartSalariee(calculateur,120000)).isEqualByComparingTo("1200");
         assertThat(calculPartSalariee(calculateur,126000)).isEqualByComparingTo("1260");
@@ -42,7 +44,11 @@ public class CalculateurCotisationACTest {
 	
 	@Test
 	public void calculCotisationAC2011() {
-		CalculateurCotisationAC calculateur = new CalculateurCotisationAC(2011,126000,"2.5","2.2 %","1 %");
+		CalculateurCotisationAC calculateur = unCalculateur(2011,126000,"2.2 %")
+                .tauxParticipationHautRevenu("1 %")
+                .ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu("2.5")
+                .construire();
+
         assertThat(calculPartSalariee(calculateur,10)).isEqualByComparingTo("0.1");
         assertThat(calculPartSalariee(calculateur,120000)).isEqualByComparingTo("1320");
         assertThat(calculPartSalariee(calculateur,126000)).isEqualByComparingTo("1386");
@@ -53,10 +59,20 @@ public class CalculateurCotisationACTest {
 
     @Test
     public void calculAC2014() {
-        CalculateurCotisationAC calculateur = new CalculateurCotisationAC(2014,126000,"2.2 %","1 %");
+        CalculateurCotisationAC calculateur = unCalculateur(2014,126000,"2.2 %")
+               .tauxParticipationHautRevenu("1 %")
+                .construire();
         assertThat(calculPartSalariee(calculateur,10)).isEqualByComparingTo("0.1");
         assertThat(calculPartSalariee(calculateur,120000)).isEqualByComparingTo("1320");
         assertThat(calculPartSalariee(calculateur,126000)).isEqualByComparingTo("1386");
         assertThat(calculPartSalariee(calculateur,500000)).isEqualByComparingTo("3256");
+    }
+
+    @Test
+    public void calculAC2023() {
+        CalculateurCotisationAC calculateur = unCalculateur(2023,148200,"2.2 %")
+                .construire();
+
+        assertThat(calculPartSalariee(calculateur,160000)).isEqualByComparingTo("1630.20");
     }
 }

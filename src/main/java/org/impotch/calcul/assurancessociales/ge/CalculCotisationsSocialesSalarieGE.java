@@ -105,7 +105,7 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	@Override
 	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant) {
 		BigDecimal cotisation = montantDeterminant.multiply(taux);
-		return TypeArrondi.CINQ_CTS.arrondirMontant(cotisation);
+		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisation);
 	}
 
 	//------ Implémentation de l'interface CalculCotisationsAssuranceAccidentsNonProfessionnels

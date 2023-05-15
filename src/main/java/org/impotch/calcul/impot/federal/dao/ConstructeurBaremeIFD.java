@@ -21,28 +21,38 @@ import org.impotch.util.TypeArrondi;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
+import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
 
-    private static final TypeArrondi ARRONDI_SUR_CHAQUE_TRANCHE = TypeArrondi.CINQ_CTS_INF;
+class ConstructeurBaremeIFD {
 
-    private final TypeArrondi arrondiSurAssiette;
+    private static final TypeArrondi ARRONDI_SUR_CHAQUE_TRANCHE = TypeArrondi.CINQ_CENTIEMES_INF;
+
+    public static ConstructeurBaremeIFD unBaremeIFD() {
+        return new ConstructeurBaremeIFD(TypeArrondi.CENTAINE_INF, false);
+    }
+
+    public static ConstructeurBaremeIFD unBaremeIFDPrestationEnCapitalImposeeSource() {
+        return new ConstructeurBaremeIFD(TypeArrondi.MILLE_INF, true);
+    }
+
     private BigDecimal taux = BigDecimal.ZERO;
     private BigDecimal debutTranche = BigDecimal.ZERO;
     private BigDecimal valeurEnDebutTranche = BigDecimal.ZERO;
     private BigDecimal tauxEffectifMax;
 
-    public ConstructeurBaremeIFD() {
-        this(TypeArrondi.CENT_FRANC_INF);
-    }
+    private final ConstructeurBareme cons;
 
-    public ConstructeurBaremeIFD(TypeArrondi arrondiSurAssiette) {
+
+    private ConstructeurBaremeIFD(TypeArrondi arrondiSurAssiette, boolean source) {
         super();
-        fermeAGauche();
-        typeArrondiSurChaqueTranche(ARRONDI_SUR_CHAQUE_TRANCHE);
-        seuil(25);
-        this.arrondiSurAssiette = arrondiSurAssiette;
+        cons = unBaremeATauxMarginal()
+                .fermeAGauche()
+                .typeArrondiSurEntrant(arrondiSurAssiette)
+                .typeArrondiSurChaqueTranche(ARRONDI_SUR_CHAQUE_TRANCHE)
+                .seuil(!(source) ? 25 : 0);
     }
 
     private void controleAbsenceTauxEffectif() {
@@ -61,20 +71,16 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
     public ConstructeurBaremeIFD jusqua(int montant) {
         controleAbsenceTauxEffectif();
         BigDecimal finTranche = BigDecimal.valueOf(montant);
-        super.premiereTranche(finTranche,taux);
+        cons.premiereTranche(finTranche,taux);
         initialiserTrancheSuivante(finTranche);
         return this;
     }
 
-    @Override
-    protected TrancheBareme construireTranche(Intervalle inter, BigDecimal montantOuTaux) {
-        return new TrancheBaremeIFD(inter, montantOuTaux,valeurEnDebutTranche,arrondiSurAssiette);
-    }
 
     public ConstructeurBaremeIFD pour(int montant) {
         controleAbsenceTauxEffectif();
         BigDecimal finTranche = BigDecimal.valueOf(montant);
-        super.tranche(debutTranche,finTranche,taux);
+        cons.tranche(debutTranche,finTranche,valeurEnDebutTranche, taux);
         initialiserTrancheSuivante(finTranche);
         return this;
     }
@@ -104,132 +110,30 @@ class ConstructeurBaremeIFD extends ConstructeurBaremeTauxMarginal {
         return this;
     }
 
-
-
-
-    @Override
-    public BaremeTauxMarginalConstantParTranche construire() {
-        Intervalle intervalle = construireDernierIntervalle(debutTranche);
-        ajouterTranche(new DerniereTrancheIFD(intervalle, taux, valeurEnDebutTranche, tauxEffectifMax, arrondiSurAssiette));
-        return super.construire();
+    private boolean tauxEffectifMaxDepasse(BigDecimal revenu, BigDecimal impot) {
+        return impot.compareTo(revenu.multiply(tauxEffectifMax)) > 0;
     }
 
-
-
-    protected static class TrancheBaremeIFD extends TrancheBareme {
-
-        private final BigDecimal montantImpotEnDebutTranche;
-        private final TypeArrondi arrondiSurAssiette;
-
-        protected TrancheBaremeIFD(Intervalle intervalle, BigDecimal taux, BigDecimal montantImpotEnDebutTranche, TypeArrondi arrondiSurAssiette) {
-            super(intervalle, taux);
-            this.montantImpotEnDebutTranche = montantImpotEnDebutTranche;
-            this.arrondiSurAssiette = arrondiSurAssiette;
-        }
-
-        protected TypeArrondi getArrondiSurAssiette() {
-            return arrondiSurAssiette;
-        }
-
-        @Override
-        public BigDecimal calcul(BigDecimal montant) {
-            if (this.getIntervalle().encadre(montant)) {
-                BigDecimal montantArrondi = arrondiSurAssiette.arrondirMontant(montant);
-                BigDecimal montantImposableDansLaTranche = montantArrondi;
-                if (null != getIntervalle().getDebut()) {
-                    montantImposableDansLaTranche = montantImposableDansLaTranche.subtract(getIntervalle().getDebut());
-                }
-                BigDecimal impotDansLatranche = montantImposableDansLaTranche.multiply(this.getTauxOuMontant());
-                return montantImpotEnDebutTranche.add(impotDansLatranche);
-            } else {
-                return BigDecimal.ZERO;
-            }
-        }
-
-        @Override
-        public TrancheBareme homothetie(BigDecimal rapport, TypeArrondi typeArrondi) {
-            // Première tranche
-            Intervalle inter = this.getIntervalle();
-            if (inter.isDebutMoinsInfini() && inter.isFinPlusInfini()) return this;
-            if (inter.encadre(BigDecimal.ZERO)) {
-                Intervalle newInter = new Intervalle.Cons().deMoinsInfini().a(inter.getFin().subtract(BigDecimal.valueOf(100))).exclus().intervalle();
-                return new TrancheBaremeIFD(inter, getTauxOuMontant(), montantImpotEnDebutTranche, arrondiSurAssiette);
-            } else {
-                BigDecimal debutTranche = typeArrondi.arrondirMontant(inter.getDebut().multiply(rapport));
-                BigDecimal montantImpotEtire = inter.longueur().multiply(this.getTauxOuMontant()).multiply(rapport);
-                BigDecimal finTranche = debutTranche;
-                BigDecimal impot = BigDecimal.ZERO;
-                while (impot.compareTo(montantImpotEtire) < 0) {
-                    finTranche = finTranche.add(BigDecimal.valueOf(100));
-                    impot = impot.add(BigDecimal.valueOf(100).multiply(getTauxOuMontant()));
-                }
-                Intervalle newInter = new Intervalle.Cons().de(debutTranche).inclus().a(finTranche.subtract(BigDecimal.valueOf(100))).exclus().intervalle();
-                return new TrancheBaremeIFD(newInter, getTauxOuMontant(), montantImpotEnDebutTranche, arrondiSurAssiette);
-            }
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            if (!super.equals(o)) return false;
-            TrancheBaremeIFD that = (TrancheBaremeIFD) o;
-            return montantImpotEnDebutTranche.equals(that.montantImpotEnDebutTranche) && arrondiSurAssiette == that.arrondiSurAssiette;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(super.hashCode(), montantImpotEnDebutTranche, arrondiSurAssiette);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " à " + montantImpotEnDebutTranche + " CHF en début de tranche et arrondi = " + arrondiSurAssiette;
-        }
+    private BigDecimal calculImpot(BigDecimal revenu) {
+        BigDecimal revenuDansLaTranche = revenu.subtract(debutTranche);
+        BigDecimal impotDansLaTranche = ARRONDI_SUR_CHAQUE_TRANCHE.arrondirMontant(taux.multiply(revenuDansLaTranche));
+        return valeurEnDebutTranche.add(impotDansLaTranche);
     }
 
-    protected static class DerniereTrancheIFD extends TrancheBaremeIFD {
+    private BigDecimal construireBorneSuperieurePourAtteinteTauxEffectif() {
+        return Stream.iterate(debutTranche, rev -> rev.add(BigDecimal.valueOf(100)))
+                .filter(r -> tauxEffectifMaxDepasse(r,calculImpot(r)))
+                .findFirst().orElseThrow();
+    }
 
-        private final BigDecimal tauxEffectifMax;
-
-        public DerniereTrancheIFD(Intervalle intervalle, BigDecimal taux, BigDecimal montantImpotEnDebutTranche, BigDecimal tauxEffectifMax, TypeArrondi arrondiSurAssiette) {
-            super(intervalle, taux, montantImpotEnDebutTranche,arrondiSurAssiette);
-            this.tauxEffectifMax = tauxEffectifMax;
-        }
-
-        @Override
-        public BigDecimal calcul(BigDecimal montant) {
-            BigDecimal impot = super.calcul(montant);
-            if (BigDecimalUtil.isStrictementPositif(impot)) {
-                BigDecimal tauxEffectif = impot.divide(montant, 15, RoundingMode.HALF_UP);
-                if (tauxEffectifMax.compareTo(tauxEffectif) > 0) return impot;
-                else return tauxEffectifMax.multiply(montant);
-            } else {
-                return BigDecimal.ZERO;
-            }
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            if (!super.equals(o)) return false;
-            DerniereTrancheIFD that = (DerniereTrancheIFD) o;
-            return tauxEffectifMax.equals(that.tauxEffectifMax);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(super.hashCode(), tauxEffectifMax);
-        }
-
-        @Override
-        public TrancheBareme homothetie(BigDecimal rapport, TypeArrondi typeArrondi) {
-            BigDecimal debutTranche = typeArrondi.arrondirMontant(getIntervalle().getDebut().multiply(rapport));
-            Intervalle newInter = new Intervalle.Cons().de(debutTranche).inclus().aPlusInfini().intervalle();
-            BigDecimal montantImpotDebutTranche = BigDecimal.ZERO;
-            return new DerniereTrancheIFD(newInter,getTauxOuMontant(),montantImpotDebutTranche,this.tauxEffectifMax,this.getArrondiSurAssiette());
-        }
+    public BaremeParTranche construire() {
+        BigDecimal borneSuperieure = construireBorneSuperieurePourAtteinteTauxEffectif();
+        cons.tranche(debutTranche,borneSuperieure,valeurEnDebutTranche, taux);
+        debutTranche = borneSuperieure;
+        taux = tauxEffectifMax;
+        valeurEnDebutTranche = ARRONDI_SUR_CHAQUE_TRANCHE.arrondirMontant(taux.multiply(borneSuperieure));
+        cons.derniereTranche(borneSuperieure,valeurEnDebutTranche,taux);
+        return cons.construire();
     }
 
 }

@@ -34,7 +34,7 @@ public class ImpositionFamilleSansAvantage implements
     /**************************************************/
 	
 	private final Bareme bareme;
-	private TypeArrondi typeArrondiImpot = TypeArrondi.CINQ_CTS;
+	private TypeArrondi typeArrondiImpot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 	
     /**************************************************/
     /**************** Constructeurs *******************/

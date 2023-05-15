@@ -38,6 +38,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.bareme.ConstructeurBareme.unBareme;
 
 
 public class DeductionRentierAVSTest {
@@ -46,14 +47,13 @@ public class DeductionRentierAVSTest {
 
     @BeforeEach
     public void init() {
-        ConstructeurBareme cons = new ConstructeurBareme()
-                .premiereTranche(50000, 10000)
-                .tranche(50000, 56700, 8000)
-                .tranche(56700, 64000, 6000)
-                .tranche(64000, 71500, 4000)
-                .tranche(71500, 80000, 2000)
-                .derniereTranche(80000, 0);
-        BaremeParTranche bareme = cons.construireBaremeParTranche();
+        BaremeParTranche bareme = unBareme()
+                .jusqua(50000).valeur(10000)
+                .de(50000).a(56700).valeur(8000)
+                .de(56700).a(64000).valeur(6000)
+                .de(64000).a(71500).valeur(4000)
+                .de(71500).a(80000).valeur(2000)
+                .plusDe(80000).valeur(0).construire();
         regle = new DeductionRentierAVS(2009, bareme, new BigDecimal("1.15"));
     }
 

@@ -17,6 +17,7 @@ package org.impotch.calcul.impot.taxation.pp.ge.deduction;
 
 import org.impotch.bareme.BaremeParTranche;
 import org.impotch.bareme.ConstructeurBareme;
+import org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeDeductionBeneficiaireRenteAVSAI;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
 import org.impotch.calcul.impot.indexation.ge.MontantIndexe;
@@ -114,34 +115,39 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
     }
 
     protected BaremeParTranche construireBaremeDeductionBeneficiaireRentesAvsAi(int annee) {
-        ConstructeurBareme cons = new ConstructeurBareme();
-        // Voir le détail dans D 3 08.05: Règlement relatif à la compensation des effets de la progression à froid (RCEPF)
-        // Art. 6
-        if (annee < 2013) {
-            cons.premiereTranche(50000, 10000)
-                    .tranche(50000, 56700, 8000)
-                    .tranche(56700, 64000, 6000)
-                    .tranche(64000, 71500, 4000)
-                    .tranche(71500, 80000, 2000)
-                    .derniereTranche(80000, 0);
-        } else if (annee < 2017) {
-            cons.premiereTranche(57947, 10078)
-                    .tranche(57947, 65707, 8062)
-                    .tranche(65707, 74172, 6047)
-                    .tranche(74172, 82839, 4031)
-                    .tranche(82839, 92715, 2016)
-                    .derniereTranche(92715, 0);
-        } else if (annee < 2021) {
-            cons.premiereTranche(57388, 9981)
-                    .tranche(57388, 65073, 7984)
-                    .tranche(65073, 73457, 5988)
-                    .tranche(73457, 82040, 3992)
-                    .tranche(82040, 91821, 1996)
-                    .derniereTranche(91821, 0);
-        } else {
-            throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2021 !!");
-        }
-        return cons.construireBaremeParTranche();
+        ConstructeurBaremeDeductionBeneficiaireRenteAVSAI constructeur = new ConstructeurBaremeDeductionBeneficiaireRenteAVSAI();
+        constructeur.indexateur(fournisseurIndexGenevois.getIndexateurBaseDec2005(annee));
+        constructeur.validite(2010);
+        return constructeur.construireBaremeSeul(annee);
+
+//        ConstructeurBareme cons = new ConstructeurBareme();
+//        // Voir le détail dans D 3 08.05: Règlement relatif à la compensation des effets de la progression à froid (RCEPF)
+//        // Art. 6
+//        if (annee < 2013) {
+//            cons.premiereTranche(50000, 10000)
+//                    .tranche(50000, 56700, 8000)
+//                    .tranche(56700, 64000, 6000)
+//                    .tranche(64000, 71500, 4000)
+//                    .tranche(71500, 80000, 2000)
+//                    .derniereTranche(80000, 0);
+//        } else if (annee < 2017) {
+//            cons.premiereTranche(57947, 10078)
+//                    .tranche(57947, 65707, 8062)
+//                    .tranche(65707, 74172, 6047)
+//                    .tranche(74172, 82839, 4031)
+//                    .tranche(82839, 92715, 2016)
+//                    .derniereTranche(92715, 0);
+//        } else if (annee < 2021) {
+//            cons.premiereTranche(57388, 9981)
+//                    .tranche(57388, 65073, 7984)
+//                    .tranche(65073, 73457, 5988)
+//                    .tranche(73457, 82040, 3992)
+//                    .tranche(82040, 91821, 1996)
+//                    .derniereTranche(91821, 0);
+//        } else {
+//            throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2021 !!");
+//        }
+//        return cons.construireBaremeParTranche();
     }
 
 }

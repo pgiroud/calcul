@@ -41,7 +41,7 @@ public class BaremeRevenuSeul1995Test {
 
     @Test
     public void seul() {
-        TypeArrondi arrond = TypeArrondi.CINQ_CTS;
+        TypeArrondi arrond = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
         assertThat(bareme.calcul(BigDecimal.valueOf(1000))).isEqualTo(arrond.arrondirMontant(new BigDecimal("12.488")));
         assertThat(bareme.calcul(BigDecimal.valueOf(2000))).isEqualTo(arrond.arrondirMontant(new BigDecimal("43.422")));
         assertThat(bareme.calcul(BigDecimal.valueOf(3000))).isEqualTo(arrond.arrondirMontant(new BigDecimal("89.986")));
@@ -1409,7 +1409,7 @@ public class BaremeRevenuSeul1995Test {
 
     @Test
     public void seulGrandRevenu() {
-        TypeArrondi arrond = TypeArrondi.CINQ_CTS;
+        TypeArrondi arrond = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
         assertThat(bareme.calcul(BigDecimal.valueOf(1363000))).isEqualTo(arrond.arrondirMontant(new BigDecimal("248703.700")));
         assertThat(bareme.calcul(BigDecimal.valueOf(1364000))).isEqualTo(arrond.arrondirMontant(new BigDecimal("248893.690")));
         assertThat(bareme.calcul(BigDecimal.valueOf(1365000))).isEqualTo(arrond.arrondirMontant(new BigDecimal("249083.681")));

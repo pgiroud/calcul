@@ -82,9 +82,9 @@ public abstract class ProducteurImpotCommunalGEPersPhysique extends
 		BigDecimal partPrivilegiee = BigDecimal.ZERO;
 		if ("GE".equals(domicile.getCanton().getCodeIso2())) {
 			BigDecimal tauxPartPrivilegiee = getFournisseurParametrage().getPartPrivilegiee(fournisseur.getPeriodeFiscale(), domicile);
-			partPrivilegiee = TypeArrondi.CINQ_CTS.arrondirMontant(montantCantonalBase.multiply(tauxPartPrivilegiee));
+			partPrivilegiee = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(montantCantonalBase.multiply(tauxPartPrivilegiee));
 			BigDecimal taux = getFournisseurParametrage().getTauxCentimes(fournisseur.getPeriodeFiscale(), domicile);
-			BigDecimal impot = TypeArrondi.CINQ_CTS.arrondirMontant(partPrivilegiee.multiply(taux));
+			BigDecimal impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(partPrivilegiee.multiply(taux));
 			if (BigDecimalUtil.isStrictementPositif(impot)) {
 				ImpotProduit impotProduit = new ImpotProduit(getCodePartPrivilegiee(),impot);
 				impotProduit.setBaseCalcul(partPrivilegiee);

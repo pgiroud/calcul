@@ -31,7 +31,7 @@
 package org.impotch.calcul.impot.federal.dao;
 
 import org.impotch.bareme.Bareme;
-
+import static org.impotch.calcul.impot.federal.dao.ConstructeurBaremeIFD.unBaremeIFD;
 class IFDPostNumerando {
 
     /************************************************************************/
@@ -67,7 +67,7 @@ class IFDPostNumerando {
      * @return Constructeur pour les périodes fiscales 2023
      */
     private Bareme personneSeule2023() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(14_800).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(32_200).a("133.95").etPar100FrancsEnPlus("0.88")
                 .pour(42_200).a("221.95").etPar100FrancsEnPlus("2.64")
@@ -86,7 +86,7 @@ class IFDPostNumerando {
      * @return Constructeur pour les périodes fiscales 2012, 2013
      */
     private Bareme personneSeule2012() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(14500).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(31600).a("131.65").etPar100FrancsEnPlus("0.88")
                 .pour(41400).a("217.90").etPar100FrancsEnPlus("2.64")
@@ -105,7 +105,7 @@ class IFDPostNumerando {
      * @return Constructeur pour la période fiscale 2011
      */
     private Bareme personneSeule2011() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(14400).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(31500).a("131.65").etPar100FrancsEnPlus("0.88")
                 .pour(41200).a("217.00").etPar100FrancsEnPlus("2.64")
@@ -124,7 +124,7 @@ class IFDPostNumerando {
      * @return Constructeur pour les périodes fiscales 2006, 2007, 2008, 2009, 2010
      */
     private Bareme personneSeule2006() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(13600).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(29800).a("124.70").etPar100FrancsEnPlus("0.88")
                 .pour(39000).a("205.65").etPar100FrancsEnPlus("2.64")
@@ -143,7 +143,7 @@ class IFDPostNumerando {
      * @return Constructeur pour les périodes fiscales 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004 et 2005
      */
     private Bareme personneSeule1996() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(12800).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(27900).a("116.25").etPar100FrancsEnPlus("0.88")
                 .pour(36500).a("191.90").etPar100FrancsEnPlus("2.64")
@@ -187,7 +187,7 @@ class IFDPostNumerando {
      * @return Constructeur pour les périodes fiscales >= 2023
      */
     private Bareme famille2023() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(28_800).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(51_800).a("230.00").etPar100FrancsEnPlus("2.00")
                 .pour(59_400).a("382.00").etPar100FrancsEnPlus("3.00")
@@ -210,7 +210,7 @@ class IFDPostNumerando {
      * @return Constructeur pour les périodes fiscales 2012, 2013
      */
     private Bareme famille2012() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(28300).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(50900).a("226.00").etPar100FrancsEnPlus("2.00")
                 .pour(58400).a("376.00").etPar100FrancsEnPlus("3.00")
@@ -233,7 +233,7 @@ class IFDPostNumerando {
      * @return Constructeur pour la période fiscale 2011
      */
     private Bareme famille2011() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(28100).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(50400).a("223.00").etPar100FrancsEnPlus("2.00")
                 .pour(57900).a("373.00").etPar100FrancsEnPlus("3.00")
@@ -256,7 +256,7 @@ class IFDPostNumerando {
      * @return Constructeur pour les périodes fiscales 2006, 2007, 2008, 2009, 2010
      */
     private Bareme famille2006() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(26700).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(47900).a("212.00").etPar100FrancsEnPlus("2.00")
                 .pour(54900).a("352.00").etPar100FrancsEnPlus("3.00")
@@ -279,7 +279,7 @@ class IFDPostNumerando {
      * @return Constructeur pour les périodes fiscales 1996 à 2005
      */
     private Bareme famille1996() {
-        return new ConstructeurBaremeIFD()
+        return unBaremeIFD()
                 .jusqua(24900).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(44700).a("198.00").etPar100FrancsEnPlus("2.00")
                 .pour(51300).a("330.00").etPar100FrancsEnPlus("3.00")

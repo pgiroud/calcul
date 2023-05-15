@@ -30,8 +30,8 @@ public class Splitting extends ImpositionFamilleSansAvantage implements Strategi
     /**************************************************/
 	
 	private final BigDecimal tauxSplitting;
-	private TypeArrondi typeArrondi = TypeArrondi.FRANC_INF;
-	private TypeArrondi typeArrondiImpot = TypeArrondi.CINQ_CTS;
+	private TypeArrondi typeArrondi = TypeArrondi.UNITE_INF;
+	private TypeArrondi typeArrondiImpot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 	
     /**************************************************/
     /**************** Constructeurs *******************/

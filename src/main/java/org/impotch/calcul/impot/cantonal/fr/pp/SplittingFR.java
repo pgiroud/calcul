@@ -17,9 +17,12 @@ package org.impotch.calcul.impot.cantonal.fr.pp;
 
 import java.math.BigDecimal;
 
+import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
-import org.impotch.bareme.BaremeTauxEffectifLineaireParTranche;
+import org.impotch.bareme.BaremeTauxEffectifParTranche;
+import org.impotch.util.BigDecimalUtil;
+import org.impotch.util.TypeArrondi;
 
 /**
  * Le splitting à Fribourg est intimememt lié au barème à taux effectif linéaire par tranche.
@@ -30,51 +33,40 @@ import org.impotch.bareme.BaremeTauxEffectifLineaireParTranche;
  */
 public class SplittingFR extends Splitting {
 
-	/**
-	 * @param bareme
-	 * @param taux
-	 */
-	public SplittingFR(BaremeTauxEffectifLineaireParTranche bareme, BigDecimal taux) {
+	private BigDecimal montantImposableMinimum;
+	private BigDecimal tauxMinimum;
+
+	public static ConstructeurSplittingFR unSplittingFribourgeois(BaremeTauxEffectifParTranche bareme, String taux) {
+		return new ConstructeurSplittingFR(bareme,taux).arrondi(TypeArrondi.CENTAINE_INF);
+	}
+
+	private SplittingFR(BaremeTauxEffectifParTranche bareme, String taux) {
 		super(bareme, taux);
 	}
 
-	/**
-	 * @param bareme
-	 * @param taux
-	 */
-	public SplittingFR(BaremeTauxEffectifLineaireParTranche bareme, String taux) {
-		super(bareme, taux);
+	@Override
+	protected BaremeTauxEffectifParTranche getBareme() {
+		return (BaremeTauxEffectifParTranche)super.getBareme();
 	}
 
-	protected BaremeTauxEffectifLineaireParTranche getBareme() {
-		return (BaremeTauxEffectifLineaireParTranche)getBaremeSeul();
-	}
-	
-	private BigDecimal getMontantImposableMinimum() {
-		return getBareme().getMontantImposablePremiereTranche();
-	}
-	
-	private BigDecimal getTauxMinimum() {
-		return getBareme().getTauxMinimum();
-	}
-	
+
 	protected BigDecimal getTauxFamille(BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
 		BigDecimal determinant = getTypeArrondi().arrondirMontant(determinantArrondi.multiply(getTauxSplitting()));
-		if (0 <= getMontantImposableMinimum().compareTo(determinant)
-				&& 0 >= getMontantImposableMinimum().compareTo(imposableArrondi)) {
-			return getTauxMinimum();
+		if (0 <= montantImposableMinimum.compareTo(determinant)
+				&& 0 >= montantImposableMinimum.compareTo(imposableArrondi)) {
+			return tauxMinimum;
 		} else {
 			return getBareme().getTaux(determinant);
 		}
 	}
-	
+
 	protected BigDecimal getTauxSeul(BigDecimal determinantArrondi) {
 		return getBareme().getTaux(determinantArrondi);
 	}
-	
+
 	@Override
 	public BigDecimal produireImpotAnnuel(SituationFamiliale situation,
-			BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
+										  BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
 		BigDecimal taux = null;
 		if (isFamille(situation)) {
 			taux = this.getTauxFamille(determinantArrondi, imposableArrondi);
@@ -82,6 +74,45 @@ public class SplittingFR extends Splitting {
 			taux = this.getTauxSeul(determinantArrondi);
 		}
 		return imposableArrondi.multiply(taux);
+	}
+
+	public static class ConstructeurSplittingFR {
+
+		private final BaremeTauxEffectifParTranche bareme;
+		private final String taux;
+
+		private BigDecimal montantImposableMinimum;
+		private BigDecimal tauxMinimum;
+		private TypeArrondi arrondi;
+
+		public ConstructeurSplittingFR(BaremeTauxEffectifParTranche bareme, String taux) {
+			this.bareme = bareme;
+			this.taux = taux;
+		}
+
+		public ConstructeurSplittingFR montantImposableMinimum(int montant) {
+			montantImposableMinimum = BigDecimal.valueOf(montant);
+			return this;
+		}
+
+		public ConstructeurSplittingFR tauxMinimum(String taux) {
+			this.tauxMinimum = BigDecimalUtil.parse(taux);
+			return this;
+		}
+
+		public ConstructeurSplittingFR arrondi(TypeArrondi arrondi) {
+			this.arrondi = arrondi;
+			return this;
+		}
+
+		public SplittingFR construire() {
+			SplittingFR splitting = new SplittingFR(bareme,taux);
+			splitting.montantImposableMinimum = this.montantImposableMinimum;
+			splitting.tauxMinimum = this.tauxMinimum;
+			splitting.setTypeArrondi(arrondi);
+			return splitting;
+		}
+
 	}
 
 }

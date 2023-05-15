@@ -20,17 +20,17 @@ import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.TypeArrondi;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
+import static org.impotch.calcul.impot.federal.dao.ConstructeurBaremeIFD.unBaremeIFDPrestationEnCapitalImposeeSource;
 
 class ConstructeurBaremeISPrestationCapital {
 
-    private ConstructeurBaremeIFD cons = new ConstructeurBaremeIFD(TypeArrondi.MILLE_FRANC_INF);
+    private ConstructeurBaremeIFD cons = unBaremeIFDPrestationEnCapitalImposeeSource();
     private int cumul;
 
     public ConstructeurBaremeISPrestationCapital() {
         super();
         // Pas de seuillage pour les prestations en capital
-        cons.seuil(null);
+        // cons.seuil(null);
     }
 
     public ConstructeurBaremeISPrestationCapital surLesPremier(int montant) {
@@ -45,14 +45,14 @@ class ConstructeurBaremeISPrestationCapital {
 
     public ConstructeurBaremeISPrestationCapital etFinalementTaux(String taux) {
         BigDecimal tauxBD = BigDecimalUtil.parseTaux(taux);
-        String par100DePlus = TypeArrondi.CT.arrondirMontant(tauxBD.movePointRight(2)).toString();
+        String par100DePlus = TypeArrondi.CENTIEME_LE_PLUS_PROCHE.arrondirMontant(tauxBD.movePointRight(2)).toString();
         cons.etPar100FrancsEnPlus(par100DePlus);
         return this;
     }
 
     public ConstructeurBaremeISPrestationCapital taux(String taux) {
         BigDecimal tauxBD = BigDecimalUtil.parseTaux(taux);
-        String par100DePlus = TypeArrondi.CT.arrondirMontant(tauxBD.movePointRight(2)).toString();
+        String par100DePlus = TypeArrondi.CENTIEME_LE_PLUS_PROCHE.arrondirMontant(tauxBD.movePointRight(2)).toString();
         cons.etPar100FrancsEnPlus(par100DePlus);
         cons.pour(cumul);
         return this;

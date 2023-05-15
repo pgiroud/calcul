@@ -16,9 +16,9 @@
 package org.impotch.calcul.impot.france;
 
 import org.impotch.bareme.Bareme;
-import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
-import org.impotch.bareme.ConstructeurBaremeTauxMarginal;
 import org.impotch.util.TypeArrondi;
+
+import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -26,94 +26,173 @@ import org.impotch.util.TypeArrondi;
  */
 public class FournisseurFrance {
 
+	private Bareme getBaremeRevenu2018() {
+		return unBaremeATauxMarginal()
+				.jusqua(9965).taux(" 0 %")
+				.puisJusqua(27520).taux(" 14 %")
+				.puisJusqua(73780).taux(" 30 %")
+				.puisJusqua(156245).taux("41 %")
+				.puis().taux("45 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+
+	private Bareme getBaremeRevenu2017() {
+		return unBaremeATauxMarginal()
+				           .jusqua(9807).taux(" 0 %")
+				.puisJusqua(27086) .taux(" 14 %")
+				.puisJusqua(72617) .taux(" 30 %")
+				.puisJusqua(153783).taux("41 %")
+				.puis()           .taux("45 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+
+	private Bareme getBaremeRevenu2016() {
+		return unBaremeATauxMarginal()
+				.jusqua(9710).taux(" 0 %")
+				.puisJusqua(26818).taux(" 14 %")
+				.puisJusqua(71898).taux(" 30 %")
+				.puisJusqua(152260).taux("41 %")
+				.puis()                .taux("45 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+	private Bareme getBaremeRevenu2015() {
+		return unBaremeATauxMarginal()
+				.jusqua(9700).taux(" 0 %")
+				.puisJusqua(26791).taux(" 14 %")
+				.puisJusqua(71826).taux(" 30 %")
+				.puisJusqua(152108).taux("41 %")
+				.puis()                .taux("45 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+	private Bareme getBaremeRevenu2014() {
+		return unBaremeATauxMarginal()
+				.jusqua(9690).taux(" 0 %")
+				.puisJusqua(26764).taux(" 14 %")
+				.puisJusqua(71754).taux(" 30 %")
+				.puisJusqua(151956).taux("41 %")
+				.puis()                .taux("45 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+	private Bareme getBaremeRevenu2013() {
+		return unBaremeATauxMarginal()
+				.jusqua(6011).taux(" 0 %")
+				.puisJusqua(11991).taux("5.5 %")
+				.puisJusqua(26631).taux(" 14 %")
+				.puisJusqua(71397).taux(" 30 %")
+				.puisJusqua(151200).taux("41 %")
+				.puis()               .taux("45 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+	private Bareme getBaremeRevenu2012() {
+		return unBaremeATauxMarginal()
+				.jusqua(5963).taux(" 0 %")
+				.puisJusqua(11896).taux("5.5 %")
+				.puisJusqua(26420).taux(" 14 %")
+				.puisJusqua(70830).taux(" 30 %")
+				.puisJusqua(150000).taux("41 %")
+				.puis()                .taux("45 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+	private Bareme getBaremeRevenu2010_2011() {
+		return unBaremeATauxMarginal()
+				.jusqua(5963).taux(" 0 %")
+				.puisJusqua(11896).taux("5.5 %")
+				.puisJusqua(26420).taux(" 14 %")
+				.puisJusqua(70830).taux(" 30 %")
+				.puis()                .taux("41 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+
+	private Bareme getBaremeRevenu2009() {
+		return unBaremeATauxMarginal()
+				.jusqua(5875).taux(" 0 %")
+				.puisJusqua(11720).taux("5.5 %")
+				.puisJusqua(26030).taux(" 14 %")
+				.puisJusqua(69783).taux(" 30 %")
+				.puis()               .taux("40 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+
+	private Bareme getBaremeRevenu2008() {
+		return unBaremeATauxMarginal()
+				.jusqua(5852).taux(" 0 %")
+				.puisJusqua(11673).taux("5.5 %")
+				.puisJusqua(25926).taux(" 14 %")
+				.puisJusqua(69505).taux(" 30 %")
+				.puis()                .taux("40 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+	private Bareme getBaremeRevenu2007() {
+			return unBaremeATauxMarginal()
+				.jusqua(5687).taux(" 0 %")
+				.puisJusqua(11344).taux("5.5 %")
+				.puisJusqua(25195).taux(" 14 %")
+				.puisJusqua(67546).taux(" 30 %")
+				.puis()                .taux("40 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+	private Bareme getBaremeRevenu2006() {
+		return unBaremeATauxMarginal()
+				.jusqua(5614).taux(" 0 %")
+				.puisJusqua(11198).taux("5.5 %")
+				.puisJusqua(24872).taux(" 14 %")
+				.puisJusqua(66679).taux(" 30 %")
+				.puis()                .taux("40 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
+	private Bareme getBaremeRevenu2005() {
+			return unBaremeATauxMarginal()
+				.jusqua(4412).taux(" 0 %")
+				.puisJusqua(8677).taux("  6.83 %")
+				.puisJusqua(15224).taux(" 19.14 %")
+				.puisJusqua(24731).taux(" 28.26 %")
+				.puisJusqua(40241).taux(" 37.38 %")
+				.puisJusqua(49624).taux(" 42.62 %")
+				.puis()                .taux("48.09 %")
+				.typeArrondiSurChaqueTranche(TypeArrondi.UNITE_INF)
+				.construire();
+	}
 	public Bareme getBaremeRevenu(int annee) {
-		ConstructeurBaremeTauxMarginal constructeur = new ConstructeurBaremeTauxMarginal();
 		if (2018 == annee) {
-			constructeur.premiereTranche(  9965, " 0 %");
-			constructeur.tranche( 9965,27520," 14 %");
-			constructeur.tranche( 27520,73780," 30 %");
-			constructeur.tranche(73780,156245, "41 %");
-			constructeur.derniereTranche(156245,"45 %");
+			return getBaremeRevenu2018();
 		} else if (2017 == annee) {
-			constructeur.premiereTranche(  9807, " 0 %");
-			constructeur.tranche( 9807,27086," 14 %");
-			constructeur.tranche( 27086,72617," 30 %");
-			constructeur.tranche(72617,153783, "41 %");
-			constructeur.derniereTranche(153783,"45 %");
+			return getBaremeRevenu2017();
 		} else if (2016 == annee) {
-			constructeur.premiereTranche(  9710, " 0 %");
-			constructeur.tranche( 9710,26818," 14 %");
-			constructeur.tranche( 26818,71898," 30 %");
-			constructeur.tranche(71898,152260, "41 %");
-			constructeur.derniereTranche(152260,"45 %");
+			return getBaremeRevenu2016();
 		} else if (2015 == annee) {
-			constructeur.premiereTranche(  9700, " 0 %");
-			constructeur.tranche( 9700,26791," 14 %");
-			constructeur.tranche( 26791,71826," 30 %");
-			constructeur.tranche(71826,152108, "41 %");
-			constructeur.derniereTranche(152108,"45 %");
+			return getBaremeRevenu2015();
 		} else if (2014 == annee) {
-			constructeur.premiereTranche(  9690, " 0 %");
-			constructeur.tranche( 9690,26764," 14 %");
-			constructeur.tranche( 26764,71754," 30 %");
-			constructeur.tranche(71754,151956, "41 %");
-			constructeur.derniereTranche(151956,"45 %");
+			return getBaremeRevenu2014();
 		} else if (2013 == annee) {
-			constructeur.premiereTranche(  6011, " 0 %");
-			constructeur.tranche( 6011,11991,"  5.5 %");
-			constructeur.tranche( 11991,26631," 14 %");
-			constructeur.tranche( 26631,71397," 30 %");
-			constructeur.tranche(71397,151200, "41 %");
-			constructeur.derniereTranche(151200,"45 %");
+			return getBaremeRevenu2013();
 		} else if (2012 == annee) {
-			constructeur.premiereTranche(  5963, " 0 %");
-			constructeur.tranche( 5963,11896,"  5.5 %");
-			constructeur.tranche( 11896,26420," 14 %");
-			constructeur.tranche( 26420,70830," 30 %");
-			constructeur.tranche(70830,150000, "41 %");
-			constructeur.derniereTranche(150000,"45 %");
+			return getBaremeRevenu2012();
 		} else if (2010 == annee || 2011 == annee) {
-			constructeur.premiereTranche( 5963, "  0 %");
-			constructeur.tranche(5963,11896, "  5.5 %");
-			constructeur.tranche(11896,26420, " 14 %");
-			constructeur.tranche(26420,70830, " 30 %");
-			constructeur.derniereTranche(70830,"41 %");
+			return getBaremeRevenu2010_2011();
 		} else if (2009 == annee) {
-			constructeur.premiereTranche( 5875, "  0 %");
-			constructeur.tranche(5875,11720, "  5.5 %");
-			constructeur.tranche(11720,26030, " 14 %");
-			constructeur.tranche(26030,69783, " 30 %");
-			constructeur.derniereTranche(69783,"40 %");
+			return getBaremeRevenu2009();
 		} else if (2008 == annee) {
-			constructeur.premiereTranche( 5852, "  0 %");
-			constructeur.tranche(5852,11673, "  5.5 %");
-			constructeur.tranche(11673,25926, " 14 %");
-			constructeur.tranche(25926,69505, " 30 %");
-			constructeur.derniereTranche(69505,"40 %");
+			return getBaremeRevenu2008();
 		} else if (2007 == annee) {
-			constructeur.premiereTranche( 5687, "  0 %");
-			constructeur.tranche(5687,11344, "  5.5 %");
-			constructeur.tranche(11344,25195, " 14 %");
-			constructeur.tranche(25195,67546, " 30 %");
-			constructeur.derniereTranche(67546,"40 %");
+			return getBaremeRevenu2007();
 		} else if (2006 == annee) {
-			constructeur.premiereTranche( 5614, "  0 %");
-			constructeur.tranche(5614,11198, "  5.5 %");
-			constructeur.tranche(11198,24872, " 14 %");
-			constructeur.tranche(24872,66679, " 30 %");
-			constructeur.derniereTranche(66679,"40 %");
+			return getBaremeRevenu2006();
 		} else if (2005 == annee) {
-			constructeur.premiereTranche( 4412, "  0 %");
-			constructeur.tranche( 4412,8677, "  6.83 %");
-			constructeur.tranche(8677,15224, " 19.14 %");
-			constructeur.tranche(15224,24731, " 28.26 %");
-			constructeur.tranche(24731,40241, " 37.38 %");
-			constructeur.tranche(40241,49624, " 42.62 %");
-			constructeur.derniereTranche(49624,"48.09 %");
+			return getBaremeRevenu2005();
 		} else {
 			throw new IllegalArgumentException("Pas de barème pour l'année " + annee);
 		}
-		constructeur.typeArrondiSurChaqueTranche(TypeArrondi.FRANC_INF);
-		return constructeur.construire();
 	}
 }

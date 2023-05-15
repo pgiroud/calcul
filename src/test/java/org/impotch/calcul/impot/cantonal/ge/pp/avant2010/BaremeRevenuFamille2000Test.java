@@ -39,7 +39,7 @@ public class BaremeRevenuFamille2000Test {
     @BeforeEach
     public void setUp() throws Exception {
         baremeCouple = (BaremeFamille)fournisseur.getBaremeRevenuFamille(2000);
-        baremeCouple.setArrondi(TypeArrondi.DIXIEME_CT);
+        baremeCouple.setArrondi(TypeArrondi.MILLIEME_LE_PLUS_PROCHE);
     }
 
     @ParameterizedTest

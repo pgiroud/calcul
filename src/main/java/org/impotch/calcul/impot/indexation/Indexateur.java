@@ -31,16 +31,16 @@ public interface Indexateur {
 
     default BigDecimal indexer(BigDecimal montantBase,
                               int annee) {
-        return indexer(montantBase, annee, TypeArrondi.FRANC);
+        return indexer(montantBase, annee, TypeArrondi.UNITE_LA_PLUS_PROCHE);
     }
 
     default BaremeParTranche indexer(BaremeParTranche bareme, int annee) {
-        return indexer(bareme,annee,TypeArrondi.FRANC);
+        return indexer(bareme,annee,TypeArrondi.UNITE_LA_PLUS_PROCHE);
     }
 
 
     default BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee) {
-        return indexer(bareme,annee,TypeArrondi.FRANC);
+        return indexer(bareme,annee,TypeArrondi.UNITE_LA_PLUS_PROCHE);
     }
 
 }

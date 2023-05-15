@@ -17,44 +17,47 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 
-import org.impotch.bareme.ConstructeurBaremeTauxMarginal;
+import org.impotch.bareme.BaremeParTranche;
+import org.impotch.bareme.ConstructeurBareme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
+import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.impotch.util.TypeArrondi;
 
-public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
+import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
+
+public class ConstructeurBaremeParTrancheIndexe {
 
 	/**************************************************/
 	/****************** Attributs *********************/
 	/**************************************************/
 
-	final Logger logger = LoggerFactory.getLogger(ConstructeurBaremeIndexeTxMarginalConstantParTranche.class);
+	final Logger logger = LoggerFactory.getLogger(ConstructeurBaremeParTrancheIndexe.class);
 
 	private Integer anneeMinimumValidite;
 	private Integer anneeMaximumValidite;
 	private int anneeReference;
 	private FournisseurIndicePeriodique indexateur;
-	private final ConstructeurBaremeTauxMarginal constructeur;
-	private TypeArrondi typeArrondiTranche;
-	
+
+	private final ConstructeurBareme constructeur;
+
     /**************************************************/
     /**************** Constructeurs *******************/
     /**************************************************/
 
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche() {
+	public ConstructeurBaremeParTrancheIndexe() {
 		super();
-		constructeur = new ConstructeurBaremeTauxMarginal();
+		constructeur = unBaremeATauxMarginal();
 	}
 
 	/**
 	 * On recopie les tranches du barèmes en paramètres
 	 */
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche(BaremeTauxMarginalConstantParTranche bareme) {		
+	public ConstructeurBaremeParTrancheIndexe(BaremeParTranche bareme) {
 		super();
-		constructeur = new ConstructeurBaremeTauxMarginal(bareme);
+		constructeur = unBaremeATauxMarginal(bareme);
 	}
 	
     /**************************************************/
@@ -71,13 +74,18 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 	 * @param indexateur un indexateur.
 	 * @return le constructeur afin d'être chaîné.
 	 */
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche indexateur(FournisseurIndicePeriodique indexateur) {
+	public ConstructeurBaremeParTrancheIndexe indexateur(FournisseurIndicePeriodique indexateur) {
 		this.indexateur = indexateur;
 		return this;
 	}
 	
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche typeArrondiTranche(TypeArrondi type) {
-		this.typeArrondiTranche = type;
+	public ConstructeurBaremeParTrancheIndexe typeArrondiTranche(TypeArrondi type) {
+		constructeur.typeArrondiSurChaqueTranche(type);
+		return this;
+	}
+
+	public ConstructeurBaremeParTrancheIndexe typeArrondiGlobal(TypeArrondi type) {
+		constructeur.typeArrondiGlobal(type);
 		return this;
 	}
 	
@@ -88,18 +96,18 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 
 
 
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche valideDepuis(int anneeMinimum) {
+	public ConstructeurBaremeParTrancheIndexe valideDepuis(int anneeMinimum) {
 		this.anneeMinimumValidite = anneeMinimum;
 		return this;
 	}
 	
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche valideEntre(int anneeMinimum, int anneeMaximum) {
+	public ConstructeurBaremeParTrancheIndexe valideEntre(int anneeMinimum, int anneeMaximum) {
 		this.anneeMinimumValidite = anneeMinimum;
 		this.anneeMaximumValidite = anneeMaximum;
 		return this;
 	}
 
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche valideJusqua(int anneeMaximum) {
+	public ConstructeurBaremeParTrancheIndexe valideJusqua(int anneeMaximum) {
 		this.anneeMaximumValidite = anneeMaximum;
 		return this;
 	}
@@ -109,24 +117,24 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 	 * @param annee l'année de référence. 
 	 * @return le constructeur afin d'être chaîné.
 	 */
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche anneeReferenceRencherissement(int annee) {
+	public ConstructeurBaremeParTrancheIndexe anneeReferenceRencherissement(int annee) {
 		anneeReference = annee;
 		return this;
 	}
 
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche premiereTranche(int jusqua, String taux) {
-		constructeur.premiereTranche(jusqua, taux);
+	public ConstructeurBaremeParTrancheIndexe premiereTranche(int jusqua, String taux) {
+		constructeur.jusqua(jusqua).taux(taux);
 		return this;
 	}
 
 
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche tranche(int de, int a, String taux) {
-		constructeur.tranche(de,a, taux);
+	public ConstructeurBaremeParTrancheIndexe tranche(int de, int a, String taux) {
+		constructeur.de(de).a(a).taux(taux);
 		return this;
 	}
 	
-	public ConstructeurBaremeIndexeTxMarginalConstantParTranche derniereTranche(int de, String taux) {
-		constructeur.derniereTranche(de, taux);
+	public ConstructeurBaremeParTrancheIndexe derniereTranche(int de, String taux) {
+		constructeur.plusDe(de).taux(taux);
 		return this;
 	}
 	
@@ -136,7 +144,7 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 	 * @param annee La période fiscale i.e. une année comprise entre 2001 et l'année courante
 	 * @return le barème pour l'année fiscale
 	 */
-	public BaremeTauxMarginalConstantParTranche construire(int annee) {
+	public BaremeParTranche construire(int annee) {
 		if (null != anneeMinimumValidite && annee < anneeMinimumValidite) throw new IllegalArgumentException("L'année du barème ne peut être inférieure à " + anneeMinimumValidite);
 		if (null != anneeMaximumValidite && annee > anneeMaximumValidite) throw new IllegalArgumentException("L'année du barème ne peut être supérieure à " + anneeMaximumValidite);
 		
@@ -146,9 +154,10 @@ public class ConstructeurBaremeIndexeTxMarginalConstantParTranche {
 		BigDecimal indiceRencherissement = calculIndice(annee);
 		BigDecimal rapportRencherissement = indiceRencherissement.divide(indiceReference, 15, BigDecimal.ROUND_HALF_UP);
 		
-		constructeur.typeArrondiSurChaqueTranche(this.typeArrondiTranche);
-		BaremeTauxMarginalConstantParTranche bareme = (BaremeTauxMarginalConstantParTranche)constructeur.construire();
-		return (BaremeTauxMarginalConstantParTranche)bareme.homothetie(rapportRencherissement, TypeArrondi.FRANC);
+
+		return constructeur.construire()
+				.homothetie(rapportRencherissement, TypeArrondi.UNITE_LA_PLUS_PROCHE);
+
 	}
 	
 }

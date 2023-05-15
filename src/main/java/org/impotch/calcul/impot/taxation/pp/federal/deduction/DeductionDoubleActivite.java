@@ -50,7 +50,7 @@ public class DeductionDoubleActivite extends ReglePeriodique implements IDeducti
         if (this.getAnnee() <= 2007) {
             return BigDecimal.ZERO.max(plafond.min(plusPetitRevenu));
         } else {
-            BigDecimal partPlusPetitRevenu = TypeArrondi.FRANC_SUP.arrondirMontant(taux.multiply(plusPetitRevenu));
+            BigDecimal partPlusPetitRevenu = TypeArrondi.UNITE_SUP.arrondirMontant(taux.multiply(plusPetitRevenu));
             BigDecimal deductionPossible = plancher.max(plafond.min(partPlusPetitRevenu));
             return plusPetitRevenu.min(deductionPossible);
         }
