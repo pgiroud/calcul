@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.param.dao.ConstructeurParametreCommunalEnMemoire.unConstructeur;
 
 public class ConstructeurParametreCommunalEnMemoireTest {
 
@@ -27,8 +28,7 @@ public class ConstructeurParametreCommunalEnMemoireTest {
 
     @Test
     public void testContructionDepuisClasspath() throws IOException {
-        ConstructeurParametreCommunalEnMemoire cons = new ConstructeurParametreCommunalEnMemoire();
-        ParametreCommunalDao dao = cons.partPrivilegieeEtCtsAdddepuisClassPath("parametrage/ge/ExtractionTauxPPTest.txt").cons();
+        ParametreCommunalDao dao = unConstructeur().partPrivilegieeEtCtsAdddepuisClassPath("parametrage/ge/ExtractionTauxPPTest.txt").cons();
         assertThat(dao.getPartPrivilegiee(2001,6615)).isEqualTo(new BigDecimal("0.8"));
     }
 }

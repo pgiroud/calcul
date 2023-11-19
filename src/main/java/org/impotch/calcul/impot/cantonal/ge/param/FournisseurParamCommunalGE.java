@@ -16,13 +16,8 @@
 package org.impotch.calcul.impot.cantonal.ge.param;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Map;
 
 import org.impotch.calcul.impot.cantonal.ge.param.dao.ParametreCommunalDao;
-import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
-import org.impotch.calcul.impot.taxation.repart.Part;
-import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICommuneSuisse;
 
 /**

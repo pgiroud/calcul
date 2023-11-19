@@ -27,6 +27,8 @@ import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
 import org.impotch.calcul.lieu.FournisseurLieu;
 
+import static org.impotch.calcul.impot.cantonal.ge.param.dao.ConstructeurParametreCommunalEnMemoire.unConstructeur;
+
 public enum ContexteTestCH_GE {
 
 
@@ -45,7 +47,7 @@ public enum ContexteTestCH_GE {
         paramComm.setDao(construireParametrageCommunal());
         fournisseurParametrageCommunaleGE = paramComm;
 
-        FournisseurCantonalGE fournisseur = new FournisseurCantonalGE(fournisseurRegleCalculAssuranceSociale);
+        FournisseurCantonalGE fournisseur = new FournisseurCantonalGE(fournisseurRegleCalculAssuranceSociale,fournisseurIndex);
         fournisseur.setFournisseurParamCommunaux(paramComm);
         this.fournisseurRegleImpotCantonalGE = fournisseur;
     }
@@ -59,8 +61,7 @@ public enum ContexteTestCH_GE {
         int meyrin = 6630;
         int presinge = 6635;
 
-        ConstructeurParametreCommunalEnMemoire constructeur = new ConstructeurParametreCommunalEnMemoire();
-        constructeur
+        return unConstructeur()
                 .annee(2007).commune(airelaVille).partPrivilegiee("74 %").centimes("50")
                 .annee(2007).commune(carouge).partPrivilegiee("29 %").centimes("39")
                 .annee(2007).commune(geneve).partPrivilegiee("26 %").centimes("45.5")
@@ -70,8 +71,8 @@ public enum ContexteTestCH_GE {
                 .annee(2009).commune(presinge).partPrivilegiee("28 %").centimes("39")
                 .annee(2010).commune(geneve).partPrivilegiee("27 %").centimes("45.5")
                 .annee(2013).commune(geneve).partPrivilegiee("20 %").centimes("43.9")
-                .annee(2021).commune(geneve).partPrivilegiee("28 %").centimes("45.49");
-        return constructeur.cons();
+                .annee(2021).commune(geneve).partPrivilegiee("28 %").centimes("45.49")
+                .cons();
     }
 
     public FournisseurIndexGenevois getFournisseurIndex() {

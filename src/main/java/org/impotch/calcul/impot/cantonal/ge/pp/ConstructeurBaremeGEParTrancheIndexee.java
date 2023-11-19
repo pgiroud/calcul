@@ -13,23 +13,12 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.cantonal.ge.param.dao;
+package org.impotch.calcul.impot.cantonal.ge.pp;
 
-import org.junit.jupiter.api.Test;
-import java.io.IOException;
+public interface ConstructeurBaremeGEParTrancheIndexee {
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.impotch.calcul.impot.cantonal.ge.param.dao.ConstructeurParametreCommunalEnMemoire.unConstructeur;
+    ConstructeurBaremeParTrancheIndexe constructeurBaremeRevenu();
+    ConstructeurBaremeParTrancheIndexe constructeurBaremeFortune();
 
-public class ResidentParCommuneTest {
-
-
-    @Test
-    public void meyrin2009() throws IOException {
-        ParametreCommunalDao dao = unConstructeur()
-                .residentAu31decembreDepuisClasspath("parametrage/ge/PopulationParCommuneGenevoise.csv")
-                .cons();
-        assertThat(dao.getNombreResidentAu31decembre(2009, 6630)).isEqualTo(21442);
-    }
-
+    ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneSupplementaire();
 }

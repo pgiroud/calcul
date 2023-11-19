@@ -29,6 +29,10 @@ import java.util.stream.Stream;
 
 public class ConstructeurParametreCommunalEnMemoire {
 
+    public static ConstructeurParametreCommunalEnMemoire unConstructeur() {
+        return new ConstructeurParametreCommunalEnMemoire();
+    }
+
     ParametreCommunalEnMemoire param = new ParametreCommunalEnMemoire();
     private int anneeCourante;
     private int noCommuneCourant = -1;
@@ -54,6 +58,8 @@ public class ConstructeurParametreCommunalEnMemoire {
         return cl;
     }
 
+    private ConstructeurParametreCommunalEnMemoire() {
+    }
 
     public ConstructeurParametreCommunalEnMemoire partPrivilegieeEtCtsAdddepuisClassPath(String chemin) throws IOException {
         ClassLoader cl = getClassLoader();

@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
+package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
 
@@ -22,7 +22,6 @@ import org.impotch.bareme.ConstructeurBareme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.impotch.util.TypeArrondi;
 
@@ -47,7 +46,7 @@ public class ConstructeurBaremeParTrancheIndexe {
     /**************** Constructeurs *******************/
     /**************************************************/
 
-	public ConstructeurBaremeParTrancheIndexe() {
+	private ConstructeurBaremeParTrancheIndexe() {
 		super();
 		constructeur = unBaremeATauxMarginal();
 	}
@@ -55,14 +54,56 @@ public class ConstructeurBaremeParTrancheIndexe {
 	/**
 	 * On recopie les tranches du barèmes en paramètres
 	 */
-	public ConstructeurBaremeParTrancheIndexe(BaremeParTranche bareme) {
+	private ConstructeurBaremeParTrancheIndexe(BaremeParTranche bareme) {
 		super();
 		constructeur = unBaremeATauxMarginal(bareme);
 	}
-	
+
+	public static ConstructeurBaremeParTrancheIndexe unConstructeurDeBaremeParTrancheIndexee() {
+		return new ConstructeurBaremeParTrancheIndexe();
+	}
+
+	public static ConstructeurBaremeParTrancheIndexe unConstructeurDeBaremeParTrancheIndexee(BaremeParTranche bareme) {
+		return new ConstructeurBaremeParTrancheIndexe(bareme);
+	}
+
     /**************************************************/
     /******************* Méthodes *********************/
     /**************************************************/
+
+	public ConstructeurBaremeParTrancheIndexe valideDepuis(int anneeMinimum) {
+		this.anneeMinimumValidite = anneeMinimum;
+		return this;
+	}
+
+	public ConstructeurBaremeParTrancheIndexe valideEntre(int anneeMinimum, int anneeMaximum) {
+		this.anneeMinimumValidite = anneeMinimum;
+		this.anneeMaximumValidite = anneeMaximum;
+		return this;
+	}
+
+	public ConstructeurBaremeParTrancheIndexe valideJusqua(int anneeMaximum) {
+		this.anneeMaximumValidite = anneeMaximum;
+		return this;
+	}
+
+
+
+	private BigDecimal calculIndice(int annee)
+	{
+		return indexateur.getIndice(annee);
+	}
+
+	/**
+	 * Précise l'année de référence pour prendre en compte le renchérissement.
+	 * @param annee l'année de référence.
+	 * @return le constructeur afin d'être chaîné.
+	 */
+	public ConstructeurBaremeParTrancheIndexe anneeReferenceRencherissement(int annee) {
+		anneeReference = annee;
+		return this;
+	}
+
 
 	/**
 	 * Le barème étant indexés automatiquement tous les ans, on fournit un
@@ -78,7 +119,9 @@ public class ConstructeurBaremeParTrancheIndexe {
 		this.indexateur = indexateur;
 		return this;
 	}
-	
+
+	// Délégation au constructeur de barème
+
 	public ConstructeurBaremeParTrancheIndexe typeArrondiTranche(TypeArrondi type) {
 		constructeur.typeArrondiSurChaqueTranche(type);
 		return this;
@@ -88,56 +131,29 @@ public class ConstructeurBaremeParTrancheIndexe {
 		constructeur.typeArrondiGlobal(type);
 		return this;
 	}
-	
-	private BigDecimal calculIndice(int annee)
-	{
-		return indexateur.getIndice(annee);
-	}
 
 
-
-	public ConstructeurBaremeParTrancheIndexe valideDepuis(int anneeMinimum) {
-		this.anneeMinimumValidite = anneeMinimum;
-		return this;
-	}
-	
-	public ConstructeurBaremeParTrancheIndexe valideEntre(int anneeMinimum, int anneeMaximum) {
-		this.anneeMinimumValidite = anneeMinimum;
-		this.anneeMaximumValidite = anneeMaximum;
+	public ConstructeurBaremeParTrancheIndexe jusqua(int jusqua) {
+		constructeur.jusqua(jusqua);
 		return this;
 	}
 
-	public ConstructeurBaremeParTrancheIndexe valideJusqua(int anneeMaximum) {
-		this.anneeMaximumValidite = anneeMaximum;
+	public ConstructeurBaremeParTrancheIndexe puisJusqua(int jusqua) {
+		constructeur.puisJusqua(jusqua);
 		return this;
 	}
 
-	/**
-	 * Précise l'année de référence pour prendre en compte le renchérissement.
-	 * @param annee l'année de référence. 
-	 * @return le constructeur afin d'être chaîné.
-	 */
-	public ConstructeurBaremeParTrancheIndexe anneeReferenceRencherissement(int annee) {
-		anneeReference = annee;
-		return this;
-	}
-
-	public ConstructeurBaremeParTrancheIndexe premiereTranche(int jusqua, String taux) {
-		constructeur.jusqua(jusqua).taux(taux);
+	public ConstructeurBaremeParTrancheIndexe puis() {
+		constructeur.puis();
 		return this;
 	}
 
 
-	public ConstructeurBaremeParTrancheIndexe tranche(int de, int a, String taux) {
-		constructeur.de(de).a(a).taux(taux);
+	public ConstructeurBaremeParTrancheIndexe taux(String taux) {
+		constructeur.taux(taux);
 		return this;
 	}
-	
-	public ConstructeurBaremeParTrancheIndexe derniereTranche(int de, String taux) {
-		constructeur.plusDe(de).taux(taux);
-		return this;
-	}
-	
+
 	/**
 	 * Construit un barème pour une période fiscale donnée.
 	 * 

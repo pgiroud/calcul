@@ -38,13 +38,13 @@ import java.util.Map;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 
 import org.impotch.bareme.Bareme;
-import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeParTrancheIndexe;
 import org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique;
 import org.impotch.util.TypeArrondi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe.unConstructeurDeBaremeParTrancheIndexee;
 
 
 public class BaremeRevenuPallier2009Test {
@@ -61,31 +61,33 @@ public class BaremeRevenuPallier2009Test {
 
     @BeforeEach
     public void setUp() throws Exception {
-        bareme = new ConstructeurBaremeParTrancheIndexe()
+        bareme = unConstructeurDeBaremeParTrancheIndexee()
                 // Attention, ce barème n'a jamais été utilisé.
                 // Il a simplement servi de base pour les barèmes 2010, 2011, ...
                 .valideDepuis(2009)
                 .anneeReferenceRencherissement(2009)
                 .indexateur(construireIndexateurSurBaseIndice())
-                .premiereTranche(17493, "0 %")
-                .tranche(17493, 21076, "8 %")
-                .tranche(21076, 23184, "9 %")
-                .tranche(23184, 25291, "10 %")
-                .tranche(25291, 27399, "11 %")
-                .tranche(27399, 32668, "12 %")
-                .tranche(32668, 36883, "13 %")
-                .tranche(36883, 41099, "14 %")
-                .tranche(41099, 45314, "14.5 %")
-                .tranche(45314, 72713, "15 %")
-                .tranche(72713, 119081, "15.5 %")
-                .tranche(119081, 160179, "16 %")
-                .tranche(160179, 181256, "16.5 %")
-                .tranche(181256, 259238, "17 %")
-                .tranche(259238, 276099, "17.5 %")
-                .tranche(276099, 388857, "18 %")
-                .tranche(388857, 609103, "18.5 %")
-                .derniereTranche(609103, "19 %")
-                .typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES).construire(2009);
+                .typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiGlobal(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .jusqua(17493).taux("0 %")
+                .puisJusqua(21076).taux("8 %")
+                .puisJusqua(23184).taux("9 %")
+                .puisJusqua(25291).taux("10 %")
+                .puisJusqua(27399).taux("11 %")
+                .puisJusqua(32668).taux("12 %")
+                .puisJusqua(36883).taux("13 %")
+                .puisJusqua(41099).taux("14 %")
+                .puisJusqua(45314).taux("14.5 %")
+                .puisJusqua(72713).taux("15 %")
+                .puisJusqua(119081).taux("15.5 %")
+                .puisJusqua(160179).taux("16 %")
+                .puisJusqua(181256).taux("16.5 %")
+                .puisJusqua(259238).taux("17 %")
+                .puisJusqua(276099).taux("17.5 %")
+                .puisJusqua( 388857).taux("18 %")
+                .puisJusqua(609103).taux("18.5 %")
+                .puis().taux("19 %")
+                .construire(2009);
     }
 
     private void rev(int revenu, String impot) {
