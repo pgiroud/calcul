@@ -24,6 +24,13 @@ import java.math.BigDecimal;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ * Le barème familiale en vigueur avant 2010.
+ * Il s'agit d'un barème à taux marginal mais ontrairement au barème célibataire
+ * il n’existe pas de primitive permettant un calcul direct.
+ * On utilise donc une méthode d’intégration numérique (point milieu).
+ *
+ */
 public class BaremeFamille implements Bareme {
 
     private MethodeIntegration methodeIntegration;

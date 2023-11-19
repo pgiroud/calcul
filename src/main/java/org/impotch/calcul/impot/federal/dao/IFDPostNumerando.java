@@ -41,8 +41,11 @@ class IFDPostNumerando {
 
     /* ---------------------- Personne seule -------------------------------*/
     public Bareme personneSeule(int annee) {
-        if (annee >= 2024)
+        if (annee >= 2025)
             throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas encore défini pour l'année " + annee);
+        if (2024 <= annee) {
+            return personneSeule2024();
+        }
         if (2023 <= annee) {
             return personneSeule2023();
         }
@@ -59,6 +62,27 @@ class IFDPostNumerando {
             return personneSeule1996();
         }
         throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas défini pour l'année " + annee);
+    }
+
+    /**
+     * Adapté à l'indice de juin 2023: 168,1
+     * barème 2023 étiré de 1,76 %
+     * Voir Ordonnance du département fédéral des finances RS 642.119.2
+     * https://lex.weblaw.ch/lex.php?norm_id=642.119.2&source=SR&lex_id=87133&q=
+     * @return barème IFD pour personne seule valable dès 2024
+     */
+    private Bareme personneSeule2024() {
+        return unBaremeIFD()
+                .jusqua(15_000).a("0.00").etPar100FrancsEnPlus("0.77")
+                .pour(32_800).a("137.05").etPar100FrancsEnPlus("0.88")
+                .pour(42_900).a("225.90").etPar100FrancsEnPlus("2.64")
+                .pour(57_200).a("603.40").etPar100FrancsEnPlus("2.97")
+                .pour(75_200).a("1138.00").etPar100FrancsEnPlus("5.94")
+                .pour(81_000).a("1482.50").etPar100FrancsEnPlus("6.60")
+                .pour(107_400).a("3224.90").etPar100FrancsEnPlus("8.80")
+                .pour(139_600).a("6058.50").etPar100FrancsEnPlus("11.00")
+                .pour(182_600).a("10788.50").etPar100FrancsEnPlus("13.20")
+                .tauxEffectifMax("11.5 %").construire();
     }
 
     /**
@@ -161,8 +185,11 @@ class IFDPostNumerando {
 
 
     public Bareme famille(int annee) {
-        if (annee >= 2024)
+        if (annee >= 2025)
             throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas encore défini pour l'année " + annee);
+        if (2024 <= annee) {
+            return famille2024();
+        }
         if (2023 <= annee) {
             return famille2023();
         }
@@ -182,9 +209,34 @@ class IFDPostNumerando {
     }
 
     /**
+     * Adapté à l'indice de juin 2023: 168,1
+     * barème 2023 étiré de 1,76 %
+     * Voir Ordonnance du département fédéral des finances RS 642.119.2
+     * https://lex.weblaw.ch/lex.php?norm_id=642.119.2&source=SR&lex_id=87133&q=
+     * @return le barème IFD pour famille pour l’année 2024
+     */
+    private Bareme famille2024() {
+        return unBaremeIFD()
+                .jusqua(29_300).a(   "0.00").etPar100FrancsEnPlus("1.00")
+                .pour(  52_700).a( "234.00").etPar100FrancsEnPlus("2.00")
+                .pour(  60_500).a( "390.00").etPar100FrancsEnPlus("3.00")
+                .pour(  78_100).a( "918.00").etPar100FrancsEnPlus("4.00")
+                .pour(  93_600).a("1538.00").etPar100FrancsEnPlus("5.00")
+                .pour( 107_200).a("2218.00").etPar100FrancsEnPlus("6.00")
+                .pour( 119_000).a("2926.00").etPar100FrancsEnPlus("7.00")
+                .pour( 128_800).a("3612.00").etPar100FrancsEnPlus("8.00")
+                .pour( 136_600).a("4236.00").etPar100FrancsEnPlus("9.00")
+                .pour( 142_300).a("4749.00").etPar100FrancsEnPlus("10.00")
+                .pour( 146_300).a("5149.00").etPar100FrancsEnPlus("11.00")
+                .pour( 148_300).a("5369.00").etPar100FrancsEnPlus("12.00")
+                .pour( 150_300).a("5609.00").etPar100FrancsEnPlus("13.00")
+                .tauxEffectifMax("11.5 %").construire();
+    }
+
+    /**
      * Adapté à l'indice de juin 2022: 165.2
      * barème 2012 étiré de 2.04 %
-     * @return Constructeur pour les périodes fiscales >= 2023
+     * @return barèmè pour la période fiscale >= 2023
      */
     private Bareme famille2023() {
         return unBaremeIFD()

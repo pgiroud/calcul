@@ -41,147 +41,242 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     private FournisseurBaremeIFD fournisseur = CTX_TST_CH.getFournisseurBaremeIFD();
 
+
+
+
     @Test
     public void postNumerandoCelibataire2006() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2006);
-        assertThat(bareme.calcul(BigDecimal.valueOf(10000))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(16800))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(16900))).isEqualTo(new BigDecimal("25.40"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(23000))).isEqualTo(new BigDecimal("72.35"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(29800))).isEqualTo(new BigDecimal("124.70"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(35000))).isEqualTo(new BigDecimal("170.45"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(117000))).isEqualTo(new BigDecimal("4636.75"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(127100))).isEqualTo(new BigDecimal("5525.55"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(200000))).isEqualTo(new BigDecimal("14288.15"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(750000))).isEqualTo(new BigDecimal("86250.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(843600))).isEqualTo(new BigDecimal("97014.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(10000)).isEqualTo("0.00");
+        assertThat(bar.pour(16800)).isEqualTo("0.00");
+        assertThat(bar.pour(16900)).isEqualTo("25.40");
+        assertThat(bar.pour(23000)).isEqualTo("72.35");
+        assertThat(bar.pour(29800)).isEqualTo("124.70");
+        assertThat(bar.pour(35000)).isEqualTo("170.45");
+        assertThat(bar.pour(117000)).isEqualTo("4636.75");
+        assertThat(bar.pour(127100)).isEqualTo("5525.55");
+        assertThat(bar.pour(200000)).isEqualTo("14288.15");
+        assertThat(bar.pour(750000)).isEqualTo("86250.00");
+        assertThat(bar.pour(843600)).isEqualTo("97014.00");
     }
 
     @Test
     public void postNumerandoMarie2006() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2006);
-        assertThat(bareme.calcul(BigDecimal.valueOf(10000))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(23000))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(35000))).isEqualTo(new BigDecimal("83.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(117000))).isEqualTo(new BigDecimal("3280.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(129300))).isEqualTo(new BigDecimal("4317.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(843600))).isEqualTo(new BigDecimal("97014.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(10000)).isEqualTo("0.00");
+        assertThat(bar.pour(23000)).isEqualTo("0.00");
+        assertThat(bar.pour(35000)).isEqualTo("83.00");
+        assertThat(bar.pour(117000)).isEqualTo("3280.00");
+        assertThat(bar.pour(129300)).isEqualTo("4317.00");
+        assertThat(bar.pour(843600)).isEqualTo("97014.00");
      }
 
     @Test
     public void postNumerandoCelibataire1996() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(1996);
-        assertThat(bareme.calcul(BigDecimal.valueOf(10000))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(16000))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(16100))).isEqualTo(new BigDecimal("25.40"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(27900))).isEqualTo(new BigDecimal("116.25"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(37000))).isEqualTo(new BigDecimal("205.10"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(115900))).isEqualTo(new BigDecimal("4913.90"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(124300))).isEqualTo(new BigDecimal("5782.90"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(200000))).isEqualTo(new BigDecimal("15106.50"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(750000))).isEqualTo(new BigDecimal("86250.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(843600))).isEqualTo(new BigDecimal("97014.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(10000)).isEqualTo("0.00");
+        assertThat(bar.pour(16000)).isEqualTo("0.00");
+        assertThat(bar.pour(16100)).isEqualTo("25.40");
+        assertThat(bar.pour(27900)).isEqualTo("116.25");
+        assertThat(bar.pour(37000)).isEqualTo("205.10");
+        assertThat(bar.pour(115900)).isEqualTo("4913.90");
+        assertThat(bar.pour(124300)).isEqualTo("5782.90");
+        assertThat(bar.pour(200000)).isEqualTo("15106.50");
+        assertThat(bar.pour(750000)).isEqualTo("86250.00");
+        assertThat(bar.pour(843600)).isEqualTo("97014.00");
     }
 
     @Test
     public void praeNumerandoFamille2007() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(2007);
-        assertThat(bareme.calcul(BigDecimal.valueOf(10000))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(89600))).isEqualTo(new BigDecimal("1856.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(775800))).isEqualTo(new BigDecimal("89217.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(10000)).isEqualTo("0.00");
+        assertThat(bar.pour(89600)).isEqualTo("1856.00");
+        assertThat(bar.pour(775800)).isEqualTo("89217.00");
     }
 
     @Test
     public void praeNumerandoCelibataire2007() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(2007);
-        assertThat(bareme.calcul(BigDecimal.valueOf(10000))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(16800))).isEqualTo(new BigDecimal("32.30"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(39000))).isEqualTo(new BigDecimal("270.55"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(78100))).isEqualTo(new BigDecimal("1922.55"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(775900))).isEqualTo(new BigDecimal("89228.50"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(10000)).isEqualTo("0.00");
+        assertThat(bar.pour(16800)).isEqualTo("32.30");
+        assertThat(bar.pour(39000)).isEqualTo("270.55");
+        assertThat(bar.pour(78100)).isEqualTo("1922.55");
+        assertThat(bar.pour(775900)).isEqualTo("89228.50");
     }
 
 
     @Test
     public void postNumerandoCelibataire2011() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2011);
-        assertThat(bareme.calcul(BigDecimal.valueOf(20000))).isEqualTo(new BigDecimal("43.10"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(34000))).isEqualTo(new BigDecimal("153.65"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(55000))).isEqualTo(new BigDecimal("581.30"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(250300))).isEqualTo(new BigDecimal("20268.40"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(889400))).isEqualTo(new BigDecimal("102281.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(20000)).isEqualTo("43.10");
+        assertThat(bar.pour(34000)).isEqualTo("153.65");
+        assertThat(bar.pour(55000)).isEqualTo("581.30");
+        assertThat(bar.pour(250300)).isEqualTo("20268.40");
+        assertThat(bar.pour(889400)).isEqualTo("102281.00");
     }
 
     @Test
     public void praeNumerandoCelibataire2011() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(2011);
-        assertThat(bareme.calcul(BigDecimal.valueOf(682100))).isEqualTo(new BigDecimal("78441.05"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(682200))).isEqualTo(new BigDecimal("78453.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(682100)).isEqualTo("78441.05");
+        assertThat(bar.pour(682200)).isEqualTo("78453.00");
     }
 
     @Test
     public void postNumerandoMarie2011() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2011);
-        assertThat(bareme.calcul(BigDecimal.valueOf(889400))).isEqualTo(new BigDecimal("102281.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(889500))).isEqualTo(new BigDecimal("102292.50"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(889400)).isEqualTo("102281.00");
+        assertThat(bar.pour(889500)).isEqualTo("102292.50");
     }
 
     @Test
     public void postNumerandoCelibataire2012() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2012);
-        assertThat(bareme.calcul(BigDecimal.valueOf(41600))).isEqualTo(new BigDecimal("223.15"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(755200))).isEqualTo(new BigDecimal("86848.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(41600)).isEqualTo("223.15");
+        assertThat(bar.pour(755200)).isEqualTo("86848.00");
     }
 
     @Test
     public void postNumerandoCelibataire2023AvecAssietteNonArrondie() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2023);
-        assertThat(bareme.calcul(BigDecimal.valueOf(32227))).isEqualTo(new BigDecimal("133.95"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(32227)).isEqualTo("133.95");
+    }
+
+
+    @Test
+    public void postNumarandoFamille2024AuLimiteDeTranche() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2024);
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour( 52_700)).isEqualTo(   "234.00");
+        assertThat(bar.pour( 60_500)).isEqualTo(   "390.00");
+        assertThat(bar.pour( 78_100)).isEqualTo(   "918.00");
+        assertThat(bar.pour( 93_600)).isEqualTo(  "1538.00");
+        assertThat(bar.pour(107_200)).isEqualTo(  "2218.00");
+        assertThat(bar.pour(119_000)).isEqualTo(  "2926.00");
+        assertThat(bar.pour(128_800)).isEqualTo(  "3612.00");
+        assertThat(bar.pour(136_600)).isEqualTo(  "4236.00");
+        assertThat(bar.pour(142_300)).isEqualTo(  "4749.00");
+        assertThat(bar.pour(146_300)).isEqualTo(  "5149.00");
+        assertThat(bar.pour(148_300)).isEqualTo(  "5369.00");
+        assertThat(bar.pour(150_300)).isEqualTo(  "5609.00");
+        assertThat(bar.pour(928_600)).isEqualTo("106788.00");
+        assertThat(bar.pour(928_700)).isEqualTo("106800.50");
+
+    }
+
+    @Test
+    public void postNumerandoCelibataire2024AuLimiteDeTranche() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2024);
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(15000)).isEqualTo("0.00");
+        assertThat(bar.pour(32800)).isEqualTo("137.05");
+        assertThat(bar.pour(42900)).isEqualTo("225.90");
+        assertThat(bar.pour(57200)).isEqualTo("603.40");
+        assertThat(bar.pour(75200)).isEqualTo("1138.00");
+        assertThat(bar.pour(81000)).isEqualTo("1482.50");
+        assertThat(bar.pour(107400)).isEqualTo("3224.90");
+        assertThat(bar.pour(139600)).isEqualTo("6058.50");
+        assertThat(bar.pour(182600)).isEqualTo("10788.50");
+        assertThat(bar.pour(783200)).isEqualTo("90067.70");
+        assertThat(bar.pour(783300)).isEqualTo("90079.50");
+    }
+
+    @Test
+    public void postNumerandoCelibataire2024() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2024);
+        BaremeStr bar = new BaremeStr(bareme);
+        // Dans les tabelles fournies par l'Administration fédérale, devrait être 704.38
+        // Mais l’IFD est arrondi aux cin centimes inférieurs
+        assertThat(bar.pour(60600)).isEqualTo("704.35");
+        assertThat(bar.pour(149500)).isEqualTo("7147.50");
     }
 
     @Test
     public void postNumerandoCelibataire2023AuLimiteDeTranche() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2023);
-        assertThat(bareme.calcul(BigDecimal.valueOf(14800))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(32200))).isEqualTo(new BigDecimal("133.95"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(42200))).isEqualTo(new BigDecimal("221.95"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(56200))).isEqualTo(new BigDecimal("591.55"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(73900))).isEqualTo(new BigDecimal("1117.20"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(79600))).isEqualTo(new BigDecimal("1455.75"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(105500))).isEqualTo(new BigDecimal("3165.15"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(137200))).isEqualTo(new BigDecimal("5954.75"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(179400))).isEqualTo(new BigDecimal("10596.75"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(769600))).isEqualTo(new BigDecimal("88503.15"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(769700))).isEqualTo(new BigDecimal("88515.50"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(14800)).isEqualTo("0.00");
+        assertThat(bar.pour(32200)).isEqualTo("133.95");
+        assertThat(bar.pour(42200)).isEqualTo("221.95");
+        assertThat(bar.pour(56200)).isEqualTo("591.55");
+        assertThat(bar.pour(73900)).isEqualTo("1117.20");
+        assertThat(bar.pour(79600)).isEqualTo("1455.75");
+        assertThat(bar.pour(105500)).isEqualTo("3165.15");
+        assertThat(bar.pour(137200)).isEqualTo("5954.75");
+        assertThat(bar.pour(179400)).isEqualTo("10596.75");
+        assertThat(bar.pour(769600)).isEqualTo("88503.15");
+        assertThat(bar.pour(769700)).isEqualTo("88515.50");
     }
 
     @Test
     public void postNumerandoCelibataire2012AuLimiteDeTranche() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2012);
-        assertThat(bareme.calcul(BigDecimal.valueOf(14500))).isEqualTo(new BigDecimal("0.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(31600))).isEqualTo(new BigDecimal("131.65"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(41400))).isEqualTo(new BigDecimal("217.90"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(55200))).isEqualTo(new BigDecimal("582.20"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(72500))).isEqualTo(new BigDecimal("1096.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(78100))).isEqualTo(new BigDecimal("1428.60"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(103600))).isEqualTo(new BigDecimal("3111.60"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(134600))).isEqualTo(new BigDecimal("5839.60"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(176000))).isEqualTo(new BigDecimal("10393.60"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(755200))).isEqualTo(new BigDecimal("86848.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(14500)).isEqualTo("0.00");
+        assertThat(bar.pour(31600)).isEqualTo("131.65");
+        assertThat(bar.pour(41400)).isEqualTo("217.90");
+        assertThat(bar.pour(55200)).isEqualTo("582.20");
+        assertThat(bar.pour(72500)).isEqualTo("1096.00");
+        assertThat(bar.pour(78100)).isEqualTo("1428.60");
+        assertThat(bar.pour(103600)).isEqualTo("3111.60");
+        assertThat(bar.pour(134600)).isEqualTo("5839.60");
+        assertThat(bar.pour(176000)).isEqualTo("10393.60");
+        assertThat(bar.pour(755200)).isEqualTo("86848.00");
     }
 
     @Test
     public void postNumerandoMarie2012() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2012);
-        assertThat(bareme.calcul(BigDecimal.valueOf(896000))).isEqualTo(new BigDecimal("103040.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(896000)).isEqualTo("103040.00");
     }
 
     @Test
     public void prestationCapitalSource2016() {
         Bareme bareme = fournisseur.getBaremeImpotSourcePrestationCapital(2016);
-        assertThat(bareme.calcul(BigDecimal.valueOf(74_300))).isEqualTo(new BigDecimal("182.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(675_000))).isEqualTo(new BigDecimal("14875.00"));
-        assertThat(bareme.calcul(BigDecimal.valueOf(2_000_000))).isEqualTo(new BigDecimal("46000.00"));
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(74_300)).isEqualTo("182.00");
+        assertThat(bar.pour(675_000)).isEqualTo("14875.00");
+        assertThat(bar.pour(2_000_000)).isEqualTo("46000.00");
     }
+
+    private static class BaremeStr {
+        private final Bareme bareme;
+
+        public BaremeStr(Bareme bareme) {
+            this.bareme = bareme;
+        }
+
+        public String pour(int revenu) {
+            return bareme.calcul(BigDecimal.valueOf(revenu)).toString();
+        }
+    }
+
 
 }

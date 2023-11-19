@@ -77,6 +77,8 @@ class ConstructeurBaremeIFD {
     }
 
 
+
+
     public ConstructeurBaremeIFD pour(int montant) {
         controleAbsenceTauxEffectif();
         BigDecimal finTranche = BigDecimal.valueOf(montant);

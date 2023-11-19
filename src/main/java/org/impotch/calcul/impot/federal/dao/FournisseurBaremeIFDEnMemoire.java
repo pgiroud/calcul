@@ -17,6 +17,8 @@ package org.impotch.calcul.impot.federal.dao;
 
 import org.impotch.bareme.Bareme;
 
+import static org.impotch.calcul.impot.federal.dao.ConstructeurBaremeIFD.unBaremeIFDPrestationEnCapitalImposeeSource;
+
 
 public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
 
@@ -54,8 +56,8 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
     @Override
     public Bareme getBaremeImpotSourcePrestationCapital(int annee) {
         ConstructeurBaremeISPrestationCapital cons = new ConstructeurBaremeISPrestationCapital();
-        if (2024 <= annee) throw new RuntimeException("Barème pas encore défini pour l'année " + annee);
-        if (2023 == annee) {
+        if (2025 <= annee) throw new RuntimeException("Barème pas encore défini pour l'année " + annee);
+        if (2023 <= annee ) {
             cons
                     .surLesPremier(25000).taux("0 %")
                     .surLesProchains(25000).taux("0.35 %")
@@ -66,7 +68,7 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
                     .etFinalementTaux("2.60 %")
                     .tauxEffectifMax("2.30 %");
         }
-        if (2021 <= annee && 2022 >= annee) {
+        if (2021 <= annee) {
             cons
                     .surLesPremier(25000).taux("0 %")
                     .surLesProchains(25000).taux("0.35 %")
@@ -76,7 +78,7 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
                     .surLesProchains(25000).taux("2.00 %")
                     .etFinalementTaux("2.60 %")
                     .tauxEffectifMax("2.30 %");
-        } else if (2012 <= annee && 2019 >= annee) {
+        } else if (2012 <= annee) {
             cons
                     .surLesPremier(25000).taux("0 %")
                     .surLesProchains(25000).taux("0.20 %")
@@ -96,7 +98,7 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
                     .surLesProchains(25000).taux("2.05 %")
                     .etFinalementTaux("2.60 %")
                     .tauxEffectifMax("2.30 %");
-        } else if (2007 <= annee  && annee <= 2010) {
+        } else if (2007 <= annee) {
             cons
                     .surLesPremier(25000).taux("0 %")
                     .surLesProchains(25000).taux("0.25 %")
@@ -105,7 +107,7 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
                     .surLesProchains(25000).taux("1.70 %")
                     .etFinalementTaux("2.60 %")
                     .tauxEffectifMax("2.30 %");
-        } else if (2002 <= annee && annee <= 2006) {
+        } else if (2002 <= annee) {
             cons
                     .surLesPremier(25000).taux("0 %")
                     .surLesProchains(25000).taux("0.25 %")
