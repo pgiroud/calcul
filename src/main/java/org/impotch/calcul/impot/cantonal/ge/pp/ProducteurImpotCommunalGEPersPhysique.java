@@ -23,6 +23,7 @@ import org.impotch.calcul.impot.ImpotProduit;
 import org.impotch.calcul.impot.RecepteurImpot;
 import org.impotch.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
 import org.impotch.calcul.lieu.ICommuneSuisse;
+import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
@@ -39,7 +40,7 @@ import org.impotch.util.TypeArrondi;
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public abstract class ProducteurImpotCommunalGEPersPhysique extends
+public class ProducteurImpotCommunalGEPersPhysique extends
 		ProducteurImpotCommunalGE {
 
 	/**************************************************/
@@ -64,7 +65,11 @@ public abstract class ProducteurImpotCommunalGEPersPhysique extends
 		return fournisseur.getNbreJourDomicileSurCommune().keySet().iterator().next();
 	}
 
-	
+	@Override
+	protected IExplicationDetailleeBuilder createExplicationBuilder() {
+		return new ExplicationDetailleTexteBuilder();
+	}
+
 	private String construireExplicationsCalculDetaillees(String nomDomicile, BigDecimal montantBase, BigDecimal tauxPartPrivil, BigDecimal partPrivil, BigDecimal tauxCtsAdd, BigDecimal impot){
 		IExplicationDetailleeBuilder buider = this.createExplicationBuilder();
 		buider.ajouter("Part privilégiée de la commune " + nomDomicile);

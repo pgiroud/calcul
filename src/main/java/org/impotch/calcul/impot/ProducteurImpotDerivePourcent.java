@@ -17,10 +17,15 @@ package org.impotch.calcul.impot;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.impotch.calcul.impot.taxation.pp.RecepteurMultipleImpot;
 import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
+import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
+import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.BigDecimalUtil;
+import org.impotch.util.StringUtil;
 import org.impotch.util.TypeArrondi;
 
 /**
@@ -28,6 +33,10 @@ import org.impotch.util.TypeArrondi;
  *
  */
 public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
+
+	public static Constructeur unConsProducteurImpotDerive(String code) {
+		return new Constructeur(code);
+	}
 
 	private final String nomImpot;
 	private final BigDecimal taux;
@@ -37,11 +46,7 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 
 	private ProducteurImpotDerive producteurDerive;
 	
-	public ProducteurImpotDerivePourcent(String nom, String taux, String codeBeneficiaire) {
-        this(nom,BigDecimalUtil.parseTaux(taux),codeBeneficiaire);
-	}
-
-    public ProducteurImpotDerivePourcent(String nom, BigDecimal taux, String codeBeneficiaire) {
+    private ProducteurImpotDerivePourcent(String nom, BigDecimal taux, String codeBeneficiaire) {
         this.nomImpot = nom;
         this.taux = taux;
         this.codeBeneficiaire = codeBeneficiaire;
@@ -57,7 +62,7 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 	/**
 	 * @param producteurDerive the producteurDerive to set
 	 */
-	public void setProducteurDerive(ProducteurImpotDerive producteurDerive) {
+	private void setProducteurDerive(ProducteurImpotDerive producteurDerive) {
 		this.producteurDerive = producteurDerive;
 	}
 
@@ -71,7 +76,7 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 	/**
 	 * @param typeArrondi the typeArrondi to set
 	 */
-	public void setTypeArrondi(TypeArrondi typeArrondi) {
+	private void setTypeArrondi(TypeArrondi typeArrondi) {
 		this.typeArrondi = typeArrondi;
 	}
 
@@ -83,12 +88,12 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
             return typeArrondi.arrondirMontant(resultatNonArrondi);
         }
 	}
-	
-	public String getExplicationDetailleePattern() {
+
+	protected String getExplicationDetailleePattern() {
 		return explicationDetailleePattern;
 	}
 
-	public void setExplicationDetailleePattern(String explicationDetailleePattern) {
+	private void setExplicationDetailleePattern(String explicationDetailleePattern) {
 		this.explicationDetailleePattern = explicationDetailleePattern;
 	}
 
@@ -124,5 +129,68 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 		
 	}
 	
-	
+	public static class Constructeur {
+
+		private final String nomImpot;
+		private BigDecimal taux;
+		private String codeBeneficiaire;
+		private TypeArrondi typeArrondi = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+		private List<String> explications = new LinkedList<>();
+
+		private ProducteurImpotDerive producteurDerive;
+
+		public Constructeur(String nomImpot) {
+			this.nomImpot = nomImpot;
+		}
+
+		public Constructeur taux(String tx) {
+			this.taux = BigDecimalUtil.parseTaux(tx);
+			return this;
+		}
+
+		public Constructeur beneficiaire(String benef) {
+			this.codeBeneficiaire = benef;
+			return this;
+		}
+
+		public Constructeur arrondi(TypeArrondi arrondi) {
+			this.typeArrondi = arrondi;
+			return this;
+		}
+
+		public Constructeur producteurDerive(ProducteurImpotDerive producteurDerive) {
+			this.producteurDerive = producteurDerive;
+			return this;
+		}
+
+		public Constructeur explic(String explication) {
+			explications.add(explication);
+			return this;
+		}
+		private IExplicationDetailleeBuilder getNewExplicationBuilder() {
+			return new ExplicationDetailleTexteBuilder();
+		}
+
+		private String construireExplicationDetailleePattern() {
+			IExplicationDetailleeBuilder explication = getNewExplicationBuilder();
+			for (String explic : explications) {
+				explication.ajouter(explic);
+			}
+			return explication.getTexte();
+
+		}
+
+		public ProducteurImpotDerivePourcent cons() {
+			if (null == taux) throw new IllegalStateException("Le taux d’un impot dérivé '" + nomImpot + "' doit être préciser  la construction ! ");
+			if (!StringUtil.hasText(codeBeneficiaire)) throw new IllegalStateException("Le code .bénéficiaire d’un impot dérivé '" + nomImpot + "' doit être préciser  la construction ! ");
+
+			ProducteurImpotDerivePourcent prod = new ProducteurImpotDerivePourcent(nomImpot,taux,codeBeneficiaire);
+			prod.setTypeArrondi(typeArrondi);
+			prod.setExplicationDetailleePattern(construireExplicationDetailleePattern());
+			prod.setProducteurDerive(producteurDerive);
+			return prod;
+		}
+	}
+
+
 }

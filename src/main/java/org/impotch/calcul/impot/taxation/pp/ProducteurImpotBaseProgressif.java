@@ -33,22 +33,29 @@ import org.impotch.util.TypeArrondi;
  *
  */
 public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
-	
+
+	private static final BigDecimal UN_CINQUIEME = new BigDecimal("0.2");
+
+	public static ProducteurImpotBaseProgressif.Constructeur unProducteurImpotBaseProgressif(Bareme bareme) {
+		return new Constructeur(bareme);
+	}
+
+	public static ProducteurImpotBaseProgressif.Constructeur unProducteurImpotBaseProgressif(StrategieProductionImpotFamille strategie) {
+		return new Constructeur(strategie);
+	}
+
 	/**************************************************/
 	/****************** Attributs *********************/
 	/**************************************************/
 
 	final Logger logger = LoggerFactory.getLogger(ProducteurImpotBaseProgressif.class);
 
-	private TypeArrondi typeArrondiImposable	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
-	private TypeArrondi typeArrondiDeterminant	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
-	private TypeArrondi typeArrondiImpot		= TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+	private TypeArrondi typeArrondiImposable;
+	private TypeArrondi typeArrondiDeterminant;
+	private TypeArrondi typeArrondiImpot;
 	
 	private StrategieProductionImpotFamille impositionFamille;
-	/**
-	 * Par défaut, la stratégie d'annualisation utilise un calendrier comptable à 360 jours.
-	 */
-	private StrategieAnnualisation stratAnnualisation = new StrategieAnnualisationComptable();
+	private StrategieAnnualisation stratAnnualisation;
 
     private BigDecimal partBase = null;
 	
@@ -56,27 +63,19 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
     /**************** Constructeurs *******************/
     /**************************************************/
 	
-	public ProducteurImpotBaseProgressif() {
+	private ProducteurImpotBaseProgressif() {
 	}
 	
     /**************************************************/
     /******* Accesseurs / Mutateurs *******************/
     /**************************************************/
 
-	public void setBareme(Bareme bareme) {
-		if (null == impositionFamille) {
-			impositionFamille = new ImpositionFamilleSansAvantage(bareme);
-		} else {
-			throw new UnsupportedOperationException("La stratégie d'imposition de la famille a déjà été fixée !!");
-		}
-	}
-	
 	/**
 	 * Précise le type d'arrondi à effectuer sur les assiettes imposables.
 	 * En règle générale, on utilise des arrondis à la centaine inférieure pour le
 	 * revenu et le bénéfice et au mille francs inférieur pour la fortune ou le capital.
 	 */
-	public void setTypeArrondiImposable(TypeArrondi type) {
+	private void setTypeArrondiImposable(TypeArrondi type) {
 		typeArrondiImposable = type;
 	}
 	
@@ -93,7 +92,7 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 	 * En règle générale, on utilise des arrondis à la centaine inférieure pour le
 	 * revenu et le bénéfice et au mille francs inférieur pour la fortune ou le capital.
 	 */
-	public void setTypeArrondiDeterminant(TypeArrondi type) {
+	private void setTypeArrondiDeterminant(TypeArrondi type) {
 		typeArrondiDeterminant = type;
 	}
 	
@@ -111,7 +110,7 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 	 * 
 	 * @param type le type d'arrondi sur le montant d'impôt.
 	 */
-	public void setTypeArrondiImpot(TypeArrondi type) {
+	private void setTypeArrondiImpot(TypeArrondi type) {
 		typeArrondiImpot = type;
 	}
 	
@@ -132,7 +131,7 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 	 * </ul>
 	 * @param strategie la stratégie à appliquer.
 	 */
-	public void setStrategieProductionImpotFamille(StrategieProductionImpotFamille strategie) {
+	private void setStrategieProductionImpotFamille(StrategieProductionImpotFamille strategie) {
 		impositionFamille = strategie;
 	}
 	
@@ -149,7 +148,7 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 	 * Par défaut, la stratégie est une stratégie avec calendrier comptable à 360 jours. 
 	 * @param strategie la stratégie
 	 */
-	public void setStrategieAnnualisation(StrategieAnnualisation strategie) {
+	private void setStrategieAnnualisation(StrategieAnnualisation strategie) {
 		stratAnnualisation = strategie; 
 	}
 	
@@ -165,7 +164,7 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
         this.partBase = partBase;
     }
 
-/**************************************************/
+	/**************************************************/
     /******************* Méthodes *********************/
     /**************************************************/
 
@@ -183,4 +182,67 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 		return impot;
 	}
 
+
+
+	// Construction
+	public static class Constructeur {
+
+
+		private final StrategieProductionImpotFamille strategieImpositionFamiliale;
+		private TypeArrondi typeArrondiImposable	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
+		private TypeArrondi typeArrondiDeterminant	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
+		private TypeArrondi typeArrondiImpot		= TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+		private StrategieAnnualisation stratAnnualisation = new StrategieAnnualisationComptable();
+
+
+		private Constructeur(Bareme bareme) {
+			this(new ImpositionFamilleSansAvantage(bareme));
+		}
+
+		private Constructeur(StrategieProductionImpotFamille strategie) {
+			this.strategieImpositionFamiliale = strategie;
+		}
+
+
+
+		public Constructeur arrondiAssiettes(TypeArrondi typeArrondi) {
+			return arrondiImposable(typeArrondi).arrondiDeterminant(typeArrondi);
+		}
+
+		public Constructeur arrondiImposable(TypeArrondi typeArrondi) {
+			this.typeArrondiImposable = typeArrondi;
+			return this;
+		}
+
+		public Constructeur arrondiDeterminant(TypeArrondi typeArrondi) {
+			this.typeArrondiDeterminant = typeArrondi;
+			return this;
+		}
+
+		public Constructeur arrondiImpot(TypeArrondi typeArrondi) {
+			this.typeArrondiImpot= typeArrondi;
+			return this;
+		}
+
+		public Constructeur annualisationImpot(StrategieAnnualisation strategie) {
+			this.stratAnnualisation = strategie;
+			return this;
+		}
+
+		public ProducteurImpotBase construireUnCinquieme() {
+			ProducteurImpotBaseProgressif prod = construire();
+			prod.setPartBase(UN_CINQUIEME);
+			return prod;
+		}
+
+		public ProducteurImpotBaseProgressif construire() {
+			ProducteurImpotBaseProgressif prod = new ProducteurImpotBaseProgressif();
+			prod.setStrategieProductionImpotFamille(strategieImpositionFamiliale);
+			prod.setTypeArrondiImposable(typeArrondiImposable);
+			prod.setTypeArrondiDeterminant(typeArrondiDeterminant);
+			prod.setTypeArrondiImpot(typeArrondiImpot);
+			prod.setStrategieAnnualisation(stratAnnualisation);
+			return prod;
+		}
+	}
 }

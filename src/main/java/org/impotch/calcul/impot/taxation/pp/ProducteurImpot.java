@@ -30,7 +30,7 @@ import org.impotch.calcul.impot.RecepteurImpot;
 import static org.impotch.util.BigDecimalUtil.isStrictementPositif;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 
-public abstract class ProducteurImpot {
+public class ProducteurImpot {
 	
 	/**************************************************/
 	/****************** Attributs *********************/
@@ -89,8 +89,6 @@ public abstract class ProducteurImpot {
 			ProducteurImpotCommunal producteurImpotCommunal) {
 		this.producteurImpotCommunal = producteurImpotCommunal;
 	}
-
-	protected abstract IExplicationDetailleeBuilder createExplicationBuilder();
 
 	/**************************************************/
     /******************* Méthodes *********************/

@@ -65,6 +65,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.impotch.bareme.Bareme;
 import org.impotch.bareme.BaremeTauxEffectifLineaireParTranche;
 import org.impotch.bareme.BaremeTauxEffectifParTranche;
+import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBase;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import org.impotch.calcul.impot.cantonal.FournisseurCantonal;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
@@ -75,7 +76,13 @@ import org.impotch.util.TypeArrondi;
 
 import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxEffectif;
 import static org.impotch.calcul.impot.cantonal.fr.pp.SplittingFR.unSplittingFribourgeois;
+import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
+
+
 public class FournisseurCantonalFR extends FournisseurCantonal implements FournisseurRegleImpotCantonalFR {
+
+    private final static TypeArrondi ARRONDI_ASSIETTE_REVENU = TypeArrondi.CENTAINE_INF;
+    private final static TypeArrondi ARRONDI_IMPOT = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
     private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICRevenu = new ConcurrentHashMap<>();
     private ConcurrentMap<Integer, SplittingFR> splittingParAnnee = new ConcurrentHashMap<>();
@@ -151,22 +158,15 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
     }
 
     protected ProducteurImpot construireProducteurImpotsICRevenu(int annee) {
-        ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
-        producteurImpotBase.setStrategieProductionImpotFamille(construireSplittingFR(annee));
-
-        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENTAINE_INF);
-        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENTAINE_INF);
-        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
-
 
         String codeBeneficiaire = "CAN-FR";
-        ProducteurImpot producteur = new ProducteurImpot("RCAN", codeBeneficiaire) {
-            @Override
-            protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                return FournisseurCantonalFR.this.getNewExplicationBuilder();
-            }
-        };
-        producteur.setProducteurBase(producteurImpotBase);
+        ProducteurImpot producteur = new ProducteurImpot("RCAN", codeBeneficiaire);
+        producteur.setProducteurBase(
+                unProducteurImpotBaseProgressif(construireSplittingFR(annee))
+                        .arrondiAssiettes(ARRONDI_ASSIETTE_REVENU)
+                        .arrondiImpot(ARRONDI_IMPOT)
+                        .construire()
+        );
         return producteur;
     }
 

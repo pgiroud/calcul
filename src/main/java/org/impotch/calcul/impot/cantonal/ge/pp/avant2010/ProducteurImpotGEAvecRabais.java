@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
 
-public abstract class ProducteurImpotGEAvecRabais extends ProducteurImpotAvecRabais {
+public class ProducteurImpotGEAvecRabais extends ProducteurImpotAvecRabais {
 
 	final Logger logger = LoggerFactory.getLogger(ProducteurImpotGEAvecRabais.class);
 

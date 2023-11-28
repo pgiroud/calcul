@@ -55,13 +55,20 @@ import org.impotch.util.math.Fonction;
 import org.impotch.util.math.integration.MethodeIntegration;
 import org.impotch.util.math.integration.MethodeIntegrationPointMilieu;
 
+import static org.impotch.calcul.impot.ProducteurImpotDerivePourcent.unConsProducteurImpotDerive;
 import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeGEParTrancheIndexeeActuel.unConstructeurBaremeGEActuel;
 import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe.unConstructeurDeBaremeParTrancheIndexee;
 import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009.unConstructeurBaremeGEEntre2001et2009;
 import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeRevenuAvecFormuleUniversite.unConstructeurBaremeRevenuAvecFormuleUniversite;
+import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
 
 public class FournisseurCantonalGE extends FournisseurCantonal implements FournisseurRegleImpotCantonalGE {
 
+
+    private final static TypeArrondi ARRONDI_ASSIETTE = TypeArrondi.UNITE_LA_PLUS_PROCHE;
+    private final static TypeArrondi ARRONDI_IMPOT = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+
+    private static final String CODE_CANTON_GE = "CAN-GE";
     private ConstructeurBaremeGEParTrancheIndexee constructeurBaremeEntre2001et2009;
     private ConstructeurBaremeGEParTrancheIndexee constructeurBaremeActuel;
 
@@ -111,9 +118,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     }
 
 
-    private IExplicationDetailleeBuilder getNewExplicationBuilder() {
-        return new ExplicationDetailleTexteBuilder();
-    }
+
 
 
 
@@ -229,212 +234,168 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         return producteur;
     }
 
-    public ProducteurImpotBase construireImpotCantonalBaseRevenu(int annee) {
-        ProducteurImpotBaseProgressif producteur = new ProducteurImpotBaseProgressif();
-        StrategieProductionImpotFamille strategie = null;
-        if (annee < 2010) {
-            strategie = new DoubleBaremeGE(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
-        } else {
-            strategie = new Splitting(getBaremeRevenu(annee), "50 %");
-        }
-        producteur.setStrategieProductionImpotFamille(strategie);
+    private StrategieProductionImpotFamille impositionFamiliale(int annee) {
+        return annee < 2010 ? new DoubleBaremeGE(getBaremeRevenu(annee), getBaremeRevenuFamille(annee))
+                    : new Splitting(getBaremeRevenu(annee), "50 %");
+    }
 
-        producteur.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteur.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
-        return producteur;
+    public ProducteurImpotBase construireImpotCantonalBaseRevenu(int annee) {
+        return unProducteurImpotBaseProgressif(impositionFamiliale(annee))
+                .arrondiAssiettes(ARRONDI_ASSIETTE)
+                .arrondiImpot(ARRONDI_IMPOT)
+                .construire();
     }
 
     public ProducteurImpotBase construireImpotCantonalBasePC(int annee) {
-        ProducteurImpotBaseProgressif producteur = new ProducteurImpotBaseProgressif();
-        producteur.setPartBase(new BigDecimal("0.2"));
-        StrategieProductionImpotFamille strategie = null;
-        if (annee < 2010) {
-            strategie = new DoubleBaremeGE(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
-        } else {
-            strategie = new Splitting(getBaremeRevenu(annee), "50 %");
-        }
-        producteur.setStrategieProductionImpotFamille(strategie);
-
-        producteur.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteur.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteur.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
-        return producteur;
+        return unProducteurImpotBaseProgressif(impositionFamiliale(annee))
+                .arrondiAssiettes(ARRONDI_ASSIETTE)
+                .arrondiImpot(ARRONDI_IMPOT)
+                .construireUnCinquieme();
     }
 
-    private void completerProducteurImpotsCantonaux(ProducteurImpot producteur, String codeBeneficiaire, int annee, TypeArrondi typeArrondi) {
+    /**
+     * Complète le producteur d'impôts de base avec des impôts dérivés
+     * @param producteur le producteur à compléter
+     * @param annee les taux pourraient varier par année fiscale (cela fut le cas pour l'IN 111)
+     * @param arrondi On précise le type d’arrondi. On ne prend pas le type par défaut pour répondre aux besoins de l’impôt à la source.
+     */
+    private void completerProducteurImpotsCantonaux(ProducteurImpot producteur, int annee, TypeArrondi arrondi) {
+
+        producteur.ajouteProducteurDerive(
+                unConsProducteurImpotDerive("RIBR")
+                        .taux("-12 %")
+                        .beneficiaire(CODE_CANTON_GE)
+                        .arrondi(arrondi)
+                        .explic("Réduction de {1,number,percent} sur impôt de base sur revenu {0,number,#,##0.00}")
+                        .explic("{2,number,#,##0.00}").cons()
+        );
 
 
-        IExplicationDetailleeBuilder explication = getNewExplicationBuilder();
-        explication.ajouter("Réduction de {1,number,percent} sur impôt de base sur revenu {0,number,#,##0.00}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent prodRIBR = new ProducteurImpotDerivePourcent("RIBR", "-12 %", codeBeneficiaire);
-        prodRIBR.setTypeArrondi(typeArrondi);
-        prodRIBR.setExplicationDetailleePattern(explication.getTexte());
-        producteur.ajouteProducteurDerive(prodRIBR);
+        producteur.ajouteProducteurDerive(
+                unConsProducteurImpotDerive("CAR")
+                        .taux("47.5 %")
+                        .beneficiaire(CODE_CANTON_GE)
+                        .arrondi(arrondi)
+                        .producteurDerive(
+                                unConsProducteurImpotDerive("RCAR")
+                                        .taux("-12 %")
+                                        .beneficiaire(CODE_CANTON_GE)
+                                        .arrondi(arrondi)
+                                        .explic("Réduction de {1,number,percent} sur cts add. cantonaux sur revenu {0,number,#,##0.00}")
+                                        .explic("{2,number,#,##0.00}")
+                                        .cons()
+                       )
+                        .explic("CA Revenu :")
+                        .explic("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}")
+                        .explic("{2,number,#,##0.00}").cons()
+        );
 
-        explication.reset();
-        explication.ajouter("Réduction de {1,number,percent} sur cts add. cantonaux sur revenu {0,number,#,##0.00}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent prodRCAR = new ProducteurImpotDerivePourcent("RCAR", "-12 %", codeBeneficiaire);
-        prodRCAR.setTypeArrondi(typeArrondi);
-        prodRCAR.setExplicationDetailleePattern(explication.getTexte());
-
-        explication.reset();
-        explication.ajouter("CA Revenu :");
-        explication.ajouter("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent ctsAddCantonaux = new ProducteurImpotDerivePourcent("CAR", "47.5 %", codeBeneficiaire);
-        ctsAddCantonaux.setTypeArrondi(typeArrondi);
-        ctsAddCantonaux.setProducteurDerive(prodRCAR);
-        ctsAddCantonaux.setExplicationDetailleePattern(explication.getTexte());
-        producteur.ajouteProducteurDerive(ctsAddCantonaux);
-
-        explication.reset();
-        explication.ajouter("CA Aide à domicile Revenu :");
-        explication.ajouter("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent prodADR = new ProducteurImpotDerivePourcent("ADR", "1 %", codeBeneficiaire);
-        prodADR.setTypeArrondi(typeArrondi);
-        prodADR.setExplicationDetailleePattern(explication.getTexte());
-        producteur.ajouteProducteurDerive(prodADR);
+        producteur.ajouteProducteurDerive(
+                unConsProducteurImpotDerive("ADR")
+                        .taux("1 %")
+                        .beneficiaire(CODE_CANTON_GE)
+                        .arrondi(arrondi)
+                        .explic("CA Aide à domicile Revenu :")
+                        .explic("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}")
+                        .explic("{2,number,#,##0.00}")
+                        .cons()
+                );
     }
 
 
     public ProducteurImpot construireProducteurImpotsCantonauxPC(int annee) {
-        String codeBeneficiaire = "CAN-GE";
+
         ProducteurImpotBase producteurImpotBase = construireImpotCantonalBasePC(annee);
         ProducteurImpot producteur;
         if (annee < 2010) {
-            ProducteurImpotGEAvecRabais prodRabais = new ProducteurImpotGEAvecRabais("IBR", "RI", codeBeneficiaire) {
-                @Override
-                protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                    return FournisseurCantonalGE.this.getNewExplicationBuilder();
-                }
-            };
+            ProducteurImpotGEAvecRabais prodRabais = new ProducteurImpotGEAvecRabais("IBR", "RI", CODE_CANTON_GE);
             prodRabais.setProducteurBaseRabais(producteurImpotBase);
             producteur = prodRabais;
         } else {
-            producteur = new ProducteurImpot("IBR", codeBeneficiaire) {
-                @Override
-                protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                    return FournisseurCantonalGE.this.getNewExplicationBuilder();
-                }
-            };
+            producteur = new ProducteurImpot("IBR", CODE_CANTON_GE);
         }
         producteur.setProducteurBase(producteurImpotBase);
-        completerProducteurImpotsCantonaux(producteur, codeBeneficiaire, annee, TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
+        completerProducteurImpotsCantonaux(producteur, annee, ARRONDI_IMPOT);
         return producteur;
     }
 
-    private ProducteurImpot construireProducteurImpotCantonalBaseRevenu(int annee, String codeBeneficiaire) {
+    private ProducteurImpot construireProducteurImpotCantonalBaseRevenu(int annee) {
         ProducteurImpotBase producteurImpotBase = construireImpotCantonalBaseRevenu(annee);
         ProducteurImpot producteur;
         if (annee < 2010) {
-            ProducteurImpotGEAvecRabais prodRabais = new ProducteurImpotGEAvecRabais("IBR", "RI", codeBeneficiaire) {
-                @Override
-                protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                    return FournisseurCantonalGE.this.getNewExplicationBuilder();
-                }
-            };
+            ProducteurImpotGEAvecRabais prodRabais = new ProducteurImpotGEAvecRabais("IBR", "RI", CODE_CANTON_GE);
             prodRabais.setProducteurBaseRabais(producteurImpotBase);
             producteur = prodRabais;
         } else {
-            producteur = new ProducteurImpot("IBR", codeBeneficiaire) {
-                @Override
-                protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                    return FournisseurCantonalGE.this.getNewExplicationBuilder();
-                }
-            };
+            producteur = new ProducteurImpot("IBR", CODE_CANTON_GE);
         }
         producteur.setProducteurBase(producteurImpotBase);
         return producteur;
     }
 
-    public ProducteurImpot construireProducteurImpotsCantonauxRevenu(int annee, TypeArrondi typeArrondi) {
-        String codeBeneficiaire = "CAN-GE";
-        ProducteurImpot producteur = construireProducteurImpotCantonalBaseRevenu(annee, codeBeneficiaire);
-        completerProducteurImpotsCantonaux(producteur, codeBeneficiaire, annee, typeArrondi);
+    @Override
+    public ProducteurImpot construireProducteurImpotsCantonauxRevenu(int annee, TypeArrondi arrondi) {
+
+        ProducteurImpot producteur = construireProducteurImpotCantonalBaseRevenu(annee);
+        completerProducteurImpotsCantonaux(producteur,  annee, arrondi);
         return producteur;
 
     }
 
     private ProducteurImpot construireProducteurImpotsICCRevenu(int annee) {
-        ProducteurImpot producteur = construireProducteurImpotsCantonauxRevenu(annee, TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
+        ProducteurImpot producteur = construireProducteurImpotsCantonauxRevenu(annee,ARRONDI_IMPOT);
 
         // On ajoute ensuite les impôts communaux
-        ProducteurImpotCommunalGE prodComm = new ProducteurImpotCommunalGEPersPhysique("PPR", "COR") {
-            @Override
-            protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                return FournisseurCantonalGE.this.getNewExplicationBuilder();
-            }
-        };
+        ProducteurImpotCommunalGE prodComm = new ProducteurImpotCommunalGEPersPhysique("PPR", "COR");
         prodComm.setFournisseurParametrage(this.getFournisseurParamCommunaux());
         producteur.setProducteurImpotCommunal(prodComm);
         return producteur;
     }
 
     private ProducteurImpot construireProducteurImpotsICCFortune(int annee) {
-        ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
-        producteurImpotBase.setBareme(this.getBaremeFortune(annee));
-        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
-
-
         String codeBeneficiaire = "CAN-GE";
-        ProducteurImpot producteur = new ProducteurImpot("IBF", codeBeneficiaire) {
-            @Override
-            protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                return FournisseurCantonalGE.this.getNewExplicationBuilder();
-            }
-        };
-        producteur.setProducteurBase(producteurImpotBase);
-
-        IExplicationDetailleeBuilder explication = getNewExplicationBuilder();
-        explication.ajouter("CA Fortune :");
-        explication.ajouter("Total impôt de base fortune ({0,number,#,##0.00}) * {1,number,percent}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent prodCAF = new ProducteurImpotDerivePourcent("CAF", "47.5 %", codeBeneficiaire);
-        prodCAF.setExplicationDetailleePattern(explication.getTexte());
-        producteur.ajouteProducteurDerive(prodCAF);
-
-        explication.reset();
-        explication.ajouter("CA Aide à domicile Fortune :");
-        explication.ajouter("Total impôt de base fortune ({0,number,#,##0.00}) * {1,number,percent}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent prodADF = new ProducteurImpotDerivePourcent("ADF", "1 %", codeBeneficiaire);
-        prodADF.setExplicationDetailleePattern(explication.getTexte());
-        producteur.ajouteProducteurDerive(prodADF);
+        ProducteurImpot producteur = new ProducteurImpot("IBF", codeBeneficiaire);
+        producteur.setProducteurBase(
+                unProducteurImpotBaseProgressif(getBaremeFortune(annee))
+                        .arrondiAssiettes(ARRONDI_ASSIETTE)
+                        .arrondiImpot(ARRONDI_IMPOT)
+                        .construire());
+        producteur.ajouteProducteurDerive(
+                unConsProducteurImpotDerive("CAF")
+                        .taux("47.5 %")
+                        .beneficiaire(codeBeneficiaire)
+                        .arrondi(ARRONDI_IMPOT)
+                        .explic("CA Fortune :")
+                        .explic("Total impôt de base fortune ({0,number,#,##0.00}) * {1,number,percent}")
+                        .explic("{2,number,#,##0.00}")
+                        .cons());
+        producteur.ajouteProducteurDerive(
+                unConsProducteurImpotDerive("ADF")
+                        .taux("1 %")
+                        .beneficiaire(codeBeneficiaire)
+                        .arrondi(ARRONDI_IMPOT)
+                        .explic("CA Aide à domicile Fortune :")
+                        .explic("Total impôt de base fortune ({0,number,#,##0.00}) * {1,number,percent}")
+                        .explic("{2,number,#,##0.00}")
+                        .cons()
+        );
 
         // On ajoute ensuite les impôts communaux
-        ProducteurImpotCommunalGE prodComm = new ProducteurImpotCommunalGEPersPhysique("PPF", "COF") {
-            @Override
-            protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                return FournisseurCantonalGE.this.getNewExplicationBuilder();
-            }
-        };
+        ProducteurImpotCommunalGE prodComm = new ProducteurImpotCommunalGEPersPhysique("PPF", "COF");
         prodComm.setFournisseurParametrage(this.getFournisseurParamCommunaux());
         producteur.setProducteurImpotCommunal(prodComm);
         return producteur;
     }
 
     private ProducteurImpot construireProducteurImpotsICCFortuneSupplementaire(int annee) {
-        ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
-        producteurImpotBase.setBareme(this.getBaremeFortuneSupplementaire(annee));
-        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
-
-
         String codeBeneficiaire = "CAN-GE";
-        ProducteurImpot producteur = new ProducteurImpot("ISF", codeBeneficiaire) {
-            @Override
-            protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                return FournisseurCantonalGE.this.getNewExplicationBuilder();
-            }
-        };
-        producteur.setProducteurBase(producteurImpotBase);
+        ProducteurImpot producteur = new ProducteurImpot("ISF", codeBeneficiaire);
+        producteur.setProducteurBase(
+                unProducteurImpotBaseProgressif(getBaremeFortuneSupplementaire(annee))
+                        .arrondiAssiettes(ARRONDI_ASSIETTE)
+                        .arrondiImpot(ARRONDI_IMPOT)
+                        .construire()
+        );
         return producteur;
     }
 

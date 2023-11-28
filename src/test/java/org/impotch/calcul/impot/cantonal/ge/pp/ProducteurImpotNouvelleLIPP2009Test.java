@@ -55,8 +55,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe.unConstructeurDeBaremeParTrancheIndexee;
+import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
+import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille.splittingIntegral;
 
 public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
+
+    private final static TypeArrondi ARRONDI_ASSIETTE = TypeArrondi.UNITE_LA_PLUS_PROCHE;
+    private final static TypeArrondi ARRONDI_IMPOT = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
     private ProducteurImpot producteur;
 
@@ -100,17 +105,13 @@ public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
                 .puis().taux("19 %")
                 .construire(2009);
 
-        ProducteurImpotBaseProgressif producteurBase = new ProducteurImpotBaseProgressif();
-        producteurBase.setStrategieProductionImpotFamille(new Splitting(bareme, "50 %"));
-
-
-        producteur = new ProducteurImpot("IBR", "CAN-GE") {
-            @Override
-            protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                return new ExplicationDetailleTexteBuilder();
-            }
-        };
-        producteur.setProducteurBase(producteurBase);
+         producteur = new ProducteurImpot("IBR", "CAN-GE");
+        producteur.setProducteurBase(
+                unProducteurImpotBaseProgressif(splittingIntegral(bareme))
+                        .arrondiAssiettes(ARRONDI_ASSIETTE)
+                        .arrondiImpot(ARRONDI_IMPOT)
+                        .construire()
+        );
     }
 
     private void marie(final int periodeFiscale, final int montantImposable, final String montantImpot, final int... ageEnfant) {

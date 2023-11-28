@@ -31,6 +31,7 @@
 package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 
 import org.impotch.calcul.impot.ProducteurImpotDerivePourcent;
@@ -49,10 +50,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.ProducteurImpotDerivePourcent.unConsProducteurImpotDerive;
 import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
+import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
 
 
 public class BaremePrestationCapital2009Test extends ProducteurImpotGEAvant2010 {
+
+    private final static TypeArrondi ARRONDI_ASSIETTE = TypeArrondi.UNITE_LA_PLUS_PROCHE;
+    private final static TypeArrondi ARRONDI_IMPOT = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
     private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
 
@@ -66,62 +72,64 @@ public class BaremePrestationCapital2009Test extends ProducteurImpotGEAvant2010 
 
     @BeforeEach
     public void init() throws Exception {
-        ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
-        producteurImpotBase.setBareme(fournisseur.getBaremeRevenu(2009));
+        String beneficaireEtatGE = "CAN-GE";
+        ProducteurImpot producteur = new ProducteurImpot("IBR", beneficaireEtatGE);
+        producteur.setProducteurBase(
+                unProducteurImpotBaseProgressif(fournisseur.getBaremeRevenu(2009))
+                        .arrondiAssiettes(ARRONDI_ASSIETTE)
+                        .arrondiImpot(ARRONDI_IMPOT)
+                        .construire()
+        );
 
-        producteurImpotBase.setTypeArrondiImposable(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.UNITE_LA_PLUS_PROCHE);
-        producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
+        producteur.ajouteProducteurDerive(
+                unConsProducteurImpotDerive("RIBR")
+                        .taux("-12 %")
+                        .beneficiaire(beneficaireEtatGE)
+                        .arrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                        .explic("Réduction de {1,number,percent} sur impôt de base sur revenu {0,number,#,##0.00}")
+                        .explic("{2,number,#,##0.00}").cons()
+                );
 
+        producteur.ajouteProducteurDerive(
+                unConsProducteurImpotDerive("CAR")
+                        .taux("47.5 %")
+                        .beneficiaire(beneficaireEtatGE)
+                        .arrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                        .producteurDerive(
+                                unConsProducteurImpotDerive("RCAR")
+                                        .taux("-12 %")
+                                        .beneficiaire(beneficaireEtatGE)
+                                        .arrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                                        .explic("Réduction de {1,number,percent} sur cts add. cantonaux sur revenu {0,number,#,##0.00}")
+                                        .explic("{2,number,#,##0.00}")
+                                        .cons()
+                        )
+                        .explic("CA Revenu :")
+                        .explic("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}")
+                        .explic("{2,number,#,##0.00}").cons()
+        );
 
-        ProducteurImpot producteur;
-        String codeBeneficiaire = "CAN-GE";
-        producteur = new ProducteurImpot("IBR", codeBeneficiaire) {
-            @Override
-            protected IExplicationDetailleeBuilder createExplicationBuilder() {
-                return getNewExplicationBuilder();
-            }
-        };
-        producteur.setProducteurBase(producteurImpotBase);
+        producteur.ajouteProducteurDerive(
+                unConsProducteurImpotDerive("ADR")
+                        .taux("1 %")
+                        .beneficiaire(beneficaireEtatGE)
+                        .arrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                        .explic("CA Aide à domicile Revenu :")
+                        .explic("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}")
+                        .explic("{2,number,#,##0.00}")
+                        .cons()
+        );
 
-        IExplicationDetailleeBuilder explication = getNewExplicationBuilder();
-        explication.ajouter("Réduction de {1,number,percent} sur impôt de base sur revenu {0,number,#,##0.00}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent prodRIBR = new ProducteurImpotDerivePourcent("RIBR", "-12 %", codeBeneficiaire);
-        prodRIBR.setExplicationDetailleePattern(explication.getTexte());
-        producteur.ajouteProducteurDerive(prodRIBR);
-
-        explication.reset();
-        explication.ajouter("Réduction de {1,number,percent} sur cts add. cantonaux sur revenu {0,number,#,##0.00}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent prodRCAR = new ProducteurImpotDerivePourcent("RCAR", "-12 %", codeBeneficiaire);
-        prodRCAR.setExplicationDetailleePattern(explication.getTexte());
-
-        explication.reset();
-        explication.ajouter("CA Revenu :");
-        explication.ajouter("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent ctsAddCantonaux = new ProducteurImpotDerivePourcent("CAR", "47.5 %", codeBeneficiaire);
-        ctsAddCantonaux.setProducteurDerive(prodRCAR);
-        ctsAddCantonaux.setExplicationDetailleePattern(explication.getTexte());
-        producteur.ajouteProducteurDerive(ctsAddCantonaux);
-
-        explication.reset();
-        explication.ajouter("CA Aide à domicile Revenu :");
-        explication.ajouter("Total impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}");
-        explication.ajouter("{2,number,#,##0.00}");
-        ProducteurImpotDerivePourcent prodADR = new ProducteurImpotDerivePourcent("ADR", "1 %", codeBeneficiaire);
-        prodADR.setExplicationDetailleePattern(explication.getTexte());
-        producteur.ajouteProducteurDerive(prodADR);
-
-        ProducteurImpotDerivePourcent prodCOR = new ProducteurImpotDerivePourcent("COR", "44.5 %", "COM");
-
-        explication = getNewExplicationBuilder();
-        explication.ajouter("Cts additionnels communaux :");
-        explication.ajouter("impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}");
-        explication.ajouter("{2,number,#,##0.00}");
-        prodCOR.setExplicationDetailleePattern(explication.getTexte());
-        producteur.ajouteProducteurDerive(prodCOR);
+        producteur.ajouteProducteurDerive(
+                unConsProducteurImpotDerive("COR")
+                        .taux("44.5 %")
+                        .beneficiaire("COM")
+                        .arrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                        .explic("Cts additionnels communaux :")
+                        .explic("impôt de base revenu ({0,number,#,##0.00}) * {1,number,percent}")
+                        .explic("{2,number,#,##0.00}")
+                        .cons()
+        );
 
         producteur2009 = producteur;
         situationCelibataire = (SituationFamilialeGE) creerSituationCelibataireSansEnfant();

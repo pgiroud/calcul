@@ -25,13 +25,21 @@ import org.impotch.calcul.impot.taxation.pp.ProducteurImpotAvecRabais;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import org.impotch.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
+import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 import org.impotch.calcul.impot.taxation.pp.famille.DoubleBareme;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
 
+import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
+import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille.doubleBareme;
+
 public class Fournisseur implements FournisseurRegleImpotFederal {
-	
+
+	private static final TypeArrondi ARRONDI_ASSIETTES = TypeArrondi.CENTAINE_INF;
+	private static final TypeArrondi ARRONDI_IMPOT = TypeArrondi.CINQ_CENTIEMES_INF;
+
+
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsFederauxPP = new ConcurrentHashMap<>();
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<>();
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotSourcePrestationCapital = new ConcurrentHashMap<>();
@@ -82,8 +90,9 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 	
 	private Bareme getBaremePrestationCapital(int annee) {
-        Bareme bareme = 2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
-        return construireBaremePrestationCapital(bareme);
+//        Bareme bareme = 2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
+//        return construireBaremePrestationCapital(bareme);
+		return 2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
 	}
 	
 	private Bareme getBaremeRevenuFamille(int annee) {
@@ -91,83 +100,67 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 
 	private Bareme getBaremePrestationCapitalFamille(int annee) {
-        Bareme bareme =  2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
-        return construireBaremePrestationCapital(bareme);
+//        Bareme bareme =  2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
+//        return construireBaremePrestationCapital(bareme);
+		return  2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
 	}
 		
 	private IExplicationDetailleeBuilder getNewExplicationBuilder() {
 		return new ExplicationDetailleTexteBuilder();
 	}
-	
-	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee) {
-		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
-		producteurImpotBase.setStrategieProductionImpotFamille(new DoubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee)));
 
-		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENTAINE_INF);
-		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENTAINE_INF);
-		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_INF);
-		
-		
+	private int montantReductionImpotParEnfant(int annee) {
+		if (annee > 2023) {
+			return 259;
+		} else if (annee > 2022) {
+			return 255;
+		} else if (annee > 2011) {
+			return 251;
+		} else {
+			return 250;
+		}
+	}
+
+
+	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee) {
         ProducteurImpot producteur = null;
         if (annee < 2011) {
-            producteur = new ProducteurImpot("IBR",""){
-                @Override
-                protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
-            };
+            producteur = new ProducteurImpot("IBR","");
         } else {
-            ProducteurRabaisEnfantPersonneNecessiteuse producteurRabais = new  ProducteurRabaisEnfantPersonneNecessiteuse();
-			if (annee > 2022) {
-				producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(255);
-			} else if (annee > 2011) {
-                producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(251);
-            } else {
-                producteurRabais.setMontantRabaisParEnfantEtPersonneNecessiteuse(250);
-            }
-
-            ProducteurImpotAvecRabais prodAvecRabais = new ProducteurImpotAvecRabais("IBR","RI","") {
-                @Override
-                protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
-            };
-            prodAvecRabais.setProducteurBaseRabais(producteurRabais);
+             ProducteurImpotAvecRabais prodAvecRabais = new ProducteurImpotAvecRabais("IBR","RI","");
+            prodAvecRabais.setProducteurBaseRabais(new  ProducteurRabaisEnfantPersonneNecessiteuse(montantReductionImpotParEnfant(annee)));
             producteur = prodAvecRabais;
         }
-		producteur.setProducteurBase(producteurImpotBase);
+		producteur.setProducteurBase(
+				unProducteurImpotBaseProgressif(doubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee)))
+						.arrondiAssiettes(ARRONDI_ASSIETTES)
+						.arrondiImpot(ARRONDI_IMPOT)
+						.construire()
+		);
 		return producteur;
 	}
 	
 	private ProducteurImpot construireProducteurImpotsPrestationCapital(int annee) {
-		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
-		producteurImpotBase.setStrategieProductionImpotFamille(new DoubleBareme(getBaremePrestationCapital(annee), getBaremePrestationCapitalFamille(annee)));
-
-		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENTAINE_INF);
-		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENTAINE_INF);
-		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_INF);
-		
-		
-		
-		ProducteurImpot producteur = new ProducteurImpot("IBR",""){
-			@Override
-			protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
-		};
-		producteur.setProducteurBase(producteurImpotBase);
+		ProducteurImpot producteur = new ProducteurImpot("IBR","");
+		producteur.setProducteurBase(
+				unProducteurImpotBaseProgressif(doubleBareme(getBaremePrestationCapital(annee), getBaremePrestationCapitalFamille(annee)))
+						.arrondiAssiettes(ARRONDI_ASSIETTES)
+						.arrondiImpot(ARRONDI_IMPOT)
+						.construireUnCinquieme()
+		);
 		return producteur;
 	}
 	
 	
 	
 	private ProducteurImpot construireProducteurImpotSourcePrestationCapital(int annee) {
-		ProducteurImpotBaseProgressif producteurImpotBase = new ProducteurImpotBaseProgressif();
-		producteurImpotBase.setBareme(fournisseurBaremeIFD.getBaremeImpotSourcePrestationCapital(annee));
-
-		producteurImpotBase.setTypeArrondiImposable(TypeArrondi.CENTAINE_INF);
-		producteurImpotBase.setTypeArrondiDeterminant(TypeArrondi.CENTAINE_INF);
-		producteurImpotBase.setTypeArrondiImpot(TypeArrondi.CINQ_CENTIEMES_INF);
-
-		ProducteurImpot producteur = new ProducteurImpot("IBR",""){
-			@Override
-			protected IExplicationDetailleeBuilder createExplicationBuilder() {return Fournisseur.this.getNewExplicationBuilder();}
-		};
-		producteur.setProducteurBase(producteurImpotBase);
+		ProducteurImpot producteur = new ProducteurImpot("IBR","");
+		producteur.setProducteurBase(
+				unProducteurImpotBaseProgressif(fournisseurBaremeIFD.getBaremeImpotSourcePrestationCapital(annee))
+						.arrondiAssiettes(ARRONDI_ASSIETTES)
+						.arrondiImpot(ARRONDI_IMPOT)
+						.construire()
+		);
 		return producteur;
 	}
 

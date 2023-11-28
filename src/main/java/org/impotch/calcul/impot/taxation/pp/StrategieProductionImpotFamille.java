@@ -15,9 +15,22 @@
  */
 package org.impotch.calcul.impot.taxation.pp;
 
+import org.impotch.bareme.Bareme;
+import org.impotch.calcul.impot.taxation.pp.famille.DoubleBareme;
+import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
+
 import java.math.BigDecimal;
 
 
 public interface StrategieProductionImpotFamille {
+
+	public static StrategieProductionImpotFamille doubleBareme(Bareme baremeSeul, Bareme baremeFamille) {
+		return new DoubleBareme(baremeSeul,baremeFamille);
+	}
+
+	public static StrategieProductionImpotFamille splittingIntegral(Bareme bareme) {
+		return new Splitting(bareme, "50 %");
+	}
+
 	BigDecimal produireImpotAnnuel(SituationFamiliale situation, BigDecimal determinantArrondi, BigDecimal imposableArrondi);
 }

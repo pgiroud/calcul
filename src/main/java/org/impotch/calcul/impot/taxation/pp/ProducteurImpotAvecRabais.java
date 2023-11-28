@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
-public abstract class ProducteurImpotAvecRabais extends ProducteurImpot {
+public class ProducteurImpotAvecRabais extends ProducteurImpot {
 
 	final Logger logger = LoggerFactory.getLogger(ProducteurImpotAvecRabais.class);
 
