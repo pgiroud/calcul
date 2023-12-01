@@ -144,7 +144,11 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 		}
 
 		public Constructeur taux(String tx) {
-			this.taux = BigDecimalUtil.parseTaux(tx);
+			return taux(BigDecimalUtil.parseTaux(tx));
+		}
+
+		public Constructeur taux(BigDecimal tx) {
+			this.taux = tx;
 			return this;
 		}
 

@@ -25,7 +25,7 @@
         <dependency>
             <groupId>org.impotch</groupId>
             <artifactId>bareme</artifactId>
-            <version>3.0.2</version>
+            <version>3.0.3-snapshot</version>
         </dependency>
         <dependency>
             <groupId>org.impotch</groupId>
