@@ -145,6 +145,13 @@ public class IndexateurGenevoisTest {
 		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(1250), 2009)).isEqualTo(BigDecimal.valueOf(1369));
     }
 
+
+	@Test
+	@DisplayName("2017 déduction double activité")
+	public void indexation2017DeductionDoubleActivite() {
+		assertThat(indexateurBaseDec05.indexer(BigDecimal.valueOf(500), 2017)).isEqualTo(BigDecimal.valueOf(499));
+	}
+
 	@Test
 	@DisplayName("2019 déduction double activité")
 	public void indexation2019DeductionDoubleActivite() {

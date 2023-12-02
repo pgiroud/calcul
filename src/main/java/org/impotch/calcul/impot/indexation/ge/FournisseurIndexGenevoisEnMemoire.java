@@ -19,14 +19,16 @@ import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 import org.impotch.calcul.impot.indexation.Indexateur;
 import org.impotch.calcul.impot.indexation.IndexateurPeriodique;
 import org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FournisseurIndexGenevoisEnMemoire implements FournisseurIndexGenevois {
+
+    final static Logger logger = LoggerFactory.getLogger(FournisseurIndexGenevoisEnMemoire.class);
 
     private final FournisseurIndicePeriodique fournisseurIndiceGEBaseMai1993;
     private final FournisseurIndicePeriodique fournisseurIndiceGEBaseDecembre2005;
 
-    private Indexateur indexateurBaseMai1993;
-    private Indexateur indexateurBaseDec2005;
 
     public FournisseurIndexGenevoisEnMemoire() {
         fournisseurIndiceGEBaseMai1993 = construireFournisseurIndiceGEBaseMai1993();
@@ -86,24 +88,16 @@ public class FournisseurIndexGenevoisEnMemoire implements FournisseurIndexGenevo
 
     @Override
     public Indexateur getIndexateurBaseMai1993(int anneeBaseIndexation) {
-        if (null == indexateurBaseMai1993) {
-            IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation, 4);
-            indexateur.setFournisseurIndice(getFournisseurIndiceGEBaseMai1993());
-            indexateurBaseMai1993 = indexateur;
-        }
-        return indexateurBaseMai1993;
-
+        IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation, 4);
+        indexateur.setFournisseurIndice(getFournisseurIndiceGEBaseMai1993());
+        return indexateur;
     }
 
     @Override
     public Indexateur getIndexateurBaseDec2005(int anneeBaseIndexation) {
-        if (null == indexateurBaseDec2005) {
-            IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation, 4);
-            indexateur.setFournisseurIndice(getFournisseurIndiceGEBaseDecembre2005());
-            indexateurBaseDec2005 = indexateur;
-        }
-        return indexateurBaseDec2005;
-
+        IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation, 4);
+        indexateur.setFournisseurIndice(getFournisseurIndiceGEBaseDecembre2005());
+        return indexateur;
     }
 
 }
