@@ -64,7 +64,9 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
 
     protected DeductionSociale construireRegleDeductionSocialeEnfant(int annee) {
         DeductionSocialeParEnfant deduction = new DeductionSocialeParEnfant(annee);
-        if (annee > 2022) {
+        if (annee > 2023) {
+            deduction.setDeductionSocialeParEnfant(6700);
+        } else if (annee > 2022) {
             deduction.setDeductionSocialeParEnfant(6600);
         } else if (annee > 2011) {
             deduction.setDeductionSocialeParEnfant(6500);
@@ -90,7 +92,9 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
 
     protected DeductionSociale construireRegleDeductionSocialeConjoint(int annee) {
         DeductionSocialePourConjoints deduction = new DeductionSocialePourConjoints(annee);
-        if (annee > 2022) {
+        if (annee > 2023) {
+            deduction.setDeducConjointsIFD(2800);
+        } else if (annee > 2022) {
             deduction.setDeducConjointsIFD(2700);
         } else if (annee > 2010) {
             deduction.setDeducConjointsIFD(2600);
