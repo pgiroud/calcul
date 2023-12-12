@@ -18,6 +18,7 @@ package org.impotch.calcul.impot.taxation.pp.famille;
 import java.math.BigDecimal;
 
 import org.impotch.bareme.Bareme;
+import org.impotch.bareme.BaremeTauxMarginal;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 import org.impotch.util.TypeArrondi;
@@ -64,6 +65,11 @@ public class ImpositionFamilleSansAvantage implements
 		impotDeterminant = typeArrondiImpot.arrondirMontant(impotDeterminant);
 		if (0 == imposableArrondi.compareTo(determinantArrondi)) return impotDeterminant;
 		else return typeArrondiImpot.arrondirMontant(imposableArrondi.multiply(impotDeterminant).divide(determinantArrondi,10,BigDecimal.ROUND_HALF_UP));
+	}
+
+	@Override
+	public BigDecimal produireImpotAnnuelAuTauxMaximal(SituationFamiliale situation, BigDecimal imposableArrondi) {
+		return typeArrondiImpot.arrondirMontant(imposableArrondi.multiply(((BaremeTauxMarginal)getBareme(situation)).getTauxMaximum()));
 	}
 
 	protected Bareme getBareme(SituationFamiliale situation) {

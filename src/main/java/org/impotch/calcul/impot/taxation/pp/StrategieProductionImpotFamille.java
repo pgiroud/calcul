@@ -33,4 +33,5 @@ public interface StrategieProductionImpotFamille {
 	}
 
 	BigDecimal produireImpotAnnuel(SituationFamiliale situation, BigDecimal determinantArrondi, BigDecimal imposableArrondi);
+	BigDecimal produireImpotAnnuelAuTauxMaximal(SituationFamiliale situation, BigDecimal imposableArrondi);
 }

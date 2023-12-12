@@ -169,16 +169,24 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
     /**************************************************/
 
 	public BigDecimal produireImpotBase(SituationFamiliale situation, FournisseurAssiettePeriodique fournisseur) {
-		BigDecimal determinant = getTypeArrondiDeterminant().arrondirMontant(fournisseur.getMontantDeterminant());
-		BigDecimal imposable = getTypeArrondiImposable().arrondirMontant(fournisseur.getMontantImposable());
-		if (!isStrictementPositif(determinant) || !isStrictementPositif(imposable)) return BigDecimal.ZERO;
-		
-		BigDecimal impotAnnuel = getStrategieImpositionFamille().produireImpotAnnuel(situation,determinant,imposable);
-		BigDecimal impot = getStrategieAnnualisation().annualiseImpot(impotAnnuel, fournisseur.getNombreJourPourAnnualisation());
+		BigDecimal impot = null;
+		if (null == fournisseur.getMontantDeterminant()) {
+			BigDecimal imposable = getTypeArrondiImposable().arrondirMontant(fournisseur.getMontantImposable());
+			BigDecimal impotAnnuel = getStrategieImpositionFamille().produireImpotAnnuelAuTauxMaximal(situation,imposable);
+			impot = getStrategieAnnualisation().annualiseImpot(impotAnnuel, fournisseur.getNombreJourPourAnnualisation());
+		} else {
+			BigDecimal determinant = getTypeArrondiDeterminant().arrondirMontant(fournisseur.getMontantDeterminant());
+			BigDecimal imposable = getTypeArrondiImposable().arrondirMontant(fournisseur.getMontantImposable());
+			if (!isStrictementPositif(determinant) || !isStrictementPositif(imposable)) return BigDecimal.ZERO;
+
+			BigDecimal impotAnnuel = getStrategieImpositionFamille().produireImpotAnnuel(situation,determinant,imposable);
+
+			impot = getStrategieAnnualisation().annualiseImpot(impotAnnuel, fournisseur.getNombreJourPourAnnualisation());
+		}
 		impot = getTypeArrondiImpot().arrondirMontant(impot);
-        if (null != partBase) {
-            impot = getTypeArrondiImpot().arrondirMontant(partBase.multiply(impot));
-        }
+		if (null != partBase) {
+			impot = getTypeArrondiImpot().arrondirMontant(partBase.multiply(impot));
+		}
 		return impot;
 	}
 
