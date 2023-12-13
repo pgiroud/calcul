@@ -17,5 +17,7 @@ package org.impotch.calcul.impot.taxation.pp;
 
 public interface EnfantACharge extends PersonneACharge {
 	int getAge(int anneeFiscale);
-
+	default boolean estEnGardeAlterneeStricte() {
+		return false;
+	}
 }

@@ -47,6 +47,7 @@ import org.impotch.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageCommunaleGE;
 import org.impotch.calcul.impot.taxation.pp.*;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
+import org.impotch.calcul.impot.taxation.pp.famille.SplittingEventuellementPartiel;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais.ProducteurBaseRabaisImpot;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
@@ -235,8 +236,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     }
 
     private StrategieProductionImpotFamille impositionFamiliale(int annee) {
-        return annee < 2010 ? new DoubleBaremeGE(getBaremeRevenu(annee), getBaremeRevenuFamille(annee))
-                    : new Splitting(getBaremeRevenu(annee), "50 %");
+        if (annee < 2010) return new DoubleBaremeGE(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
+        if (annee < 2024) return new Splitting(getBaremeRevenu(annee), "50 %");
+        else return new SplittingEventuellementPartiel(getBaremeRevenu(annee),"50 %","55,56 %"); // https://ge.ch/grandconseil/data/texte/PL13254A.pdf
     }
 
     public ProducteurImpotBase construireImpotCantonalBaseRevenu(int annee) {
