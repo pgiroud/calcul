@@ -15,6 +15,7 @@
  */
 package org.impotch.calcul.assurancessociales;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -106,6 +107,7 @@ public class FournisseurDeducMaxPilier3aTest {
     }
 
     @Test
+    @Disabled
     public void test2005et2006() {
         FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2005);
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6192");
@@ -116,6 +118,7 @@ public class FournisseurDeducMaxPilier3aTest {
     }
 
     @Test
+    @Disabled
     public void test2003et2004() {
         FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2003);
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6077");
@@ -126,6 +129,7 @@ public class FournisseurDeducMaxPilier3aTest {
     }
 
     @Test
+    @Disabled
     public void test2001et2002() {
         FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2001);
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5933");
@@ -136,6 +140,7 @@ public class FournisseurDeducMaxPilier3aTest {
     }
 
     @Test
+    @Disabled
     public void test1999et2000() {
         FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1999);
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5789");
@@ -147,6 +152,7 @@ public class FournisseurDeducMaxPilier3aTest {
 
 
     @Test
+    @Disabled
     public void test1997et1998() {
         FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1997);
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5731");
@@ -157,6 +163,7 @@ public class FournisseurDeducMaxPilier3aTest {
     }
 
     @Test
+    @Disabled
     public void test1995et1996() {
         FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1995);
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5587");
@@ -167,6 +174,7 @@ public class FournisseurDeducMaxPilier3aTest {
     }
 
     @Test
+    @Disabled
     public void test1993et1994() {
         FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(1993);
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("5414");

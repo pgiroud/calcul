@@ -17,6 +17,7 @@ package org.impotch.calcul.impot.cantonal.ge;
 
 import org.impotch.calcul.assurancessociales.Fournisseur;
 import org.impotch.calcul.assurancessociales.FournisseurRegleCalculAssuranceSociale;
+import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageGenevoisAnnuel;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageCommunaleGE;
 import org.impotch.calcul.impot.cantonal.ge.param.dao.ParametreCommunalDao;
@@ -41,7 +42,7 @@ public enum ContexteTestCH_GE {
 
     ContexteTestCH_GE() {
         fournisseurIndex = new FournisseurIndexGenevoisEnMemoire();
-        fournisseurRegleCalculAssuranceSociale = new Fournisseur();
+        fournisseurRegleCalculAssuranceSociale = new Fournisseur(FournisseurParametrageGenevoisAnnuel.enMemoire());
 
         FournisseurParamCommunalGE paramComm = new FournisseurParamCommunalGE();
         paramComm.setDao(construireParametrageCommunal());

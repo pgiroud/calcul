@@ -15,6 +15,7 @@
  */
 package org.impotch.calcul.assurancessociales.ge.param;
 
+import org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuelEnMemoire;
 import org.impotch.util.BigDecimalUtil;
 
 import java.math.BigDecimal;
@@ -23,59 +24,46 @@ import java.util.*;
 /**
  * Created by patrick on 18/01/15.
  */
-public class ParametrageEnMemoireCotisationAssuranceMaternite implements ParametrageCotisationAssuranceMaternite {
+class ParametrageEnMemoireCotisationAssuranceMaternite implements ParametrageCotisationAssuranceMaternite {
 
-    private Map<Integer,BigDecimal> tauxParAnnee;
-    private int premiereAnnee;
-    private int derniereAnnee;
-
-    public ParametrageEnMemoireCotisationAssuranceMaternite() {
-        Map<Integer,String> taux = new HashMap<>();
-        taux.put(2003,"0.15 %");
-        taux.put(2004,"0.13 %");
-        taux.put(2006,"0.02 %");
-        taux.put(2010,"0.045 %");
-        taux.put(2013,"0.042 %");
-        taux.put(2014,"0.041 %");
-        taux.put(2018,"0.046 %");
-        taux.put(2021,"0.043 %");
-        setTauxParAnnee(taux);
+    public static Constructeur unConstructeur(int annee) {
+        return new Constructeur(annee);
     }
 
-/**************************************************/
-    /********** Accesseurs / Mutateurs ****************/
-    /**************************************************/
+    private final int annee;
+    private final String tauxCotisationAssuranceMaternite;
 
-    private int anneeCourante() {
-        Calendar cal = Calendar.getInstance();
-        return cal.get(Calendar.YEAR);
+    private ParametrageEnMemoireCotisationAssuranceMaternite(int annee, String tauxCotisationAssuranceMaternite) {
+        this.annee = annee;
+        this.tauxCotisationAssuranceMaternite = tauxCotisationAssuranceMaternite;
     }
-
-    public void setTauxParAnnee(Map<Integer,String> taux) {
-        List<Integer> annees = new ArrayList<>(taux.keySet());
-        Collections.sort(annees);
-        premiereAnnee = annees.get(0);
-        derniereAnnee = Integer.max(1+anneeCourante(),annees.get(annees.size()-1));
-        tauxParAnnee = new HashMap<>();
-        BigDecimal dernierTaux = null;
-        for (int i = premiereAnnee; i <= derniereAnnee; i++) {
-            if (taux.containsKey(i)) {
-                dernierTaux = BigDecimalUtil.parseTaux(taux.get(i));
-            }
-            tauxParAnnee.put(i,dernierTaux);
-        }
-    }
-
-    /**************************************************/
-    /******************* Méthodes *********************/
-    /**************************************************/
 
     @Override
-    public BigDecimal fournirTaux(int annee) {
-        if (annee < premiereAnnee || annee > derniereAnnee) {
-            throw new IllegalArgumentException("Le taux de cotisation à " +
-                    "l'assurance maternité n'est pas défini pour l'année " + annee);
+    public int annee() {
+        return annee;
+    }
+
+    @Override
+    public String tauxAssuranceMaternite() {
+        return tauxCotisationAssuranceMaternite;
+    }
+
+
+    public static class Constructeur {
+        private final int annee;
+        private String tauxCotisationAssuranceMaternite;
+
+        public Constructeur(int annee) {
+            this.annee = annee;
         }
-        return tauxParAnnee.get(annee);
+
+        public Constructeur tauxCotisationAssuranceMaternite(String taux) {
+            this.tauxCotisationAssuranceMaternite = taux;
+            return this;
+        }
+
+        public ParametrageCotisationAssuranceMaternite cons() {
+            return new ParametrageEnMemoireCotisationAssuranceMaternite(this.annee,this.tauxCotisationAssuranceMaternite);
+        }
     }
 }

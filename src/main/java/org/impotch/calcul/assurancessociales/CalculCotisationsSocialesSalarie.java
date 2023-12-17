@@ -16,8 +16,11 @@
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.impotch.calcul.ReglePeriodique;
+import org.impotch.calcul.assurancessociales.param.ParametrageParticipationHautRevenuAC;
+import org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuel;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.StringUtil;
 import org.impotch.util.TypeArrondi;
@@ -41,6 +44,11 @@ import static org.impotch.calcul.assurancessociales.CalculateurCotisationAC.unCa
  *
  */
 public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements CalculCotisationAvsAiApg, CalculPartSalarieeCotisationAvsAiApg, CalculCotisationAssuranceChomage, CalculCotisationsAssuranceAccidentsNonProfessionnels, CalculCotisationsAssuranceMaterniteAdoption {
+
+	public static Constructeur unConstructeurDeCotisationsSocialesSalarie(ParametrageSuisseAnnuel parametrage) {
+		return new Constructeur(parametrage);
+	}
+
 
     /**************************************************/
     /****************** Attributs *********************/
@@ -215,74 +223,14 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 
 
 	public static class Constructeur {
-		
-		private String tauxAVS;
-		private String tauxAI;
-		private String tauxAPG;
-
-		private int montantMax;
-		private String tauxAC;
-		private String ratioHautRevenu;
-		private String tauxACContributionHautRevenu = "0";
 
 		private String tauxAssuranceMaterniteAdoption;
+		private final ParametrageSuisseAnnuel parametrageSuisseAnnuel;
 
-		/**
-		 * Spécifie le taux de cotisation total (part employeur + part salariée).
-		 * @param taux le taux de cotisation AVS
-		 * @return ce construteur afin de chaîner les appels.
-		 */
-		public Constructeur tauxAvs(String taux) {
-			tauxAVS = taux;
-			return this;
-		}
+		public Constructeur(ParametrageSuisseAnnuel parametrageSuisseAnnuel) {
+			this.parametrageSuisseAnnuel = parametrageSuisseAnnuel;
 
-		/**
- 		 * Spécifie le taux de cotisation total (part employeur + part salariée).
-		 * @param taux le taux de cotisation à l'assurance invalidité.
-		 * @return ce construteur afin de chaîner les appels.
-		 */
-		public Constructeur tauxAi(String taux) {
-			tauxAI = taux;
-			return this;
 		}
-
-		/**
-		 * Spécifie le taux de cotisation total (part employeur + part salariée).
-		 * @param taux le taux des allocations pour perte de gains.
-		 * @return ce construteur afin de chaîner les appels.
-		 */
-		public Constructeur tauxApg(String taux) {
-			tauxAPG = taux;
-			return this;
-		}
-
-		public Constructeur montantAnnuelMaxGainAssure(int nMontantMax) {
-			montantMax = nMontantMax;
-			return this;
-		}
-		
-		/**
-		 * Spécifie le taux de cotisation total (part employeur + part salariée).
-		 * @param taux le taux de la cotisation à l'assurance chômage.
-		 * @return ce construteur afin de chaîner les appels.
-		 */
-		public Constructeur tauxAC(String taux) {
-			this.tauxAC = taux;
-			return this;
-		}
-		
-		public Constructeur participationHautRevenuCotisationAC(String ratioEntreHautRevenuEtMntMaxAssure, String taux) {
-			this.ratioHautRevenu = ratioEntreHautRevenuEtMntMaxAssure;
-			this.tauxACContributionHautRevenu = taux;
-			return this;
-		}
-
-        public Constructeur participationHautRevenuCotisationAC(String taux) {
-            this.ratioHautRevenu = null;
-            this.tauxACContributionHautRevenu = taux;
-            return this;
-        }
 
 		public Constructeur tauxAssuranceMaterniteAdoption(String taux) {
 			this.tauxAssuranceMaterniteAdoption = taux;
@@ -291,15 +239,31 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 		
 		public CalculCotisationsSocialesSalarie construire(int annee) {
 			CalculCotisationAvsAiApgSalarie.Constructeur constructeur = new CalculCotisationAvsAiApgSalarie.Constructeur();
-			constructeur.tauxAvs(tauxAVS).tauxAi(tauxAI).tauxApg(tauxAPG);
+			constructeur.tauxAvs(parametrageSuisseAnnuel.tauxAVS())
+					.tauxAi(parametrageSuisseAnnuel.tauxAI())
+					.tauxApg(parametrageSuisseAnnuel.tauxAPG());
 			
 			CalculCotisationsSocialesSalarie calculateur = new CalculCotisationsSocialesSalarie(annee);
-			calculateur.setMontantAnnuelMaximumGainAssure(new BigDecimal(montantMax));
+			calculateur.setMontantAnnuelMaximumGainAssure(BigDecimal.valueOf(parametrageSuisseAnnuel.montantMaximumDuGainAssure()));
 
-			calculateur.setCalculateurAC(unCalculateur(annee,montantMax,tauxAC)
-					.tauxParticipationHautRevenu(tauxACContributionHautRevenu)
-					.ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu(ratioHautRevenu).construire());
-
+			Optional<ParametrageParticipationHautRevenuAC> participation = parametrageSuisseAnnuel.participationHautRevenu();
+			if (participation.isPresent()) {
+				ParametrageParticipationHautRevenuAC parametrageParticipation = participation.get();
+				Optional<String> limitationDeLaParticipation = parametrageParticipation.ratioAvecLeMontantMaxAssureLimitantLaParticipation();
+				if (limitationDeLaParticipation.isPresent()) {
+					calculateur.setCalculateurAC(
+							unCalculateur(annee, parametrageSuisseAnnuel.montantMaximumDuGainAssure(), parametrageSuisseAnnuel.tauxAC())
+									.tauxParticipationHautRevenu(parametrageParticipation.taux())
+									.ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu(limitationDeLaParticipation.get()).construire());
+				} else {
+					calculateur.setCalculateurAC(
+							unCalculateur(annee, parametrageSuisseAnnuel.montantMaximumDuGainAssure(), parametrageSuisseAnnuel.tauxAC())
+									.tauxParticipationHautRevenu(parametrageParticipation.taux()).construire());
+				}
+			} else {
+				calculateur.setCalculateurAC(
+						unCalculateur(annee, parametrageSuisseAnnuel.montantMaximumDuGainAssure(), parametrageSuisseAnnuel.tauxAC()).construire());
+			}
 
 			calculateur.setCalculateurAvsAiApg(constructeur.construire(annee));
 			if (StringUtil.hasText(this.tauxAssuranceMaterniteAdoption)) {

@@ -13,20 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.assurancessociales;
+package org.impotch.calcul.assurancessociales.param;
 
-import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageGenevoisAnnuel;
+import java.util.Optional;
 
-public enum ContexteTestAssurancesSociales {
-    CTX_TST_AS;
-
-    private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
-
-    ContexteTestAssurancesSociales() {
-        fournisseurRegleCalculAssuranceSociale = new Fournisseur(FournisseurParametrageGenevoisAnnuel.enMemoire());
+public interface FournisseurParametrageSuisseAnnuel {
+    static FournisseurParametrageSuisseAnnuel enMemoire() {
+        return new FournisseurParametrageSuisseAnnuelEnMemoire();
     }
 
-    public FournisseurRegleCalculAssuranceSociale getFournisseurRegleCalculAssuranceSociale() {
-        return fournisseurRegleCalculAssuranceSociale;
-    }
+    Optional<ParametrageSuisseAnnuel> parametrage(int annee);
 }

@@ -24,11 +24,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+import static org.impotch.calcul.assurancessociales.ContexteTestAssurancesSociales.CTX_TST_AS;
 public class CalculCotisationAvsAiApgIndependantTest {
-	
 
-	private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale = new Fournisseur();
 	
 	private CalculCotisationAvsAiApgIndependant calculateur2008;
 	private CalculCotisationAvsAiApgIndependant calculateur2009;
@@ -37,10 +35,10 @@ public class CalculCotisationAvsAiApgIndependantTest {
 
     @BeforeEach
 	public void initialise() throws Exception {
-		calculateur2008 = (CalculCotisationAvsAiApgIndependant)fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationAvsAiApgIndependant(2008);
-		calculateur2009 = (CalculCotisationAvsAiApgIndependant)fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationAvsAiApgIndependant(2009);
-        calculateur2011 = (CalculCotisationAvsAiApgIndependant)fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationAvsAiApgIndependant(2011);
-        calculateur2013 = (CalculCotisationAvsAiApgIndependant)fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationAvsAiApgIndependant(2013);
+		calculateur2008 = (CalculCotisationAvsAiApgIndependant)CTX_TST_AS.getFournisseurRegleCalculAssuranceSociale().getCalculateurCotisationAvsAiApgIndependant(2008);
+		calculateur2009 = (CalculCotisationAvsAiApgIndependant)CTX_TST_AS.getFournisseurRegleCalculAssuranceSociale().getCalculateurCotisationAvsAiApgIndependant(2009);
+        calculateur2011 = (CalculCotisationAvsAiApgIndependant)CTX_TST_AS.getFournisseurRegleCalculAssuranceSociale().getCalculateurCotisationAvsAiApgIndependant(2011);
+        calculateur2013 = (CalculCotisationAvsAiApgIndependant)CTX_TST_AS.getFournisseurRegleCalculAssuranceSociale().getCalculateurCotisationAvsAiApgIndependant(2013);
     }
 
 	private boolean compare(String montantAttendu, BigDecimal montantCalcule) {

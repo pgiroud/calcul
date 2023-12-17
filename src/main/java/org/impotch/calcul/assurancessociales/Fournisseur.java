@@ -16,15 +16,13 @@
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.calcul.assurancessociales.ge.CalculCotisationsSocialesSalarieGE;
-import org.impotch.calcul.assurancessociales.ge.param.ParametrageCotisationAssuranceMaternite;
-import org.impotch.calcul.assurancessociales.ge.param.ParametrageEnMemoireCotisationAssuranceMaternite;
 
+import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageGenevoisAnnuel;
+import org.impotch.calcul.assurancessociales.ge.param.ParametrageGenevoisAnnuel;
 
 /**
  * Cette classe a la responsabilité de fournir les calculateurs de cotisations sociales.
@@ -38,6 +36,8 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	/****************** Attributs *********************/
 	/**************************************************/
 
+    private final FournisseurParametrageGenevoisAnnuel fournisseurParametrage;
+
 	private ConcurrentMap<Integer,CalculCotisationsSocialesSalarie> mapCalculateurCotisationAvsAiApgSalarie = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarie>();
     private ConcurrentMap<Integer,CalculCotisationsSocialesSalarie> mapCalculateurCotisationAvsAiApgSalarieISIFD = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarie>();
 	private ConcurrentMap<Integer,CalculCotisationsSocialesSalarieGE> mapCalculateurCotisationAvsAiApgSalarieGE = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarieGE>();
@@ -48,13 +48,10 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	private ConcurrentMap<Integer,CalculCotisationAvsAiApg> mapCalculateurCotisationAvsAiApgIndependant = new ConcurrentHashMap<Integer,CalculCotisationAvsAiApg>();
 	
 	private ConcurrentMap<Integer,CalculExtremaRentesAVS> mapCalculateurRentesAVS = new ConcurrentHashMap<Integer,CalculExtremaRentesAVS>();
-	
-	private Map<Integer,BigDecimal> renteSimpleMensuelleMinimumParAnnee;
 
-    private ParametrageCotisationAssuranceMaternite parametrageCotisationAssuranceMaternite = new ParametrageEnMemoireCotisationAssuranceMaternite();
 
-    public Fournisseur() {
-        renseignerRenteSimpleMensuelleMinimumParAnnee();
+    public Fournisseur(FournisseurParametrageGenevoisAnnuel fournisseurParametrage) {
+        this.fournisseurParametrage = fournisseurParametrage;
     }
 
     /**************************************************/
@@ -63,50 +60,10 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 
 	//--------------- Salariés --------------------
 
-    private String tauxAPG(int annee) {
-        if (annee < 2011) return "0.3 %";
-        if (annee < 2016) return "0.5 %";
-        if (annee < 2021) return "0.45 %";
-        else return "0.5 %";
-    }
-
-    private String tauxAVS(int annee) {
-        if (annee < 2020) return "8.4 %";
-        else return "8.7 %";
-    }
 
     private CalculCotisationsSocialesSalarie.Constructeur obtenirNouveauConstructeur(int annee) {
-        CalculCotisationsSocialesSalarie.Constructeur constructeur = new CalculCotisationsSocialesSalarie.Constructeur();
-
-        constructeur.tauxAvs(tauxAVS(annee)).tauxAi("1.4 %").tauxApg(tauxAPG(annee))
-            .tauxAC("2 %");
-
-        // La loi fédérale sur l'assurance-accidents stipule qu' «en règle générale,
-        // au moins 92 pour cent, mais pas plus de 96 pour cent des travailleurs assurés soient
-        // couverts pour le gain intégral». Lorsque les salaires augmentent, le montant maximum
-        // du gain assuré doit être adapté de temps à autre, afin de respecter cette exigence.
-        // Une adaptation régulière intervenant chaque année est exclue en raison de la masse de
-        // formalités administratives qu'elle entraînerait. Depuis la dernière augmentation en 1991,
-        // les salaires ont progressé d'environ 14 pour cent (indice des salaires nominaux OFS).
-        // La limite minimale légale de couverture d'assurance étant atteinte, le Conseil fédéral
-        // a décidé d'augmenter le montant maximum du gain assuré de 97'200 à 106'800 francs.
-        // Cela correspond à une hausse de 10 pour cent
-        if (annee < 2000) constructeur.montantAnnuelMaxGainAssure(97200);
-        else if (annee < 2008) constructeur.montantAnnuelMaxGainAssure(106800);
-        // Décision du 27 juin 2007 du conseil fédéral (RO 2007 3667 Annexe 1)
-        // la maximum passe de 106800 à 126000
-        else if (annee < 2016) constructeur.montantAnnuelMaxGainAssure(126000);
-        else  constructeur.montantAnnuelMaxGainAssure(148200);
-
-        if (annee > 2010) {
-            constructeur.tauxAC("2.2 %");
-            if (annee < 2014) {
-                constructeur.participationHautRevenuCotisationAC("2.5", "1 %");
-            } else {
-                constructeur.participationHautRevenuCotisationAC("1 %");
-            }
-        }
-        return constructeur;
+        ParametrageGenevoisAnnuel parametrage = fournisseurParametrage.parametrage(annee).orElseThrow();
+        return new CalculCotisationsSocialesSalarie.Constructeur(parametrage);
     }
 
 	protected CalculCotisationsSocialesSalarie construireCalculateurSalarie(int annee) {
@@ -116,7 +73,8 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
     protected CalculCotisationsSocialesSalarie construireCalculateurSalarieISIFD(int annee) {
         CalculCotisationsSocialesSalarie.Constructeur constructeur = obtenirNouveauConstructeur(annee);
 		if (annee > 2010 && annee < 2014) {
-			constructeur.tauxAC("2.5 %");
+            // TODO PGI reprendre ceci
+			//constructeur.tauxAC("2.5 %");
 		}
 		return constructeur.construire(annee);
 	}
@@ -128,7 +86,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	}
 
     @Override
-    public CalculCotisationsSocialesSalarie getCalculateurCotisationsSocialesSalarieISIFD(int annee) {
+    public CalculCotisationsSocialesSalarie getOldCalculateurCotisationsSocialesSalarieISIFD(int annee) {
         if (!mapCalculateurCotisationAvsAiApgSalarieISIFD.containsKey(annee)) mapCalculateurCotisationAvsAiApgSalarieISIFD.putIfAbsent(annee, construireCalculateurSalarieISIFD(annee));
         return mapCalculateurCotisationAvsAiApgSalarieISIFD.get(annee);
     }
@@ -145,13 +103,19 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
     }
 
 	protected CalculCotisationsSocialesSalarieGE construireCalculateurSalarieGE(int annee) {
-        BigDecimal taux = parametrageCotisationAssuranceMaternite.fournirTaux(annee);
-		return  construireCalculateurSalarie(annee,taux,getCalculateurCotisationsSocialesSalarie(annee));
+        if (fournisseurParametrage.parametrage(annee).isPresent()) {
+            BigDecimal tauxAssuranceMaternite = new BigDecimal(fournisseurParametrage.parametrage(annee).get().tauxAssuranceMaternite());
+            return construireCalculateurSalarie(annee,tauxAssuranceMaternite,getCalculateurCotisationsSocialesSalarie(annee));
+        }
+        throw new IllegalArgumentException("Le paramétrage n’existe pas pour l’année " + annee);
 	}
 
     protected CalculCotisationsSocialesSalarieGE construireCalculateurSalarieGEIFD(int annee) {
-        BigDecimal taux = parametrageCotisationAssuranceMaternite.fournirTaux(annee);
-        return construireCalculateurSalarie(annee,taux,getCalculateurCotisationsSocialesSalarieISIFD(annee));
+        if (fournisseurParametrage.parametrage(annee).isPresent()) {
+            BigDecimal tauxAssuranceMaternite = new BigDecimal(fournisseurParametrage.parametrage(annee).get().tauxAssuranceMaternite());
+            return construireCalculateurSalarie(annee,tauxAssuranceMaternite, getOldCalculateurCotisationsSocialesSalarieISIFD(annee));
+        }
+        throw new IllegalArgumentException("Le paramétrage n’existe pas pour l’année " + annee);
     }
 
     @Override
@@ -160,7 +124,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 		return mapCalculateurCotisationAvsAiApgSalarieGE.get(annee);
 	}
 	
-    public CalculCotisationsSocialesSalarieGE getCalculateurCotisationsSocialesSalarieGEIFD(int annee) {
+    public CalculCotisationsSocialesSalarieGE getOldCalculateurCotisationsSocialesSalarieGEIFD(int annee) {
         if (!mapCalculateurCotisationAvsAiApgSalarieGEIFD.containsKey(annee)) mapCalculateurCotisationAvsAiApgSalarieGEIFD.putIfAbsent(annee, construireCalculateurSalarieGEIFD(annee));
         return mapCalculateurCotisationAvsAiApgSalarieGEIFD.get(annee);
     }
@@ -294,57 +258,20 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	
 	// --------- Calculateur des rentes minimales ou maximales
 
-    private void renseignerRenteSimpleMensuelleMinimumParAnnee() {
-        /** Conformément à l'article 33ter de la loi sur l'assurance-vieillesse
-        et survivants (LAVS; RS 831.10), le Conseil fédéral procède en règle
-        générale tous les deux ans à une adaptation des rentes AVS/AI à l'indice
-        mixte. Cependant, une adaptation peut avoir lieu plus tôt, lorsque l'indice
-        suisse des prix à la consommation a augmenté de plus de 4 pour cent
-        au cours d'une année. Le renchérissement du mois de juin par rapport
-        à l'année précédente est dans ce cas déterminant (art. 51ter du
-        règlement sur l'assurance-vieillesse et survivants, RAVS; RS 831.101). */
-        renteSimpleMensuelleMinimumParAnnee = new HashMap<>();
-        renteSimpleMensuelleMinimumParAnnee.put(1993,BigDecimal.valueOf(940));
-        renteSimpleMensuelleMinimumParAnnee.put(1994,BigDecimal.valueOf(940));
-        renteSimpleMensuelleMinimumParAnnee.put(1995,BigDecimal.valueOf(970));
-        renteSimpleMensuelleMinimumParAnnee.put(1996,BigDecimal.valueOf(970));
-        renteSimpleMensuelleMinimumParAnnee.put(1997,BigDecimal.valueOf(995));
-        renteSimpleMensuelleMinimumParAnnee.put(1998,BigDecimal.valueOf(995));
-        renteSimpleMensuelleMinimumParAnnee.put(1999,BigDecimal.valueOf(1005));
-        renteSimpleMensuelleMinimumParAnnee.put(2000,BigDecimal.valueOf(1005));
-        renteSimpleMensuelleMinimumParAnnee.put(2001,BigDecimal.valueOf(1030));
-        renteSimpleMensuelleMinimumParAnnee.put(2002,BigDecimal.valueOf(1030));
-        renteSimpleMensuelleMinimumParAnnee.put(2003,BigDecimal.valueOf(1055));
-        renteSimpleMensuelleMinimumParAnnee.put(2004,BigDecimal.valueOf(1055));
-        renteSimpleMensuelleMinimumParAnnee.put(2005,BigDecimal.valueOf(1075));
-        renteSimpleMensuelleMinimumParAnnee.put(2006,BigDecimal.valueOf(1075));
-        renteSimpleMensuelleMinimumParAnnee.put(2007,BigDecimal.valueOf(1105));
-        renteSimpleMensuelleMinimumParAnnee.put(2008,BigDecimal.valueOf(1105));
-        renteSimpleMensuelleMinimumParAnnee.put(2009,BigDecimal.valueOf(1140));
-        renteSimpleMensuelleMinimumParAnnee.put(2010,BigDecimal.valueOf(1140));
-        renteSimpleMensuelleMinimumParAnnee.put(2011,BigDecimal.valueOf(1160));
-        renteSimpleMensuelleMinimumParAnnee.put(2012,BigDecimal.valueOf(1160));
-        renteSimpleMensuelleMinimumParAnnee.put(2013,BigDecimal.valueOf(1170));
-        renteSimpleMensuelleMinimumParAnnee.put(2014,BigDecimal.valueOf(1170));
-        renteSimpleMensuelleMinimumParAnnee.put(2015,BigDecimal.valueOf(1175));
-        renteSimpleMensuelleMinimumParAnnee.put(2016,BigDecimal.valueOf(1175));
-        renteSimpleMensuelleMinimumParAnnee.put(2017,BigDecimal.valueOf(1175));
-        renteSimpleMensuelleMinimumParAnnee.put(2018,BigDecimal.valueOf(1175));
-        renteSimpleMensuelleMinimumParAnnee.put(2019,BigDecimal.valueOf(1185));
-        renteSimpleMensuelleMinimumParAnnee.put(2020,BigDecimal.valueOf(1185));
-        renteSimpleMensuelleMinimumParAnnee.put(2021,BigDecimal.valueOf(1195));
-        renteSimpleMensuelleMinimumParAnnee.put(2022,BigDecimal.valueOf(1195));
-        renteSimpleMensuelleMinimumParAnnee.put(2023,BigDecimal.valueOf(1225));
-    }
 
 	public CalculExtremaRentesAVS getCalculateurExtremaRenteAVS(int annee) {
 		if (!mapCalculateurRentesAVS.containsKey(annee)) mapCalculateurRentesAVS.putIfAbsent(annee, construireCalculateurExtremaRenteAVS(annee));
 		return mapCalculateurRentesAVS.get(annee);
 	}
 
+    private BigDecimal getRenteAVSMensuelleMinimale(int annee) {
+        ParametrageGenevoisAnnuel parametrage = fournisseurParametrage.parametrage(annee).orElseThrow();
+        return BigDecimal.valueOf(parametrage.renteMensuelleMinimum());
+    }
+
 	private CalculExtremaRentesAVS construireCalculateurExtremaRenteAVS(int annee) {
 		CalculExtremaRentesAVS calculateur = new CalculExtremaRentesAVS(annee);
-		calculateur.setRenteSimpleMensuelleMinimum(renteSimpleMensuelleMinimumParAnnee.get(annee));
+		calculateur.setRenteSimpleMensuelleMinimum(getRenteAVSMensuelleMinimale(annee));
 		return calculateur;
 	}
 
@@ -358,7 +285,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 
     private FournisseurMontantsLimitesPrevoyanceProfessionnelle construireFournisseurMontantsLimitesPrevoyanceProfessionnelle(int annee) {
         FournisseurMontantsLimitesLPP fournisseur = new FournisseurMontantsLimitesLPP();
-        fournisseur.setRenteAVSMensuelleMinimale(renteSimpleMensuelleMinimumParAnnee.get(annee));
+        fournisseur.setRenteAVSMensuelleMinimale(getRenteAVSMensuelleMinimale(annee));
         return fournisseur;
     }
 
