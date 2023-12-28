@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 /**
  * Created by patrick on 18/01/15.
  */
-interface ParametrageCotisationAssuranceMaternite {
+public interface ParametrageCotisationAssuranceMaternite {
     int annee();
     String tauxAssuranceMaternite();
 }

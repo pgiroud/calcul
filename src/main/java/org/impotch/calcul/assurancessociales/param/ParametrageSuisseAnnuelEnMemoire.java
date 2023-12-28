@@ -41,7 +41,7 @@ public class ParametrageSuisseAnnuelEnMemoire implements ParametrageSuisseAnnuel
                                             String tauxAI,
                                             String tauxAPG,
                                             String tauxAC,
-                                             ParametrageParticipationHautRevenuACEnMemoire participation,
+                                             ParametrageParticipationHautRevenuAC participation,
                                              int renteAVSMensuelleMinimum) {
         this.annee = annee;
         this.montantMaximumDuGainAssure = montantMaximumDuGainAssure;
@@ -124,10 +124,25 @@ public class ParametrageSuisseAnnuelEnMemoire implements ParametrageSuisseAnnuel
 
         private int renteMensuelleMinimum;
 
-        private ParametrageParticipationHautRevenuACEnMemoire participation;
+        private ParametrageParticipationHautRevenuAC participation;
 
         public Constructeur(int annee) {
             this.annee = annee;
+        }
+
+        public Constructeur(ParametrageSuisseAnnuel param) {
+            this.annee = param.annee();
+            this.montantMaxAssure = param.montantMaximumDuGainAssure();
+            this.tauxAVS = param.tauxAVS();
+            this.tauxAI = param.tauxAI();
+            this.tauxAPG = param.tauxAPG();
+            this.tauxAC = param.tauxAC();
+            this.avecParticipationHautRevenuAC = avecParticipationRevenuAuDelaDuMontantMaxAssure().avecParticipationHautRevenuAC;
+            if (param.participationHautRevenu().isPresent()) {
+                this.participation = param.participationHautRevenu().orElse(null);
+            }
+
+            this.renteMensuelleMinimum = param.renteMensuelleMinimum();
         }
 
         public Constructeur montantMaxAssure(int montant) {

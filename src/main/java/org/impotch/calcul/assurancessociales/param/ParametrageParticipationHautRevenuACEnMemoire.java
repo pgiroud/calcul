@@ -34,7 +34,7 @@ public class ParametrageParticipationHautRevenuACEnMemoire implements Parametrag
 
     @Override
     public String taux() {
-        return null;
+        return taux;
     }
 
     @Override

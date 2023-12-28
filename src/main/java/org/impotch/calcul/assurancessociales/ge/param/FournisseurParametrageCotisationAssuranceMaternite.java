@@ -17,7 +17,7 @@ package org.impotch.calcul.assurancessociales.ge.param;
 
 import java.util.Optional;
 
-interface FournisseurParametrageCotisationAssuranceMaternite {
+public interface FournisseurParametrageCotisationAssuranceMaternite {
     static FournisseurParametrageCotisationAssuranceMaternite enMemoire() {
         return new FournisseurParametrageCotisationAssuranceMaterniteEnMemoire();
     }
