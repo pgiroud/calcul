@@ -22,6 +22,8 @@ import org.impotch.calcul.impot.indexation.SimpleFournisseurIndicePeriodique;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.impotch.calcul.impot.indexation.IndexateurPeriodique.unConstructeurIndexateurQuadriAnnuel;
+
 public class FournisseurIndexGenevoisEnMemoire implements FournisseurIndexGenevois {
 
     final static Logger logger = LoggerFactory.getLogger(FournisseurIndexGenevoisEnMemoire.class);
@@ -73,6 +75,7 @@ public class FournisseurIndexGenevoisEnMemoire implements FournisseurIndexGenevo
                 .pour(2021).valeur("104.4")
                 .pour(2022).valeur("104.1")
                 .pour(2023).valeur("106.2")
+                .pour(2024).valeur("108.7")
                 .cons();
     }
 
@@ -87,17 +90,17 @@ public class FournisseurIndexGenevoisEnMemoire implements FournisseurIndexGenevo
     }
 
     @Override
-    public Indexateur getIndexateurBaseMai1993(int anneeBaseIndexation) {
-        IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation, 4);
-        indexateur.setFournisseurIndice(getFournisseurIndiceGEBaseMai1993());
-        return indexateur;
+    public Indexateur getIndexateurQuadriennalBaseMai1993(int anneeBase) {
+        return unConstructeurIndexateurQuadriAnnuel(2001)
+                .anneeBase(anneeBase)
+                .fournisseurIndice(getFournisseurIndiceGEBaseMai1993()).cons();
     }
 
     @Override
-    public Indexateur getIndexateurBaseDec2005(int anneeBaseIndexation) {
-        IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation, 4);
-        indexateur.setFournisseurIndice(getFournisseurIndiceGEBaseDecembre2005());
-        return indexateur;
+    public Indexateur getIndexateurQuadriennalBaseDecembre2005(int anneeBase) {
+        return unConstructeurIndexateurQuadriAnnuel(2009)
+                .anneeBase(anneeBase)
+                .fournisseurIndice(getFournisseurIndiceGEBaseDecembre2005()).cons();
     }
 
 }

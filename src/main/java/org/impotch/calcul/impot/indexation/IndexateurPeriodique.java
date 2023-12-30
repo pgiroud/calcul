@@ -29,13 +29,24 @@ import org.impotch.util.TypeArrondi;
  */
 public class IndexateurPeriodique implements Indexateur {
 
+	public static IndexateurPeriodique.Constructeur unConstructeurIndexateurQuadriAnnuel(int anneeBaseIndexation) {
+		return new Constructeur(anneeBaseIndexation,4);
+	}
+
+	public static IndexateurPeriodique.Constructeur unConstructeurIndexateurAnnuel(int anneeBaseIndexation) {
+		return new Constructeur(anneeBaseIndexation,1);
+	}
+
+
 	private FournisseurIndicePeriodique fournisseurIndice;
 
+	private final int anneeBaseIndexation;
 	private final int anneeBase;
     private final int nbPeriodeAnnuelle;
 	
-	public IndexateurPeriodique(int anneeBase, int nbPeriodeAnnuelle) {
+	private IndexateurPeriodique(int anneeBaseIndexation, int nbPeriodeAnnuelle, int anneeBase) {
 		super();
+		this.anneeBaseIndexation = anneeBaseIndexation;
 		this.anneeBase = anneeBase;
         this.nbPeriodeAnnuelle = nbPeriodeAnnuelle;
 	}
@@ -50,7 +61,7 @@ public class IndexateurPeriodique implements Indexateur {
 	/**
 	 * @param fournisseurIndice the fournisseurIndice to set
 	 */
-	public void setFournisseurIndice(FournisseurIndicePeriodique fournisseurIndice) {
+	private void setFournisseurIndice(FournisseurIndicePeriodique fournisseurIndice) {
 		this.fournisseurIndice = fournisseurIndice;
 	}
 
@@ -68,7 +79,7 @@ public class IndexateurPeriodique implements Indexateur {
     }
 
 	private int getAnneeIndice(int annee) {
-        return (1 == nbPeriodeAnnuelle) ? annee : getAnneeBase() + nbPeriodeAnnuelle * ((annee - getAnneeBase())/ nbPeriodeAnnuelle);
+        return (1 == nbPeriodeAnnuelle) ? annee : anneeBaseIndexation + nbPeriodeAnnuelle * ((annee - anneeBaseIndexation)/ nbPeriodeAnnuelle);
     }
 	
 
@@ -101,5 +112,32 @@ public class IndexateurPeriodique implements Indexateur {
         return (BaremeTauxMarginalConstantParTranche)bareme.homothetie(rapport, arrondi);
     }
 
+	public static class Constructeur {
 
+		private final int anneeBaseIndexation;
+		private final int nbPeriode;
+
+		private int anneBase;
+		private FournisseurIndicePeriodique fournisseurIndice;
+
+		Constructeur(int anneeBaseIndexation, int nbPeriode) {
+			this.anneeBaseIndexation = anneeBaseIndexation;
+			this.nbPeriode = nbPeriode;
+		}
+
+		public Constructeur anneeBase(int annee) {
+			this.anneBase = annee;
+			return this;
+		}
+
+		public Constructeur fournisseurIndice(FournisseurIndicePeriodique fournisseur) {
+			this.fournisseurIndice = fournisseur;
+			return this;
+		}
+		public IndexateurPeriodique cons() {
+			IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation,nbPeriode,anneBase);
+			indexateur.setFournisseurIndice(fournisseurIndice);
+			return indexateur;
+		}
+	}
 }

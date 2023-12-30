@@ -26,7 +26,7 @@ import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_
 public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAITest {
 
 
-    private Indexateur indexateur = CTX_TST_CH_GE.getFournisseurIndex().getIndexateurBaseDec2005(2009);
+    private Indexateur indexateur = CTX_TST_CH_GE.getFournisseurIndex().getIndexateurQuadriennalBaseDecembre2005(2009);
 
     private  ConstructeurBaremeDeductionBeneficiaireRenteAVSAI constructeur;
 

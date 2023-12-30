@@ -24,6 +24,8 @@ import org.impotch.calcul.impot.indexation.IndexateurPeriodique;
 import org.impotch.util.TypeArrondi;
 
 import java.math.BigDecimal;
+import static org.impotch.calcul.impot.indexation.IndexateurPeriodique.unConstructeurIndexateurQuadriAnnuel;
+import static org.impotch.calcul.impot.indexation.IndexateurPeriodique.unConstructeurIndexateurAnnuel;
 
 /**
  * Created by GIROUDPA on 11.08.2014.
@@ -32,12 +34,14 @@ public class IndexateurGenevois implements Indexateur {
 
     private FournisseurIndicePeriodique fournisseurIndice;
 
+    private final int anneeBaseIndexation;
     private final int anneeBase;
     private IndexateurPeriodique indexateurQuadriennal;
     private IndexateurPeriodique indexateurAnnuel;
 
-    public IndexateurGenevois(int anneeBase, FournisseurIndicePeriodique fournisseurIndice) {
+    public IndexateurGenevois(int anneeBaseIndexation, int anneeBase, FournisseurIndicePeriodique fournisseurIndice) {
         super();
+        this.anneeBaseIndexation = anneeBaseIndexation;
         this.fournisseurIndice = fournisseurIndice;
         this.anneeBase = anneeBase;
         renseignerIndexateur();
@@ -45,15 +49,23 @@ public class IndexateurGenevois implements Indexateur {
 
 
     private void renseignerIndexateur() {
-        indexateurQuadriennal = new IndexateurPeriodique(anneeBase,4);
-        indexateurQuadriennal.setFournisseurIndice(fournisseurIndice);
-        indexateurAnnuel = new IndexateurPeriodique(anneeBase,1);
-        indexateurAnnuel.setFournisseurIndice(fournisseurIndice);
+        indexateurQuadriennal = unConstructeurIndexateurQuadriAnnuel(anneeBaseIndexation)
+                .anneeBase(anneeBase)
+                .fournisseurIndice(fournisseurIndice).cons();
+
+        indexateurAnnuel = unConstructeurIndexateurAnnuel(anneeBaseIndexation)
+                .anneeBase(anneeBase)
+                .fournisseurIndice(fournisseurIndice).cons();
     }
 
     @Override
     public BigDecimal indexer(BigDecimal montantBase, int annee, TypeArrondi arrondi) {
-        return indexateurQuadriennal.indexer(montantBase,annee,arrondi);
+        // PL 13094-A Grand Conseil
+        if (annee < 2024) {
+            return indexateurQuadriennal.indexer(montantBase,annee,arrondi);
+        } else {
+            return indexateurAnnuel.indexer(montantBase,annee,arrondi);
+        }
     }
 
     @Override

@@ -31,7 +31,6 @@
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -39,9 +38,6 @@ import org.impotch.bareme.*;
 import org.impotch.calcul.assurancessociales.FournisseurRegleCalculAssuranceSociale;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.*;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
-import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
-import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
-import org.impotch.calcul.impot.ProducteurImpotDerivePourcent;
 import org.impotch.calcul.impot.cantonal.FournisseurCantonal;
 import org.impotch.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageCommunaleGE;
@@ -49,16 +45,11 @@ import org.impotch.calcul.impot.taxation.pp.*;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
 import org.impotch.calcul.impot.taxation.pp.famille.SplittingEventuellementPartiel;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais.ProducteurBaseRabaisImpot;
-import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
-import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
-import org.impotch.util.math.Fonction;
-import org.impotch.util.math.integration.MethodeIntegration;
-import org.impotch.util.math.integration.MethodeIntegrationPointMilieu;
+
 
 import static org.impotch.calcul.impot.ProducteurImpotDerivePourcent.unConsProducteurImpotDerive;
 import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeGEParTrancheIndexeeActuel.unConstructeurBaremeGEActuel;
-import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe.unConstructeurDeBaremeParTrancheIndexee;
 import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009.unConstructeurBaremeGEEntre2001et2009;
 import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeRevenuAvecFormuleUniversite.unConstructeurBaremeRevenuAvecFormuleUniversite;
 import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
@@ -238,7 +229,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     private StrategieProductionImpotFamille impositionFamiliale(int annee) {
         if (annee < 2010) return new DoubleBaremeGE(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
         if (annee < 2024) return new Splitting(getBaremeRevenu(annee), "50 %");
-        else return new SplittingEventuellementPartiel(getBaremeRevenu(annee),"50 %","55,56 %"); // https://ge.ch/grandconseil/data/texte/PL13254A.pdf
+        else return new SplittingEventuellementPartiel(getBaremeRevenu(annee),"50 %","55.56 %"); // https://ge.ch/grandconseil/data/texte/PL13254A.pdf
     }
 
     public ProducteurImpotBase construireImpotCantonalBaseRevenu(int annee) {

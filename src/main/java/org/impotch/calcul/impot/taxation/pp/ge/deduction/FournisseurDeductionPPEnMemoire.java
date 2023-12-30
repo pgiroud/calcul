@@ -16,10 +16,8 @@
 package org.impotch.calcul.impot.taxation.pp.ge.deduction;
 
 import org.impotch.bareme.BaremeParTranche;
-import org.impotch.bareme.ConstructeurBareme;
 import org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeDeductionBeneficiaireRenteAVSAI;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
-import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
 import org.impotch.calcul.impot.indexation.ge.MontantIndexe;
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 
@@ -53,14 +51,14 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
     private MontantIndexe construireMontantIndexe(int annee) {
         MontantIndexe mntIdx; // LIPP Art. 72 alinea 15
         if (annee < 2011) {
-            mntIdx = new MontantIndexe(9_000, fournisseurIndexGenevois.getIndexateurBaseDec2005(2009));
+            mntIdx = new MontantIndexe(9_000, fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2009));
         } else if (annee < 2017) {
-            mntIdx= new MontantIndexe(10_000,fournisseurIndexGenevois.getIndexateurBaseDec2005(2009));
+            mntIdx= new MontantIndexe(10_000,fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2009));
         } else if (annee < 2021) {
             // Incompréhensible, l’arrondi au franc près voudrait que ce soit 9981 CHF et non pas 9980 CHF !
-            mntIdx= new MontantIndexe(9_980,fournisseurIndexGenevois.getIndexateurBaseDec2005(2017));
+            mntIdx= new MontantIndexe(9_980,fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2017));
         } else {
-            mntIdx= new MontantIndexe(13_000,fournisseurIndexGenevois.getIndexateurBaseDec2005(2021));  // RCEPF art. 12
+            mntIdx= new MontantIndexe(13_000,fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2021));  // RCEPF art. 12
         }
         return mntIdx;
     }
@@ -93,8 +91,8 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
     private DeductionDoubleActivite construireRegleDeductionDoubleActivite(int annee) {
         MontantIndexe montantIndexe
                 = (annee < 2021 ) ? // LIPP Art. 72 alinea 15
-                new MontantIndexe(500,fournisseurIndexGenevois.getIndexateurBaseDec2005(2009))
-                : new MontantIndexe(1000, fournisseurIndexGenevois.getIndexateurBaseDec2005(2021)); // RCEPF art. 9
+                new MontantIndexe(500,fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2009))
+                : new MontantIndexe(1000, fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2021)); // RCEPF art. 9
         BigDecimal montantDeduction = montantIndexe.getMontantIndexe(annee);
         return new DeductionDoubleActivite(montantDeduction);
     }
@@ -116,7 +114,7 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
 
     protected BaremeParTranche construireBaremeDeductionBeneficiaireRentesAvsAi(int annee) {
         ConstructeurBaremeDeductionBeneficiaireRenteAVSAI constructeur = new ConstructeurBaremeDeductionBeneficiaireRenteAVSAI();
-        constructeur.indexateur(fournisseurIndexGenevois.getIndexateurBaseDec2005(annee));
+        constructeur.indexateur(fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(annee));
         constructeur.validite(2010);
         return constructeur.construireBaremeSeul(annee);
 

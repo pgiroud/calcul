@@ -34,11 +34,15 @@ public class IndexateurGenevoisTest {
 	private Indexateur indexateurBaseMai93;
 	private Indexateur indexateurBaseDec05;
 
+	private FournisseurIndexGenevois fournisseur;
+
+
 	@BeforeEach
 	void initIndexateur() {
-		FournisseurIndexGenevois fournisseur = new FournisseurIndexGenevoisEnMemoire();
-		indexateurBaseMai93 = fournisseur.getIndexateurBaseMai1993(2001);
-		indexateurBaseDec05 = fournisseur.getIndexateurBaseDec2005(2009);
+		fournisseur = new FournisseurIndexGenevoisEnMemoire();
+		indexateurBaseMai93 = fournisseur.getIndexateurQuadriennalBaseMai1993(2001);
+		indexateurBaseDec05 = fournisseur.getIndexateurQuadriennalBaseDecembre2005(2009);
+
 	}
 
 	@Test
@@ -156,5 +160,12 @@ public class IndexateurGenevoisTest {
 	@DisplayName("2019 déduction double activité")
 	public void indexation2019DeductionDoubleActivite() {
 		assertThat(indexateurBaseDec05.indexer(BigDecimal.valueOf(500), 2019)).isEqualTo(BigDecimal.valueOf(499));
+	}
+
+	@Test
+	@DisplayName("2024 déduction sociale enfant")
+	public void indexation2024DeductionPourEnfant() {
+		IndexateurGenevois indexateur = new IndexateurGenevois(2009,2021,fournisseur.getFournisseurIndiceGEBaseDecembre2005());
+		assertThat(indexateur.indexer(BigDecimal.valueOf(13000), 2024, TypeArrondi.UNITE_SUP)).isEqualTo(BigDecimal.valueOf(13536));
 	}
 }
