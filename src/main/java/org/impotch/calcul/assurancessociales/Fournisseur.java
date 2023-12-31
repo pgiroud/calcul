@@ -21,8 +21,8 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.calcul.assurancessociales.ge.CalculCotisationsSocialesSalarieGE;
 
-import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageGenevoisAnnuel;
-import org.impotch.calcul.assurancessociales.ge.param.ParametrageGenevoisAnnuel;
+import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageAnnuelAssurancesSocialesGenevoises;
+import org.impotch.calcul.assurancessociales.ge.param.ParametrageAnnuelCotisationsSocialesGenevoises;
 
 /**
  * Cette classe a la responsabilité de fournir les calculateurs de cotisations sociales.
@@ -36,7 +36,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	/****************** Attributs *********************/
 	/**************************************************/
 
-    private final FournisseurParametrageGenevoisAnnuel fournisseurParametrage;
+    private final FournisseurParametrageAnnuelAssurancesSocialesGenevoises fournisseurParametrage;
 
 	private ConcurrentMap<Integer,CalculCotisationsSocialesSalarie> mapCalculateurCotisationAvsAiApgSalarie = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarie>();
     private ConcurrentMap<Integer,CalculCotisationsSocialesSalarie> mapCalculateurCotisationAvsAiApgSalarieISIFD = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarie>();
@@ -50,7 +50,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	private ConcurrentMap<Integer,CalculExtremaRentesAVS> mapCalculateurRentesAVS = new ConcurrentHashMap<Integer,CalculExtremaRentesAVS>();
 
 
-    public Fournisseur(FournisseurParametrageGenevoisAnnuel fournisseurParametrage) {
+    public Fournisseur(FournisseurParametrageAnnuelAssurancesSocialesGenevoises fournisseurParametrage) {
         this.fournisseurParametrage = fournisseurParametrage;
     }
 
@@ -62,7 +62,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 
 
     private CalculCotisationsSocialesSalarie.Constructeur obtenirNouveauConstructeur(int annee) {
-        ParametrageGenevoisAnnuel parametrage = fournisseurParametrage.parametrage(annee).orElseThrow();
+        ParametrageAnnuelCotisationsSocialesGenevoises parametrage = fournisseurParametrage.parametrage(annee).orElseThrow();
         return new CalculCotisationsSocialesSalarie.Constructeur(parametrage);
     }
 
@@ -265,7 +265,7 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 	}
 
     private BigDecimal getRenteAVSMensuelleMinimale(int annee) {
-        ParametrageGenevoisAnnuel parametrage = fournisseurParametrage.parametrage(annee).orElseThrow();
+        ParametrageAnnuelCotisationsSocialesGenevoises parametrage = fournisseurParametrage.parametrage(annee).orElseThrow();
         return BigDecimal.valueOf(parametrage.renteMensuelleMinimum());
     }
 

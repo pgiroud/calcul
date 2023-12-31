@@ -20,22 +20,22 @@ import org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuel;
 
 import java.util.Optional;
 
-class FournisseurParametrageGenevoisAnnuelEnMemoire implements FournisseurParametrageGenevoisAnnuel {
+class FournisseurParametrageAnnuelAssurancesSocialesGenevoisesEnMemoire implements FournisseurParametrageAnnuelAssurancesSocialesGenevoises {
 
     FournisseurParametrageSuisseAnnuel fournisseurParametrageSuisseEnMemoire = FournisseurParametrageSuisseAnnuel.enMemoire();
     FournisseurParametrageCotisationAssuranceMaternite fournisseurParametrageCotisationAssuranceMaternite = FournisseurParametrageCotisationAssuranceMaternite.enMemoire();
 
     @Override
-    public Optional<ParametrageGenevoisAnnuel> parametrage(int annee) {
+    public Optional<ParametrageAnnuelCotisationsSocialesGenevoises> parametrage(int annee) {
         return construireParametrageAnnuel(annee);
     }
 
-    private Optional<ParametrageGenevoisAnnuel> construireParametrageAnnuel(int annee) {
+    private Optional<ParametrageAnnuelCotisationsSocialesGenevoises> construireParametrageAnnuel(int annee) {
         if (fournisseurParametrageSuisseEnMemoire.parametrage(annee).isPresent()
         && fournisseurParametrageCotisationAssuranceMaternite.parametrage(annee).isPresent()) {
             ParametrageSuisseAnnuel parametrageSuisse =  fournisseurParametrageSuisseEnMemoire.parametrage(annee).get();
             ParametrageCotisationAssuranceMaternite parametrageCotisationAssuranceMaternite = fournisseurParametrageCotisationAssuranceMaternite.parametrage(annee).get();
-            return Optional.of(new ParametrageGenevoisAnnuel(parametrageSuisse,parametrageCotisationAssuranceMaternite));
+            return Optional.of(new ParametrageAnnuelCotisationsSocialesGenevoises(parametrageSuisse,parametrageCotisationAssuranceMaternite));
         }
         return Optional.empty();
     }

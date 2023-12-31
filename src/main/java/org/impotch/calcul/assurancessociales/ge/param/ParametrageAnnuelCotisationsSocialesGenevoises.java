@@ -20,12 +20,12 @@ import org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuel;
 
 import java.util.Optional;
 
-public class ParametrageGenevoisAnnuel implements ParametrageSuisseAnnuel, ParametrageCotisationAssuranceMaternite {
+public class ParametrageAnnuelCotisationsSocialesGenevoises implements ParametrageSuisseAnnuel, ParametrageCotisationAssuranceMaternite {
 
     private final ParametrageSuisseAnnuel parametrageSuisse;
     private final ParametrageCotisationAssuranceMaternite parametrageSsuranceMaternite;
 
-    public ParametrageGenevoisAnnuel(ParametrageSuisseAnnuel parametrageSuisse, ParametrageCotisationAssuranceMaternite parametrageSsuranceMaternite) {
+    public ParametrageAnnuelCotisationsSocialesGenevoises(ParametrageSuisseAnnuel parametrageSuisse, ParametrageCotisationAssuranceMaternite parametrageSsuranceMaternite) {
         this.parametrageSuisse = parametrageSuisse;
         this.parametrageSsuranceMaternite = parametrageSsuranceMaternite;
     }

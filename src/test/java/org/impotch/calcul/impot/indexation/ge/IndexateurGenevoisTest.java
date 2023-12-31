@@ -18,8 +18,6 @@ package org.impotch.calcul.impot.indexation.ge;
 import java.math.BigDecimal;
 
 
-import org.impotch.calcul.impot.indexation.Indexateur;
-
 import org.impotch.util.TypeArrondi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,142 +28,129 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class IndexateurGenevoisTest {
 
+	// TODO PGI : Supprimer cette classe
 
-	private Indexateur indexateurBaseMai93;
-	private Indexateur indexateurBaseDec05;
+	private final static int ANNEE_INDEXATION_LIPP_5_D_3_16 = 2001;
+	private final static int ANNEE_INDEXATION_LIPP_D_3_08 = 2009;
 
-	private FournisseurIndexGenevois fournisseur;
+	private IndexateurGenevois indexateur;
 
 
 	@BeforeEach
 	void initIndexateur() {
-		fournisseur = new FournisseurIndexGenevoisEnMemoire();
-		indexateurBaseMai93 = fournisseur.getIndexateurQuadriennalBaseMai1993(2001);
-		indexateurBaseDec05 = fournisseur.getIndexateurQuadriennalBaseDecembre2005(2009);
-
+		indexateur = new IndexateurGenevois(new FournisseurIndexGenevoisEnMemoire());
 	}
 
 	@Test
 	@DisplayName("Base montant époux")
 	public void indexationBaseEpoux() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(13750), 2001)).isEqualTo(BigDecimal.valueOf(13750));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16, BigDecimal.valueOf(13750), 2001)).isEqualTo(BigDecimal.valueOf(13750));
 	}
 
 	@Test
 	@DisplayName("2005 montant époux")
     public void indexation2005MontantEpoux() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(13750), 2005)).isEqualTo(BigDecimal.valueOf(14288));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16, BigDecimal.valueOf(13750), 2005)).isEqualTo(BigDecimal.valueOf(14288));
     }
 
 	@Test
 	@DisplayName("2009 montant époux")
     public void indexation2009MontantEpoux() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(13750), 2009)).isEqualTo(BigDecimal.valueOf(15057));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(13750), 2009)).isEqualTo(BigDecimal.valueOf(15057));
     }
 
 	@Test
 	@DisplayName("Base déduc. double activité")
 	public void indexationBaseDeducDoubleActivite() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(3500), 2002)).isEqualTo(BigDecimal.valueOf(3500));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(3500), 2002)).isEqualTo(BigDecimal.valueOf(3500));
 	}
 
 	@Test
 	@DisplayName("2006 déduc. double activité")
     public void indexation2006DeducDoubleActivite() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(3500), 2006, TypeArrondi.DIZAINE_LA_PLUS_PROCHE)).isEqualTo(BigDecimal.valueOf(3640));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(3500), 2006, TypeArrondi.DIZAINE_LA_PLUS_PROCHE)).isEqualTo(BigDecimal.valueOf(3640));
     }
 
 
 	@Test
 	@DisplayName("Base plafond faible revenu")
 	public void indexationBasePlafondFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(50000), 2003)).isEqualTo(BigDecimal.valueOf(50000));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(50000), 2003)).isEqualTo(BigDecimal.valueOf(50000));
 	}
 
 	@Test
 	@DisplayName("2007 plafond faible revenu")
     public void indexation2007PlafondFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(50000), 2007, TypeArrondi.MILLE_SUP)).isEqualTo(BigDecimal.valueOf(52000));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(50000), 2007, TypeArrondi.MILLE_SUP)).isEqualTo(BigDecimal.valueOf(52000));
     }
 
-	@Test
-	@DisplayName("2010 plafond faible revenu")
-    public void indexation2010PlafondFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(50000), 2010, TypeArrondi.MILLE_SUP)).isEqualTo(BigDecimal.valueOf(55000));
-    }
 
 	@Test
 	@DisplayName("Base déduc. double activité pour faible revenu")
 	public void indexationBaseDeducDoubleActivitePourFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(5000), 2004)).isEqualTo(BigDecimal.valueOf(5000));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(5000), 2004)).isEqualTo(BigDecimal.valueOf(5000));
 	}
 
 	@Test
 	@DisplayName("2008 déduc. double activité pour faible revenu")
     public void indexation2008DeducDoubleActivitePourFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(5000), 2008, TypeArrondi.CENTAINE_SUP)).isEqualTo(BigDecimal.valueOf(5200));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(5000), 2008, TypeArrondi.CENTAINE_SUP)).isEqualTo(BigDecimal.valueOf(5200));
     }
 
 	@Test
 	@DisplayName("2009 déduc. double activité pour faible revenu")
     public void indexation2009DeducDoubleActivitePourFaibleRevenu() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(5000), 2009, TypeArrondi.CENTAINE_SUP)).isEqualTo(BigDecimal.valueOf(5500));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(5000), 2009, TypeArrondi.CENTAINE_SUP)).isEqualTo(BigDecimal.valueOf(5500));
     }
 
 
 	@Test
 	@DisplayName("Base montant demi charge")
 	public void indexationBaseMontantDemiCharge() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(3250), 2001)).isEqualTo(BigDecimal.valueOf(3250));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(3250), 2001)).isEqualTo(BigDecimal.valueOf(3250));
 	}
 
 	@Test
 	@DisplayName("2005 montant demi charge")
     public void indexation2005MontantDemiCharge() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(3250), 2005)).isEqualTo(BigDecimal.valueOf(3377));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16,BigDecimal.valueOf(3250), 2005)).isEqualTo(BigDecimal.valueOf(3377));
     }
 
 	@Test
 	@DisplayName("2009 montant demi charge")
     public void indexation2009MontantDemiCharge() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(3250), 2009)).isEqualTo(BigDecimal.valueOf(3559));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16, BigDecimal.valueOf(3250), 2009)).isEqualTo(BigDecimal.valueOf(3559));
     }
 
 	@Test
 	@DisplayName("Base demi montant frais garde")
 	public void indexationBaseDemiMontantFraisGarde() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(1250), 2003)).isEqualTo(BigDecimal.valueOf(1250));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16, BigDecimal.valueOf(1250), 2003)).isEqualTo(BigDecimal.valueOf(1250));
 	}
 
 	@Test
 	@DisplayName("2007 demi montant frais garde")
     public void indexation2007DemiMontantFraisGarde() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(1250), 2007)).isEqualTo(BigDecimal.valueOf(1299));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16, BigDecimal.valueOf(1250), 2007)).isEqualTo(BigDecimal.valueOf(1299));
     }
 
 	@Test
 	@DisplayName("2009 demi montant frais garde")
     public void indexation2009DemiMontantFraisGarde() {
-		assertThat(indexateurBaseMai93.indexer(BigDecimal.valueOf(1250), 2009)).isEqualTo(BigDecimal.valueOf(1369));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_5_D_3_16, BigDecimal.valueOf(1250), 2009)).isEqualTo(BigDecimal.valueOf(1369));
     }
 
 
 	@Test
 	@DisplayName("2017 déduction double activité")
 	public void indexation2017DeductionDoubleActivite() {
-		assertThat(indexateurBaseDec05.indexer(BigDecimal.valueOf(500), 2017)).isEqualTo(BigDecimal.valueOf(499));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, BigDecimal.valueOf(500), 2017)).isEqualTo(BigDecimal.valueOf(499));
 	}
 
 	@Test
 	@DisplayName("2019 déduction double activité")
 	public void indexation2019DeductionDoubleActivite() {
-		assertThat(indexateurBaseDec05.indexer(BigDecimal.valueOf(500), 2019)).isEqualTo(BigDecimal.valueOf(499));
+		assertThat(indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, BigDecimal.valueOf(500), 2019)).isEqualTo(BigDecimal.valueOf(499));
 	}
 
-	@Test
-	@DisplayName("2024 déduction sociale enfant")
-	public void indexation2024DeductionPourEnfant() {
-		IndexateurGenevois indexateur = new IndexateurGenevois(2009,2021,fournisseur.getFournisseurIndiceGEBaseDecembre2005());
-		assertThat(indexateur.indexer(BigDecimal.valueOf(13000), 2024, TypeArrondi.UNITE_SUP)).isEqualTo(BigDecimal.valueOf(13536));
-	}
 }

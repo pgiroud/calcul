@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 import org.impotch.calcul.assurancessociales.SituationAVS;
 import org.impotch.calcul.assurancessociales.StatutAVS;
-import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageGenevoisAnnuel;
+import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageAnnuelAssurancesSocialesGenevoises;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.SituationFamilialeGE;
 import org.impotch.calcul.impot.taxation.pp.RegleAgeEnfant;
@@ -62,7 +62,7 @@ class AbstractTestProducteurBaseRabaisImpot {
 		producteur.setRegleAge(contruireRegleAge());
 
 
-		Fournisseur fournisseurCotSociale = new Fournisseur(FournisseurParametrageGenevoisAnnuel.enMemoire());
+		Fournisseur fournisseurCotSociale = new Fournisseur(FournisseurParametrageAnnuelAssurancesSocialesGenevoises.enMemoire());
 		if (annee > 2006) producteur.setRegleRenteMaxi(fournisseurCotSociale.getCalculateurExtremaRenteAVS(annee));
 		return producteur;
 	}

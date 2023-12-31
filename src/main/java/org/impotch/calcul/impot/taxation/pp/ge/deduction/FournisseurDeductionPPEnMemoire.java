@@ -16,9 +16,8 @@
 package org.impotch.calcul.impot.taxation.pp.ge.deduction;
 
 import org.impotch.bareme.BaremeParTranche;
+import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageAnnuelLIPP_D_3_08;
 import org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeDeductionBeneficiaireRenteAVSAI;
-import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
-import org.impotch.calcul.impot.indexation.ge.MontantIndexe;
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 
 import java.math.BigDecimal;
@@ -28,14 +27,15 @@ import java.util.concurrent.ConcurrentMap;
 
 public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
 
-    private FournisseurIndexGenevois fournisseurIndexGenevois;
+
+    private final FournisseurParametrageAnnuelLIPP_D_3_08 fournisseurParametrage;
 
     private ConcurrentMap<Integer, DeductionSociale> deducSocialeCharge = new ConcurrentHashMap<Integer, DeductionSociale>();
     private ConcurrentMap<Integer, DeductionDoubleActivite> deducDoubleActivite = new ConcurrentHashMap<>();
     private ConcurrentMap<Integer, DeductionBeneficiaireRentesAVSAI> deducSocialeRentier = new ConcurrentHashMap<>();
 
-    public FournisseurDeductionPPEnMemoire(FournisseurIndexGenevois fournisseurIndexGenevois) {
-        this.fournisseurIndexGenevois = fournisseurIndexGenevois;
+    public FournisseurDeductionPPEnMemoire(FournisseurParametrageAnnuelLIPP_D_3_08 fournisseurParametrage) {
+        this.fournisseurParametrage = fournisseurParametrage;
     }
 
     @Override
@@ -48,27 +48,13 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
         return deducSocialeCharge.get(annee);
     }
 
-    private MontantIndexe construireMontantIndexe(int annee) {
-        MontantIndexe mntIdx; // LIPP Art. 72 alinea 15
-        if (annee < 2011) {
-            mntIdx = new MontantIndexe(9_000, fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2009));
-        } else if (annee < 2017) {
-            mntIdx= new MontantIndexe(10_000,fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2009));
-        } else if (annee < 2021) {
-            // Incompréhensible, l’arrondi au franc près voudrait que ce soit 9981 CHF et non pas 9980 CHF !
-            mntIdx= new MontantIndexe(9_980,fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2017));
-        } else {
-            mntIdx= new MontantIndexe(13_000,fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2021));  // RCEPF art. 12
-        }
-        return mntIdx;
-    }
-
     private DeductionSociale construireRegleDeductionSocialeCharge(int annee) {
         if (annee < 2010) return null;
         if (annee > 2024) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
                 + annee + "' doit être adapté !");
+        int montant = fournisseurParametrage.revenu(annee).deductionSocialeRevenuParChargeDeFamille();
         DeductionChargeFamille deduction = new DeductionChargeFamille(annee);
-        deduction.setMontantParCharge(construireMontantIndexe(annee).getMontantIndexe(annee));
+        deduction.setMontantParCharge(montant);
 
 //        if (2010 == annee) deduction.setMontantParCharge(9000);
 //        else if (annee < 2013) deduction.setMontantParCharge(10000);
@@ -89,12 +75,8 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
     }
 
     private DeductionDoubleActivite construireRegleDeductionDoubleActivite(int annee) {
-        MontantIndexe montantIndexe
-                = (annee < 2021 ) ? // LIPP Art. 72 alinea 15
-                new MontantIndexe(500,fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2009))
-                : new MontantIndexe(1000, fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(2021)); // RCEPF art. 9
-        BigDecimal montantDeduction = montantIndexe.getMontantIndexe(annee);
-        return new DeductionDoubleActivite(montantDeduction);
+        int montant = fournisseurParametrage.revenu(annee).deductionDoubleActivite();
+        return new DeductionDoubleActivite(montant);
     }
 
     public DeductionBeneficiaireRentesAVSAI getDeductionBeneficiaireRenteAVSAI(int annee) {
@@ -109,14 +91,19 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
     }
 
     protected DeductionBeneficiaireRentesAVSAI construireRegleDeductionRentierAVSAI(int annee) {
-        return new DeductionRentierAVS(annee, construireBaremeDeductionBeneficiaireRentesAvsAi(annee), new BigDecimal("1.15"));
+        BaremeParTranche bareme = fournisseurParametrage.revenu(annee).deductionSocialeBeneficiairesRentesAVSouAIPersonneSeule();
+        // TODO PGI : à mon avis, problème lors des indexations, à vérifier.
+        return new DeductionRentierAVS(annee, bareme, new BigDecimal("1.15"));
     }
 
-    protected BaremeParTranche construireBaremeDeductionBeneficiaireRentesAvsAi(int annee) {
-        ConstructeurBaremeDeductionBeneficiaireRenteAVSAI constructeur = new ConstructeurBaremeDeductionBeneficiaireRenteAVSAI();
-        constructeur.indexateur(fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(annee));
-        constructeur.validite(2010);
-        return constructeur.construireBaremeSeul(annee);
+//    protected BaremeParTranche construireBaremeDeductionBeneficiaireRentesAvsAi(int annee) {
+//
+//
+//
+//        ConstructeurBaremeDeductionBeneficiaireRenteAVSAI constructeur = new ConstructeurBaremeDeductionBeneficiaireRenteAVSAI();
+//        constructeur.indexateur(fournisseurIndexGenevois.getIndexateurQuadriennalBaseDecembre2005(annee));
+//        constructeur.validite(2010);
+//        return constructeur.construireBaremeSeul(annee);
 
 //        ConstructeurBareme cons = new ConstructeurBareme();
 //        // Voir le détail dans D 3 08.05: Règlement relatif à la compensation des effets de la progression à froid (RCEPF)
@@ -146,6 +133,6 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
 //            throw new IllegalArgumentException("le barème déduction pour rentes n'est pas définis pour année >= 2021 !!");
 //        }
 //        return cons.construireBaremeParTranche();
-    }
+//    }
 
 }

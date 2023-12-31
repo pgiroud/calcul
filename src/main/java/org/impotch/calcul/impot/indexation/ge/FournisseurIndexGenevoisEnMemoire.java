@@ -89,18 +89,4 @@ public class FournisseurIndexGenevoisEnMemoire implements FournisseurIndexGenevo
         return fournisseurIndiceGEBaseDecembre2005;
     }
 
-    @Override
-    public Indexateur getIndexateurQuadriennalBaseMai1993(int anneeBase) {
-        return unConstructeurIndexateurQuadriAnnuel(2001)
-                .anneeBase(anneeBase)
-                .fournisseurIndice(getFournisseurIndiceGEBaseMai1993()).cons();
-    }
-
-    @Override
-    public Indexateur getIndexateurQuadriennalBaseDecembre2005(int anneeBase) {
-        return unConstructeurIndexateurQuadriAnnuel(2009)
-                .anneeBase(anneeBase)
-                .fournisseurIndice(getFournisseurIndiceGEBaseDecembre2005()).cons();
-    }
-
 }

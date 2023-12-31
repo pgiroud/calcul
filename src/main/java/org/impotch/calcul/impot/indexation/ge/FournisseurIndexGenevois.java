@@ -21,9 +21,6 @@ import org.impotch.calcul.impot.indexation.Indexateur;
 
 public interface FournisseurIndexGenevois {
 
-    Indexateur getIndexateurQuadriennalBaseMai1993(int anneeBaseIndexation);
-    Indexateur getIndexateurQuadriennalBaseDecembre2005(int anneeBaseIndexation);
-
     FournisseurIndicePeriodique getFournisseurIndiceGEBaseMai1993();
     FournisseurIndicePeriodique getFournisseurIndiceGEBaseDecembre2005();
 }

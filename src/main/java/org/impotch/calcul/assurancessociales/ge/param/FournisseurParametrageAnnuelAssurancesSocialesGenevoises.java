@@ -13,29 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.indexation.ge;
+package org.impotch.calcul.assurancessociales.ge.param;
 
-import org.impotch.calcul.impot.indexation.Indexateur;
+import java.util.Optional;
 
-
-import java.math.BigDecimal;
-
-public class MontantIndexe {
-
-    private final Indexateur indexateur;
-    private final BigDecimal montantBase;
-
-    private MontantIndexe(BigDecimal montantBase, Indexateur indexateur) {
-        this.montantBase = montantBase;
-        this.indexateur = indexateur;
+public interface FournisseurParametrageAnnuelAssurancesSocialesGenevoises {
+    static FournisseurParametrageAnnuelAssurancesSocialesGenevoises enMemoire() {
+        return new FournisseurParametrageAnnuelAssurancesSocialesGenevoisesEnMemoire();
     }
 
-    public MontantIndexe(int montantBase, Indexateur indexateur) {
-        this(BigDecimal.valueOf(montantBase),indexateur);
-    }
-
-    public BigDecimal getMontantIndexe(int annee) {
-        return indexateur.indexer(montantBase, annee);
-
-    }
+    Optional<ParametrageAnnuelCotisationsSocialesGenevoises> parametrage(int annee);
 }

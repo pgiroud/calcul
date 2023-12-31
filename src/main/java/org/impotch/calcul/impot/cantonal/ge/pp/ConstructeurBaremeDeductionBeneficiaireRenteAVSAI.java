@@ -98,7 +98,7 @@ public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAI {
     }
 
     private BaremeParTranche construireBareme(int annee, BaremeParTranche base) {
-        return indexateur.indexer(base,annee);
+        return indexateur.indexer(2009, base,annee);
     }
 
     public BaremeParTranche construireBaremeSeul(int annee) {

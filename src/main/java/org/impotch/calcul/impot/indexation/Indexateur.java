@@ -23,24 +23,31 @@ import org.impotch.bareme.BaremeTauxMarginalConstantParTranche;
 import org.impotch.util.TypeArrondi;
 
 public interface Indexateur {
-	BigDecimal indexer(BigDecimal montantBase, int annee, TypeArrondi arrondi);
-    BaremeParTranche indexer(BaremeParTranche bareme, int annee, TypeArrondi arrondi);
-    BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee, TypeArrondi arrondi);
+	BigDecimal indexer(int periodeDebut, BigDecimal montantBase, int annee, TypeArrondi arrondi);
+    BaremeParTranche indexer(int periodeDebut, BaremeParTranche bareme, int annee, TypeArrondi arrondi);
+    BaremeTauxMarginalConstantParTranche indexer(int periodeDebut, BaremeTauxMarginalConstantParTranche bareme, int annee, TypeArrondi arrondi);
 
 
 
-    default BigDecimal indexer(BigDecimal montantBase,
+    default int indexer(int periodeDebut, int montantBase,
+                        int annee) {
+        BigDecimal montantIndexe = indexer(periodeDebut,BigDecimal.valueOf(montantBase),annee);
+        return montantIndexe.intValue();
+    }
+
+
+    default BigDecimal indexer(int periodeDebut, BigDecimal montantBase,
                               int annee) {
-        return indexer(montantBase, annee, TypeArrondi.UNITE_LA_PLUS_PROCHE);
+        return indexer(periodeDebut,montantBase, annee, TypeArrondi.UNITE_LA_PLUS_PROCHE);
     }
 
-    default BaremeParTranche indexer(BaremeParTranche bareme, int annee) {
-        return indexer(bareme,annee,TypeArrondi.UNITE_LA_PLUS_PROCHE);
+    default BaremeParTranche indexer(int periodeDebut, BaremeParTranche bareme, int annee) {
+        return indexer(periodeDebut,bareme,annee,TypeArrondi.UNITE_LA_PLUS_PROCHE);
     }
 
 
-    default BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee) {
-        return indexer(bareme,annee,TypeArrondi.UNITE_LA_PLUS_PROCHE);
+    default BaremeTauxMarginalConstantParTranche indexer(int periodeDebut, BaremeTauxMarginalConstantParTranche bareme, int annee) {
+        return indexer(periodeDebut,bareme,annee,TypeArrondi.UNITE_LA_PLUS_PROCHE);
     }
 
 }

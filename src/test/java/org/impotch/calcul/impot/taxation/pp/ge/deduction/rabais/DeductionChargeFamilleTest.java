@@ -31,6 +31,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 
 public class DeductionChargeFamilleTest {
 
@@ -71,7 +72,7 @@ public class DeductionChargeFamilleTest {
     }
 
     private FournisseurDeductionPP fournisseurDeductionPP =
-            new FournisseurDeductionPPEnMemoire(new FournisseurIndexGenevoisEnMemoire());
+            new FournisseurDeductionPPEnMemoire(CTX_TST_CH_GE.getParametrageLIPP());
 
     private void test(int annee, int montantAttendu) {
         SituationFamiliale situation = construireSituationCoupleAvecUneCharge();
@@ -138,7 +139,7 @@ public class DeductionChargeFamilleTest {
     }
     @Test
     public void test2024() {
-        test(2024,13_000);
+        test(2024,13_536);
     }
 
 }

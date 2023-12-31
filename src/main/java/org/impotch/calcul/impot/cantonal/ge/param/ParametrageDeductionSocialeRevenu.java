@@ -13,14 +13,9 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.assurancessociales.ge.param;
+package org.impotch.calcul.impot.cantonal.ge.param;
 
-import java.util.Optional;
+import org.impotch.bareme.BaremeParTranche;
 
-public interface FournisseurParametrageGenevoisAnnuel {
-    static FournisseurParametrageGenevoisAnnuel enMemoire() {
-        return new FournisseurParametrageGenevoisAnnuelEnMemoire();
-    }
-
-    Optional<ParametrageGenevoisAnnuel> parametrage(int annee);
+public record ParametrageDeductionSocialeRevenu(int parCharge, BaremeParTranche rentierAVSAISeul) {
 }

@@ -41,13 +41,12 @@ public class IndexateurPeriodique implements Indexateur {
 	private FournisseurIndicePeriodique fournisseurIndice;
 
 	private final int anneeBaseIndexation;
-	private final int anneeBase;
+
     private final int nbPeriodeAnnuelle;
 	
-	private IndexateurPeriodique(int anneeBaseIndexation, int nbPeriodeAnnuelle, int anneeBase) {
+	private IndexateurPeriodique(int anneeBaseIndexation, int nbPeriodeAnnuelle) {
 		super();
 		this.anneeBaseIndexation = anneeBaseIndexation;
-		this.anneeBase = anneeBase;
         this.nbPeriodeAnnuelle = nbPeriodeAnnuelle;
 	}
 
@@ -64,14 +63,7 @@ public class IndexateurPeriodique implements Indexateur {
 	private void setFournisseurIndice(FournisseurIndicePeriodique fournisseurIndice) {
 		this.fournisseurIndice = fournisseurIndice;
 	}
-
-	protected int getAnneeBase() {
-		return anneeBase;
-	}
-
-    private BigDecimal getIndiceBase() {
-        return getFournisseurIndice().getIndice(getAnneeBase());
-    }
+	
 
     private BigDecimal getIndiceDerniereRevalorisation(int annee) {
         int anneeIndice = getAnneeIndice(annee);
@@ -87,29 +79,31 @@ public class IndexateurPeriodique implements Indexateur {
 	 * @see IndexateurMontant#indexer(java.math.BigDecimal, int, org.impotch.util.TypeArrondi)
 	 */
 	@Override
-	public BigDecimal indexer(BigDecimal montantBase, int annee,
+	public BigDecimal indexer(int periodeDebut, BigDecimal montantBase, int annee,
                               TypeArrondi arrondi) {
-        return (getAnneeIndice(annee) == getAnneeBase()) ?
+		BigDecimal indiceDebut = getFournisseurIndice().getIndice(periodeDebut);
+        return (getAnneeIndice(annee) == periodeDebut) ?
                 montantBase
-                : arrondi.arrondirMontant(montantBase.multiply(getIndiceDerniereRevalorisation(annee)).divide(getIndiceBase(),15, RoundingMode.HALF_UP));
+                : arrondi.arrondirMontant(montantBase.multiply(getIndiceDerniereRevalorisation(annee)).divide(indiceDebut,15, RoundingMode.HALF_UP));
 	}
 
-    private BigDecimal obtenirRapportRencherissement(int annee) {
-        return getIndiceDerniereRevalorisation(annee).divide(getIndiceBase(), 15, RoundingMode.HALF_UP);
+    private BigDecimal obtenirRapportRencherissement(int periodeDebut, int annee) {
+		BigDecimal indiceDebut = getFournisseurIndice().getIndice(periodeDebut);
+        return getIndiceDerniereRevalorisation(annee).divide(indiceDebut, 15, RoundingMode.HALF_UP);
     }
 
     @Override
-    public BaremeParTranche indexer(BaremeParTranche bareme, int annee, TypeArrondi arrondi) {
-        BigDecimal rapport = obtenirRapportRencherissement(annee);
+    public BaremeParTranche indexer(int periodeDebut, BaremeParTranche bareme, int annee, TypeArrondi arrondi) {
+        BigDecimal rapport = obtenirRapportRencherissement(periodeDebut, annee);
         BaremeParTranche baremeCible = bareme.homothetie(rapport,arrondi);
         baremeCible = baremeCible.homothetieValeur(rapport,arrondi);
         return baremeCible;
     }
 
     @Override
-    public BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee, TypeArrondi arrondi) {
-        BigDecimal rapport = obtenirRapportRencherissement(annee);
-        return (BaremeTauxMarginalConstantParTranche)bareme.homothetie(rapport, arrondi);
+    public BaremeTauxMarginalConstantParTranche indexer(int periodeDebut, BaremeTauxMarginalConstantParTranche bareme, int annee, TypeArrondi arrondi) {
+        BigDecimal rapport = obtenirRapportRencherissement(periodeDebut, annee);
+        return bareme.homothetie(rapport, arrondi);
     }
 
 	public static class Constructeur {
@@ -117,7 +111,6 @@ public class IndexateurPeriodique implements Indexateur {
 		private final int anneeBaseIndexation;
 		private final int nbPeriode;
 
-		private int anneBase;
 		private FournisseurIndicePeriodique fournisseurIndice;
 
 		Constructeur(int anneeBaseIndexation, int nbPeriode) {
@@ -125,17 +118,13 @@ public class IndexateurPeriodique implements Indexateur {
 			this.nbPeriode = nbPeriode;
 		}
 
-		public Constructeur anneeBase(int annee) {
-			this.anneBase = annee;
-			return this;
-		}
 
 		public Constructeur fournisseurIndice(FournisseurIndicePeriodique fournisseur) {
 			this.fournisseurIndice = fournisseur;
 			return this;
 		}
 		public IndexateurPeriodique cons() {
-			IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation,nbPeriode,anneBase);
+			IndexateurPeriodique indexateur = new IndexateurPeriodique(anneeBaseIndexation,nbPeriode);
 			indexateur.setFournisseurIndice(fournisseurIndice);
 			return indexateur;
 		}

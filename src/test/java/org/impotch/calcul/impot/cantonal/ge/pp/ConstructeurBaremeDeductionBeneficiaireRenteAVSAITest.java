@@ -17,6 +17,7 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.bareme.BaremeParTranche;
 import org.impotch.calcul.impot.indexation.Indexateur;
+import org.impotch.calcul.impot.indexation.ge.IndexateurGenevois;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
@@ -26,7 +27,7 @@ import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_
 public class ConstructeurBaremeDeductionBeneficiaireRenteAVSAITest {
 
 
-    private Indexateur indexateur = CTX_TST_CH_GE.getFournisseurIndex().getIndexateurQuadriennalBaseDecembre2005(2009);
+    private Indexateur indexateur = new IndexateurGenevois(CTX_TST_CH_GE.getFournisseurIndex());
 
     private  ConstructeurBaremeDeductionBeneficiaireRenteAVSAI constructeur;
 

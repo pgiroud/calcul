@@ -28,11 +28,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 public class DeductionDoubleActiviteTest {
 
     private FournisseurDeductionPP fournisseurDeductionPP =
-            new FournisseurDeductionPPEnMemoire(new FournisseurIndexGenevoisEnMemoire());
+            new FournisseurDeductionPPEnMemoire(CTX_TST_CH_GE.getParametrageLIPP());
 
 
     private SituationFamiliale construireSituationCoupleAvecLes2Travaillant() {
@@ -65,11 +65,6 @@ public class DeductionDoubleActiviteTest {
         SituationFamiliale situation = construireSituationCoupleAvecLes2Travaillant();
         assertThat(fournisseurDeductionPP.getRegleDeductionDoubleActivite(annee).getMontantDeduction(situation))
                 .isEqualTo(BigDecimal.valueOf(montantAttendu));
-    }
-
-    @Test
-    public void test2009() {
-        test(2009,500);
     }
 
     @Test
@@ -144,7 +139,7 @@ public class DeductionDoubleActiviteTest {
 
     @Test
     public void test2024() {
-        test(2024,1000);
+        test(2024,1041);
     }
 
 

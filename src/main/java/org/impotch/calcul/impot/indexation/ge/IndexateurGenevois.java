@@ -32,52 +32,72 @@ import static org.impotch.calcul.impot.indexation.IndexateurPeriodique.unConstru
  */
 public class IndexateurGenevois implements Indexateur {
 
-    private FournisseurIndicePeriodique fournisseurIndice;
 
-    private final int anneeBaseIndexation;
-    private final int anneeBase;
-    private IndexateurPeriodique indexateurQuadriennal;
-    private IndexateurPeriodique indexateurAnnuel;
+    private FournisseurIndexGenevois fournisseurIndice;
 
-    public IndexateurGenevois(int anneeBaseIndexation, int anneeBase, FournisseurIndicePeriodique fournisseurIndice) {
+
+    private IndexateurPeriodique indexateurQuadriennalLIPP5_D_3_16_2000;
+    private IndexateurPeriodique indexateurAnnuelLIPP5_D_3_16_2000;
+    private IndexateurPeriodique indexateurQuadriennalLIPP2009;
+    private IndexateurPeriodique indexateurAnnuelLIPP2009;
+
+    public IndexateurGenevois(FournisseurIndexGenevois fournisseurIndice) {
         super();
-        this.anneeBaseIndexation = anneeBaseIndexation;
         this.fournisseurIndice = fournisseurIndice;
-        this.anneeBase = anneeBase;
         renseignerIndexateur();
     }
 
 
     private void renseignerIndexateur() {
-        indexateurQuadriennal = unConstructeurIndexateurQuadriAnnuel(anneeBaseIndexation)
-                .anneeBase(anneeBase)
-                .fournisseurIndice(fournisseurIndice).cons();
+        indexateurQuadriennalLIPP5_D_3_16_2000 = unConstructeurIndexateurQuadriAnnuel(2001)
+                .fournisseurIndice(fournisseurIndice.getFournisseurIndiceGEBaseMai1993()).cons();
 
-        indexateurAnnuel = unConstructeurIndexateurAnnuel(anneeBaseIndexation)
-                .anneeBase(anneeBase)
-                .fournisseurIndice(fournisseurIndice).cons();
+        indexateurAnnuelLIPP5_D_3_16_2000 = unConstructeurIndexateurAnnuel(2001)
+                .fournisseurIndice(fournisseurIndice.getFournisseurIndiceGEBaseMai1993()).cons();
+
+        indexateurQuadriennalLIPP2009 = unConstructeurIndexateurQuadriAnnuel(2009)
+                .fournisseurIndice(fournisseurIndice.getFournisseurIndiceGEBaseDecembre2005()).cons();
+
+        indexateurAnnuelLIPP2009 = unConstructeurIndexateurAnnuel(2009)
+                .fournisseurIndice(fournisseurIndice.getFournisseurIndiceGEBaseDecembre2005()).cons();
     }
 
     @Override
-    public BigDecimal indexer(BigDecimal montantBase, int annee, TypeArrondi arrondi) {
-        // PL 13094-A Grand Conseil
+    public BigDecimal indexer(int anneeDebut, BigDecimal montantBase, int annee, TypeArrondi arrondi) {
+        if (annee < 2001) throw new IllegalArgumentException("L'indexateur genvois n’est défini qu’à partir de 2001. Il faudrait compléter pour les années précédentes.");
+        if (2001 <= annee && annee <= 2009) {
+            return indexateurQuadriennalLIPP5_D_3_16_2000.indexer(anneeDebut, montantBase,annee,arrondi);
+        }
+
         if (annee < 2024) {
-            return indexateurQuadriennal.indexer(montantBase,annee,arrondi);
+            return indexateurQuadriennalLIPP2009.indexer(anneeDebut, montantBase,annee,arrondi);
         } else {
-            return indexateurAnnuel.indexer(montantBase,annee,arrondi);
+            // PL 13094-A Grand Conseil À partir de 2024, on indexe tous les ans
+            return indexateurAnnuelLIPP2009.indexer(anneeDebut, montantBase,annee,arrondi);
         }
     }
 
     @Override
-    public BaremeParTranche indexer(BaremeParTranche bareme, int annee, TypeArrondi arrondi) {
-        return indexateurQuadriennal.indexer(bareme,annee,arrondi);
+    public BaremeParTranche indexer(int anneeDebut, BaremeParTranche bareme, int annee, TypeArrondi arrondi) {
+        if (annee < 2001) throw new IllegalArgumentException("L'indexateur genvois n’est défini qu’à partir de 2001. Il faudrait compléter pour les années précédentes.");
+        if (2001 <= annee && annee <= 2009) {
+            return indexateurQuadriennalLIPP5_D_3_16_2000.indexer(anneeDebut, bareme,annee,arrondi);
+        }
+        if (annee < 2024) {
+            return indexateurQuadriennalLIPP2009.indexer(anneeDebut, bareme,annee,arrondi);
+        } else {
+            // PL 13094-A Grand Conseil À partir de 2024, on indexe tous les ans
+            return indexateurAnnuelLIPP2009.indexer(anneeDebut, bareme,annee,arrondi);
+        }
     }
 
     @Override
-    public BaremeTauxMarginalConstantParTranche indexer(BaremeTauxMarginalConstantParTranche bareme, int annee, TypeArrondi arrondi) {
-        return indexateurAnnuel.indexer(bareme,annee,arrondi);
+    public BaremeTauxMarginalConstantParTranche indexer(int anneeDebut, BaremeTauxMarginalConstantParTranche bareme, int annee, TypeArrondi arrondi) {
+        if (annee < 2001) throw new IllegalArgumentException("L'indexateur genvois n’est défini qu’à partir de 2001. Il faudrait compléter pour les années précédentes.");
+        if (2001 <= annee && annee <= 2009) {
+            throw new IllegalStateException("Entre 2001 et 2009, les barèmes genevois n’était pas constant par tranche !!");
+        }
+        return indexateurAnnuelLIPP2009.indexer(anneeDebut, bareme,annee,arrondi);
     }
-
-
 
 }

@@ -17,15 +17,17 @@ package org.impotch.calcul.impot.cantonal.ge;
 
 import org.impotch.calcul.assurancessociales.Fournisseur;
 import org.impotch.calcul.assurancessociales.FournisseurRegleCalculAssuranceSociale;
-import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageGenevoisAnnuel;
+import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageAnnuelAssurancesSocialesGenevoises;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParamCommunalGE;
+import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageAnnuelLIPP_D_3_08;
+import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageCommunaleGE;
 import org.impotch.calcul.impot.cantonal.ge.param.dao.ParametreCommunalDao;
-import org.impotch.calcul.impot.cantonal.ge.param.dao.ConstructeurParametreCommunalEnMemoire;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurCantonalGE;
 import org.impotch.calcul.impot.cantonal.ge.pp.FournisseurRegleImpotCantonalGE;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevois;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
+import org.impotch.calcul.impot.indexation.ge.IndexateurGenevois;
 import org.impotch.calcul.lieu.FournisseurLieu;
 
 import static org.impotch.calcul.impot.cantonal.ge.param.dao.ConstructeurParametreCommunalEnMemoire.unConstructeur;
@@ -36,13 +38,21 @@ public enum ContexteTestCH_GE {
     CTX_TST_CH_GE;
 
     private FournisseurIndexGenevois fournisseurIndex;
+
+    private FournisseurParametrageAnnuelLIPP_D_3_08 parametrageLIPP;
     private FournisseurRegleImpotCantonalGE fournisseurRegleImpotCantonalGE;
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
     private FournisseurParametrageCommunaleGE fournisseurParametrageCommunaleGE;
 
+
+
+
+
     ContexteTestCH_GE() {
         fournisseurIndex = new FournisseurIndexGenevoisEnMemoire();
-        fournisseurRegleCalculAssuranceSociale = new Fournisseur(FournisseurParametrageGenevoisAnnuel.enMemoire());
+        parametrageLIPP = new FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire(new IndexateurGenevois(fournisseurIndex));
+
+        fournisseurRegleCalculAssuranceSociale = new Fournisseur(FournisseurParametrageAnnuelAssurancesSocialesGenevoises.enMemoire());
 
         FournisseurParamCommunalGE paramComm = new FournisseurParamCommunalGE();
         paramComm.setDao(construireParametrageCommunal());
@@ -86,5 +96,9 @@ public enum ContexteTestCH_GE {
 
     public FournisseurParametrageCommunaleGE getFournisseurParametrageCommunaleGE() {
         return fournisseurParametrageCommunaleGE;
+    }
+
+    public FournisseurParametrageAnnuelLIPP_D_3_08 getParametrageLIPP() {
+        return parametrageLIPP;
     }
 }
