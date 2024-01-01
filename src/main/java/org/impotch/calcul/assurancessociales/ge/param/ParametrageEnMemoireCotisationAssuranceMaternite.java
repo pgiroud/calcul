@@ -24,10 +24,13 @@ import java.util.*;
 /**
  * Created by patrick on 18/01/15.
  */
-class ParametrageEnMemoireCotisationAssuranceMaternite implements ParametrageCotisationAssuranceMaternite {
+public class ParametrageEnMemoireCotisationAssuranceMaternite implements ParametrageCotisationAssuranceMaternite {
 
     public static Constructeur unConstructeur(int annee) {
         return new Constructeur(annee);
+    }
+    public static Constructeur unConstructeur(ParametrageCotisationAssuranceMaternite parametrage) {
+        return new Constructeur(parametrage);
     }
 
     private final int annee;
@@ -55,6 +58,11 @@ class ParametrageEnMemoireCotisationAssuranceMaternite implements ParametrageCot
 
         public Constructeur(int annee) {
             this.annee = annee;
+        }
+
+        public Constructeur(ParametrageCotisationAssuranceMaternite parametrage) {
+            this.annee = parametrage.annee();;
+            this.tauxCotisationAssuranceMaternite = parametrage.tauxAssuranceMaternite();
         }
 
         public Constructeur tauxCotisationAssuranceMaternite(String taux) {

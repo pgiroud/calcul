@@ -43,6 +43,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         if (2009 == annee) return Optional.of(construireParametrage2009());
         if (2008 == annee) return Optional.of(construireParametrage2008());
         if (2007 == annee) return Optional.of(construireParametrage2007());
+        if (2006 == annee) return Optional.of(construireParametrage2006());
+        if (2005 == annee) return Optional.of(construireParametrage2005());
         return Optional.empty();
     }
 
@@ -187,12 +189,30 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
     }
     private ParametrageSuisseAnnuel construireParametrage2007() {
         return unConstructeur(2007)
-                .montantMaxAssure(106_800).avs("8.4 %").ai("1.4 %").apg("0.3 %")
+                .montantMaxAssure(106_800)
+                .avs("8.4 %").ai("1.4 %").apg("0.3 %")
                 .ac("2 %")
                 .renteMensuelleMinimum(1105)
                 .cons();
     }
 
+    private ParametrageSuisseAnnuel construireParametrage2006() {
+        return unConstructeur(2006)
+                .montantMaxAssure(106_800)
+                .avs("8.4 %").ai("1.4 %").apg("0.3 %")
+                .ac("2 %")
+                .renteMensuelleMinimum(1075)
+                .cons();
+    }
+
+    private ParametrageSuisseAnnuel construireParametrage2005() {
+        return unConstructeur(2005)
+                .montantMaxAssure(106_800)
+                .avs("8.4 %").ai("1.4 %").apg("0.3 %")
+                .ac("2 %")
+                .renteMensuelleMinimum(1075)
+                .cons();
+    }
 
     // renteSimpleMensuelleMinimumParAnnee.put(1993,BigDecimal.valueOf(940));
     //    renteSimpleMensuelleMinimumParAnnee.put(1994,BigDecimal.valueOf(940));
@@ -235,4 +255,24 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1005)
                 .cons();
     }
+
+    // Taux de cotisation AC depuis 1977 - Limite de revenu
+//    01.04.1977 – 1979         0.8%            46'800
+//    À partir de 1980          0.5%            46'800
+//    À partir de 1982          0.3%            46'800
+//    À partir de 1983          0.3%            69'900
+//    À partir de 1984          0.6%            69'900
+//    À partir de 1987          0.6%            81'600
+//    À partir de 1990          0.4%            81'600
+//    À partir de 1991          0.4%            97'200
+//    À partir de 1993          2.0%            97'200
+//    À partir de 1995          3.0%            97'200
+//    À partir de 2000          3.0%            106'800
+//    À partir de 2003          2.5%            106'800
+//    À partir de 2004          2.0%            106'800
+//    À partir de 2008          2.0%            126'000
+//    À partir de 2011          2.2%            126'000
+//    À partir de 2016          2.2% ...
+
+
 }
