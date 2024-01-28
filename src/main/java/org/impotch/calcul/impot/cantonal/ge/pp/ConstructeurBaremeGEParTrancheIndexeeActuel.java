@@ -17,10 +17,9 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.bareme.BaremeParTranche;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
-import org.impotch.util.TypeArrondi;
 
 import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe.unConstructeurDeBaremeParTrancheIndexee;
-
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
 public class ConstructeurBaremeGEParTrancheIndexeeActuel implements ConstructeurBaremeGEParTrancheIndexee {
 
@@ -45,9 +44,8 @@ public class ConstructeurBaremeGEParTrancheIndexeeActuel implements Constructeur
                 .valideDepuis(DEBUT_VALIDITE)
                 .anneeReferenceRencherissement(ANNEE_REFERENCE_INDEXATION)
                 .indexateur(fournisseurIndicePeriodique)
-                .typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
-                .typeArrondiGlobal(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
-
+                .typeArrondiTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiGlobal(CINQ_CENTIEMES_LES_PLUS_PROCHES)
                 .jusqua(17493).taux(" 0 %")
                 .puisJusqua(21076).taux(" 8 %")
                 .puisJusqua(23184).taux(" 9 %")

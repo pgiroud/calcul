@@ -15,7 +15,6 @@
  */
 package org.impotch.calcul.assurancessociales;
 
-
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -27,7 +26,7 @@ import static org.impotch.calcul.assurancessociales.CalculateurCotisationAC.unCa
 public class CalculateurCotisationACTest {
 	
 	private BigDecimal calculPartSalariee(CalculateurCotisationAC calculateur, int montantDeterminant) {
-		return calculateur.calculPartSalarieeCotisationAssuranceChomage(BigDecimal.valueOf(montantDeterminant));
+		return calculateur.calculPartSalarieeCotisationAssuranceChomage(montantDeterminant);
 	}
 	
 	@Test

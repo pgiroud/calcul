@@ -30,6 +30,11 @@ class FournisseurParametrageAnnuelAssurancesSocialesGenevoisesEnMemoire implemen
         return construireParametrageAnnuel(annee);
     }
 
+    @Override
+    public FournisseurParametrageCotisationAssuranceMaternite fournisseurParametrageCotisationAssuranceMaternite() {
+        return fournisseurParametrageCotisationAssuranceMaternite;
+    }
+
     private Optional<ParametrageAnnuelCotisationsSocialesGenevoises> construireParametrageAnnuel(int annee) {
         if (fournisseurParametrageSuisseEnMemoire.parametrage(annee).isPresent()
         && fournisseurParametrageCotisationAssuranceMaternite.parametrage(annee).isPresent()) {

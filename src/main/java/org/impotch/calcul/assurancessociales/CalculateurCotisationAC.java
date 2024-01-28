@@ -20,9 +20,9 @@ import java.math.BigDecimal;
 import org.impotch.bareme.Bareme;
 import org.impotch.bareme.ConstructeurBareme;
 import org.impotch.calcul.ReglePeriodique;
-import org.impotch.util.TypeArrondi;
 
 import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
 public class CalculateurCotisationAC extends ReglePeriodique implements
 		CalculCotisationAssuranceChomage {
@@ -55,7 +55,7 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAssuranceChomage(
 			BigDecimal montantDeterminant) {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(calculCotisationAC(montantDeterminant).divide(BigDecimal.valueOf(2)));
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(calculCotisationAC(montantDeterminant).divide(BigDecimal.valueOf(2)));
 	}
 
 	public static class ConstructeurCalculateurCotisationAC {
@@ -89,8 +89,9 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 
 		private ConstructeurBareme initBareme() {
 			return unBaremeATauxMarginal()
-					.typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
-					.jusqua(montantAnnuelMaximumGainAssure).taux(tauxCotisationAssuranceChomage);
+					.typeArrondiSurChaqueTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+					.jusqua(0).taux("0")
+					.puisJusqua(montantAnnuelMaximumGainAssure).taux(tauxCotisationAssuranceChomage);
 		}
 
 

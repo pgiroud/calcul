@@ -52,9 +52,11 @@ public class ProducteurImpotAvecRabais extends ProducteurImpot {
 		BigDecimal impot = getProducteurBaseRabais().produireImpotBase(situation, fournisseur);
 		impot = impot.min(montantImpotBase).negate();
 
-		ImpotProduit impotProduit = new ImpotProduit(this.nomRabaisImpot,impot);
-		impotProduit.setCodeBeneficiaire(this.getCodeBeneficiaire());
-		impotProduit.setBaseCalcul(fournisseur.getMontantImposable());
+		ImpotProduit impotProduit = new ImpotProduit.Cons(this.nomRabaisImpot,impot)
+				.codeBeneficiaire(this.getCodeBeneficiaire())
+				.baseCalcul(fournisseur.getMontantImposable())
+				.cons();
+
 		recepteur.ajouteImpot(impotProduit);
 		return impot;
 	}

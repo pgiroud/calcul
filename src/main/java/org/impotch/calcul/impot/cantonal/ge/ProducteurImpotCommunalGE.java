@@ -143,12 +143,13 @@ public abstract class ProducteurImpotCommunalGE implements ProducteurImpotCommun
 					builder.ajouter(MessageFormat.format("{0,number,#,##0.00} * {1,number,percent}",baseCalcul,taux));
 					builder.ajouter(MessageFormat.format("{0,number,#,##0.00}",impot));
 
-					ImpotProduit impotProduit = new ImpotProduit(codeCtsAdd,impot);
-					impotProduit.setBaseCalcul(baseCalcul);
-					impotProduit.setTauxEffectif(taux);
-					impotProduit.setCodeBeneficiaire(getCodeBeneficiaire(commune));
-					impotProduit.setExplicationCalcul(MessageFormat.format("Le taux {0,number,percent} est appliqué à la base de calcul {1,number,#,##0.00}.",taux,baseCalcul));
-					impotProduit.setExplicationDetailleeCalcul(builder.getTexte());
+					ImpotProduit impotProduit = new ImpotProduit.Cons(codeCtsAdd,impot)
+							.baseCalcul(baseCalcul)
+							.tauxEffectif(taux)
+							.codeBeneficiaire(getCodeBeneficiaire(commune))
+							.explicationCalcul(MessageFormat.format("Le taux {0,number,percent} est appliqué à la base de calcul {1,number,#,##0.00}.",taux,baseCalcul))
+							.explicationDetailleeCalcul(builder.getTexte())
+							.cons();
 					recepteur.ajouteImpot(impotProduit);
 				}
 			}

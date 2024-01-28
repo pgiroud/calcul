@@ -17,12 +17,14 @@ package org.impotch.calcul.impot.taxation.pp.federal.deduction;
 
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 
+import java.util.Optional;
+
 public interface FournisseurDeductionPP {
 
     IDeductionDoubleActivite getDeductionDoubleActivite(int annee);
 
     DeductionSociale getRegleDeductionSocialeEnfant(int annee);
 
-    DeductionSociale getRegleDeductionSocialeConjoint(int annee);
+    Optional<DeductionSociale> getRegleDeductionSocialeConjoint(int annee);
 
 }

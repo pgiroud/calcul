@@ -31,11 +31,19 @@ public interface CalculCotisationAssuranceChomage {
 	 * @return le montant de la cotisation
 	 */
 	BigDecimal calculCotisationAC(BigDecimal montantDeterminant);
-	
+
+	default BigDecimal calculCotisationAC(long montantDeterminant) {
+		return calculCotisationAC(BigDecimal.valueOf(montantDeterminant));
+	}
+
 	/**
 	 * Calcule la part employé de la cotisation à l'assurance chômage.
 	 * @param montantDeterminant le salaire déterminant au sens de la législation sur l'AVS.
 	 * @return la part due par le salarié de la cotisation à l'assurance chômage.
 	 */
 	BigDecimal calculPartSalarieeCotisationAssuranceChomage(BigDecimal montantDeterminant);
+
+	default BigDecimal calculPartSalarieeCotisationAssuranceChomage(long montantDeterminant) {
+		return calculPartSalarieeCotisationAssuranceChomage(BigDecimal.valueOf(montantDeterminant));
+	}
 }

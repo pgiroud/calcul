@@ -114,12 +114,13 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 		
 		BigDecimal montant = calculMontant(montantBase,fournisseur);
 		
-		ImpotProduit impotProduit = new ImpotProduit(nomImpot,montant);
-		impotProduit.setCodeBeneficiaire(codeBeneficiaire);
-		impotProduit.setBaseCalcul(montantBase);
-		impotProduit.setTauxEffectif(taux);
-		impotProduit.setExplicationCalcul(MessageFormat.format("Le taux {1,number,percent} est appliqué à la base de calcul {0,number}",montantBase,taux,montant));
-		impotProduit.setExplicationDetailleeCalcul(MessageFormat.format(explicationDetailleePattern, montantBase,taux,montant));
+		ImpotProduit impotProduit = new ImpotProduit.Cons(nomImpot,montant)
+				.codeBeneficiaire(codeBeneficiaire)
+				.baseCalcul(montantBase)
+				.tauxEffectif(taux)
+				.explicationCalcul(MessageFormat.format("Le taux {1,number,percent} est appliqué à la base de calcul {0,number}",montantBase,taux,montant))
+				.explicationDetailleeCalcul(MessageFormat.format(explicationDetailleePattern, montantBase,taux,montant))
+				.cons();
 		
 		recepteurMultiple.ajouteImpot(impotProduit);
 

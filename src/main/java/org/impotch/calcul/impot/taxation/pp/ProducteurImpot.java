@@ -106,9 +106,11 @@ public class ProducteurImpot {
 	
 	protected BigDecimal produireImpotBase(SituationFamiliale situation, FournisseurAssiettePeriodique fournisseur, RecepteurImpot recepteur) {
 		BigDecimal impot = getProducteurBase().produireImpotBase(situation, fournisseur);
-		ImpotProduit impotProduit = new ImpotProduit(nomImpotProduit,impot);
-		impotProduit.setCodeBeneficiaire(codeBeneficiaire);
-		impotProduit.setBaseCalcul(fournisseur.getMontantImposable());
+		ImpotProduit impotProduit = new ImpotProduit.Cons(nomImpotProduit,impot)
+				.codeBeneficiaire(codeBeneficiaire)
+				.baseCalcul(fournisseur.getMontantImposable())
+				.cons();
+
 		recepteur.ajouteImpot(impotProduit);
 		return impot;
 	}

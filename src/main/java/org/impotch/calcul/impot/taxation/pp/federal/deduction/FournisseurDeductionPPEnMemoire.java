@@ -17,6 +17,7 @@ package org.impotch.calcul.impot.taxation.pp.federal.deduction;
 
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -82,12 +83,12 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
 
 
 
-    public DeductionSociale getRegleDeductionSocialeConjoint(int annee) {
-        if (annee < 2008) return null;
+    public Optional<DeductionSociale> getRegleDeductionSocialeConjoint(int annee) {
+        if (annee < 2008) return Optional.empty();
         if (!deducSocialeConjoint.containsKey(annee)) {
             deducSocialeConjoint.putIfAbsent(annee, construireRegleDeductionSocialeConjoint(annee));
         }
-        return deducSocialeConjoint.get(annee);
+        return Optional.of(deducSocialeConjoint.get(annee));
     }
 
     protected DeductionSociale construireRegleDeductionSocialeConjoint(int annee) {

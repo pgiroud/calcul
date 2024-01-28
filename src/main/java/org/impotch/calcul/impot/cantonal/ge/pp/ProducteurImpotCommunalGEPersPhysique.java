@@ -91,12 +91,14 @@ public class ProducteurImpotCommunalGEPersPhysique extends
 			BigDecimal taux = getFournisseurParametrage().getTauxCentimes(fournisseur.getPeriodeFiscale(), domicile);
 			BigDecimal impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(partPrivilegiee.multiply(taux));
 			if (BigDecimalUtil.isStrictementPositif(impot)) {
-				ImpotProduit impotProduit = new ImpotProduit(getCodePartPrivilegiee(),impot);
-				impotProduit.setBaseCalcul(partPrivilegiee);
-				impotProduit.setTauxEffectif(taux);
-				impotProduit.setCodeBeneficiaire(getCodeBeneficiaire(domicile));
-				impotProduit.setExplicationCalcul(MessageFormat.format("Le taux {0,number,percent} est appliqué à la base de calcul {1,number,#,##0.00}",taux,partPrivilegiee));
-				impotProduit.setExplicationDetailleeCalcul(construireExplicationsCalculDetaillees(domicile.getNom(),montantCantonalBase,tauxPartPrivilegiee,partPrivilegiee,taux,impot));
+				ImpotProduit impotProduit = new ImpotProduit.Cons(getCodePartPrivilegiee(),impot)
+						.baseCalcul(partPrivilegiee)
+						.tauxEffectif(taux)
+						.codeBeneficiaire(getCodeBeneficiaire(domicile))
+						.explicationCalcul(MessageFormat.format("Le taux {0,number,percent} est appliqué à la base de calcul {1,number,#,##0.00}",taux,partPrivilegiee))
+						.explicationDetailleeCalcul(construireExplicationsCalculDetaillees(domicile.getNom(),montantCantonalBase,tauxPartPrivilegiee,partPrivilegiee,taux,impot))
+						.cons();
+
 				recepteur.ajouteImpot(impotProduit);
 			}
 		}

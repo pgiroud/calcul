@@ -45,6 +45,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 public class SplittingTest {
 
     private StrategieProductionImpotFamille splitting;
@@ -52,8 +53,9 @@ public class SplittingTest {
     @BeforeEach
     public void setUp() throws Exception {
         splitting = new Splitting(unBaremeATauxMarginal()
-                .typeArrondiSurChaqueTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
-                .jusqua(1000).taux("1 %")
+                .typeArrondiSurChaqueTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .jusqua(0).taux("0")
+                .puisJusqua(1000).taux("1 %")
                 .puisJusqua(2000).taux("2 %")
                 .puisJusqua(3000).taux("3 %")
                 .puisJusqua(4000).taux("4 %")

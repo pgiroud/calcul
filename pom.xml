@@ -15,7 +15,7 @@
             <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
-                <version>5.9.1</version>
+                <version>${junit.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -25,13 +25,13 @@
         <dependency>
             <groupId>org.impotch</groupId>
             <artifactId>bareme</artifactId>
-            <version>3.0.3</version>
+            <version>3.1.1-snapshot</version>
         </dependency>
         <dependency>
             <groupId>org.impotch</groupId>
             <artifactId>bareme</artifactId>
             <type>test-jar</type>
-            <version>3.0.3</version>
+            <version>3.1.1-snapshot</version>
         </dependency>
         <dependency>
             <groupId>org.impotch</groupId>
@@ -46,9 +46,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.3.0</version>
+            <version>${logback.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -64,9 +69,11 @@
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <compileSource>17</compileSource>
-        <assertj.version>3.23.1</assertj.version>
-        <slf4j.version>2.0.6</slf4j.version>
+        <compileSource>21</compileSource>
+        <assertj.version>3.25.1</assertj.version>
+        <logback.version>1.4.12</logback.version>
+        <slf4j.version>2.0.10</slf4j.version>
+        <junit.version>5.10.1</junit.version>
     </properties>
 
     <!-- Build Settings -->
@@ -75,7 +82,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.12.1</version>
                 <configuration>
                     <source>${compileSource}</source>
                     <target>${compileSource}</target>
@@ -169,17 +176,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.10.0</version>
+                <version>3.12.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.5.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.2</version>
+                <version>3.6.3</version>
                 <configuration>
                     <show>package</show>
                     <charset>${project.build.sourceEncoding}</charset>
@@ -196,31 +203,13 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.15.0</version>
-                <configuration>
-                    <!--<linkXref>true</linkXref>-->
-                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
-                    <minimumTokens>100</minimumTokens>
-                    <targetJdk>${compileSource}</targetJdk>
-                    <!--excludes>
-                      <exclude>**/*Bean.java</exclude>
-                      <exclude>**/generated/*.java</exclude>
-                    </excludes>
-                    <excludeRoots>
-                      <excludeRoot>target/generated-sources/stubs</excludeRoot>
-                    </excludeRoots-->
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>3.1.1</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
+                <version>0.8.11</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

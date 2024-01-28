@@ -22,5 +22,7 @@ public interface FournisseurParametrageAnnuelAssurancesSocialesGenevoises {
         return new FournisseurParametrageAnnuelAssurancesSocialesGenevoisesEnMemoire();
     }
 
+    FournisseurParametrageCotisationAssuranceMaternite fournisseurParametrageCotisationAssuranceMaternite();
+
     Optional<ParametrageAnnuelCotisationsSocialesGenevoises> parametrage(int annee);
 }

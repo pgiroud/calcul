@@ -48,7 +48,7 @@ public class ImpotProduit implements Impot {
 	 * un montant.
 	 * 
 	 */
-	public ImpotProduit(String typeImpot, BigDecimal montant) {
+	private ImpotProduit(String typeImpot, BigDecimal montant) {
 		this.typeImpot = typeImpot;
 		this.montant = montant;
 	}
@@ -61,7 +61,7 @@ public class ImpotProduit implements Impot {
 	 * Précise le code du bénéficiaire de l'impôt.
 	 * @param codeBeneficiaire Le code du bénéficiaire.
 	 */
-	public void setCodeBeneficiaire(String codeBeneficiaire) {
+	private void setCodeBeneficiaire(String codeBeneficiaire) {
 		this.codeBeneficiaire = codeBeneficiaire;
 	}
 
@@ -69,7 +69,7 @@ public class ImpotProduit implements Impot {
 	 * Précise la base de calcul ayant déterminé l'impôt.
 	 * @param baseCalcul la base de calcul.
 	 */
-	public void setBaseCalcul(BigDecimal baseCalcul) {
+	private void setBaseCalcul(BigDecimal baseCalcul) {
 		this.baseCalcul = baseCalcul;
 	}
 
@@ -79,15 +79,15 @@ public class ImpotProduit implements Impot {
 	 * de calcul.
 	 * @param tauxEffectif le taux effectif.
 	 */
-	public void setTauxEffectif(BigDecimal tauxEffectif) {
+	private void setTauxEffectif(BigDecimal tauxEffectif) {
 		this.tauxEffectif = tauxEffectif;
 	}
-	
-	public void setExplicationCalcul(String explicationCalcul) {
+
+	private void setExplicationCalcul(String explicationCalcul) {
 		this.explicationCalcul = explicationCalcul;
 	}
 
-	public void setExplicationDetailleeCalcul(String explicationDetailleeCalcul) {
+	private void setExplicationDetailleeCalcul(String explicationDetailleeCalcul) {
 		this.explicationDetailleeCalcul = explicationDetailleeCalcul;
 	}
 	
@@ -113,17 +113,13 @@ public class ImpotProduit implements Impot {
 		return baseCalcul;
 	}
 
+	private BigDecimal getTauxEffectifCalcule() {
+		return null == baseCalcul ? null : montant.divide(baseCalcul,5,RoundingMode.HALF_UP);
+	}
+
 	@Override
 	public BigDecimal getTauxEffectif() {
-		if (null == tauxEffectif) {
-			if (null == baseCalcul) {
-				return null;
-			} else {
-				return montant.divide(baseCalcul,5,RoundingMode.HALF_UP);
-			}
-		} else {
-			return tauxEffectif;
-		}
+		return null != tauxEffectif ? tauxEffectif : getTauxEffectifCalcule();
 	}
 
 	@Override
@@ -136,5 +132,55 @@ public class ImpotProduit implements Impot {
 		return explicationDetailleeCalcul;
 	}
 	
-	
+
+	public static class Cons {
+		private final BigDecimal montant;
+		private final String typeImpot;
+
+		private String codeBeneficiaire;
+		private BigDecimal baseCalcul;
+		private BigDecimal tauxEffectif;
+		private String explicationCalcul;
+		private String explicationDetailleeCalcul;
+		public Cons(String typeImpot, BigDecimal montant) {
+			this.typeImpot = typeImpot;
+			this.montant = montant;
+		}
+
+		public Cons codeBeneficiaire(String code) {
+			this.codeBeneficiaire = code;
+			return this;
+		}
+
+		public Cons baseCalcul(BigDecimal montant) {
+			this.baseCalcul = montant;
+			return this;
+		}
+
+		public Cons tauxEffectif(BigDecimal taux) {
+			this.tauxEffectif = taux;
+			return this;
+		}
+
+		public Cons explicationCalcul(String explications) {
+			this.explicationCalcul = explications;
+			return this;
+		}
+
+		public Cons explicationDetailleeCalcul(String explications) {
+			this.explicationDetailleeCalcul = explications;
+			return this;
+		}
+
+		public ImpotProduit cons() {
+			ImpotProduit ip = new ImpotProduit(this.typeImpot,this.montant);
+			ip.setCodeBeneficiaire(this.codeBeneficiaire);
+			ip.setBaseCalcul(this.baseCalcul);
+			ip.setTauxEffectif(this.tauxEffectif);
+			ip.setExplicationCalcul(this.explicationCalcul);
+			ip.setExplicationDetailleeCalcul(this.explicationDetailleeCalcul);
+			return ip;
+		}
+	}
+
 }
