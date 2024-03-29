@@ -20,13 +20,14 @@ import org.impotch.bareme.BaremeDiscretiseEtInterpolationLineaire;
 import org.impotch.bareme.BaremeTauxMarginalIntegrable;
 import org.impotch.bareme.Point;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
-import org.impotch.util.TypeArrondi;
 import org.impotch.util.math.Fonction;
 import org.impotch.util.math.integration.MethodeIntegration;
 import org.impotch.util.math.integration.MethodeIntegrationPointMilieu;
 
 import java.util.List;
 
+import static org.impotch.util.TypeArrondi.CENTIEME_LE_PLUS_PROCHE;
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 public class ConstructeurBaremeRevenuAvecFormuleUniversite {
 
     private final FournisseurIndicePeriodique fournisseurIndicePeriodique;
@@ -53,7 +54,7 @@ public class ConstructeurBaremeRevenuAvecFormuleUniversite {
 
     public Bareme construireBaremeRevenu(int annee) {
         BaremeTauxMarginalIntegrable bareme = new BaremeTauxMarginalIntegrable();
-        bareme.setTypeArrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
+        bareme.setTypeArrondi(CINQ_CENTIEMES_LES_PLUS_PROCHES);
         bareme.setTauxMarginal(construireTauxMarginal(annee));
         return bareme;
     }
@@ -66,7 +67,7 @@ public class ConstructeurBaremeRevenuAvecFormuleUniversite {
             BaremeFamille bareme = new BaremeFamille();
             bareme.setMethodeIntegration(methode);
             bareme.setTauxMarginal(tauxMarginal);
-            bareme.setArrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
+            bareme.setArrondi(CINQ_CENTIEMES_LES_PLUS_PROCHES);
             return bareme;
         } else {
             DiscretisationBaremeMarie discretisateur = new DiscretisationBaremeMarie();
@@ -74,9 +75,9 @@ public class ConstructeurBaremeRevenuAvecFormuleUniversite {
             discretisateur.setMethodeIntegration(methode);
             if (2001 == annee || 2002 == annee) {
                 discretisateur.largeur(200).jusqua(1000000);
-                discretisateur.setArrondi(TypeArrondi.CENTIEME_LE_PLUS_PROCHE);
+                discretisateur.setArrondi(CENTIEME_LE_PLUS_PROCHE);
             } else {
-                discretisateur.setArrondi(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
+                discretisateur.setArrondi(CINQ_CENTIEMES_LES_PLUS_PROCHES);
                 if (2003 == annee) {
                     discretisateur.largeur(100).jusqua(30000)
                             .largeur(200).jusqua(50000)

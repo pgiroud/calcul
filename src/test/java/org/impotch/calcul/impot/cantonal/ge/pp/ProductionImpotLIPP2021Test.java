@@ -16,6 +16,7 @@
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.calcul.impot.Impot;
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.taxation.pp.*;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
@@ -26,6 +27,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 
 public class ProductionImpotLIPP2021Test extends ProducteurImpotTst {
+
+    private final PeriodeFiscale PERIODE_FISCALE = PeriodeFiscale.annee(2021);
+
     private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
     private Map<String, String> libelleImpotTaxe = new HashMap<>();
 
@@ -72,7 +76,7 @@ public class ProductionImpotLIPP2021Test extends ProducteurImpotTst {
         ProducteurImpot producteur = fournisseur.getProducteurImpotsICCRevenu(2021);
         RecepteurMultipleImpot recepteur = recepteur("IBR", "RIBR", "CAR", "RCAR", "ADR", "PPR", "COR");
         // Test sur un montant impaire pour voir les effets d'arrondi.
-        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(16,13), this.creerAssiettes(2021, 103938, 88735), recepteur);
+        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(PERIODE_FISCALE,16,13), this.creerAssiettes(2021, 103938, 88735), recepteur);
         verifierMontantImpot(recepteur, "IBR", "7298.85"); // dans un autre logiciel 7298.90
 //        verifierMontantImpot(recepteur, "RIBR", "-3434.00");
 //        verifierMontantImpot(recepteur, "CAR", "13592.85");

@@ -16,6 +16,7 @@
 package org.impotch.calcul.impot.federal.pp;
 
 import org.impotch.calcul.impot.Impot;
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.federal.FournisseurRegleImpotFederal;
 import org.impotch.calcul.impot.taxation.pp.*;
 import org.junit.jupiter.api.Test;
@@ -66,7 +67,7 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
     public void produireImpotIFD() {
         ProducteurImpot prod = constructeur.getProducteurImpotsFederauxPP(2013);
         RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
-        prod.produireImpot(this.creerSituationFamilleAvecEnfant(12), this.creerAssiettes(2013, 52400), recepteur);
+        prod.produireImpot(this.creerSituationFamilleAvecEnfant(PeriodeFiscale.annee(2013), 12), this.creerAssiettes(2013, 52400), recepteur);
         verifierMontantImpot(recepteur,"IBR",  "256.00");
         verifierMontantImpot(recepteur,"RI", "-251.00");
         verifierMontantImpot(recepteur,"TOTAL","5.00");
@@ -76,7 +77,7 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
     public void produireImpotIFD2021() {
         ProducteurImpot prod = constructeur.getProducteurImpotsFederauxPP(2021);
         RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
-        prod.produireImpot(this.creerSituationFamilleAvecEnfant(16,13), this.creerAssiettes(2021, 120400, 105300), recepteur);
+        prod.produireImpot(this.creerSituationFamilleAvecEnfant(PeriodeFiscale.annee(2021),16,13), this.creerAssiettes(2021, 120400, 105300), recepteur);
         verifierMontantImpot(recepteur,"IBR",  "2574.95");
         verifierMontantImpot(recepteur,"RI", "-502.00");
         verifierMontantImpot(recepteur,"TOTAL","2072.95");

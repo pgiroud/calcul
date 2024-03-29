@@ -15,9 +15,9 @@
  */
 package org.impotch.calcul.assurancessociales.param;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 import static org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuelEnMemoire.unConstructeur;
+
 class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametrageSuisseAnnuel {
     @Override
     public Optional<ParametrageSuisseAnnuel> parametrage(int annee) {

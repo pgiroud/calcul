@@ -25,7 +25,7 @@ public class StrategieAnnualisationComptable implements StrategieAnnualisation {
 	 * @see StrategieAnnualisation#annualiseImpot(java.math.BigDecimal)
 	 */
 	@Override
-	public BigDecimal annualiseImpot(BigDecimal impotAnnuel, int nbreJour) {
+	public BigDecimal reduireImpot(BigDecimal impotAnnuel, int nbreJour) {
 		if (360 == nbreJour) return impotAnnuel;
 		return impotAnnuel.multiply(new BigDecimal(nbreJour)).divide(new BigDecimal(360));
 	}

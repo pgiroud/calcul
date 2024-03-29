@@ -73,30 +73,6 @@ public class SplittingTest {
     }
 
     private SituationFamiliale getFamille() {
-        return new SituationFamiliale() {
-
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.of(new Contribuable() {
-                });
-            }
-
-            @Override
-            public Set<EnfantACharge> getEnfants() {
-                return Collections.emptySet();
-            }
-
-            @Override
-            public Set<PersonneACharge> getPersonnesNecessiteuses() {
-                return Collections.emptySet();
-            }
-
-        };
+        return ConstructeurSituationFamiliale.couple().fournir();
     }
 }

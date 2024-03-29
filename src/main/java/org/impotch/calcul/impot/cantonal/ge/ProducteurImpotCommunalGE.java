@@ -129,12 +129,12 @@ public abstract class ProducteurImpotCommunalGE implements ProducteurImpotCommun
 				Part part = repartition.getPart(forComm);
 				ICommuneSuisse commune = forComm.getLieu();
 				BigDecimal baseCalcul = part.getMontant();
-				BigDecimal taux = fournisseurParametre.getTauxCentimes(fournisseur.getPeriodeFiscale(),commune);
+				BigDecimal taux = fournisseurParametre.getTauxCentimes(fournisseur.getPeriodeFiscale().annee(),commune);
 				BigDecimal impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(baseCalcul.multiply(taux));
 				if (BigDecimalUtil.isStrictementPositif(impot)) {
 					// Explication de calcul
 					builder.ajouter("Part de la commune " + commune.getNom());
-					BigDecimal partAssiettePourCommune = repartitionAssiette.getPart(new ForCommunal(commune)).getMontant();
+					BigDecimal partAssiettePourCommune = repartitionAssiette.getPart(ForCommunal.forCommunal(commune)).getMontant();
 					BigDecimal assietteTotal = repartitionAssiette.getTotal();
 					builder.ajouter(MessageFormat.format("{0,number,#,##0.00} * {1,number,integer} / {2,number,integer}",partARepartir,partAssiettePourCommune,assietteTotal));
 					builder.ajouter(MessageFormat.format("{0,number,#,##0.00}",baseCalcul));

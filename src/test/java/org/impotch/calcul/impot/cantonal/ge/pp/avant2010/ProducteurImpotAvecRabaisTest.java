@@ -50,9 +50,9 @@ public class ProducteurImpotAvecRabaisTest extends ProducteurImpotGEAvant2010 {
     private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
 
 
-    private void testFamilleAvecEnfant(final int periodeFiscale, final int montantImposable, final String montantImpot, int montantDeterminantRabais, String montantRabaisImpot, final int... ageEnfant) {
+    private void testFamilleAvecEnfant(final int periodeFiscale, final int montantImposable, final String montantImpot, int montantDeterminantRabais, String montantRabaisImpot, int agePremierEnfant, final int... ageEnfantsSuivants) {
         ProducteurImpot producteurGERevenu = fournisseur.getProducteurImpotsICCRevenu(periodeFiscale);
-        SituationFamiliale situation = creerSituationFamilleAvecEnfant(ageEnfant);
+        SituationFamiliale situation = creerSituationFamilleAvecEnfant(agePremierEnfant, ageEnfantsSuivants);
         FournisseurAssiettePeriodique fournisseur = this.creerAssiettesAvecRabais(periodeFiscale, montantImposable, montantDeterminantRabais);
         RecepteurUniqueImpot recepteurIBR = new RecepteurUniqueImpot("IBR");
         RecepteurUniqueImpot recepteurRI = new RecepteurUniqueImpot("RI");

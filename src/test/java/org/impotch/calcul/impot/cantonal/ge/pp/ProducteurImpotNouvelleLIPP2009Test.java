@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.impotch.bareme.Bareme;
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
@@ -60,6 +61,7 @@ import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamil
 
 public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
 
+    private final static PeriodeFiscale PERIODE_FISCALE = PeriodeFiscale.annee(2009);
     private final static TypeArrondi ARRONDI_ASSIETTE = TypeArrondi.UNITE_LA_PLUS_PROCHE;
     private final static TypeArrondi ARRONDI_IMPOT = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
@@ -115,7 +117,7 @@ public class ProducteurImpotNouvelleLIPP2009Test extends ProducteurImpotTst {
     }
 
     private void marie(final int periodeFiscale, final int montantImposable, final String montantImpot, final int... ageEnfant) {
-        SituationFamiliale situation = creerSituationFamilleAvecEnfant(ageEnfant);
+        SituationFamiliale situation = creerSituationFamilleAvecEnfant(PERIODE_FISCALE, ageEnfant);
         FournisseurAssiettePeriodique fournisseur = this.creerAssiettes(periodeFiscale, montantImposable);
         RecepteurUniqueImpot recepteurIBR = new RecepteurUniqueImpot("IBR");
         producteur.produireImpot(situation, fournisseur, recepteurIBR);

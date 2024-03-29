@@ -20,9 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.impotch.calcul.ReglePeriodique;
-import org.impotch.util.BigDecimalUtil;
-import org.impotch.util.TypeArrondi;
 
+import static java.math.RoundingMode.HALF_UP;
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.BigDecimalUtil.parse;
 /**
  * Cette classe permet le calcul du montant des cotisations des assurances
  * sociales suisses suivantes pour les indépendants :
@@ -101,18 +102,15 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 	
 	private BigDecimal arrondirTaux(BigDecimal taux) {
 		BigDecimal precision = new BigDecimal("0.00001");
-		BigDecimal normalise = taux.divide(precision, 10,
-				BigDecimal.ROUND_HALF_UP);
-		BigDecimal arrondiEntier = normalise.setScale(0,
-				BigDecimal.ROUND_HALF_UP);
+		BigDecimal normalise = taux.divide(precision, 10, HALF_UP);
+		BigDecimal arrondiEntier = normalise.setScale(0, HALF_UP);
 		return arrondiEntier.multiply(precision).setScale(5);
 	}
 
 	private BigDecimal getTauxAi(BigDecimal montantDeterminant) {
 		if (isTauxDegressif(montantDeterminant)) {
 			BigDecimal taux = getTauxAi().multiply(
-					getTauxAvs(montantDeterminant)).divide(getTauxAvs(), 5,
-					BigDecimal.ROUND_HALF_UP);
+					getTauxAvs(montantDeterminant)).divide(getTauxAvs(), 5, HALF_UP);
 			return arrondirTaux(taux);
 		} else {
 			if (isInferieurMinimum(montantDeterminant))
@@ -124,8 +122,7 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 	private BigDecimal getTauxApg(BigDecimal montantDeterminant) {
 		if (isTauxDegressif(montantDeterminant)) {
 			return arrondirTaux(getTauxApg().multiply(
-					getTauxAvs(montantDeterminant)).divide(getTauxAvs(), 5,
-					BigDecimal.ROUND_HALF_UP));
+					getTauxAvs(montantDeterminant)).divide(getTauxAvs(), 5, HALF_UP));
 		} else {
 			if (isInferieurMinimum(montantDeterminant))
 				return null;
@@ -136,14 +133,14 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant) {
 		if (isInferieurMinimum(montantDeterminant))
 			return getCotisationMinimumAi();
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(getTauxAi(
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(getTauxAi(
 				montantDeterminant).multiply(montantDeterminant));
 	}
 
 	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant) {
 		if (isInferieurMinimum(montantDeterminant))
 			return getCotisationMinimumApg();
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(getTauxApg(
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(getTauxApg(
 				montantDeterminant).multiply(montantDeterminant));
 	}
 
@@ -158,7 +155,7 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant) {
 		if (isInferieurMinimum(montantDeterminant))
 			return getCotisationMinimumAvsAiApg();
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(getTauxTotal(
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(getTauxTotal(
 				montantDeterminant).multiply(montantDeterminant));
 	}
 
@@ -172,14 +169,14 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 	}
 
 	private BigDecimal getCotisationMinimumAi() {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES
 				.arrondirMontant(montantCotisationMinimumAvsAiApg.multiply(
 						this.getTauxAi()).divide(this.getTauxTotal(), 10,
 						BigDecimal.ROUND_HALF_UP));
 	}
 
 	private BigDecimal getCotisationMinimumApg() {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES
 				.arrondirMontant(montantCotisationMinimumAvsAiApg.multiply(
 						this.getTauxApg()).divide(this.getTauxTotal(), 10,
 						BigDecimal.ROUND_HALF_UP));
@@ -251,39 +248,23 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 		
 				
 		public Constructeur tauxAvs(String taux) {
-			try {
-				this.tauxAvs = BigDecimalUtil.parseTaux(taux);
-			} catch (NumberFormatException nfe) {
-				throw new IllegalArgumentException(nfe);
-			}
+			this.tauxAvs = parse(taux);
 			return this;
 		}
 		
 		public Constructeur tauxAi(String taux) {
-			try {
-				this.tauxAi = BigDecimalUtil.parseTaux(taux);
-			} catch (NumberFormatException nfe) {
-				throw new IllegalArgumentException(nfe);
-			}
+			this.tauxAi = parse(taux);
 			return this;
 		}
 		
 		public Constructeur tauxApg(String taux) {
-			try {
-				this.tauxApg = BigDecimalUtil.parseTaux(taux);
-			} catch (NumberFormatException nfe) {
-				throw new IllegalArgumentException(nfe);
-			}
+			this.tauxApg = parse(taux);
 			return this;
 		}
 		
 		public Constructeur cotisationAvsAiApgMinimum(String montant) {
-			try {
 				this.montantCotisationMinimumAvsAiApg = new BigDecimal(montant);
-			} catch (NumberFormatException nfe) {
-				throw new IllegalArgumentException(nfe);
-			}
-			return this;
+				return this;
 		}
 		
 		public Constructeur trancheBareme(String montant, String taux) {
@@ -291,7 +272,7 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 			BigDecimal tauxBD = null;
 			try {
 				montantBD = new BigDecimal(montant);
-				tauxBD = BigDecimalUtil.parseTaux(taux);
+				tauxBD = parse(taux);
 			} catch (NumberFormatException nfe) {
 				throw new IllegalArgumentException(nfe);
 			}

@@ -17,7 +17,6 @@ package org.impotch.calcul.impot.taxation.pp;
 
 import org.impotch.calcul.impot.ImpotProduit;
 import org.impotch.calcul.impot.RecepteurImpot;
-import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.FournisseurAssiettePeriodiqueGE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +29,7 @@ public class ProducteurImpotAvecRabais extends ProducteurImpot {
 
 	private ProducteurImpotBase producteurBaseRabais;
 
-	private String nomRabaisImpot;
+	private final String nomRabaisImpot;
 
 	public ProducteurImpotAvecRabais(String nomImpotProduit, String nomRabaisImpot, String codeBeneficiaire) {
 		super(nomImpotProduit,codeBeneficiaire);

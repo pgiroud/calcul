@@ -15,9 +15,9 @@
  */
 package org.impotch.calcul.assurancessociales;
 
-import org.impotch.util.TypeArrondi;
-
 import java.math.BigDecimal;
+
+import static org.impotch.util.TypeArrondi.UNITE_LA_PLUS_PROCHE;
 
 class FournisseurDeducMax3emePilier implements FournisseurDeductionMaxPilier3a {
 
@@ -38,7 +38,7 @@ class FournisseurDeducMax3emePilier implements FournisseurDeductionMaxPilier3a {
     @Override
     public BigDecimal getDeductionMaximaleAvecLPP() {
         BigDecimal salaireLimiteSuperieur = fournisseurMontantsLimitesPrevoyanceProfessionnelle.getLimiteSuperieureSalaireAnnuel();
-        return TypeArrondi.UNITE_LA_PLUS_PROCHE.arrondirMontant(salaireLimiteSuperieur.multiply(BigDecimal.valueOf(8)).movePointLeft(2));
+        return UNITE_LA_PLUS_PROCHE.arrondirMontant(salaireLimiteSuperieur.multiply(BigDecimal.valueOf(8)).movePointLeft(2));
     }
 
     /**
@@ -52,6 +52,6 @@ class FournisseurDeducMax3emePilier implements FournisseurDeductionMaxPilier3a {
     @Override
     public BigDecimal getDeductionMaximaleSansLPP() {
         BigDecimal salaireLimiteSuperieur = fournisseurMontantsLimitesPrevoyanceProfessionnelle.getLimiteSuperieureSalaireAnnuel();
-        return TypeArrondi.UNITE_LA_PLUS_PROCHE.arrondirMontant(salaireLimiteSuperieur.multiply(BigDecimal.valueOf(40)).movePointLeft(2));
+        return UNITE_LA_PLUS_PROCHE.arrondirMontant(salaireLimiteSuperieur.multiply(BigDecimal.valueOf(40)).movePointLeft(2));
     }
 }

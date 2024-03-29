@@ -15,11 +15,6 @@
  */
 package org.impotch.calcul.assurancessociales.ge.param;
 
-import org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuelEnMemoire;
-import org.impotch.util.BigDecimalUtil;
-
-import java.math.BigDecimal;
-import java.util.*;
 
 /**
  * Created by patrick on 18/01/15.

@@ -23,8 +23,9 @@ import org.impotch.calcul.assurancessociales.param.ParametrageParticipationHautR
 import org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuel;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.StringUtil;
-import org.impotch.util.TypeArrondi;
 
+import static java.math.BigDecimal.ZERO;
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 import static org.impotch.calcul.assurancessociales.CalculateurCotisationAC.unCalculateur;
 /**
  * Calcule les cotisations sociales des salariés. Les montants retournés sont ceux 
@@ -108,9 +109,9 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant) {
 		if (BigDecimalUtil.isStrictementPositif(this.tauxAssuranceMaterniteAdoption)) {
 			BigDecimal cotisation = montantDeterminant.multiply(tauxAssuranceMaterniteAdoption);
-			return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisation);
+			return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisation);
 		} else {
-			return BigDecimal.ZERO;
+			return ZERO;
 		}
 	}
 
@@ -213,7 +214,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	public BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(BigDecimal tauxCotisationAssuranceAccidentsNonProfessionnels, BigDecimal montantDeterminant) {
 		BigDecimal plafond = montantAnnuelMaximumGainAssure.min(montantDeterminant);
 		BigDecimal cotisations =  plafond.multiply(tauxCotisationAssuranceAccidentsNonProfessionnels);
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisations);
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisations);
 	}
 
     /**************************************************/

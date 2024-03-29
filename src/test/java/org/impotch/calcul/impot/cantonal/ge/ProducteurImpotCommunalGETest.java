@@ -35,6 +35,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -52,6 +53,7 @@ import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.calcul.util.MockExplicationDetailleeBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.calcul.impot.taxation.forimposition.ForCommunal.forCommunal;
 
 public class ProducteurImpotCommunalGETest {
 
@@ -76,15 +78,15 @@ public class ProducteurImpotCommunalGETest {
             }
 
             @Override
-            public int getPeriodeFiscale() {
-                return 2007;
+            public PeriodeFiscale getPeriodeFiscale() {
+                return PeriodeFiscale.annee(2007);
             }
 
             @Override
             public Repartition<ForCommunal> getRepartition() {
                 Repartition<ForCommunal> repart = new Repartition<ForCommunal>();
-                repart.ajouterPart(new ForCommunal(fournisseurLieu.getCommuneAireLaVille()), new Part(new BigDecimal(50301)));
-                repart.ajouterPart(new ForCommunal(fournisseurLieu.getCommuneCarouge()), new Part(new BigDecimal(73343)));
+                repart.ajouterPart(forCommunal(fournisseurLieu.getCommuneAireLaVille()), new Part(new BigDecimal(50301)));
+                repart.ajouterPart(forCommunal(fournisseurLieu.getCommuneCarouge()), new Part(new BigDecimal(73343)));
                 return repart;
             }
 
@@ -122,16 +124,16 @@ public class ProducteurImpotCommunalGETest {
             }
 
             @Override
-            public int getPeriodeFiscale() {
-                return 2009;
+            public PeriodeFiscale getPeriodeFiscale() {
+                return PeriodeFiscale.annee(2009);
             }
 
             @Override
             public Repartition<ForCommunal> getRepartition() {
                 Repartition<ForCommunal> repart = new Repartition<ForCommunal>();
-                repart.ajouterPart(new ForCommunal(fournisseurLieu.getCommuneCheneBougerie()), new Part(new BigDecimal(30)));
-                repart.ajouterPart(new ForCommunal(fournisseurLieu.getCommunePresinge()), new Part(new BigDecimal(20)));
-                repart.ajouterPart(new ForCommunal(fournisseurLieu.getCommuneMeyrin()), new Part(new BigDecimal(50)));
+                repart.ajouterPart(forCommunal(fournisseurLieu.getCommuneCheneBougerie()), new Part(new BigDecimal(30)));
+                repart.ajouterPart(forCommunal(fournisseurLieu.getCommunePresinge()), new Part(new BigDecimal(20)));
+                repart.ajouterPart(forCommunal(fournisseurLieu.getCommuneMeyrin()), new Part(new BigDecimal(50)));
                 return repart;
             }
 

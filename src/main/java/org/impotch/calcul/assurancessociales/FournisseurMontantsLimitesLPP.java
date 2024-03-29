@@ -20,6 +20,11 @@ import java.math.BigDecimal;
 
 class FournisseurMontantsLimitesLPP implements FournisseurMontantsLimitesPrevoyanceProfessionnelle {
 
+    private final static BigDecimal TROIS = BigDecimal.valueOf(3);
+    private final static BigDecimal QUATRE = BigDecimal.valueOf(4);
+    private final static BigDecimal DIX_HUIT = BigDecimal.valueOf(18);
+
+
     private BigDecimal renteAVSMensuelleMinimale;
 
     public void setRenteAVSMensuelleMinimale(BigDecimal renteAVSMensuelleMinimale) {
@@ -28,12 +33,12 @@ class FournisseurMontantsLimitesLPP implements FournisseurMontantsLimitesPrevoya
 
     @Override
     public BigDecimal getSalaireMinimalAnnuel() {
-        return BigDecimal.valueOf(18).multiply(renteAVSMensuelleMinimale);
+        return DIX_HUIT.multiply(renteAVSMensuelleMinimale);
     }
 
     @Override
     public BigDecimal getSalaireCoordonneMinimalAnnuel() {
-        return BigDecimal.valueOf(3).multiply(renteAVSMensuelleMinimale);
+        return TROIS.multiply(renteAVSMensuelleMinimale);
     }
 
     @Override
@@ -43,6 +48,6 @@ class FournisseurMontantsLimitesLPP implements FournisseurMontantsLimitesPrevoya
 
     @Override
     public BigDecimal getLimiteSuperieureSalaireAnnuel() {
-        return BigDecimal.valueOf(4).multiply(getSalaireMinimalAnnuel());
+        return QUATRE.multiply(getSalaireMinimalAnnuel());
     }
 }

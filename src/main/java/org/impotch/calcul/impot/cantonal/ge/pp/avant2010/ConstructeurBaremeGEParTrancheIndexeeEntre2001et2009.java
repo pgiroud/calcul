@@ -18,8 +18,8 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 import org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeGEParTrancheIndexee;
 import org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
-import org.impotch.util.TypeArrondi;
 
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe.unConstructeurDeBaremeParTrancheIndexee;
 
 public class ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009 implements ConstructeurBaremeGEParTrancheIndexee {
@@ -45,8 +45,8 @@ public class ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009 implements Con
                 .valideEntre(2001, 2009)
                 .indexateur(fournisseurIndicePeriodique)
                 .anneeReferenceRencherissement(2000)
-                .typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
-                .typeArrondiGlobal(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiGlobal(CINQ_CENTIEMES_LES_PLUS_PROCHES)
                 .jusqua(0).taux("0")
                 .puisJusqua(  100_000).taux("1.75 ‰")
                 .puisJusqua(  200_000).taux("2.25 ‰")
@@ -66,8 +66,8 @@ public class ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009 implements Con
                 .valideEntre(2001, 2009)
                 .indexateur(fournisseurIndicePeriodique)
                 .anneeReferenceRencherissement(2000)
-                .typeArrondiTranche(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
-                .typeArrondiGlobal(TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiGlobal(CINQ_CENTIEMES_LES_PLUS_PROCHES)
                 .jusqua(      100_000).taux("0 ‰")
                 .puisJusqua(  200_000).taux("0.1125 ‰")
                 .puisJusqua(  300_000).taux("0.1375 ‰")

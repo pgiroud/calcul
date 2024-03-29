@@ -15,10 +15,9 @@
  */
 package org.impotch.calcul.assurancessociales.ge.param;
 
-import org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuel;
-
 import java.util.Optional;
 import static org.impotch.calcul.assurancessociales.ge.param.ParametrageEnMemoireCotisationAssuranceMaternite.unConstructeur;
+
 public class FournisseurParametrageCotisationAssuranceMaterniteEnMemoire implements FournisseurParametrageCotisationAssuranceMaternite {
 
     @Override

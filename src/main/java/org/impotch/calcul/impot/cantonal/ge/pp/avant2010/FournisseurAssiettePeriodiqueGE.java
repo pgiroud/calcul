@@ -16,6 +16,7 @@
 package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 

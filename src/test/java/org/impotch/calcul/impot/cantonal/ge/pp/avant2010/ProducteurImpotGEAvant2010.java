@@ -22,7 +22,11 @@ import java.util.Set;
 
 
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.taxation.pp.*;
+import org.impotch.calcul.lieu.FournisseurLieu;
+import org.impotch.calcul.lieu.ICanton;
+import org.impotch.calcul.lieu.ICommuneSuisse;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -30,139 +34,24 @@ import org.impotch.calcul.impot.taxation.pp.*;
  */
 public class ProducteurImpotGEAvant2010 extends ProducteurImpotTst {
 
+	private FournisseurLieu fournisseurLieu = new FournisseurLieu();
+
 	@Override
 	protected SituationFamiliale creerSituationCelibataireSansEnfant() {
-		SituationFamilialeGE situation = new SituationFamilialeGE() {
-
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.empty();
-            }
-
-            /* (non-Javadoc)
-			 * @see org.impotch.calcul.impot.cantonal.ge.pp.SituationFamilialeGE#isConjointFonctionnaireInternational()
-			 */
-			@Override
-			public boolean isConjointFonctionnaireInternational() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			/* (non-Javadoc)
-			 * @see org.impotch.calcul.impot.cantonal.ge.pp.SituationFamilialeGE#isCoupleDomicilieGeneve()
-			 */
-			@Override
-			public boolean isCoupleDomicilieGeneve() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public Set<EnfantACharge> getEnfants() {
-				return Collections.emptySet();
-			}
-
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getPersonnesNecessiteuses()
-			 */
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {
-				return Collections.emptySet();
-			};
-			
-			
-		};
-		return situation;
+		return ConstructeurSituationFamilialeGE.unePersonneSeule().fournir();
 	}
-	
-	@Override
-	protected SituationFamiliale creerSituationFamilleAvecEnfant(final int... ageEnfant) {
-		SituationFamilialeGE situation = new SituationFamilialeGE() {
 
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.of(new Contribuable() {
-                });
-            }
-
-            /* (non-Javadoc)
-			 * @see org.impotch.calcul.impot.cantonal.ge.pp.SituationFamilialeGE#isConjointFonctionnaireInternational()
-			 */
-			@Override
-			public boolean isConjointFonctionnaireInternational() {
-				return false;
-			}
-
-			/* (non-Javadoc)
-			 * @see org.impotch.calcul.impot.cantonal.ge.pp.SituationFamilialeGE#isCoupleDomicilieGeneve()
-			 */
-			@Override
-			public boolean isCoupleDomicilieGeneve() {
-				return false;
-			}
-
-			@Override
-			public Set<EnfantACharge> getEnfants() {
-				return creerEnfant(ageEnfant);
-			}
-
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getPersonnesNecessiteuses()
-			 */
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {
-				return Collections.emptySet();
-			};
-			
-		};
-		return situation;
+	protected SituationFamiliale creerSituationFamilleAvecEnfant(final int agePremierEnfant, final int... ageEnfantsSuivants) {
+		return ConstructeurSituationFamilialeGE.unCouple()
+				.enfant().age(agePremierEnfant, ageEnfantsSuivants).fournir();
 	}
 	
 	protected FournisseurAssiettePeriodique creerAssiettesAvecRabais(final int periodeFiscale, final int montantImposable, final int montantDeterminantRabais) {
-		FournisseurAssiettePeriodiqueGE assietteFournisseur = new FournisseurAssiettePeriodiqueGE() {
-
-			@Override
-			public BigDecimal getMontantDeterminantRabais() {
-				return new BigDecimal(montantDeterminantRabais);
-			}
-
-			@Override
-			public int getNombreJourPourAnnualisation() {
-				return 360;
-			}
-
-			@Override
-			public int getPeriodeFiscale() {
-				return periodeFiscale;
-			}
-
-			@Override
-			public BigDecimal getMontantDeterminant() {
-				return new BigDecimal(montantImposable);
-			}
-			@Override
-			public BigDecimal getMontantImposable() {
-				return new BigDecimal(montantImposable);
-			}
-			@Override
-			public FournisseurAssietteCommunale getFournisseurAssietteCommunale() {
-				return ProducteurImpotGEAvant2010.this.creerAssietteCommunaleSurUneSeuleCommune(periodeFiscale,fournisseurLieu.getCommuneGeneve());
-			}
-			
-		};
-		return assietteFournisseur;
+		return new ConstructeurAssiettePeriodiqueGEAvant2010(PeriodeFiscale.annee(periodeFiscale))
+				.imposableEtDeterminant(montantImposable)
+				.rabaisDeterminant(montantDeterminantRabais)
+				.uniqueCommune(fournisseurLieu.getCommuneGeneve())
+				.fournir();
 	}
 	
 

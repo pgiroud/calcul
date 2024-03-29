@@ -16,22 +16,25 @@
 package org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais;
 
 import java.math.BigDecimal;
+import java.util.stream.IntStream;
 
 import org.impotch.calcul.assurancessociales.SituationAVS;
 import org.impotch.calcul.assurancessociales.StatutAVS;
 import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageAnnuelAssurancesSocialesGenevoises;
+import org.impotch.calcul.impot.Souverainete;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.SituationFamilialeGE;
 import org.impotch.calcul.impot.taxation.pp.RegleAgeEnfant;
 import org.impotch.calcul.assurancessociales.Fournisseur;
 
+import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE.unePersonneSeule;
+import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE.unCouple;
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
 class AbstractTestProducteurBaseRabaisImpot {
 
-	private ConstructeurSituationFamilialeGE constructeurSituation = new ConstructeurSituationFamilialeGE();
 	private ProducteurBaseRabaisImpot producteur;
 
 	protected void initProducteurBaseRabaisImpot(int annee, int montantParEpoux, int deducDoubleActivite,
@@ -117,10 +120,9 @@ class AbstractTestProducteurBaseRabaisImpot {
 	/**
 	 * Retourne une situation familiale pour un célibataire sans charge.
 	 * @return une situation familiale pour un célibataire sans charge.
-	 * @see org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE#creerCelibataireSansCharge()
 	 */
 	public SituationFamilialeGE creerCelibataireSansCharge() {
-		return constructeurSituation.creerCelibataireSansCharge();
+		return unePersonneSeule().fournir();
 	}
 
 	/**
@@ -130,22 +132,31 @@ class AbstractTestProducteurBaseRabaisImpot {
 	 * @param auMoinsUnPetit Si true, spécifie qu'au moins un des enfants est un petit (susceptible d'être gardé)
 	 * @param domicilieGE indique si le couple est domicilié dans le cantonal de Genève
 	 * @return une situation familiale pour un couple
-	 * @see org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE#creerCoupleSansDoubleActiviteAvecEnfant(int, boolean, boolean)
 	 */
 	public SituationFamilialeGE creerCoupleSansDoubleActiviteAvecEnfant(
-			int nbreEnfant, boolean auMoinsUnPetit, boolean domicilieGE) {
-		return constructeurSituation.creerCoupleSansDoubleActiviteAvecEnfant(
-				nbreEnfant, auMoinsUnPetit, domicilieGE);
+			int nbreEnfant, boolean auMoinsUnPetit, boolean domicilieGE, int periodeFiscale) {
+		ConstructeurSituationFamilialeGE constructeur = unCouple();
+		if (domicilieGE) constructeur.domicilieGE();
+		if (auMoinsUnPetit) {
+			constructeur.enfant().age(6).aFin(periodeFiscale);
+			IntStream.rangeClosed(1,nbreEnfant-1).forEach(
+					n -> constructeur.enfant().age(14).aFin(periodeFiscale)
+			);
+		} else {
+			IntStream.rangeClosed(1,nbreEnfant).forEach(
+					n -> constructeur.enfant().age(14).aFin(periodeFiscale)
+			);
+		}
+		return constructeur.fournir();
 	}
 
 	/**
 	 * Retourne une situation familiale pour un couple dont un seul des membres a une activité lucrative et n'ayant pas de charges.
 	 * 
 	 * @return une situation familiale pour un couple dont un seul des membres a une activité lucrative et n'ayant pas de charges
-	 * @see org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE#creerCoupleSansDoubleActiviteSansCharge()
 	 */
 	public SituationFamilialeGE creerCoupleSansDoubleActiviteSansCharge() {
-		return constructeurSituation.creerCoupleSansDoubleActiviteSansCharge();
+		return unCouple().fournir();
 	}
 
 	/**
@@ -153,19 +164,38 @@ class AbstractTestProducteurBaseRabaisImpot {
 	 * @param nbreEnfant le nombre total d'enfant
 	 * @param auMoinsUnPetit  si true, indique qu'au moins un des enfants est petit i.e. susceptible d'être gardé.
 	 * @return une situation familiale pour couple avec un fonctionnaire international.
-	 * @see org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE#creerCoupleDontUnFonctionnaireInternational(int, boolean)
 	 */
 	public SituationFamilialeGE creerCoupleDontUnFonctionnaireInternational(
-			int nbreEnfant, boolean auMoinsUnPetit) {
-		return constructeurSituation
-				.creerCoupleDontUnFonctionnaireInternational(nbreEnfant,
-						auMoinsUnPetit);
+			int nbreEnfant, boolean auMoinsUnPetit, int periodeFiscale) {
+		ConstructeurSituationFamilialeGE constructeur = unCouple().conjointFonctionnaireInternational();
+		if (auMoinsUnPetit) {
+			constructeur.enfant().demiPart(Souverainete.CH_CANTONALE_GE).age(6).aFin(periodeFiscale);
+			IntStream.rangeClosed(1,nbreEnfant-1).forEach(
+					n -> constructeur.enfant().demiPart(Souverainete.CH_CANTONALE_GE).age(14).aFin(periodeFiscale)
+			);
+		} else {
+			IntStream.rangeClosed(1,nbreEnfant).forEach(
+					n -> constructeur.enfant().demiPart(Souverainete.CH_CANTONALE_GE).age(14).aFin(periodeFiscale)
+			);
+		}
+		return constructeur.fournir();
 	}
 
 	public SituationFamilialeGE creerCelibataireAvecCharge(int nbreEnfant,
-			boolean auMoinsUnPetit) {
-		return constructeurSituation.creerCelibataireAvecCharge(nbreEnfant,
-				auMoinsUnPetit);
+			boolean auMoinsUnPetit, int periodeFiscale) {
+		ConstructeurSituationFamilialeGE constructeur = unePersonneSeule()
+				.domicilieGE();
+		if (auMoinsUnPetit) {
+			constructeur.enfant().age(6).aFin(periodeFiscale);
+			IntStream.rangeClosed(1,nbreEnfant-1).forEach(
+					n -> constructeur.enfant().age(14).aFin(periodeFiscale)
+			);
+		} else {
+			IntStream.rangeClosed(0,nbreEnfant-1).forEach(
+					n -> constructeur.enfant().age(14).aFin(periodeFiscale)
+			);
+		}
+		return constructeur.fournir();
 	}
 	
 	

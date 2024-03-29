@@ -16,11 +16,13 @@
 package org.impotch.calcul.impot.taxation.pp.assiette.ch;
 
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.IEtatTerritoire;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 /**
  * Created by patrick on 12/02/15.
@@ -33,8 +35,8 @@ public class ProducteurAssietteRevenu {
 
         FournisseurAssiettePeriodique fournisseur = new FournisseurAssiettePeriodique() {
             @Override
-            public int getPeriodeFiscale() {
-                return 2015;
+            public PeriodeFiscale getPeriodeFiscale() {
+                return PeriodeFiscale.annee(2015);
             }
 
             @Override
@@ -43,8 +45,8 @@ public class ProducteurAssietteRevenu {
             }
 
             @Override
-            public FournisseurAssietteCommunale getFournisseurAssietteCommunale() {
-                return null;
+            public Optional<FournisseurAssietteCommunale> getFournisseurAssietteCommunale() {
+                return Optional.empty();
             }
 
             @Override
@@ -53,8 +55,8 @@ public class ProducteurAssietteRevenu {
             }
 
             @Override
-            public BigDecimal getMontantDeterminant() {
-                return null;
+            public Optional<BigDecimal> getMontantDeterminant() {
+                return Optional.empty();
             }
         }   ;
         return fournisseur;

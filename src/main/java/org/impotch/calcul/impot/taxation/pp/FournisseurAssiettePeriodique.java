@@ -17,9 +17,12 @@ package org.impotch.calcul.impot.taxation.pp;
 
 import org.impotch.calcul.impot.FournisseurAssiette;
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
+import org.impotch.calcul.impot.PeriodeFiscale;
+
+import java.util.Optional;
 
 public interface FournisseurAssiettePeriodique extends FournisseurAssiette {
-	int getPeriodeFiscale();
+	PeriodeFiscale getPeriodeFiscale();
 	int getNombreJourPourAnnualisation();
-	FournisseurAssietteCommunale getFournisseurAssietteCommunale();
+	Optional<FournisseurAssietteCommunale> getFournisseurAssietteCommunale();
 }

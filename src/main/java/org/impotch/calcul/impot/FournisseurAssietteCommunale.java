@@ -22,7 +22,7 @@ import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICommuneSuisse;
 
 public interface FournisseurAssietteCommunale {
-	int getPeriodeFiscale();
+	PeriodeFiscale getPeriodeFiscale();
 	Map<ICommuneSuisse,Integer> getNbreJourDomicileSurCommune();
 	Repartition<ForCommunal> getRepartition();
 }

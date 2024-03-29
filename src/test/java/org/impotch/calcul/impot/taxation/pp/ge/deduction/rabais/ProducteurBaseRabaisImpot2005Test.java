@@ -67,105 +67,105 @@ public class ProducteurBaseRabaisImpot2005Test extends AbstractTestProducteurBas
     @Test
     public void couple_avec_1_grand_enfant_non_domicilié_GE() {
         // Barème source B1
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(1, false, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(1, false, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(35330));
     }
 
     @Test
     public void couple_avec_1_petit_enfant_non_domicilié_GE() {
         // Barème source B2
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(1, true, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(1, true, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(36629));
     }
 
     @Test
     public void couple_avec_1_petit_enfant_domicilié_GE() {
         // Barème source B3
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(1, true, true)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(1, true, true, 2005)))
                 .isEqualTo(BigDecimal.valueOf(37928));
     }
 
     @Test
     public void couple_avec_2_grand_enfants_non_domicilié_GE() {
         // Barème source B4
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(2, false, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(2, false, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(42084));
     }
 
     @Test
     public void couple_avec_2_enfants_dont_au_moins_1_petit_non_domicilié_GE() {
         // Barème source B5
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(2, true, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(2, true, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(43383));
     }
 
     @Test
     public void couple_avec_2_enfants_dont_au_moins_1_petit_domicilié_GE() {
         // Barème source B6
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(2, true, true)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(2, true, true, 2005)))
                 .isEqualTo(BigDecimal.valueOf(44682));
     }
 
     @Test
     public void couple_avec_3_grand_enfants_non_domicilié_GE() {
         // Barème source B7
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(3, false, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(3, false, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(48838));
     }
 
     @Test
     public void couple_avec_3_enfants_dont_au_moins_1_petit_non_domicilié_GE() {
         // Barème source B8
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(3, true, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(3, true, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(50137));
     }
 
     @Test
     public void couple_avec_3_enfants_dont_au_moins_1_petit_domicilié_GE() {
         // Barème source B9
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(3, true, true)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(3, true, true, 2005)))
                 .isEqualTo(BigDecimal.valueOf(51436));
     }
 
     @Test
     public void couple_avec_4_grand_enfants_non_domicilié_GE() {
         // Barème source B10
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(4, false, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(4, false, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(55592));
     }
 
     @Test
     public void couple_avec_4_enfants_dont_au_moins_1_petit_non_domicilié_GE() {
         // Barème source B11
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(4, true, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(4, true, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(56891));
     }
 
     @Test
     public void couple_avec_4_enfants_dont_au_moins_1_petit_domicilié_GE() {
         // Barème source B12
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(4, true, true)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(4, true, true, 2005)))
                 .isEqualTo(BigDecimal.valueOf(58190));
     }
 
     @Test
     public void couple_avec_5_grand_enfants_non_domicilié_GE() {
         // Barème source B13
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(5, false, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(5, false, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(62346));
     }
 
     @Test
     public void couple_avec_5_enfants_dont_au_moins_1_petit_non_domicilié_GE() {
         // Barème source B14
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(5, true, false)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(5, true, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(63645));
     }
 
     @Test
     public void couple_avec_5_enfants_dont_au_moins_1_petit_domicilié_GE() {
         // Barème source B15
-        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(5, true, true)))
+        assertThat(calculRabais(creerCoupleSansDoubleActiviteAvecEnfant(5, true, true, 2005)))
                 .isEqualTo(BigDecimal.valueOf(64944));
     }
 
@@ -201,14 +201,14 @@ public class ProducteurBaseRabaisImpot2005Test extends AbstractTestProducteurBas
     @Test
     public void couple_dont_un_fonctionnaire_international_sans_charge() {
         // Barème source I0
-        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(0, false)))
+        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(0, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(14288));
     }
 
     @Test
     public void couple_dont_un_fonctionnaire_international_avec_1_grand_enfant() {
         // Barème source I1
-        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(1, false)))
+        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(1, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(17665));
 
     }
@@ -216,7 +216,7 @@ public class ProducteurBaseRabaisImpot2005Test extends AbstractTestProducteurBas
     @Test
     public void couple_dont_un_fonctionnaire_international_avec_1_petit_enfant() {
         // Barème source I2
-        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(1, true)))
+        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(1, true, 2005)))
                 .isEqualTo(BigDecimal.valueOf(18964));
 
     }
@@ -224,42 +224,42 @@ public class ProducteurBaseRabaisImpot2005Test extends AbstractTestProducteurBas
     @Test
     public void couple_dont_un_fonctionnaire_international_avec_2_grand_enfant() {
         // Barème source I3
-        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(2, false)))
+        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(2, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(21042));
     }
 
     @Test
     public void couple_dont_un_fonctionnaire_international_avec_2_enfants_dont_au_moins_1_petit() {
         // Barème source I4
-        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(2, true)))
+        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(2, true, 2005)))
                 .isEqualTo(BigDecimal.valueOf(22341));
     }
 
     @Test
     public void couple_dont_un_fonctionnaire_international_avec_3_grand_enfant() {
         // Barème source I5
-        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(3, false)))
+        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(3, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(24419));
     }
 
     @Test
     public void couple_dont_un_fonctionnaire_international_avec_3_enfants_dont_au_moins_1_petit() {
         // Barème source I6
-        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(3, true)))
+        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(3, true, 2005)))
                 .isEqualTo(BigDecimal.valueOf(25718));
     }
 
     @Test
     public void couple_dont_un_fonctionnaire_international_avec_4_grand_enfant() {
         // Barème source I7
-        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(4, false)))
+        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(4, false, 2005)))
                 .isEqualTo(BigDecimal.valueOf(27796));
     }
 
     @Test
     public void couple_dont_un_fonctionnaire_international_avec_4_enfants_dont_au_moins_1_petit() {
         // Barème source I8
-        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(4, true)))
+        assertThat(calculRabais(creerCoupleDontUnFonctionnaireInternational(4, true, 2005)))
                 .isEqualTo(BigDecimal.valueOf(29095));
     }
 

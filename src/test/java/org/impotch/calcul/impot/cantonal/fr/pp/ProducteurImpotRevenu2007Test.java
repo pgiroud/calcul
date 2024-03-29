@@ -20,25 +20,26 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.junit.jupiter.api.Test;
 
 import org.impotch.calcul.impot.Impot;
-import org.impotch.calcul.impot.FournisseurAssietteCommunale;
-import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotTst;
 import org.impotch.calcul.impot.taxation.pp.RecepteurImpotSomme;
 import org.impotch.calcul.impot.taxation.pp.RecepteurMultipleImpot;
 import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
-import org.impotch.calcul.impot.taxation.repart.Part;
-import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICommuneSuisse;
+
+import static org.impotch.calcul.impot.ConstructeurAssiettesCommunales.unConstructeurAssiettesCommunales;
+import static org.impotch.calcul.impot.taxation.pp.ConstructeurAssiettePeriodique.unConstructeurAssiette;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.calcul.impot.cantonal.fr.ContexteTestCH_FR.CTX_TST_CH_FR;
-
 public class ProducteurImpotRevenu2007Test extends ProducteurImpotTst {
+
+	private static final PeriodeFiscale PERIODE_FISCALE = PeriodeFiscale.annee(2007);
 
 	private FournisseurRegleImpotCantonalFR fournisseur = CTX_TST_CH_FR.getFournisseurRegleImpotCantonalFR();
 	private Map<String,String> libelleImpotTaxe = new HashMap<String,String>();
@@ -81,7 +82,7 @@ public class ProducteurImpotRevenu2007Test extends ProducteurImpotTst {
 		ProducteurImpot producteur = fournisseur.getProducteurImpotsICRevenu(2007);
 		RecepteurMultipleImpot recepteur = recepteur("RCAN");
 		
-		producteur.produireImpot(this.creerSituationFamilleAvecEnfant(11,13), this.creerAssiettes(2007, 91256, 92352,fournisseurLieu.getCommune(2321)), recepteur);
+		producteur.produireImpot(this.creerSituationFamilleAvecEnfant(PERIODE_FISCALE,11,13), this.creerAssiettes(2007, 91256, 92352,fournisseurLieu.getCommune(2321)), recepteur);
 		verifierMontantImpot(recepteur,"RCAN",  "7721.00");
 	}
 	
@@ -90,52 +91,16 @@ public class ProducteurImpotRevenu2007Test extends ProducteurImpotTst {
 		ProducteurImpot producteur = fournisseur.getProducteurImpotsICRevenu(2007);
 		RecepteurMultipleImpot recepteur = recepteur("RCAN");
 		
-		producteur.produireImpot(this.creerSituationFamilleAvecEnfant(11,13), this.creerAssiettes(2007, 5500, 5500,fournisseurLieu.getCommune(2321)), recepteur);
+		producteur.produireImpot(this.creerSituationFamilleAvecEnfant(PERIODE_FISCALE,11,13), this.creerAssiettes(2007, 5500, 5500,fournisseurLieu.getCommune(2321)), recepteur);
 		verifierMontantImpot(recepteur,"RCAN",  "55.00");
 	}
 	
 	private FournisseurAssiettePeriodique creerAssiettes(final int annee, final int montantImposable, final int montantDeterminant, final ICommuneSuisse commune) {
-		FournisseurAssiettePeriodique fournisseur = new FournisseurAssiettePeriodique() {
-
-			@Override
-			public FournisseurAssietteCommunale getFournisseurAssietteCommunale() {
-				FournisseurAssietteCommunale fournisseur = new FournisseurAssietteCommunale() {
-
-					@Override
-					public Map<ICommuneSuisse, Integer> getNbreJourDomicileSurCommune() {				
-						Map<ICommuneSuisse, Integer> map = new HashMap<ICommuneSuisse, Integer>();
-						map.put(commune, 360);
-						return map;
-					}
-
-					@Override
-					public int getPeriodeFiscale() { return annee; }
-
-					@Override
-					public Repartition<ForCommunal> getRepartition() {
-						Repartition<ForCommunal> repart = new Repartition<ForCommunal>();
-						repart.ajouterPart(new ForCommunal(commune),new Part(BigDecimal.ONE));
-						return repart;
-					}
-						
-				};
-				return fournisseur;
-			}
-
-			@Override
-			public int getNombreJourPourAnnualisation() { return 360; }
-
-			@Override
-			public int getPeriodeFiscale() {return annee; }
-
-			@Override
-			public BigDecimal getMontantDeterminant() {return new BigDecimal(montantDeterminant); }
-
-			@Override
-			public BigDecimal getMontantImposable() { return new BigDecimal(montantImposable); }
-			
-		};
-		return fournisseur;
+		return unConstructeurAssiette(annee)
+				.imposable(montantImposable)
+				.determinant(montantDeterminant)
+				.uniqueCommune(commune)
+				.fournir();
 	}
 	
 }

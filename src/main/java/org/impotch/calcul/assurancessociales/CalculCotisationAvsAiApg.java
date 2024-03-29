@@ -57,4 +57,5 @@ public interface CalculCotisationAvsAiApg {
      */
     BigDecimal calculCotisationApg(BigDecimal montantDeterminant);
 
+
 }

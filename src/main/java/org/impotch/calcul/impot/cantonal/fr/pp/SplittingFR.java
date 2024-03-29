@@ -17,13 +17,13 @@ package org.impotch.calcul.impot.cantonal.fr.pp;
 
 import java.math.BigDecimal;
 
-import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
 import org.impotch.bareme.BaremeTauxEffectifParTranche;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.TypeArrondi;
 
+import static org.impotch.util.TypeArrondi.CENTAINE_INF;
 /**
  * Le splitting à Fribourg est intimememt lié au barème à taux effectif linéaire par tranche.
  * Voir taux minimum à 1%
@@ -37,7 +37,7 @@ public class SplittingFR extends Splitting {
 	private BigDecimal tauxMinimum;
 
 	public static ConstructeurSplittingFR unSplittingFribourgeois(BaremeTauxEffectifParTranche bareme, String taux) {
-		return new ConstructeurSplittingFR(bareme,taux).arrondi(TypeArrondi.CENTAINE_INF);
+		return new ConstructeurSplittingFR(bareme,taux).arrondi(CENTAINE_INF);
 	}
 
 	private SplittingFR(BaremeTauxEffectifParTranche bareme, String taux) {
@@ -67,12 +67,9 @@ public class SplittingFR extends Splitting {
 	@Override
 	public BigDecimal produireImpotAnnuel(SituationFamiliale situation,
 										  BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
-		BigDecimal taux = null;
-		if (isFamille(situation)) {
-			taux = this.getTauxFamille(determinantArrondi, imposableArrondi);
-		} else {
-			taux = this.getTauxSeul(determinantArrondi);
-		}
+		BigDecimal taux = isFamille(situation) ?
+				getTauxFamille(determinantArrondi, imposableArrondi)
+				: getTauxSeul(determinantArrondi);
 		return imposableArrondi.multiply(taux);
 	}
 

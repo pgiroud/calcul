@@ -15,6 +15,7 @@
  */
 package org.impotch.calcul.impot.taxation.pp;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,6 +27,6 @@ public interface SituationFamiliale {
         return getConjoint().isPresent();
     }
 
-	Set<EnfantACharge> getEnfants();
-	Set<PersonneACharge> getPersonnesNecessiteuses();
+	List<EnfantACharge> getEnfants();
+    List<PersonneACharge> getPersonnesNecessiteuses();
 }

@@ -13,20 +13,17 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.taxation.pp;
+package org.impotch.calcul.impot;
 
-import java.math.BigDecimal;
+public sealed interface PeriodeFiscale permits PeriodeFiscaleAnnuelle {
+    static PeriodeFiscale annee(int annee) {
+        return new PeriodeFiscaleAnnuelle(annee);
+    }
 
-public interface StrategieAnnualisation {
-	/**
-	 * Cette méthode calcule l'impôt pour le nombre de jour donné. En général,
-	 * si la période est plus petite qu'une année, l'impôt résultant sera inférieur
-	 * à celui passé en paramètre.
-	 * <p>
-	 * Attention, le résultat de l'annualisation n'est pas arrondi.
-	 * @param impotAnnuel l'impôt calculé pour une année
-	 * @param nbreJour le nombre de jour
-	 * @return l'impôt pour le nombre de jour.
-	 */
-	BigDecimal reduireImpot(BigDecimal impotAnnuel, int nbreJour);
+    int annee();
+
+}
+
+final record PeriodeFiscaleAnnuelle(int annee) implements PeriodeFiscale {
+
 }

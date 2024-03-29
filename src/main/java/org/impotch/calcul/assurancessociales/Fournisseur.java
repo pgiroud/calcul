@@ -39,7 +39,6 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
     private final FournisseurParametrageAnnuelAssurancesSocialesGenevoises fournisseurParametrage;
 
 	private ConcurrentMap<Integer,CalculCotisationsSocialesSalarie> mapCalculateurCotisationAvsAiApgSalarie = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarie>();
-    private ConcurrentMap<Integer,CalculCotisationsSocialesSalarie> mapCalculateurCotisationAvsAiApgSalarieISIFD = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarie>();
 	private ConcurrentMap<Integer,CalculCotisationsSocialesSalarieGE> mapCalculateurCotisationAvsAiApgSalarieGE = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarieGE>();
     private ConcurrentMap<Integer,CalculCotisationsSocialesSalarieGE> mapCalculateurCotisationAvsAiApgSalarieGEIFD = new ConcurrentHashMap<Integer,CalculCotisationsSocialesSalarieGE>();
     private ConcurrentMap<Integer,FournisseurMontantsLimitesPrevoyanceProfessionnelle> mapFournisseurMontantsLimitesPrevoyanceProfessionnelle = new ConcurrentHashMap<Integer, FournisseurMontantsLimitesPrevoyanceProfessionnelle>();
@@ -70,14 +69,6 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 		return obtenirNouveauConstructeur(annee).construire(annee);
 	}
 
-    protected CalculCotisationsSocialesSalarie construireCalculateurSalarieISIFD(int annee) {
-        CalculCotisationsSocialesSalarie.Constructeur constructeur = obtenirNouveauConstructeur(annee);
-		if (annee > 2010 && annee < 2014) {
-            // TODO PGI reprendre ceci
-			//constructeur.tauxAC("2.5 %");
-		}
-		return constructeur.construire(annee);
-	}
 
     @Override
 	public CalculCotisationsSocialesSalarie getCalculateurCotisationsSocialesSalarie(int annee) {
@@ -85,11 +76,6 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 		return mapCalculateurCotisationAvsAiApgSalarie.get(annee);
 	}
 
-    @Override
-    public CalculCotisationsSocialesSalarie getOldCalculateurCotisationsSocialesSalarieISIFD(int annee) {
-        if (!mapCalculateurCotisationAvsAiApgSalarieISIFD.containsKey(annee)) mapCalculateurCotisationAvsAiApgSalarieISIFD.putIfAbsent(annee, construireCalculateurSalarieISIFD(annee));
-        return mapCalculateurCotisationAvsAiApgSalarieISIFD.get(annee);
-    }
 
     /**
      * On décore le calculateur valable pour toute la Suisse en incorporant le calcul de l'assurance maternité
@@ -129,7 +115,12 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
         return mapCalculateurCotisationAvsAiApgSalarieGEIFD.get(annee);
     }
 
-	//--------------- Indépendants --------------------
+    @Override
+    public CalculCotisationsSocialesSalarie getOldCalculateurCotisationsSocialesSalarieISIFD(int annee) {
+        return null;
+    }
+
+//--------------- Indépendants --------------------
 
 	protected CalculCotisationAvsAiApg construireCalculateurCotisationAvsAiApgIndependant(int annee) {
 		CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();

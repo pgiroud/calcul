@@ -17,7 +17,10 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Optional;
 
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotAvecRabais;
 import org.slf4j.Logger;
@@ -42,24 +45,30 @@ public class ProducteurImpotGEAvecRabais extends ProducteurImpotAvecRabais {
 				return assietteImpot.getNombreJourPourAnnualisation();
 			}
 			@Override
-			public int getPeriodeFiscale() {
+			public PeriodeFiscale getPeriodeFiscale() {
 				return assietteImpot.getPeriodeFiscale();
 			}
 			@Override
-			public BigDecimal getMontantDeterminant() {
-				return ((FournisseurAssiettePeriodiqueGE)assietteImpot).getMontantDeterminantRabais();
+			public Optional<BigDecimal> getMontantDeterminant() {
+				return Optional.of(((FournisseurAssiettePeriodiqueGE)assietteImpot).getMontantDeterminantRabais());
 			}
 			@Override
 			public BigDecimal getMontantImposable() {
-				if (0 == assietteImpot.getMontantImposable().compareTo(assietteImpot.getMontantDeterminant())) return getMontantDeterminant();
-				else {
-					BigDecimal minimumImposable = getMontantDeterminant().multiply(assietteImpot.getMontantImposable()).divide(assietteImpot.getMontantDeterminant(),0,BigDecimal.ROUND_HALF_UP);
-					return minimumImposable;
+				BigDecimal montantDeterminantRabais = this.getMontantDeterminant().get();
+				if (assietteImpot.getMontantDeterminant().isPresent()) {
+					BigDecimal assietteImpotDeterminant = assietteImpot.getMontantDeterminant().get();
+
+					if (0 == assietteImpot.getMontantImposable().compareTo(assietteImpotDeterminant)) return montantDeterminantRabais;
+					else {
+						return montantDeterminantRabais.multiply(assietteImpot.getMontantImposable()).divide(assietteImpotDeterminant,0, RoundingMode.HALF_UP);
+					}
+				} else {
+					return montantDeterminantRabais;
 				}
 			}
 			@Override
-			public FournisseurAssietteCommunale getFournisseurAssietteCommunale() {
-				return null;
+			public Optional<FournisseurAssietteCommunale> getFournisseurAssietteCommunale() {
+				return Optional.empty();
 			}
 			
 		};

@@ -20,12 +20,17 @@ import java.util.*;
 
 
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.Souverainete;
 import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
 import org.impotch.calcul.impot.taxation.repart.Part;
 import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.FournisseurLieu;
 import org.impotch.calcul.lieu.ICommuneSuisse;
+
+import static org.impotch.calcul.impot.taxation.pp.ConstructeurSituationFamiliale.personneSeule;
+import static org.impotch.calcul.impot.taxation.pp.ConstructeurSituationFamiliale.couple;
+import static org.impotch.calcul.impot.taxation.forimposition.ForCommunal.forCommunal;
 
 public class ProducteurImpotTst {
 
@@ -52,63 +57,15 @@ public class ProducteurImpotTst {
 	}
 	
 	protected SituationFamiliale creerSituationCelibataireSansEnfant() {
-		return new SituationFamiliale() {
-
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.empty();
-            }
-
-            @Override
-			public Set<EnfantACharge> getEnfants() {
-				return Collections.emptySet();
-			}
-
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getPersonnesNecessiteuses()
-			 */
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {
-				return Collections.emptySet();
-			}
-		};
+		return personneSeule().fournir();
 	}
 	
-	protected SituationFamiliale creerSituationFamilleAvecEnfant(final int... ageEnfant) {
-		return new SituationFamiliale() {
-
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.of(new Contribuable() {
-                });
-            }
-
-            @Override
-			public Set<EnfantACharge> getEnfants() {
-				return creerEnfant(ageEnfant);
-			}
-
-			/* (non-Javadoc)
-			 * @see SituationFamiliale#getPersonnesNecessiteuses()
-			 */
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {
-				return Collections.emptySet();
-			};
-			
-		};
+	protected SituationFamiliale creerSituationFamilleAvecEnfant(PeriodeFiscale periode, final int... ageEnfant) {
+		ConstructeurSituationFamiliale cons = couple();
+		for (int a : ageEnfant) {
+			cons.enfant().age(a).aFin(periode.annee());
+		}
+		return cons.fournir();
 	}
 	
 	protected FournisseurAssietteCommunale creerAssietteCommunaleSurUneSeuleCommune(final int annee, final ICommuneSuisse commune) {
@@ -120,11 +77,11 @@ public class ProducteurImpotTst {
 				return map;
 			}
 			@Override
-			public int getPeriodeFiscale() {return annee;}
+			public PeriodeFiscale getPeriodeFiscale() {return PeriodeFiscale.annee(annee);}
 			@Override
 			public Repartition<ForCommunal> getRepartition() {
 				Repartition<ForCommunal> repart = new Repartition<>();
-				repart.ajouterPart(new ForCommunal(commune),new Part(BigDecimal.ONE));
+				repart.ajouterPart(forCommunal(commune),new Part(BigDecimal.ONE));
 				return repart;
 			}
 			
@@ -139,8 +96,8 @@ public class ProducteurImpotTst {
 		return new FournisseurAssiettePeriodique() {
 
 			@Override
-			public FournisseurAssietteCommunale getFournisseurAssietteCommunale() {
-				return ProducteurImpotTst.this.creerAssietteCommunaleSurUneSeuleCommune(periodeFiscale,fournisseurLieu.getCommuneGeneve());
+			public Optional<FournisseurAssietteCommunale> getFournisseurAssietteCommunale() {
+				return Optional.of(ProducteurImpotTst.this.creerAssietteCommunaleSurUneSeuleCommune(periodeFiscale,fournisseurLieu.getCommuneGeneve()));
 			}
 
 			@Override
@@ -149,13 +106,13 @@ public class ProducteurImpotTst {
 			}
 
 			@Override
-			public int getPeriodeFiscale() {
-				return periodeFiscale;
+			public PeriodeFiscale getPeriodeFiscale() {
+				return PeriodeFiscale.annee(periodeFiscale);
 			}
 
 			@Override
-			public BigDecimal getMontantDeterminant() {
-				return new BigDecimal(montantDeterminant);
+			public Optional<BigDecimal> getMontantDeterminant() {
+				return Optional.of(BigDecimal.valueOf(montantDeterminant));
 			}
 
 			@Override

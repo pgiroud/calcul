@@ -16,10 +16,7 @@
 package org.impotch.calcul.impot.taxation.pp.ge.deduction;
 
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
-import org.impotch.calcul.impot.taxation.pp.Contribuable;
-import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
-import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
-import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
+import org.impotch.calcul.impot.taxation.pp.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -36,29 +33,31 @@ public class DeductionDoubleActiviteTest {
 
 
     private SituationFamiliale construireSituationCoupleAvecLes2Travaillant() {
-        SituationFamiliale situation = new SituationFamiliale() {
-            private final Contribuable contrib = new Contribuable() {};
-            @Override
-            public Contribuable getContribuable() {
-                return contrib;
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.of(contrib);
-            }
-
-            @Override
-            public Set<EnfantACharge> getEnfants() {
-                return Collections.emptySet();
-            }
-
-            @Override
-            public Set<PersonneACharge> getPersonnesNecessiteuses() {
-                return Collections.emptySet();
-            }
-        };
-        return situation;
+        return ConstructeurSituationFamiliale.couple().fournir();
+//
+//        SituationFamiliale situation = new SituationFamiliale() {
+//            private final Contribuable contrib = new Contribuable() {};
+//            @Override
+//            public Contribuable getContribuable() {
+//                return contrib;
+//            }
+//
+//            @Override
+//            public Optional<Contribuable> getConjoint() {
+//                return Optional.of(contrib);
+//            }
+//
+//            @Override
+//            public Set<EnfantACharge> getEnfants() {
+//                return Collections.emptySet();
+//            }
+//
+//            @Override
+//            public Set<PersonneACharge> getPersonnesNecessiteuses() {
+//                return Collections.emptySet();
+//            }
+//        };
+//        return situation;
     }
 
     private void test(int annee, int montantAttendu) {

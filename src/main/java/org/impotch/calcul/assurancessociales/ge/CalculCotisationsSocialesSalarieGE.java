@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.calcul.assurancessociales.*;
-import org.impotch.util.BigDecimalUtil;
-import org.impotch.util.TypeArrondi;
 
+import static org.impotch.util.BigDecimalUtil.parse;
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 /**
  * Cette classe permet de calculer toutes les cotisations dues par le salarié pour les salaires perçus
  * sur le cantonal de Genève.
@@ -76,11 +76,7 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
          */
 	public CalculCotisationsSocialesSalarieGE(int annee, String nTaux, CalculCotisationsSocialesSalarie nCalculateurSuisse) {
 		super(annee);
-		try {
-			this.taux = BigDecimalUtil.parseTaux(nTaux);
-		} catch (NumberFormatException nfe) {
-			throw new IllegalArgumentException(nfe);
-		}
+		this.taux = parse(nTaux);
 		calculateurSuisse = nCalculateurSuisse;
 	}
 
@@ -105,7 +101,7 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	@Override
 	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant) {
 		BigDecimal cotisation = montantDeterminant.multiply(taux);
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisation);
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisation);
 	}
 
 	//------ Implémentation de l'interface CalculCotisationsAssuranceAccidentsNonProfessionnels

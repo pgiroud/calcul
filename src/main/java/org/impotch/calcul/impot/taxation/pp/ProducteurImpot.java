@@ -18,6 +18,7 @@ package org.impotch.calcul.impot.taxation.pp;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.impotch.calcul.impot.FournisseurAssiette;
 import org.impotch.calcul.impot.ProducteurImpotDerive;
@@ -39,7 +40,7 @@ public class ProducteurImpot {
 	final Logger logger = LoggerFactory.getLogger(ProducteurImpot.class);
 
 	private ProducteurImpotBase producteurBase;
-	private List<ProducteurImpotDerive> producteursDerives = new ArrayList<ProducteurImpotDerive>();
+	private List<ProducteurImpotDerive> producteursDerives = new ArrayList<>();
 	private ProducteurImpotCommunal producteurImpotCommunal;
 
 	private final String nomImpotProduit;
@@ -127,8 +128,8 @@ public class ProducteurImpot {
 		
 		if (isStrictementPositif(impotBase)) {
 			produireImpotsDerives(impotBase,fournisseur, recepteur);
-			if (null != getProducteurImpotCommunal()) {
-				getProducteurImpotCommunal().produireImpot(impotBase, fournisseur.getFournisseurAssietteCommunale(), recepteur);
+			if (null != getProducteurImpotCommunal() && fournisseur.getFournisseurAssietteCommunale().isPresent()) {
+				getProducteurImpotCommunal().produireImpot(impotBase, fournisseur.getFournisseurAssietteCommunale().get(), recepteur);
 			}
 		}
 	}

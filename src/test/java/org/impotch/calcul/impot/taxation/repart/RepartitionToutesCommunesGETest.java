@@ -27,7 +27,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-
+import static org.impotch.calcul.impot.taxation.forimposition.ForCommunal.forCommunal;
 
 public class RepartitionToutesCommunesGETest {
 
@@ -69,7 +69,7 @@ public class RepartitionToutesCommunesGETest {
                 return nom;
             }
         };
-        ForCommunal forComm = new ForCommunal(commune);
+        ForCommunal forComm = forCommunal(commune);
         forsCommunaux.put(numOFS,forComm);
         return forComm;
     }

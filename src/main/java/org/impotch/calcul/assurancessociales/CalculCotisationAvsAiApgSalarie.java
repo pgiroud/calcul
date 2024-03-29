@@ -18,8 +18,9 @@ package org.impotch.calcul.assurancessociales;
 import java.math.BigDecimal;
 
 import org.impotch.calcul.ReglePeriodique;
-import org.impotch.util.BigDecimalUtil;
-import org.impotch.util.TypeArrondi;
+
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.BigDecimalUtil.parse;
 
 /**
  * Calcule des cotisations à l'assurance vieillesse et survivant, à l'assurance invalidité
@@ -88,25 +89,25 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	
 	@Override
 	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant) {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxAI
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxAI
 				.multiply(montantDeterminant));
 	}
 
 	@Override
 	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant) {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxAPG
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxAPG
 				.multiply(montantDeterminant));
 	}
 
 	@Override
 	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant) {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxAVS
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxAVS
 				.multiply(montantDeterminant));
 	}
 
 	@Override
 	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant) {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxTotal
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxTotal
 				.multiply(montantDeterminant));
 	}
 
@@ -118,7 +119,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAi(
 			BigDecimal montantDeterminant) {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxAI
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxAI
 				.multiply(montantDeterminant));
 	}
 
@@ -128,7 +129,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationApg(
 			BigDecimal montantDeterminant) {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxAPG
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxAPG
 				.multiply(montantDeterminant));
 	}
 
@@ -138,7 +139,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAvs(
 			BigDecimal montantDeterminant) {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxAVS
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxAVS
 				.multiply(montantDeterminant));
 	}
 
@@ -148,7 +149,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAvsAiApg(
 			BigDecimal montantDeterminant) {
-		return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxTotal
+		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxTotal
 				.multiply(montantDeterminant));
 	}
 
@@ -169,11 +170,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 		 * @return ce construteur afin de chaîner les appels.
 		 */
 		public Constructeur tauxAvs(String taux) {
-			try {
-				this.tauxAVS = BigDecimalUtil.parseTaux(taux);
-			} catch (NumberFormatException nfe) {
-				throw new IllegalArgumentException(nfe);
-			}
+			this.tauxAVS = parse(taux);
 			return this;
 		}
 		
@@ -183,11 +180,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 		 * @return ce construteur afin de chaîner les appels.
 		 */
 		public Constructeur tauxAi(String taux) {
-			try {
-				this.tauxAI = BigDecimalUtil.parseTaux(taux);
-			} catch (NumberFormatException nfe) {
-				throw new IllegalArgumentException(nfe);
-			}
+			this.tauxAI = parse(taux);
 			return this;
 		}
 
@@ -197,11 +190,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 		 * @return ce construteur afin de chaîner les appels.
 		 */
 		public Constructeur tauxApg(String taux) {
-			try {
-				this.tauxAPG = BigDecimalUtil.parseTaux(taux);
-			} catch (NumberFormatException nfe) {
-				throw new IllegalArgumentException(nfe);
-			}
+			this.tauxAPG = parse(taux);
 			return this;
 		}
 

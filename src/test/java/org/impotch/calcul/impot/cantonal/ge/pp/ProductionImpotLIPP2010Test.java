@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.impotch.calcul.impot.Impot;
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotTst;
 import org.impotch.calcul.impot.taxation.pp.RecepteurImpotSomme;
@@ -47,6 +48,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 
 public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
+
+    private static final PeriodeFiscale PERIODE_FISCALE = PeriodeFiscale.annee(2010);
 
     private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
     private Map<String, String> libelleImpotTaxe = new HashMap<String, String>();
@@ -143,7 +146,7 @@ public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
         ProducteurImpot producteur = fournisseur.getProducteurImpotsICCRevenu(2010);
         RecepteurMultipleImpot recepteur = recepteur("IBR", "RIBR", "CAR", "RCAR", "ADR", "PPR", "COR");
         // Test sur un montant impaire pour voir les effets d'arrondi.
-        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(11), this.creerAssiettes(2010, 234527), recepteur);
+        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(PERIODE_FISCALE,11), this.creerAssiettes(2010, 234527), recepteur);
         verifierMontantImpot(recepteur, "IBR", "28616.50");
         verifierMontantImpot(recepteur, "RIBR", "-3434.00");
         verifierMontantImpot(recepteur, "CAR", "13592.85");
@@ -159,7 +162,7 @@ public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
         ProducteurImpot producteur = fournisseur.getProducteurImpotsICCRevenu(2010);
         RecepteurMultipleImpot recepteur = recepteur("IBR", "RIBR", "CAR", "RCAR", "ADR", "PPR", "COR");
         // Test sur un montant impaire pour voir les effets d'arrondi.
-        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(11), this.creerAssiettes(2010, 88935), recepteur);
+        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(PERIODE_FISCALE,11), this.creerAssiettes(2010, 88935), recepteur);
         verifierMontantImpot(recepteur, "IBR", "6342.85");
 //		verifierMontantImpot(recepteur,"RIBR", "-3434.00");
 //		verifierMontantImpot(recepteur,"CAR",  "13592.85");
@@ -174,7 +177,7 @@ public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
     public void fortune() {
         ProducteurImpot producteur = fournisseur.getProducteurImpotsICCFortune(2010);
         RecepteurMultipleImpot recepteur = recepteur("IBF", "CAF", "ADF", "PPF", "COF");
-        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(11), this.creerAssiettes(2010, 1000000), recepteur);
+        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(PERIODE_FISCALE,11), this.creerAssiettes(2010, 1000000), recepteur);
         verifierMontantImpot(recepteur, "IBF", "2998.85");
         verifierMontantImpot(recepteur, "CAF", "1424.45");
         verifierMontantImpot(recepteur, "ADF", "30.00");
@@ -186,7 +189,7 @@ public class ProductionImpotLIPP2010Test extends ProducteurImpotTst {
     public void fortuneSupplementaire() {
         ProducteurImpot producteur = fournisseur.getProducteurImpotsICCFortuneSupplementaire(2010);
         RecepteurMultipleImpot recepteur = recepteur("ISF");
-        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(11), this.creerAssiettes(2010, 1000000), recepteur);
+        producteur.produireImpot(this.creerSituationFamilleAvecEnfant(PERIODE_FISCALE,11), this.creerAssiettes(2010, 1000000), recepteur);
         verifierMontantImpot(recepteur, "ISF", "312.15");
     }
 }

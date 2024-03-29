@@ -16,14 +16,12 @@
 package org.impotch.calcul.impot.federal.pp.source;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
 
 import org.impotch.calcul.ReglePeriodique;
-import org.impotch.calcul.impot.FournisseurAssietteCommunale;
 import org.impotch.calcul.impot.taxation.pp.*;
 
+import static org.impotch.calcul.impot.taxation.pp.ConstructeurAssiettePeriodique.unConstructeurAssiette;
+import static org.impotch.calcul.impot.taxation.pp.ConstructeurSituationFamiliale.couple;
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
@@ -53,58 +51,13 @@ public class CalculateurImpotSourcePrestationCapitalIFD extends ReglePeriodique 
 	}
 	
 	private SituationFamiliale creerSituation() {
-		return new SituationFamiliale() {
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.of(new Contribuable() {
-                });
-            }
-
-            @Override
-			public Set<EnfantACharge> getEnfants() {return Collections.emptySet();}
-
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {return Collections.emptySet();}
-
-		};
+		return couple().fournir();
 	}
 	
 	protected FournisseurAssiettePeriodique creerAssiettes(final int periodeFiscale, final BigDecimal montantImposable) {
-		FournisseurAssiettePeriodique assietteFournisseur = new FournisseurAssiettePeriodique() {
-
-			@Override
-			public FournisseurAssietteCommunale getFournisseurAssietteCommunale() {
-				return null;
-			}
-
-			@Override
-			public int getNombreJourPourAnnualisation() {
-				return 360;
-			}
-
-			@Override
-			public int getPeriodeFiscale() {
-				return periodeFiscale;
-			}
-
-			@Override
-			public BigDecimal getMontantDeterminant() {
-				return montantImposable;
-			}
-
-			@Override
-			public BigDecimal getMontantImposable() {
-				return montantImposable;
-			}
-			
-		};
-		return assietteFournisseur;
+		return unConstructeurAssiette(periodeFiscale)
+				.imposableEtDeterminant(montantImposable)
+				.fournir();
 	}
 
 }

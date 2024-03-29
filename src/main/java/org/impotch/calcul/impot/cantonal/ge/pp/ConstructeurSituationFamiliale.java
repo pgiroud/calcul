@@ -15,16 +15,11 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
-import org.impotch.calcul.impot.Souverainete;
-import org.impotch.calcul.impot.taxation.pp.Contribuable;
-import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
-import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
+import java.util.stream.IntStream;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
+
+import static org.impotch.calcul.impot.taxation.pp.ConstructeurSituationFamiliale.personneSeule;
+import static org.impotch.calcul.impot.taxation.pp.ConstructeurSituationFamiliale.couple;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -33,129 +28,27 @@ import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 public class ConstructeurSituationFamiliale {
 
 	public SituationFamiliale creerCelibataireSansCharge() {
-		SituationFamiliale situation = new SituationFamiliale() {
-
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.empty();
-            }
-
-            @Override
-			public Set<EnfantACharge> getEnfants() {return Collections.emptySet();}
-
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {return Collections.emptySet();}
-
-		};
-		return situation;
+		return personneSeule().fournir();
 	}
 
-	public SituationFamiliale creerPersonneSeuleAvecEnfants(final int nbreEnfant) {
-		SituationFamiliale situation = new SituationFamiliale() {
-
-			@Override
-			public Contribuable getContribuable() {
-				return new Contribuable() {
-				};
-			}
-
-			@Override
-			public Optional<Contribuable> getConjoint() {
-				return Optional.empty();
-			}
-
-			@Override
-			public Set<EnfantACharge> getEnfants() {
-				int[] age = new int[nbreEnfant];
-				for (int i = 0; i < nbreEnfant; i++) age[i] = 14;
-				return creerEnfant(false,age);
-			}
-
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {return Collections.emptySet();}
-
-		};
-		return situation;
+	public SituationFamiliale creerPersonneSeuleAvecEnfants(final int nbreEnfant, final int periodeFiscale) {
+		org.impotch.calcul.impot.taxation.pp.ConstructeurSituationFamiliale cons = personneSeule();
+		IntStream.rangeClosed(1,nbreEnfant).forEach(
+				n -> cons.enfant().age(14).aFin(periodeFiscale)
+		);
+		return cons.fournir();
 	}
 
 	public SituationFamiliale creerCoupleSansCharge() {
-		SituationFamiliale situation = new SituationFamiliale() {
-
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.of(new Contribuable() {
-                });
-            }
-
-			@Override
-			public Set<EnfantACharge> getEnfants() {return Collections.emptySet();}
-
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {return Collections.emptySet();}
-
-		};
-		return situation;
+		return couple().fournir();
 	}
 	
-	public SituationFamiliale creerCoupleAvecEnfant(final int nbreEnfant) {
-		SituationFamiliale situation = new SituationFamiliale() {
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.of(new Contribuable() {
-                });
-            }
-
-			@Override
-			public Set<EnfantACharge> getEnfants() {
-				int[] age = new int[nbreEnfant];
-				for (int i = 0; i < nbreEnfant; i++) age[i] = 14;
-				return creerEnfant(false,age);
-			}
-			
-			@Override
-			public Set<PersonneACharge> getPersonnesNecessiteuses() {return Collections.emptySet();}
-
-		};
-		return situation;
-	}
-	
-	private Set<EnfantACharge> creerEnfant(final boolean demiCharge, final int... ageEnfant) {
-		Set<EnfantACharge> enfants = new HashSet<EnfantACharge>();
-		for (final int age : ageEnfant) {
-			enfants.add(new EnfantACharge(){
-
-				@Override
-				public int getAge(int anneeFiscale) {
-					return age;
-				}
-
-				@Override
-				public boolean isDemiPart(Souverainete souverainete) {
-					return demiCharge;
-				}
-				
-			});
-		}
-		return enfants;
+	public SituationFamiliale creerCoupleAvecEnfant(final int nbreEnfant, int periodeFiscale) {
+		org.impotch.calcul.impot.taxation.pp.ConstructeurSituationFamiliale cons = couple();
+		IntStream.rangeClosed(1,nbreEnfant).forEach(
+				n -> cons.enfant().age(14).aFin(periodeFiscale)
+		);
+		return cons.fournir();
 	}
 
-	
 }

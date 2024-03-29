@@ -15,6 +15,7 @@
  */
 package org.impotch.calcul.impot.federal.pp;
 
+import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotTst;
 import org.impotch.calcul.impot.taxation.pp.RecepteurUniqueImpot;
@@ -35,7 +36,7 @@ public class ProducteurRabaisEnfantTest extends ProducteurImpotTst {
         RecepteurUniqueImpot recepteur = new RecepteurUniqueImpot("RI");
         ProducteurImpot prod;
         prod= constructeur.getProducteurImpotsFederauxPP(2010);
-        prod.produireImpot(this.creerSituationFamilleAvecEnfant(8),this.creerAssiettes(2011,100000),recepteur);
+        prod.produireImpot(this.creerSituationFamilleAvecEnfant(PeriodeFiscale.annee(2010),8),this.creerAssiettes(2011,100000),recepteur);
         assertThat(recepteur.getValeur()).isNull();
     }
 
@@ -47,7 +48,7 @@ public class ProducteurRabaisEnfantTest extends ProducteurImpotTst {
         RecepteurUniqueImpot recepteur = new RecepteurUniqueImpot("RI");
         ProducteurImpot prod;
         prod= constructeur.getProducteurImpotsFederauxPP(2011);
-        prod.produireImpot(this.creerSituationFamilleAvecEnfant(8),this.creerAssiettes(2011,100000),recepteur);
+        prod.produireImpot(this.creerSituationFamilleAvecEnfant(PeriodeFiscale.annee(2011),8),this.creerAssiettes(2011,100000),recepteur);
         assertThat(recepteur.getValeur().getMontant()).isEqualTo(new BigDecimal("-250.00"));
     }
 }

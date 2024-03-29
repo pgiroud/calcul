@@ -16,6 +16,7 @@
 package org.impotch.calcul.impot.taxation.pp;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.impotch.calcul.impot.FournisseurAssiette;
 
@@ -29,9 +30,9 @@ public abstract class TaxationRevenuSource implements FournisseurAssiette {
 	 * @see ch.ge.afc.calcul.impot.taxation.pp.FournisseurAssiette#getMontantDeterminant()
 	 */
 	@Override
-	public BigDecimal getMontantDeterminant() {
+	public Optional<BigDecimal> getMontantDeterminant() {
 		// TODO Auto-generated method stub
-		return null;
+		return Optional.empty();
 	}
 
 	/* (non-Javadoc)

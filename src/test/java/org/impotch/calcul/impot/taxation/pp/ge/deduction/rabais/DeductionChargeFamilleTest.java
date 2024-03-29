@@ -17,10 +17,7 @@ package org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais;
 
 import org.impotch.calcul.impot.Souverainete;
 import org.impotch.calcul.impot.indexation.ge.FournisseurIndexGenevoisEnMemoire;
-import org.impotch.calcul.impot.taxation.pp.Contribuable;
-import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
-import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
-import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
+import org.impotch.calcul.impot.taxation.pp.*;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.FournisseurDeductionPP;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.FournisseurDeductionPPEnMemoire;
 import org.junit.jupiter.api.Test;
@@ -36,39 +33,8 @@ import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_
 public class DeductionChargeFamilleTest {
 
     private SituationFamiliale construireSituationCoupleAvecUneCharge() {
-        SituationFamiliale situation = new SituationFamiliale() {
-            private final Contribuable contrib = new Contribuable() {};
-            @Override
-            public Contribuable getContribuable() {
-                return contrib;
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return Optional.of(contrib);
-            }
-
-            @Override
-            public Set<EnfantACharge> getEnfants() {
-                return Collections.singleton(new EnfantACharge() {
-                    @Override
-                    public int getAge(int anneeFiscale) {
-                        return 10;
-                    }
-
-                    @Override
-                    public boolean isDemiPart(Souverainete souverainete) {
-                        return false;
-                    }
-                });
-            }
-
-            @Override
-            public Set<PersonneACharge> getPersonnesNecessiteuses() {
-                return Collections.emptySet();
-            }
-        };
-        return situation;
+        return ConstructeurSituationFamiliale.couple()
+                .enfant().age(10).fournir();
     }
 
     private FournisseurDeductionPP fournisseurDeductionPP =

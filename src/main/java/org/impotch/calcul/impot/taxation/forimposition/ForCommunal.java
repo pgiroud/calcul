@@ -24,9 +24,13 @@ import org.impotch.calcul.lieu.ICommuneSuisse;
  */
 public class ForCommunal extends ForImposition<ICommuneSuisse> {
 
+    public static ForCommunal forCommunal(ICommuneSuisse commune) {
+        return new ForCommunal(commune);
+    }
+
 	private final ICommuneSuisse commune;
 	
-	public ForCommunal(ICommuneSuisse commune) {
+	private ForCommunal(ICommuneSuisse commune) {
 		super();
 		this.commune = commune;
 	}

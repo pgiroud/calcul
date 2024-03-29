@@ -24,6 +24,8 @@ import java.math.BigDecimal;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.MILLE_INF;
 /**
  * Le barème familiale en vigueur avant 2010.
  * Il s'agit d'un barème à taux marginal mais ontrairement au barème célibataire
@@ -36,7 +38,7 @@ public class BaremeFamille implements Bareme {
     private MethodeIntegration methodeIntegration;
     private Fonction tauxMarginal;
     private SortedMap<Long,Double> cache = new TreeMap<Long, Double>();
-    private TypeArrondi arrondi = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+    private TypeArrondi arrondi = CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
     public BaremeFamille() {
         cache.put(0L,0.0d);
@@ -69,7 +71,7 @@ public class BaremeFamille implements Bareme {
 
     private Double calculFlottant(BigDecimal revenu) {
         // On recherche dans le cache la valeur inférieure
-        BigDecimal arrondiMilleFrancsInf = TypeArrondi.MILLE_INF.arrondirMontant(revenu);
+        BigDecimal arrondiMilleFrancsInf = MILLE_INF.arrondirMontant(revenu);
         Long arrondi = arrondiMilleFrancsInf.longValue();
         if (!cache.containsKey(arrondi)) {
             chargerCacheJusqua(arrondi);

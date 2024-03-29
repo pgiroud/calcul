@@ -61,11 +61,6 @@ public class FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire implements Fourni
             // Voir loi 10199 article 39 alinea 1 lettre a
             montantLIPP = 5000;
             return indexateur.indexer(2009,montantLIPP,annee);
-//        } else if (annee < 2021) {
-//            // Incompréhensible, l’arrondi au franc près voudrait que ce soit 9981 CHF et non pas 9980 CHF !
-//            // Pas de base légale, à creuser !!
-//            montantLIPP = 9980;
-//            return indexateur.indexer(2017,montantLIPP,annee);
         } else {
             // Loi 12314 Moins d’impôts pour les familles ! du 17 octobre 2019
             montantLIPP = 6500;
@@ -74,29 +69,6 @@ public class FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire implements Fourni
     }
 
     private int montantDeductionSocialeParCharge(int annee) {
-//        if (2010 == annee) deduction.setMontantParCharge(9000);
-//        else if (annee < 2013) deduction.setMontantParCharge(10000);
-//        else if (annee < 2017) deduction.setMontantParCharge(10078);
-//        else if (annee < 2021) deduction.setMontantParCharge(9980);
-//        else if (annee < 2025) deduction.setMontantParCharge(13000);
-//        int montantLIPP;
-//        if (annee < 2011) {
-//            montantLIPP = 9000;
-//            return indexateur.indexer(2009,montantLIPP,annee);
-//        } else if (annee < 2017) {
-//            // Voir loi 10199 article 39 alinea 1 lettre a
-//            montantLIPP = 10000;
-//            return indexateur.indexer(2009,montantLIPP,annee);
-//        } else if (annee < 2021) {
-//            // Incompréhensible, l’arrondi au franc près voudrait que ce soit 9981 CHF et non pas 9980 CHF !
-//            // Pas de base légale, à creuser !!
-//            montantLIPP = 9980;
-//            return indexateur.indexer(2017,montantLIPP,annee);
-//        } else {
-//            // Loi 12314 Moins d’impôts pour les familles ! du 17 octobre 2019
-//            montantLIPP = 13000;
-//            return indexateur.indexer(2021,montantLIPP,annee);
-//        }
         return 2 * montantDeductionSocialeParDemiCharge(annee);
     }
 

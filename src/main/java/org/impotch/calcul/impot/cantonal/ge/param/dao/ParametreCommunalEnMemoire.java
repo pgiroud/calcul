@@ -15,8 +15,6 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.param.dao;
 
-import org.impotch.calcul.lieu.ICommuneSuisse;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;

@@ -37,13 +37,10 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.impotch.bareme.BaremeTauxEffectifParTranche;
+import org.impotch.calcul.impot.taxation.pp.*;
 import org.junit.jupiter.api.Test;
 import org.impotch.bareme.Bareme;
 
-import org.impotch.calcul.impot.taxation.pp.Contribuable;
-import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
-import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
-import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.util.TypeArrondi;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -381,31 +378,7 @@ public class SplittingFRTest {
     }
 
     private SituationFamiliale getSituation(final boolean famille) {
-        return new SituationFamiliale() {
-
-            @Override
-            public Contribuable getContribuable() {
-                return new Contribuable() {
-                };
-            }
-
-            @Override
-            public Optional<Contribuable> getConjoint() {
-                return famille ? Optional.of(new Contribuable() {
-                }) : Optional.<Contribuable>empty();
-            }
-
-            @Override
-            public Set<EnfantACharge> getEnfants() {
-                return Collections.emptySet();
-            }
-
-            @Override
-            public Set<PersonneACharge> getPersonnesNecessiteuses() {
-                return Collections.emptySet();
-            }
-
-        };
+        return famille ? ConstructeurSituationFamiliale.couple().fournir() : ConstructeurSituationFamiliale.personneSeule().fournir();
     }
 
 }

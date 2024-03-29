@@ -16,10 +16,11 @@
 package org.impotch.calcul.impot;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 
 public interface FournisseurAssiette {
 	BigDecimal getMontantImposable();
 	
-	BigDecimal getMontantDeterminant();
+	Optional<BigDecimal> getMontantDeterminant();
 }
