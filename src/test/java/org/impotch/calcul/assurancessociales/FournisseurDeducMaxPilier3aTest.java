@@ -26,6 +26,25 @@ public class FournisseurDeducMaxPilier3aTest {
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale = CTX_TST_AS.getFournisseurRegleCalculAssuranceSociale();
 
     @Test
+    public void test2025() {
+        FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2025);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("7258");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("36288");
+    }
+
+
+    @Test
+    public void test2023et2024() {
+        FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2023);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("7056");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("35280");
+        fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2024);
+        assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("7056");
+        assertThat(fournisseur.getDeductionMaximaleSansLPP()).isEqualTo("35280");
+    }
+
+
+    @Test
     public void test2021et2022() {
         FournisseurDeductionMaxPilier3a fournisseur = fournisseurRegleCalculAssuranceSociale.getFournisseurDeductionMaximale3ePilier(2021);
         assertThat(fournisseur.getDeductionMaximaleAvecLPP()).isEqualTo("6883");

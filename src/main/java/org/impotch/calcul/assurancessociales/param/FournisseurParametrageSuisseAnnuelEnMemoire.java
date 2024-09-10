@@ -50,7 +50,7 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
     }
 
     private ParametrageSuisseAnnuel construireParametrage2025() {
-        return unConstructeur(2024)
+        return unConstructeur(2025)
                 .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.5 %")
                 .ac("2.2 %")
                 .renteMensuelleMinimum(1260)

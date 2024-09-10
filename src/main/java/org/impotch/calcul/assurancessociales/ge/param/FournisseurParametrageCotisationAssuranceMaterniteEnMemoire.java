@@ -26,6 +26,7 @@ public class FournisseurParametrageCotisationAssuranceMaterniteEnMemoire impleme
     }
 
     private Optional<ParametrageCotisationAssuranceMaternite> construireParametrageAnnuel(int annee) {
+        if (2025 == annee) return Optional.of(construireParametrage2025());
         if (2024 == annee) return Optional.of(construireParametrage2024());
         if (2023 == annee) return Optional.of(construireParametrage2023());
         if (2022 == annee) return Optional.of(construireParametrage2022());
@@ -51,6 +52,12 @@ public class FournisseurParametrageCotisationAssuranceMaterniteEnMemoire impleme
         return Optional.empty();
     }
 
+    private ParametrageCotisationAssuranceMaternite construireParametrage2025() {
+        // ATTENTION, à reprendre
+        return unConstructeur(2025)
+                .tauxCotisationAssuranceMaternite("0.038 %")
+                .cons();
+    }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2024() {
         return unConstructeur(2024)
