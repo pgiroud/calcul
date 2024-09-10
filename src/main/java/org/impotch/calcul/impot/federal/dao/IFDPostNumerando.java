@@ -41,8 +41,11 @@ class IFDPostNumerando {
 
     /* ---------------------- Personne seule -------------------------------*/
     public Bareme personneSeule(int annee) {
-        if (annee >= 2025)
+        if (annee >= 2026)
             throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas encore défini pour l'année " + annee);
+        if (2025 <= annee) {
+            return personneSeule2025();
+        }
         if (2024 <= annee) {
             return personneSeule2024();
         }
@@ -64,6 +67,28 @@ class IFDPostNumerando {
         throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas défini pour l'année " + annee);
     }
 
+
+    /**
+     * Adapté à l'indice de juin 2024: 170,3
+     * barème 2024 étiré de 1,31 %
+     * Voir Ordonnance du département fédéral des finances RS 642.119.2
+     * https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf
+     * Attention, il y a une erreur sur une tranche. Se référer à l’article 36 de la LIFD en vigueur au 1er janvier 2025
+     * @return barème IFD pour personne seule valable dès 2024
+     */
+    private Bareme personneSeule2025() {
+        return unBaremeIFD()
+                .jusqua(15_200).a("0.00").etPar100FrancsEnPlus("0.77")
+                .pour(33_200).a("138.60").etPar100FrancsEnPlus("0.88")
+                .pour(43_500).a("229.20").etPar100FrancsEnPlus("2.64")
+                .pour(58_000).a("612.00").etPar100FrancsEnPlus("2.97")
+                .pour(76_100).a("1149.55").etPar100FrancsEnPlus("5.94")
+                .pour(82_000).a("1500.00").etPar100FrancsEnPlus("6.60")
+                .pour(108_800).a("3268.80").etPar100FrancsEnPlus("8.80")
+                .pour(141_500).a("6146.40").etPar100FrancsEnPlus("11.00") // Attention ici, texte français faux dans la circulaire
+                .pour(184_900).a("10920.40").etPar100FrancsEnPlus("13.20")
+                .tauxEffectifMax("11.5 %").construire();
+    }
     /**
      * Adapté à l'indice de juin 2023: 168,1
      * barème 2023 étiré de 1,76 %
@@ -185,8 +210,11 @@ class IFDPostNumerando {
 
 
     public Bareme famille(int annee) {
-        if (annee >= 2025)
+        if (annee >= 2026)
             throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas encore défini pour l'année " + annee);
+        if (2025 <= annee) {
+            return famille2025();
+        }
         if (2024 <= annee) {
             return famille2024();
         }
@@ -206,6 +234,31 @@ class IFDPostNumerando {
             return famille1996();
         }
         throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas défini pour l'année " + annee);
+    }
+
+    /**
+     * Adapté à l'indice de juin 2024: 170,3
+     * barème 2024 étiré de 1,31 %
+     * Voir Ordonnance du département fédéral des finances RS 642.119.2
+     * https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf
+     * @return barème IFD pour famille valable dès 2025
+     */
+    private Bareme famille2025() {
+        return unBaremeIFD()
+                .jusqua(29_700).a(   "0.00").etPar100FrancsEnPlus("1.00")
+                .pour(  53_400).a( "237.00").etPar100FrancsEnPlus("2.00")
+                .pour(  61_300).a( "395.00").etPar100FrancsEnPlus("3.00")
+                .pour(  79_100).a( "929.00").etPar100FrancsEnPlus("4.00")
+                .pour(  94_900).a("1561.00").etPar100FrancsEnPlus("5.00")
+                .pour( 108_600).a("2246.00").etPar100FrancsEnPlus("6.00")
+                .pour( 120_500).a("2960.00").etPar100FrancsEnPlus("7.00")
+                .pour( 130_500).a("3660.00").etPar100FrancsEnPlus("8.00")
+                .pour( 138_300).a("4284.00").etPar100FrancsEnPlus("9.00")
+                .pour( 144_200).a("4815.00").etPar100FrancsEnPlus("10.00")
+                .pour( 148_200).a("5215.00").etPar100FrancsEnPlus("11.00")
+                .pour( 150_300).a("5446.00").etPar100FrancsEnPlus("12.00")
+                .pour( 152_300).a("5686.00").etPar100FrancsEnPlus("13.00")
+                .tauxEffectifMax("11.5 %").construire();
     }
 
     /**

@@ -18,7 +18,6 @@ package org.impotch.calcul.impot.taxation.pp;
 import org.impotch.calcul.impot.Souverainete;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class ConstructeurSituationFamiliale {
 
@@ -36,6 +35,7 @@ public class ConstructeurSituationFamiliale {
     private PersonneNecessiteuseRattacheeAuFoyer personneNecessiteuseEnConstruction;
 
     private int age = -1;
+    private int anneeDeterminantAge = -1;
 
     public ConstructeurSituationFamiliale() {
     }

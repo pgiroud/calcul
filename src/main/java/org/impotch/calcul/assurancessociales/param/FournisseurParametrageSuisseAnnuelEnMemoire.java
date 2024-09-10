@@ -25,6 +25,7 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
     }
 
     private Optional<ParametrageSuisseAnnuel> construireParametrageAnnuel(int annee) {
+        if (2025 == annee) return Optional.of(construireParametrage2025());
         if (2024 == annee) return Optional.of(construireParametrage2024());
         if (2023 == annee) return Optional.of(construireParametrage2023());
         if (2022 == annee) return Optional.of(construireParametrage2022());
@@ -46,6 +47,14 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         if (2006 == annee) return Optional.of(construireParametrage2006());
         if (2005 == annee) return Optional.of(construireParametrage2005());
         return Optional.empty();
+    }
+
+    private ParametrageSuisseAnnuel construireParametrage2025() {
+        return unConstructeur(2024)
+                .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.5 %")
+                .ac("2.2 %")
+                .renteMensuelleMinimum(1260)
+                .cons();
     }
 
     private ParametrageSuisseAnnuel construireParametrage2024() {

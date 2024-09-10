@@ -92,6 +92,8 @@ public class BaremeIFDPersonnePhysiqueTest {
         assertThat(bar.pour(843600)).isEqualTo("97014.00");
     }
 
+
+
     @Test
     public void praeNumerandoFamille2007() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(2007);
@@ -162,9 +164,17 @@ public class BaremeIFDPersonnePhysiqueTest {
         assertThat(bar.pour(32227)).isEqualTo("133.95");
     }
 
+    @Test
+    public void postNumerandoFamille2025AuLimiteDeTranche() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2025);
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(940_800)).isEqualTo("108191.00");
+        assertThat(bar.pour(940_900)).isEqualTo("108203.50");
+    }
 
     @Test
-    public void postNumarandoFamille2024AuLimiteDeTranche() {
+    public void postNumerandoFamille2024AuLimiteDeTranche() {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2024);
         BaremeStr bar = new BaremeStr(bareme);
 
@@ -182,6 +192,20 @@ public class BaremeIFDPersonnePhysiqueTest {
         assertThat(bar.pour(150_300)).isEqualTo(  "5609.00");
         assertThat(bar.pour(928_600)).isEqualTo("106788.00");
         assertThat(bar.pour(928_700)).isEqualTo("106800.50");
+
+    }
+
+    @Test
+    public void postNumerandoCelibataire2025AuLimiteDeTranche() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2025);
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(15_200)).isEqualTo("0.00");
+        assertThat(bar.pour(33_200)).isEqualTo("138.60");
+
+
+        assertThat(bar.pour(793_300)).isEqualTo("91229.20");
+        assertThat(bar.pour(793_400)).isEqualTo("91241.00");
 
     }
 
