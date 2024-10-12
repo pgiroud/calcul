@@ -35,7 +35,7 @@ public class ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009 implements Con
     }
 
     @Override
-    public ConstructeurBaremeParTrancheIndexe constructeurBaremeRevenu() {
+    public ConstructeurBaremeParTrancheIndexe constructeurBaremeRevenu(int annee) {
         return null;
     }
 

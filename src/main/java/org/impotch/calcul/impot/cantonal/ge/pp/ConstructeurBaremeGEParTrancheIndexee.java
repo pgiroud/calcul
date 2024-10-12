@@ -17,7 +17,7 @@ package org.impotch.calcul.impot.cantonal.ge.pp;
 
 public interface ConstructeurBaremeGEParTrancheIndexee {
 
-    ConstructeurBaremeParTrancheIndexe constructeurBaremeRevenu();
+    ConstructeurBaremeParTrancheIndexe constructeurBaremeRevenu(int annee);
     ConstructeurBaremeParTrancheIndexe constructeurBaremeFortune();
 
     ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneSupplementaire();

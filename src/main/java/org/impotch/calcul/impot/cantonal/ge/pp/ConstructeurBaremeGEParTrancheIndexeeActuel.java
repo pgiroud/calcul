@@ -24,7 +24,6 @@ import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 public class ConstructeurBaremeGEParTrancheIndexeeActuel implements ConstructeurBaremeGEParTrancheIndexee {
 
     private static final int ANNEE_REFERENCE_INDEXATION = 2009;
-    private static final int DEBUT_VALIDITE = 2010;
 
     private final FournisseurIndicePeriodique fournisseurIndicePeriodique;
     private final ConstructeurBaremeGEParTrancheIndexee constructeurPrecedent;
@@ -38,32 +37,66 @@ public class ConstructeurBaremeGEParTrancheIndexeeActuel implements Constructeur
         return new ConstructeurBaremeGEParTrancheIndexeeActuel(fournisseurIndicePeriodique,constructeurPrecedent);
     }
 
-    @Override
-    public ConstructeurBaremeParTrancheIndexe constructeurBaremeRevenu() {
+
+    private ConstructeurBaremeParTrancheIndexe constructeurBaremeRevenuLIPP2009() {
         return unConstructeurDeBaremeParTrancheIndexee()
-                .valideDepuis(DEBUT_VALIDITE)
+                .valideDepuis(2010)
                 .anneeReferenceRencherissement(ANNEE_REFERENCE_INDEXATION)
                 .indexateur(fournisseurIndicePeriodique)
                 .typeArrondiTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
                 .typeArrondiGlobal(CINQ_CENTIEMES_LES_PLUS_PROCHES)
-                .jusqua(17493).taux(" 0 %")
-                .puisJusqua(21076).taux(" 8 %")
-                .puisJusqua(23184).taux(" 9 %")
-                .puisJusqua(25291).taux("10 %")
-                .puisJusqua(27399).taux("11 %")
-                .puisJusqua(32668).taux("12 %")
-                .puisJusqua(36883).taux("13 %")
-                .puisJusqua(41099).taux("14 %")
-                .puisJusqua(45314).taux("14.5 %")
-                .puisJusqua(72713).taux("15 %")
-                .puisJusqua(119081).taux("15.5 %")
-                .puisJusqua(160179).taux("16 %")
-                .puisJusqua(181256).taux("16.5 %")
-                .puisJusqua(259238).taux("17 %")
-                .puisJusqua(276099).taux("17.5 %")
-                .puisJusqua(388857).taux("18 %")
-                .puisJusqua(609103).taux("18.5 %")
-                .puis().taux("19 %");
+                .jusqua(     17_493).taux(" 0 %")
+                .puisJusqua( 21_076).taux(" 8 %")
+                .puisJusqua( 23_184).taux(" 9 %")
+                .puisJusqua( 25_291).taux("10 %")
+                .puisJusqua( 27_399).taux("11 %")
+                .puisJusqua( 32_668).taux("12 %")
+                .puisJusqua( 36_883).taux("13 %")
+                .puisJusqua( 41_099).taux("14 %")
+                .puisJusqua( 45_314).taux("14.5 %")
+                .puisJusqua( 72_713).taux("15 %")
+                .puisJusqua(119_081).taux("15.5 %")
+                .puisJusqua(160_179).taux("16 %")
+                .puisJusqua(181_256).taux("16.5 %")
+                .puisJusqua(259_238).taux("17 %")
+                .puisJusqua(276_099).taux("17.5 %")
+                .puisJusqua(388_857).taux("18 %")
+                .puisJusqua(609_103).taux("18.5 %")
+                .puis()             .taux("19 %");
+    }
+
+    private ConstructeurBaremeParTrancheIndexe constructeurBaremeRevenuLoi13402() {
+        return unConstructeurDeBaremeParTrancheIndexee()
+                .valideDepuis(2025)
+                .anneeReferenceRencherissement(ANNEE_REFERENCE_INDEXATION)
+                .indexateur(fournisseurIndicePeriodique)
+                .typeArrondiTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiGlobal(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .jusqua(     17_493).taux(" 0.00 %")
+                .puisJusqua( 21_076).taux(" 7.30 %")
+                .puisJusqua( 23_184).taux(" 8.20 %")
+                .puisJusqua( 25_291).taux(" 9.10 %")
+                .puisJusqua( 27_399).taux("10.00 %")
+                .puisJusqua( 32_668).taux("10.90 %")
+                .puisJusqua( 36_883).taux("11.30 %")
+                .puisJusqua( 41_099).taux("12.30 %")
+                .puisJusqua( 45_314).taux("12.80 %")
+                .puisJusqua( 72_713).taux("13.20 %")
+                .puisJusqua(119_081).taux("14.20 %")
+                .puisJusqua(160_179).taux("15.00 %")
+                .puisJusqua(181_256).taux("15.60 %")
+                .puisJusqua(259_238).taux("15.80 %")
+                .puisJusqua(276_099).taux("16.00 %")
+                .puisJusqua(388_857).taux("16.80 %")
+                .puisJusqua(609_103).taux("17.60 %")
+                .puis()             .taux("18.00 %");
+    }
+
+    @Override
+    public ConstructeurBaremeParTrancheIndexe constructeurBaremeRevenu(int annee) {
+        if (annee < 2010) throw new IllegalArgumentException("Les barèmes de l’année " + annee + " ne sont pas produits par cette méthode !!");
+        if (annee < 2025) return constructeurBaremeRevenuLIPP2009();
+        else return constructeurBaremeRevenuLoi13402();
     }
 
     @Override
@@ -73,7 +106,7 @@ public class ConstructeurBaremeGEParTrancheIndexeeActuel implements Constructeur
                     .construire(ANNEE_REFERENCE_INDEXATION);
 
             return unConstructeurDeBaremeParTrancheIndexee(bareme2009)
-                    .valideDepuis(DEBUT_VALIDITE)
+                    .valideDepuis(2010)
                     .indexateur(fournisseurIndicePeriodique)
                     .anneeReferenceRencherissement(ANNEE_REFERENCE_INDEXATION);
     }
@@ -85,7 +118,7 @@ public class ConstructeurBaremeGEParTrancheIndexeeActuel implements Constructeur
                     .construire(ANNEE_REFERENCE_INDEXATION);
 
             return unConstructeurDeBaremeParTrancheIndexee(bareme2009)
-                    .valideDepuis(DEBUT_VALIDITE)
+                    .valideDepuis(2010)
                     .indexateur(fournisseurIndicePeriodique)
                     .anneeReferenceRencherissement(ANNEE_REFERENCE_INDEXATION);
     }

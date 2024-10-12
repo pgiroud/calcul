@@ -119,7 +119,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         if (annee < 2010) {
             return constructeurBaremeRevenuAvecFormuleUniversite.construireBaremeRevenu(annee);
         } else {
-            return constructeurBaremeActuel.constructeurBaremeRevenu().construire(annee);
+            return constructeurBaremeActuel.constructeurBaremeRevenu(annee).construire(annee);
         }
     }
 

@@ -73,7 +73,8 @@ class IFDPostNumerando {
      * barème 2024 étiré de 1,31 %
      * Voir Ordonnance du département fédéral des finances RS 642.119.2
      * https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf
-     * Attention, il y a une erreur sur une tranche. Se référer à l’article 36 de la LIFD en vigueur au 1er janvier 2025
+     * Attention, il y a une erreur sur une tranche dans la directive fédérale.
+     * Se référer à l’article 36 de la LIFD en vigueur au 1er janvier 2025
      * @return barème IFD pour personne seule valable dès 2024
      */
     private Bareme personneSeule2025() {
