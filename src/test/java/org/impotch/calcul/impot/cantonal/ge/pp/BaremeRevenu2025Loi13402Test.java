@@ -32,10 +32,38 @@ public class BaremeRevenu2025Loi13402Test {
         assertThat(bareme.calcul(new BigDecimal("414554"))).isEqualTo(new BigDecimal("60299.35"));
         assertThat(bareme.calcul(new BigDecimal("649355"))).isEqualTo(new BigDecimal("101624.35"));
 
-        assertThat(bareme.calcul(new BigDecimal("77518"))).isEqualTo(new BigDecimal("6996.00"));
-        assertThat(bareme.calcul(new BigDecimal("77518"))).isEqualTo(new BigDecimal("6996.00"));
+    }
 
+    @Test
+    public void dansLaPremiereTranche() {
+        Bareme bareme = fournisseur.getBaremeRevenu(2025);
+        // (20_000 - 18_649) * 7,3 % = 98,623
+        assertThat(bareme.calcul(BigDecimal.valueOf(20_000))).isEqualTo(new BigDecimal("98.60"));
+    }
 
+    @Test
+    public void dansLaDeuxiemeTranche() {
+        Bareme bareme = fournisseur.getBaremeRevenu(2025);
+        // (22_469 - 18_649) * 7,3 %  + (24_000 - 22_469) * 8,2 % = 278.85 + 125,542 = 404,392
+        assertThat(bareme.calcul(BigDecimal.valueOf(24_000))).isEqualTo(new BigDecimal("404.40"));
+    }
+
+    @Test
+    public void zero() {
+        Bareme bareme = fournisseur.getBaremeRevenu(2025);
+        assertThat(bareme.calcul(BigDecimal.ZERO)).isEqualTo(new BigDecimal("0.00"));
+    }
+
+    @Test
+    public void negatif() {
+        Bareme bareme = fournisseur.getBaremeRevenu(2025);
+        assertThat(bareme.calcul(BigDecimal.ONE.movePointRight(6).negate())).isEqualTo(new BigDecimal("0.00"));
+    }
+
+    @Test
+    public void enormeNegatif() {
+        Bareme bareme = fournisseur.getBaremeRevenu(2025);
+        assertThat(bareme.calcul(BigDecimal.ONE.movePointRight(40).negate())).isEqualTo(new BigDecimal("0.00"));
     }
 
     @Test
