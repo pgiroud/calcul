@@ -1,3 +1,18 @@
+/*
+ * This file is part of impotch/calcul.
+ *
+ * impotch/calcul is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * impotch/calcul is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
+ */
 /**
  * This file is part of impotch/calcul.
  *
@@ -13,20 +28,21 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.federal.dao;
+package org.impotch.calcul.impot.federal.param;
 
 import org.impotch.bareme.*;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.TypeArrondi;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
 
 class ConstructeurBaremeIFD {
+
+    // 3 sujets : arrondi avant d’entrer dans le barème, arrondi sur calcul de tranche (sauf PC), taux effective max atteint
+
 
     private static final TypeArrondi ARRONDI_SUR_CHAQUE_TRANCHE = TypeArrondi.CINQ_CENTIEMES_INF;
 
@@ -38,16 +54,19 @@ class ConstructeurBaremeIFD {
         return new ConstructeurBaremeIFD(TypeArrondi.MILLE_INF, true);
     }
 
+    private final BigDecimal precisionArrondiSurAssiette;
+    private final ConstructeurBareme cons;
+
     private BigDecimal taux = BigDecimal.ZERO;
     private BigDecimal debutTranche = BigDecimal.ZERO;
     private BigDecimal valeurEnDebutTranche = BigDecimal.ZERO;
     private BigDecimal tauxEffectifMax;
 
-    private final ConstructeurBareme cons;
 
 
     private ConstructeurBaremeIFD(TypeArrondi arrondiSurAssiette, boolean source) {
         super();
+        precisionArrondiSurAssiette = arrondiSurAssiette.precision();
         cons = unBaremeATauxMarginal()
                 .fermeAGauche()
                 .typeArrondiSurEntrant(arrondiSurAssiette)
@@ -102,6 +121,8 @@ class ConstructeurBaremeIFD {
         return this;
     }
 
+
+
     public ConstructeurBaremeIFD etPar100FrancsEnPlus(String montant) {
         taux = new BigDecimal(montant).movePointLeft(2);
         return this;
@@ -123,7 +144,7 @@ class ConstructeurBaremeIFD {
     }
 
     private BigDecimal construireBorneSuperieurePourAtteinteTauxEffectif() {
-        return Stream.iterate(debutTranche, rev -> rev.add(BigDecimal.valueOf(100)))
+        return Stream.iterate(debutTranche, rev -> rev.add(this.precisionArrondiSurAssiette))
                 .filter(r -> tauxEffectifMaxDepasse(r,calculImpot(r)))
                 .findFirst().orElseThrow();
     }
@@ -136,6 +157,27 @@ class ConstructeurBaremeIFD {
         valeurEnDebutTranche = ARRONDI_SUR_CHAQUE_TRANCHE.arrondirMontant(taux.multiply(borneSuperieure));
         cons.derniereTranche(borneSuperieure,valeurEnDebutTranche,taux);
         return cons.construire();
+    }
+
+
+    // Prestation en capital
+
+    public ConstructeurBaremeIFD taux(String taux) {
+        this.taux =  BigDecimalUtil.parseTaux(taux);
+        return this;
+    }
+
+    public ConstructeurBaremeIFD surLesProchains(int largeurTranche) {
+        controleAbsenceTauxEffectif();
+        BigDecimal finTranche = debutTranche.add(BigDecimal.valueOf(largeurTranche));
+        cons.tranche(debutTranche,finTranche,valeurEnDebutTranche, taux);
+        initialiserTrancheSuivante(finTranche);
+        return this;
+    }
+
+    public ConstructeurBaremeIFD etFinalementTaux(String taux) {
+        this.taux =  BigDecimalUtil.parseTaux(taux);
+        return this;
     }
 
 }

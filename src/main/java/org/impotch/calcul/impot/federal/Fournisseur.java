@@ -1,3 +1,18 @@
+/*
+ * This file is part of impotch/calcul.
+ *
+ * impotch/calcul is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License.
+ *
+ * impotch/calcul is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
+ */
 /**
  * This file is part of impotch/calcul.
  *
@@ -20,13 +35,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.bareme.Bareme;
-import org.impotch.calcul.impot.federal.dao.FournisseurBaremeIFD;
+import org.impotch.calcul.impot.federal.param.FournisseurBaremeIFD;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotAvecRabais;
-import org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif;
 import org.impotch.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
-import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
-import org.impotch.calcul.impot.taxation.pp.famille.DoubleBareme;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
@@ -156,7 +168,7 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	private ProducteurImpot construireProducteurImpotSourcePrestationCapital(int annee) {
 		ProducteurImpot producteur = new ProducteurImpot("IBR","");
 		producteur.setProducteurBase(
-				unProducteurImpotBaseProgressif(fournisseurBaremeIFD.getBaremeImpotSourcePrestationCapital(annee))
+				unProducteurImpotBaseProgressif(fournisseurBaremeIFD.getBaremeImpotSourcePrestationCapital(annee).orElseThrow())
 						.arrondiAssiettes(ARRONDI_ASSIETTES)
 						.arrondiImpot(ARRONDI_IMPOT)
 						.construire()
