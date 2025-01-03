@@ -32,9 +32,25 @@ package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
 
+/**
+ * Fournit les montants prévus aux articles :
+ * <ul>
+ *     <li></li>
+ * </ul>
+ */
 public interface FournisseurMontantsLimitesPrevoyanceProfessionnelle {
-    BigDecimal getSalaireMinimalAnnuel();
-    BigDecimal getSalaireCoordonneMinimalAnnuel();
-    BigDecimal getDeductionCoordination();
-    BigDecimal getLimiteSuperieureSalaireAnnuel();
+    BigDecimal salaireMinimalAnnuel();
+    BigDecimal salaireCoordonnéMinimalAnnuel();
+    BigDecimal deductionCoordination();
+    BigDecimal limiteSupérieureSalaireCoordonnéAnnuel();
+
+    /**
+     * D’après <a href="https://www.fedlex.admin.ch/eli/cc/1983/797_797_797/fr#art_79_c"></>l’article 79c</a> de la LPP,
+     * le salaire assurable du salarié ou le revenu assurable de l’indépendant selon le règlement de prévoyance est limité au décuple du montant limite supérieur selon l’art. 8, al. 1.
+     * @return la limite des revenus de l’activité lucrative, salariée ou indépendante, assurables
+     */
+    default BigDecimal limiteDesRevenusActivitéLucrativeAssurables() {
+        // Art. 79c de la LPP https://www.fedlex.admin.ch/eli/cc/1983/797_797_797/fr#art_79_c
+        return BigDecimal.TEN.multiply(limiteSupérieureSalaireCoordonnéAnnuel());
+    }
 }
