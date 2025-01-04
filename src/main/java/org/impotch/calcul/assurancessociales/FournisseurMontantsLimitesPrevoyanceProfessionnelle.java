@@ -41,7 +41,11 @@ import java.math.BigDecimal;
 public interface FournisseurMontantsLimitesPrevoyanceProfessionnelle {
     BigDecimal salaireMinimalAnnuel();
     BigDecimal salaireCoordonnéMinimalAnnuel();
-    BigDecimal deductionCoordination();
+
+    default BigDecimal deductionCoordination() {
+        return salaireMinimalAnnuel().add(salaireCoordonnéMinimalAnnuel());
+    }
+
     BigDecimal limiteSupérieureSalaireCoordonnéAnnuel();
 
     /**

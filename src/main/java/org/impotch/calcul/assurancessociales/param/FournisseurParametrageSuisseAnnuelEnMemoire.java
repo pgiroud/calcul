@@ -59,9 +59,21 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
     }
 
     private ParametrageSuisseAnnuel construireParametrage2025() {
+        // Adaptation de la rente mensuelle minimum : 1225 CHF --> 1260 CHF https://www.fedlex.admin.ch/eli/cc/2024/463/fr#art_3
         return unConstructeur(2025)
-                .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.5 %")
+                // Source art.22 al. 1 de l’ Ordonnance sur l'assurance-accidents (OLAA) : https://www.fedlex.admin.ch/eli/cc/1983/38_38_38/fr#art_22
+                .montantMaxAssure(148_200)
+                // Source Art. 5 al. 1 de la loi sur l’assurance vieillesse et survivants (LAVS) : https://www.fedlex.admin.ch/eli/cc/63/837_843_843/fr#art_5
+                .avs("8.7 %")
+                // Source art.3 al.1 de la Loi fédérale sur l’assurance-invalidité (LAI) : https://www.fedlex.admin.ch/eli/cc/1959/827_857_845/fr#art_3
+                .ai("1.4 %")
+                // Source art.36 al.1 de l’ordonnance sur les allocations pour perte de gain (OAPG) https://www.fedlex.admin.ch/eli/cc/2005/187/fr#art_36
+                .apg("0.5 %")
+                // Source art.3 al. 2 de la Loi sur l’assurance chômage (LACI) : https://www.fedlex.admin.ch/eli/cc/1982/2184_2184_2184/fr#art_3
                 .ac("2.2 %")
+                // Source art. 3 al.1 de l’ordonnance sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG à partir de 2025
+                // https://www.fedlex.admin.ch/eli/cc/2024/463/fr#art_3
                 .renteMensuelleMinimum(1260)
                 .cons();
     }
@@ -70,6 +82,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2024)
                 .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.5 %")
                 .ac("2.2 %")
+                // Source art. 3 al.1 de l’ordonnance 23 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2022/604/fr
                 .renteMensuelleMinimum(1225)
                 .cons();
     }
@@ -79,6 +94,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2023)
                 .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.5 %")
                 .ac("2.2 %")
+                // Source art. 3 al.1 de l’ordonnance 23 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2022/604/fr
                 .renteMensuelleMinimum(1225)
                 .cons();
     }
@@ -86,6 +104,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2022)
                 .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.5 %")
                 .ac("2.2 %").avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
+                // Source art. 3 al.1 de l’ordonnance 21 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2020/819/fr
                 .renteMensuelleMinimum(1195)
                 .cons();
     }
@@ -94,15 +115,22 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2021)
                 .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.5 %")
                 .ac("2.2 %").avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
+                // Source art. 3 al.1 de l’ordonnance 21 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2020/819/fr
                 .renteMensuelleMinimum(1195)
                 .cons();
     }
     private ParametrageSuisseAnnuel construireParametrage2020() {
         // Augmentation du taux AVS : 8.4 -> 8.7
-
+        // Source RO 2019 2395 Loi fédérale relative à la réforme fiscale et au financement de l’AVS (RFFA)
+        // https://www.bk.admin.ch/ch/f/pore/rf/cr/2018/20180201.html
         return unConstructeur(2020)
                 .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.45 %")
                 .ac("2.2 %").avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
+                // Source art. 3 al.1 de l’ordonnance 20 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2019/677/fr
                 .renteMensuelleMinimum(1185)
                 .cons();
     }
@@ -110,6 +138,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2019)
                 .montantMaxAssure(148_200).avs("8.4 %").ai("1.4 %").apg("0.45 %")
                 .ac("2.2 %").avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
+                // Source art. 3 al.1 de l’ordonnance 19 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2018/574/fr
                 .renteMensuelleMinimum(1185)
                 .cons();
     }
@@ -117,6 +148,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2018)
                 .montantMaxAssure(148_200).avs("8.4 %").ai("1.4 %").apg("0.45 %")
                 .ac("2.2 %").avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
+                // Source art. 3 al.1 de l’ordonnance 15 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2014/576/fr
                 .renteMensuelleMinimum(1175)
                 .cons();
     }
@@ -124,15 +158,22 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2017)
                 .montantMaxAssure(148_200).avs("8.4 %").ai("1.4 %").apg("0.45 %")
                 .ac("2.2 %").avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
+                // Source art. 3 al.1 de l’ordonnance 15 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2014/576/fr
                 .renteMensuelleMinimum(1175)
                 .cons();
     }
     private ParametrageSuisseAnnuel construireParametrage2016() {
         // Diminution taux APG : 0.5 -> 0.45
         // Augmentation du montant maximum assuré : 126'000 -> 148'200
+        // Source RO 2014 4213 https://www.fedlex.admin.ch/eli/oc/2014/702/fr Ordonnance sur l'assurance-accidents (OLAA)
         return unConstructeur(2016)
                 .montantMaxAssure(148_200).avs("8.4 %").ai("1.4 %").apg("0.45 %")
                 .ac("2.2 %").avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
+                // Source art. 3 al.1 de l’ordonnance 15 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2014/576/fr
                 .renteMensuelleMinimum(1175)
                 .cons();
     }
@@ -140,14 +181,21 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2015)
                 .montantMaxAssure(126_000).avs("8.4 %").ai("1.4 %").apg("0.5 %")
                 .ac("2.2 %").avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
+                // Source art. 3 al.1 de l’ordonnance 15 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2014/576/fr
                 .renteMensuelleMinimum(1175)
                 .cons();
     }
     private ParametrageSuisseAnnuel construireParametrage2014() {
-        // Suppression de la limite pour la participation des hauts revenus
+        // Suppression de la limite pour la participation des hauts revenus à la cotisation
+        // Acceptation par l‘Assemblée fédérale, le 21 juin 2013, du déplafonnement du pourcent de solidarité
         return unConstructeur(2014)
                 .montantMaxAssure(126_000).avs("8.4 %").ai("1.4 %").apg("0.5 %")
                 .ac("2.2 %").avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
+                // Source art. 3 al.1 de l’ordonnance 13 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2012/747/fr
                 .renteMensuelleMinimum(1170)
                 .cons();
     }
@@ -157,6 +205,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .ac("2.2 %")
                     .avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
                     .dansLaLimiteduMultipleDuMontantMaxAssure("2.5")
+                // Source art. 3 al.1 de l’ordonnance 13 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2012/747/fr
                 .renteMensuelleMinimum(1170)
                 .cons();
     }
@@ -166,6 +217,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .ac("2.2 %")
                     .avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
                     .dansLaLimiteduMultipleDuMontantMaxAssure("2.5")
+                // Source art. 3 al.1 de l’ordonnance 11 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2010/656/fr
                 .renteMensuelleMinimum(1160)
                 .cons();
     }
@@ -178,6 +232,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .ac("2.2 %")
                     .avecParticipationRevenuAuDelaDuMontantMaxAssure().taux("1 %")
                     .dansLaLimiteduMultipleDuMontantMaxAssure("2.5")
+                // Source art. 3 al.1 de l’ordonnance 11 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2010/656/fr
                 .renteMensuelleMinimum(1160)
                 .cons();
     }
@@ -185,6 +242,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2010)
                 .montantMaxAssure(126_000).avs("8.4 %").ai("1.4 %").apg("0.3 %")
                 .ac("2 %")
+                // Source art. 3 al.1 de l’ordonnance 09 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2008/659/fr
                 .renteMensuelleMinimum(1140)
                 .cons();
     }
@@ -192,6 +252,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         return unConstructeur(2009)
                 .montantMaxAssure(126_000).avs("8.4 %").ai("1.4 %").apg("0.3 %")
                 .ac("2 %")
+                // Source art. 3 al.1 de l’ordonnance 09 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2008/659/fr
                 .renteMensuelleMinimum(1140)
                 .cons();
     }
@@ -202,6 +265,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .montantMaxAssure(126_000)
                 .avs("8.4 %").ai("1.4 %").apg("0.3 %")
                 .ac("2 %")
+                // Source art. 3 al.1 de l’ordonnance 07 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2006/611/fr
                 .renteMensuelleMinimum(1105)
                 .cons();
     }
@@ -210,6 +276,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .montantMaxAssure(106_800)
                 .avs("8.4 %").ai("1.4 %").apg("0.3 %")
                 .ac("2 %")
+                // Source art. 3 al.1 de l’ordonnance 07 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2006/611/fr
                 .renteMensuelleMinimum(1105)
                 .cons();
     }
@@ -219,6 +288,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .montantMaxAssure(106_800)
                 .avs("8.4 %").ai("1.4 %").apg("0.3 %")
                 .ac("2 %")
+                // Source art. 3 al.1 de l’ordonnance 05 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2004/661/fr
                 .renteMensuelleMinimum(1075)
                 .cons();
     }
@@ -228,6 +300,9 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .montantMaxAssure(106_800)
                 .avs("8.4 %").ai("1.4 %").apg("0.3 %")
                 .ac("2 %")
+                // Source art. 3 al.1 de l’ordonnance 05 sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG
+                // https://www.fedlex.admin.ch/eli/cc/2004/661/fr
                 .renteMensuelleMinimum(1075)
                 .cons();
     }

@@ -57,11 +57,6 @@ class FournisseurMontantsLimitesLPP implements FournisseurMontantsLimitesPrevoya
     }
 
     @Override
-    public BigDecimal deductionCoordination() {
-        return BigDecimal.valueOf(21).multiply(renteAVSMensuelleMinimale);
-    }
-
-    @Override
     public BigDecimal limiteSupérieureSalaireCoordonnéAnnuel() {
         return QUATRE.multiply(salaireMinimalAnnuel());
     }
