@@ -35,6 +35,12 @@ import org.impotch.bareme.BaremeParTranche;
 public interface ParametrageAnnuelLIPP_D_3_08_Revenu {
     int getAnnee();
 
+    String tauxDeductionFraisProfessionnels();
+
+    int plancherDeductionFraisProfessionnels();
+
+    int plafondDeductionFraisProfessionnels();
+
     /**
      * Retourne le montant de la déduction sociale pour chaque charge de famille.
      * Ce montant est indiqué dans la loi LIPP D 3 18 à l'article 39

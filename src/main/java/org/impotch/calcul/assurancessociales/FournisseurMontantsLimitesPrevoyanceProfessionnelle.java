@@ -30,6 +30,8 @@
  */
 package org.impotch.calcul.assurancessociales;
 
+import org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuel;
+
 import java.math.BigDecimal;
 
 /**
@@ -39,6 +41,13 @@ import java.math.BigDecimal;
  * </ul>
  */
 public interface FournisseurMontantsLimitesPrevoyanceProfessionnelle {
+
+    public static FournisseurMontantsLimitesPrevoyanceProfessionnelle limitesLPP(ParametrageSuisseAnnuel parametrage) {
+        FournisseurMontantsLimitesLPP fournisseur = new FournisseurMontantsLimitesLPP();
+        fournisseur.setRenteAVSMensuelleMinimale(BigDecimal.valueOf(parametrage.renteMensuelleMinimum()));
+        return fournisseur;
+    }
+
     BigDecimal salaireMinimalAnnuel();
     BigDecimal salaireCoordonnéMinimalAnnuel();
 

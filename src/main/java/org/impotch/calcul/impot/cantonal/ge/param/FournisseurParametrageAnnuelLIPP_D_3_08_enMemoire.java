@@ -33,7 +33,9 @@ package org.impotch.calcul.impot.cantonal.ge.param;
 import org.impotch.bareme.BaremeParTranche;
 import org.impotch.calcul.impot.indexation.Indexateur;
 
+
 import static org.impotch.bareme.ConstructeurBareme.unBareme;
+import static org.impotch.util.TypeArrondi.CENTAINE_SUP;
 
 public class FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire implements FournisseurParametrageAnnuelLIPP_D_3_08 {
 
@@ -45,14 +47,27 @@ public class FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire implements Fourni
 
     @Override
     public ParametrageAnnuelLIPP_D_3_08_Revenu revenu(int annee) {
-        if (annee <= 2009) throw new IllegalStateException("La LIPP D 3 08 est entrée en vigueur le 1er janvier 2010 ! Impossible donc d’obtenir un paramétrage pour " + annee);
         return construireRevenu(annee);
     }
 
     private ParametrageAnnuelLIPP_D_3_08_Revenu construireRevenu(int annee) {
+        ParametrageDeductionFraisProfessionnels parametrageDeductionFraisProfessionnels = construireParametrageDeductionFraisProfessionnels(annee);
         int deductionDoubleActivite = construireDeductionDoubleActivite(annee);
         ParametrageDeductionSocialeRevenu deducRevenu = construireParametrageDeductionSocialeRevenu(annee);
-        return new ParametrageAnnuelLIPP_D_3_08(annee,deductionDoubleActivite,deducRevenu);
+        return new ParametrageAnnuelLIPP_D_3_08(annee,parametrageDeductionFraisProfessionnels,deductionDoubleActivite,deducRevenu);
+    }
+
+    private ParametrageDeductionFraisProfessionnels construireParametrageDeductionFraisProfessionnels(int annee) {
+        if (annee < 2001) throw new IllegalArgumentException("Le paramétrage pour l’année '" + annee + " n’existe pas !");
+        if (annee < 2010) {
+            int plancher = indexateur.indexer(2001,500,annee,CENTAINE_SUP);
+            int plafond = indexateur.indexer(2001,1500,annee,CENTAINE_SUP);
+            return new ParametrageDeductionFraisProfessionnels("3 %",plancher,plafond);
+        }
+        // Source LIPP art. 29 al. 2 : https://silgeneve.ch/legis/program/books/RSG/htm/rsg_d3_08.htm
+        int plancher = indexateur.indexer(2009,600,annee);
+        int plafond = indexateur.indexer(2009,1700,annee);
+        return new ParametrageDeductionFraisProfessionnels("3 %",plancher,plafond);
     }
 
     private int construireDeductionDoubleActivite(int annee) {
@@ -109,5 +124,6 @@ public class FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire implements Fourni
         BaremeParTranche baremeRentierAVSAISeul = baremeRentierAVSAISeul(annee);
         return new ParametrageDeductionSocialeRevenu(montantDeductionSocialeParCharge,baremeRentierAVSAISeul);
     }
+
 
 }

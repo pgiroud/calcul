@@ -39,14 +39,36 @@ import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_
 public class FournisseurParametrageAnnuelLIPP_D_3_08Test {
 
     @Test
+    public void tauxFraisProfessionnels2018() {
+        String taux = CTX_TST_CH_GE.getParametrageLIPP().revenu(2018).tauxDeductionFraisProfessionnels();
+        assertThat(taux).isEqualTo("3 %");
+    }
+
+    @Test
+    public void plancherFraisProfessionnels2018() {
+        int montant = CTX_TST_CH_GE.getParametrageLIPP().revenu(2018).plancherDeductionFraisProfessionnels();
+        assertThat(montant).isEqualTo(599);
+    }
+
+    @Test
+    public void plafondFraisProfessionnels2018() {
+        int montant = CTX_TST_CH_GE.getParametrageLIPP().revenu(2018).plafondDeductionFraisProfessionnels();
+        assertThat(montant).isEqualTo(1697);
+    }
+
+    @Test
     public void deductionSocialeRevenuCharges2010() {
         int montant = CTX_TST_CH_GE.getParametrageLIPP().revenu(2010).deductionSocialeRevenuParChargeDeFamille();
         assertThat(montant).isEqualTo(9000);
-    }    @Test
+    }
+
+    @Test
     public void deductionSocialeRevenuCharges2011() {
         int montant = CTX_TST_CH_GE.getParametrageLIPP().revenu(2011).deductionSocialeRevenuParChargeDeFamille();
         assertThat(montant).isEqualTo(10000);
-    }    @Test
+    }
+
+    @Test
     public void deductionSocialeRevenuCharges2013() {
         int montant = CTX_TST_CH_GE.getParametrageLIPP().revenu(2013).deductionSocialeRevenuParChargeDeFamille();
         assertThat(montant).isEqualTo(10078);

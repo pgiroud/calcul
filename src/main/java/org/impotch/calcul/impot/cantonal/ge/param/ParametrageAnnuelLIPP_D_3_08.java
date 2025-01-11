@@ -36,12 +36,15 @@ public class ParametrageAnnuelLIPP_D_3_08 implements ParametrageAnnuelLIPP_D_3_0
 
     private final int annee;
     private final int deductionDoubleActivite;
+    private final ParametrageDeductionFraisProfessionnels deductionFraisProfessionnels;
     private final ParametrageDeductionSocialeRevenu deducSocialesRevenu;
 
     public ParametrageAnnuelLIPP_D_3_08(int annee,
+                                        ParametrageDeductionFraisProfessionnels deductionFraisProfessionnels,
                                         int deductionDoubleActivite,
                                         ParametrageDeductionSocialeRevenu deducSocialesRevenu) {
         this.annee = annee;
+        this.deductionFraisProfessionnels = deductionFraisProfessionnels;
         this.deductionDoubleActivite = deductionDoubleActivite;
         this.deducSocialesRevenu = deducSocialesRevenu;
     }
@@ -49,6 +52,21 @@ public class ParametrageAnnuelLIPP_D_3_08 implements ParametrageAnnuelLIPP_D_3_0
     @Override
     public int getAnnee() {
         return annee;
+    }
+
+    @Override
+    public String tauxDeductionFraisProfessionnels() {
+        return this.deductionFraisProfessionnels.taux();
+    }
+
+    @Override
+    public int plancherDeductionFraisProfessionnels() {
+        return this.deductionFraisProfessionnels.plancher();
+    }
+
+    @Override
+    public int plafondDeductionFraisProfessionnels() {
+        return this.deductionFraisProfessionnels.plafond();
     }
 
     @Override

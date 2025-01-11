@@ -50,6 +50,11 @@ public interface Indexateur {
         return montantIndexe.intValue();
     }
 
+    default int indexer(int periodeDebut, int montantBase,
+                        int annee, TypeArrondi typeArrondi) {
+        BigDecimal montantIndexe = indexer(periodeDebut,BigDecimal.valueOf(montantBase),annee,typeArrondi);
+        return montantIndexe.intValue();
+    }
 
     default BigDecimal indexer(int periodeDebut, BigDecimal montantBase,
                               int annee) {

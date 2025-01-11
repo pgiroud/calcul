@@ -31,5 +31,7 @@
 package org.impotch.calcul.impot.cantonal.ge.param;
 
 public interface FournisseurParametrageAnnuelLIPP_D_3_08 {
+
     ParametrageAnnuelLIPP_D_3_08_Revenu revenu(int annee);
+
 }
