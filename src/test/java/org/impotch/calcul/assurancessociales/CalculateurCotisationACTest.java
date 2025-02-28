@@ -30,63 +30,64 @@
  */
 package org.impotch.calcul.assurancessociales;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.calcul.assurancessociales.CalculateurCotisationAC.unCalculateur;
 
 
 public class CalculateurCotisationACTest {
-	
-	private BigDecimal calculPartSalariee(CalculateurCotisationAC calculateur, int montantDeterminant) {
-		return calculateur.calculPartSalarieeCotisationAssuranceChomage(montantDeterminant);
-	}
-	
+
+    private FournisseurRegleCalculCotisationsAssuranceSociale fournisseurRegle;
+
+    @BeforeEach
+    public void initialise() throws Exception {
+        fournisseurRegle = ContexteTestAssurancesSociales.CTX_TST_AS.fournisseurRegles();
+    }
+
+
+    private Function<BigDecimal,BigDecimal> regle(int annee) {
+        return fournisseurRegle.reglePartSalarie(annee,TypeAssuranceSociale.AC).orElseThrow();
+    }
+
 	@Test
 	public void calculCotisationAC2010() {
-		CalculateurCotisationAC calculateur = unCalculateur(2010,126000,"2 %")
-                .construire();
-
-        assertThat(calculPartSalariee(calculateur,10)).isEqualByComparingTo("0.1");
-        assertThat(calculPartSalariee(calculateur,120000)).isEqualByComparingTo("1200");
-        assertThat(calculPartSalariee(calculateur,126000)).isEqualByComparingTo("1260");
-        assertThat(calculPartSalariee(calculateur,130000)).isEqualByComparingTo("1260");
-        assertThat(calculPartSalariee(calculateur,500000)).isEqualByComparingTo("1260");
+        Function<BigDecimal,BigDecimal> regleCalcul = regle(2010);
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(10))).isEqualByComparingTo("0.1");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(120000))).isEqualByComparingTo("1200");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(126000))).isEqualByComparingTo("1260");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(130000))).isEqualByComparingTo("1260");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(500000))).isEqualByComparingTo("1260");
 	}
 	
 	@Test
 	public void calculCotisationAC2011() {
-		CalculateurCotisationAC calculateur = unCalculateur(2011,126000,"2.2 %")
-                .tauxParticipationHautRevenu("1 %")
-                .ratioEntreMontantAnnuelMaximumEtLimiteHautRevenu("2.5")
-                .construire();
-
-        assertThat(calculPartSalariee(calculateur,10)).isEqualByComparingTo("0.1");
-        assertThat(calculPartSalariee(calculateur,120000)).isEqualByComparingTo("1320");
-        assertThat(calculPartSalariee(calculateur,126000)).isEqualByComparingTo("1386");
-        assertThat(calculPartSalariee(calculateur,130000)).isEqualByComparingTo("1406");
-        assertThat(calculPartSalariee(calculateur,315000)).isEqualByComparingTo("2331");
-        assertThat(calculPartSalariee(calculateur,500000)).isEqualByComparingTo("2331");
+        Function<BigDecimal,BigDecimal> regleCalcul = regle(2011);
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(10))).isEqualByComparingTo("0.1");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(120000))).isEqualByComparingTo("1320");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(126000))).isEqualByComparingTo("1386");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(130000))).isEqualByComparingTo("1406");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(315000))).isEqualByComparingTo("2331");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(500000))).isEqualByComparingTo("2331");
 	}
 
     @Test
     public void calculAC2014() {
-        CalculateurCotisationAC calculateur = unCalculateur(2014,126000,"2.2 %")
-               .tauxParticipationHautRevenu("1 %")
-                .construire();
-        assertThat(calculPartSalariee(calculateur,10)).isEqualByComparingTo("0.1");
-        assertThat(calculPartSalariee(calculateur,120000)).isEqualByComparingTo("1320");
-        assertThat(calculPartSalariee(calculateur,126000)).isEqualByComparingTo("1386");
-        assertThat(calculPartSalariee(calculateur,500000)).isEqualByComparingTo("3256");
+        Function<BigDecimal,BigDecimal> regleCalcul = regle(2014);
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(10))).isEqualByComparingTo("0.1");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(120000))).isEqualByComparingTo("1320");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(126000))).isEqualByComparingTo("1386");
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(500000))).isEqualByComparingTo("3256");
     }
 
     @Test
     public void calculAC2023() {
-        CalculateurCotisationAC calculateur = unCalculateur(2023,148200,"2.2 %")
-                .construire();
+        Function<BigDecimal,BigDecimal> regleCalcul = regle(2023);
+        assertThat(regleCalcul.apply(BigDecimal.valueOf(160000))).isEqualByComparingTo("1630.20");
 
-        assertThat(calculPartSalariee(calculateur,160000)).isEqualByComparingTo("1630.20");
     }
 }

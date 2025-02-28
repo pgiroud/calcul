@@ -64,13 +64,4 @@ public interface FournisseurBaremeIFD {
     Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee);
     Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee);
 
-    /**
-     * Barèmes définis dans l'ordonnance sur l'impôt à la source (appendice 3)
-     * @param annee l'année durant laquelle est perçue la prestation
-     * @return le barème permettant de déterminer l'impôt du.
-     */
-    Optional<Bareme> getBaremeImpotSourcePrestationCapital(int annee);
-
-    Optional<Bareme> getBaremeImpotSourcePrestationCapitalCouple(int annee);
-
 }

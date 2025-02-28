@@ -39,7 +39,6 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
 
     private IFDPostNumerando postNumerando = new IFDPostNumerando();
     private IFDPraeNumerando praeNumerando = new IFDPraeNumerando();
-    private ISPrestationCapital prestationEnCapital = new ISPrestationCapital();
 
     @Override
     public Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee) {
@@ -62,20 +61,4 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
         return praeNumerando.famille(annee);
     }
 
-
-
-    /**
-     * Barèmes définis dans l'ordonnance sur l'impôt à la source (appendice 3)
-     * @param annee l'année durant laquelle est perçue la prestation
-     * @return le barème permettant de déterminer l'impôt du.
-     */
-    @Override
-    public Optional<Bareme> getBaremeImpotSourcePrestationCapital(int annee) {
-        return prestationEnCapital.personneSeule(annee);
-    }
-
-    @Override
-    public Optional<Bareme> getBaremeImpotSourcePrestationCapitalCouple(int annee) {
-        return prestationEnCapital.couple(annee);
-    }
 }

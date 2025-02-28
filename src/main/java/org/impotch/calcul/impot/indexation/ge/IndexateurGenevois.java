@@ -83,7 +83,6 @@ public class IndexateurGenevois implements Indexateur {
         if (2001 <= annee && annee <= 2009) {
             return indexateurQuadriennalLIPP5_D_3_16_2000.indexer(anneeDebut, montantBase,annee,arrondi);
         }
-
         if (annee < 2024) {
             return indexateurQuadriennalLIPP2009.indexer(anneeDebut, montantBase,annee,arrondi);
         } else {

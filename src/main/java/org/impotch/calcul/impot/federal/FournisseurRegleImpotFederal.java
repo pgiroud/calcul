@@ -34,8 +34,5 @@ import org.impotch.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestati
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 
 public interface FournisseurRegleImpotFederal {
-
 	ProducteurImpot getProducteurImpotsFederauxPP(int annee);
-
-	CalculateurImpotSourcePrestationCapitalIFD getCalculateurImpotSourcePrestationCapitalIFD(int annee);
 }

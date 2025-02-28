@@ -101,7 +101,7 @@ public class ConstructeurSituationFamiliale {
 
     public ConstructeurSituationFamiliale anneeNaissance(int annee) {
         if (null == enfantEnConstruction) throw new IllegalStateException();
-        enfantEnConstruction.anneeNaissance(annee - age);
+        enfantEnConstruction.anneeNaissance(annee);
         return this;
     }
 

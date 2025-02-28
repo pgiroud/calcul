@@ -31,7 +31,9 @@
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
+import org.impotch.util.TypeArrondi;
 
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 /**
  * Calcule la cotisation à l'assurance chômage. Le calcul est décrit dans la loi  
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -43,10 +45,24 @@ public interface CalculCotisationAssuranceChomage {
 	 * Calcule la cotisation à l'assurance chômage. Le montant retourné est la somme de la
 	 * part employeur et de la part employé.
 	 * @param montantDeterminant le salaire déterminant au sens de la législation sur l'AVS.
+	 * @param arrondi la méthode d’arrondi (en général, à l’unité près ou au vingtième près)
 	 * @return le montant de la cotisation
 	 */
-	BigDecimal calculCotisationAC(BigDecimal montantDeterminant);
+	BigDecimal calculCotisationAC(BigDecimal montantDeterminant, TypeArrondi arrondi);
 
+	/**
+	 * Calcule la cotisation à l'assurance chômage. Le montant retourné est la somme de la
+	 * part employeur et de la part employé.
+	 * @param montantDeterminant le salaire déterminant au sens de la législation sur l'AVS.
+	 * @return le montant de la cotisation arrondi aux 5 centimes près
+	 */
+	default BigDecimal calculCotisationAC(BigDecimal montantDeterminant) {
+		return calculCotisationAC(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+	}
+
+	default BigDecimal calculCotisationAC(long montantDeterminant, TypeArrondi arrondi) {
+		return calculCotisationAC(BigDecimal.valueOf(montantDeterminant), arrondi);
+	}
 	default BigDecimal calculCotisationAC(long montantDeterminant) {
 		return calculCotisationAC(BigDecimal.valueOf(montantDeterminant));
 	}
@@ -54,11 +70,28 @@ public interface CalculCotisationAssuranceChomage {
 	/**
 	 * Calcule la part employé de la cotisation à l'assurance chômage.
 	 * @param montantDeterminant le salaire déterminant au sens de la législation sur l'AVS.
+	 * @param arrondi la méthode d’arrondi (en général, à l’unité près ou au vingtième près)
 	 * @return la part due par le salarié de la cotisation à l'assurance chômage.
 	 */
-	BigDecimal calculPartSalarieeCotisationAssuranceChomage(BigDecimal montantDeterminant);
+	BigDecimal calculPartSalarieeCotisationAssuranceChomage(BigDecimal montantDeterminant, TypeArrondi arrondi);
+
+	/**
+	 * Calcule la part employé de la cotisation à l'assurance chômage.
+	 * @param montantDeterminant le salaire déterminant au sens de la législation sur lb'AVS.
+	 * @return la part due par le salarié de la cotisation à l'assurance chômage arrondi aux 5 centimes les plus proches
+	 */
+	default BigDecimal calculPartSalarieeCotisationAssuranceChomage(BigDecimal montantDeterminant) {
+		return calculPartSalarieeCotisationAssuranceChomage(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+	}
+
+	default BigDecimal calculPartSalarieeCotisationAssuranceChomage(long montantDeterminant, TypeArrondi arrondi) {
+		return calculPartSalarieeCotisationAssuranceChomage(BigDecimal.valueOf(montantDeterminant), arrondi);
+	}
+
 
 	default BigDecimal calculPartSalarieeCotisationAssuranceChomage(long montantDeterminant) {
 		return calculPartSalarieeCotisationAssuranceChomage(BigDecimal.valueOf(montantDeterminant));
 	}
+
+
 }

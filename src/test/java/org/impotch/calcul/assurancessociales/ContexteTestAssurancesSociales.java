@@ -31,17 +31,27 @@
 package org.impotch.calcul.assurancessociales;
 
 import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageAnnuelAssurancesSocialesGenevoises;
+import org.impotch.calcul.assurancessociales.param.FournisseurParametrageSuisseAnnuel;
 
 public enum ContexteTestAssurancesSociales {
     CTX_TST_AS;
 
+    // TODO Old À supprimer
     private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculAssuranceSociale;
+
+    private FournisseurRegleCalculCotisationsAssuranceSociale fournisseurRegle;
 
     ContexteTestAssurancesSociales() {
         fournisseurRegleCalculAssuranceSociale = new Fournisseur(FournisseurParametrageAnnuelAssurancesSocialesGenevoises.enMemoire());
     }
 
+    @Deprecated
     public FournisseurRegleCalculAssuranceSociale getFournisseurRegleCalculAssuranceSociale() {
         return fournisseurRegleCalculAssuranceSociale;
     }
+
+    public FournisseurRegleCalculCotisationsAssuranceSociale fournisseurRegles() {
+        return new FournisseurRegleCHCalculCotisationsAssuranceSociale(FournisseurParametrageSuisseAnnuel.enMemoire());
+    }
+
 }

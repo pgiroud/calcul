@@ -31,8 +31,32 @@
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
+import org.impotch.util.TypeArrondi;
+
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
 public interface CalculCotisationsAssuranceAccidentsNonProfessionnels {
-	BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(BigDecimal tauxCotisationAssuranceAccidentsNonProfessionnels, BigDecimal montantDeterminant);
+	/**
+	 * @param tauxCotisationAssuranceAccidentsNonProfessionnels
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @param arrondi la méthode d’arrondi (en général, à l’unité près ou au vingtième près)
+	 * @return la part salariée de la cotisation à l'assurance contre les accidents non professionnels
+	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(java.math.BigDecimal, java.math.BigDecimal)
+	 */
+	BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(
+			BigDecimal tauxCotisationAssuranceAccidentsNonProfessionnels
+			, BigDecimal montantDeterminant, TypeArrondi arrondi);
+
+
+	/**
+	 * @param tauxCotisationAssuranceAccidentsNonProfessionnels
+	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
+	 * @return la part salariée de la cotisation à l'assurance contre les accidents non professionnels arrondi aux cin centimes les plus proches.
+	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(java.math.BigDecimal, java.math.BigDecimal)
+	 */	default BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(
+			BigDecimal tauxCotisationAssuranceAccidentsNonProfessionnels, BigDecimal montantDeterminant) {
+		return calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(tauxCotisationAssuranceAccidentsNonProfessionnels
+				, montantDeterminant, CINQ_CENTIEMES_LES_PLUS_PROCHES);
+	}
 	
 }

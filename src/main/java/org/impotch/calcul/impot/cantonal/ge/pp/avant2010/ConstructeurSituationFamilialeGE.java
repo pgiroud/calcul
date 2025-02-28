@@ -48,17 +48,29 @@ public class ConstructeurSituationFamilialeGE {
         return new ConstructeurSituationFamilialeGE(couple());
     }
 
+    public static ConstructeurSituationFamilialeGE unConjointDeFonctionnaireInternational() {
+        return new ConstructeurSituationFamilialeGE(true, couple());
+    }
+
     private ConstructeurSituationFamiliale constructeurSituationFamiliale;
     private boolean coupleDomicilieGE;
-    private boolean conjointFonctionnaireInternational;
+    private final boolean conjointFonctionnaireInternational;
 
     public ConstructeurSituationFamilialeGE(ConstructeurSituationFamiliale constructeurSituationFamiliale) {
         this.constructeurSituationFamiliale = constructeurSituationFamiliale;
+        conjointFonctionnaireInternational = false;
     }
 
+    public ConstructeurSituationFamilialeGE(boolean conjointFonctionnaireInternational, ConstructeurSituationFamiliale constructeurSituationFamiliale) {
+        this.conjointFonctionnaireInternational = conjointFonctionnaireInternational;
+        this.constructeurSituationFamiliale = constructeurSituationFamiliale;
+    }
 
     public ConstructeurSituationFamilialeGE enfant() {
-        constructeurSituationFamiliale.enfant();
+        ConstructeurSituationFamiliale cons = constructeurSituationFamiliale.enfant();
+        if (this.conjointFonctionnaireInternational) {
+            cons.demiPart(Souverainete.CH_CANTONALE_GE);
+        }
         return this;
     }
 
@@ -104,11 +116,6 @@ public class ConstructeurSituationFamilialeGE {
 
     public ConstructeurSituationFamilialeGE domicilieGE() {
         coupleDomicilieGE = true;
-        return this;
-    }
-
-    public ConstructeurSituationFamilialeGE conjointFonctionnaireInternational() {
-        this.conjointFonctionnaireInternational = true;
         return this;
     }
 

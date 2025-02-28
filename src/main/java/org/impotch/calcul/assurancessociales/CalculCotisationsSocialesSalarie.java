@@ -33,6 +33,7 @@ package org.impotch.calcul.assurancessociales;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import org.impotch.util.TypeArrondi;
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.calcul.assurancessociales.param.ParametrageParticipationHautRevenuAC;
 import org.impotch.calcul.assurancessociales.param.ParametrageSuisseAnnuel;
@@ -40,7 +41,6 @@ import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.StringUtil;
 
 import static java.math.BigDecimal.ZERO;
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 import static org.impotch.calcul.assurancessociales.CalculateurCotisationAC.unCalculateur;
 /**
  * Calcule les cotisations sociales des salariés. Les montants retournés sont ceux 
@@ -116,15 +116,18 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 
     /**************************************************/
     /******************* Méthodes *********************/
-    /**************************************************/
+
+	/**************************************************/
+
+
 
 	//-------- Implémentation de l'interface CalculCotisationsAssuranceMaterniteAdoption
 
 	@Override
-	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant) {
+	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		if (BigDecimalUtil.isStrictementPositif(this.tauxAssuranceMaterniteAdoption)) {
 			BigDecimal cotisation = montantDeterminant.multiply(tauxAssuranceMaterniteAdoption);
-			return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisation);
+			return arrondi.arrondirMontant(cotisation);
 		} else {
 			return ZERO;
 		}
@@ -133,40 +136,28 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 
 	//------ Implémentation de l'interface CalculPartSalarieeCotisationAvsAiApg
 
-	/* (non-Javadoc)
-	 * @see org.impotch.calcul.assurancessociales.CalculPartSalarieeCotisationAvsAiApg#calculPartSalarieeCotisationAvsAiApg(java.math.BigDecimal)
-	 */
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAvsAiApg(
-			BigDecimal montantDeterminant) {
-		return calculateurAvsAiApg.calculPartSalarieeCotisationAvsAiApg(montantDeterminant);
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAvsAiApg.calculPartSalarieeCotisationAvsAiApg(montantDeterminant,arrondi);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.impotch.calcul.assurancessociales.CalculPartSalarieeCotisationAvsAiApg#calculPartSalarieeCotisationAvs(java.math.BigDecimal)
-	 */
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAvs(
-			BigDecimal montantDeterminant) {
-		return calculateurAvsAiApg.calculPartSalarieeCotisationAvs(montantDeterminant);
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAvsAiApg.calculPartSalarieeCotisationAvs(montantDeterminant, arrondi);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.impotch.calcul.assurancessociales.CalculPartSalarieeCotisationAvsAiApg#calculPartSalarieeCotisationAi(java.math.BigDecimal)
-	 */
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAi(
-			BigDecimal montantDeterminant) {
-		return calculateurAvsAiApg.calculPartSalarieeCotisationAi(montantDeterminant);
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAvsAiApg.calculPartSalarieeCotisationAi(montantDeterminant, arrondi);
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ge.afc.calcul.assurancessociales.CalculPartSalarieeCotisationAvsAiApg#calculPartSalarieeCotisationApg(java.math.BigDecimal)
-	 */
 	@Override
 	public BigDecimal calculPartSalarieeCotisationApg(
-			BigDecimal montantDeterminant) {
-		return calculateurAvsAiApg.calculPartSalarieeCotisationApg(montantDeterminant);
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAvsAiApg.calculPartSalarieeCotisationApg(montantDeterminant, arrondi);
 	}
 
 	//------ Implémentation de l'interface CalculCotisationAvsAiApg
@@ -176,8 +167,8 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	 * @return  La somme des cotisations à l'assurance vieillesse et survivant, à l'assurance invalidité et à l'assurance pour perte de gain.
 	 * @see CalculCotisationAvsAiApgSalarie#calculCotisationAvsAiApg(java.math.BigDecimal)
 	 */
-	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant) {
-		return calculateurAvsAiApg.calculCotisationAvsAiApg(montantDeterminant);
+	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAvsAiApg.calculCotisationAvsAiApg(montantDeterminant, arrondi);
 	}
 
 	/**
@@ -185,8 +176,8 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	 * @return le montant de la cotisatin à l'assurance vieillesse et survivant
 	 * @see CalculCotisationAvsAiApgSalarie#calculCotisationAvs(java.math.BigDecimal)
 	 */
-	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant) {
-		return calculateurAvsAiApg.calculCotisationAvs(montantDeterminant);
+	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAvsAiApg.calculCotisationAvs(montantDeterminant, arrondi);
 	}
 
 	/**
@@ -194,8 +185,8 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	 * @return le montant de la cotisatin à l'assurance invalidité.
 	 * @see CalculCotisationAvsAiApgSalarie#calculCotisationAi(java.math.BigDecimal)
 	 */
-	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant) {
-		return calculateurAvsAiApg.calculCotisationAi(montantDeterminant);
+	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAvsAiApg.calculCotisationAi(montantDeterminant, arrondi);
 	}
 
 	/**
@@ -203,15 +194,15 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	 * @return le montant de la cotisatin à l'assurance perte de gain
 	 * @see CalculCotisationAvsAiApgSalarie#calculCotisationApg(java.math.BigDecimal)
 	 */
-	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant) {
-		return calculateurAvsAiApg.calculCotisationApg(montantDeterminant);
+	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAvsAiApg.calculCotisationApg(montantDeterminant, arrondi);
 	}
 
 	//------- Implémentation de l'interface CalculCotisationAssuranceChomage ----------
 	
 	@Override
-	public BigDecimal calculCotisationAC(BigDecimal montantDeterminant) {
-		return calculateurAC.calculCotisationAC(montantDeterminant);
+	public BigDecimal calculCotisationAC(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAC.calculCotisationAC(montantDeterminant,arrondi);
 	}
 	
 	/* (non-Javadoc)
@@ -219,17 +210,19 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	 */
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAssuranceChomage(
-			BigDecimal montantDeterminant) {
-		return calculateurAC.calculPartSalarieeCotisationAssuranceChomage(montantDeterminant);
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurAC.calculPartSalarieeCotisationAssuranceChomage(montantDeterminant,arrondi);
 	}
 
 	//------- Implémentation de l'interface CalculCotisationsAssuranceAccidentsNonProfessionnels
 	
 	@Override
-	public BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(BigDecimal tauxCotisationAssuranceAccidentsNonProfessionnels, BigDecimal montantDeterminant) {
+	public BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(
+			BigDecimal tauxCotisationAssuranceAccidentsNonProfessionnels
+			, BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		BigDecimal plafond = montantAnnuelMaximumGainAssure.min(montantDeterminant);
 		BigDecimal cotisations =  plafond.multiply(tauxCotisationAssuranceAccidentsNonProfessionnels);
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisations);
+		return arrondi.arrondirMontant(cotisations);
 	}
 
     /**************************************************/

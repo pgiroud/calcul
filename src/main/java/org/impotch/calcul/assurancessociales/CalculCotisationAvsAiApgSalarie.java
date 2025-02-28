@@ -33,8 +33,8 @@ package org.impotch.calcul.assurancessociales;
 import java.math.BigDecimal;
 
 import org.impotch.calcul.ReglePeriodique;
+import org.impotch.util.TypeArrondi;
 
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 import static org.impotch.util.BigDecimalUtil.parse;
 
 /**
@@ -103,26 +103,26 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	//------ Implémentation de l'interface CalculCotisationAvsAiApg
 	
 	@Override
-	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant) {
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxAI
+	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(tauxAI
 				.multiply(montantDeterminant));
 	}
 
 	@Override
-	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant) {
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxAPG
+	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(tauxAPG
 				.multiply(montantDeterminant));
 	}
 
 	@Override
-	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant) {
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxAVS
+	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(tauxAVS
 				.multiply(montantDeterminant));
 	}
 
 	@Override
-	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant) {
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(tauxTotal
+	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(tauxTotal
 				.multiply(montantDeterminant));
 	}
 
@@ -133,8 +133,8 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	 */
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAi(
-			BigDecimal montantDeterminant) {
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxAI
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(demiTauxAI
 				.multiply(montantDeterminant));
 	}
 
@@ -143,8 +143,8 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	 */
 	@Override
 	public BigDecimal calculPartSalarieeCotisationApg(
-			BigDecimal montantDeterminant) {
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxAPG
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(demiTauxAPG
 				.multiply(montantDeterminant));
 	}
 
@@ -153,8 +153,8 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	 */
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAvs(
-			BigDecimal montantDeterminant) {
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxAVS
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(demiTauxAVS
 				.multiply(montantDeterminant));
 	}
 
@@ -163,8 +163,8 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	 */
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAvsAiApg(
-			BigDecimal montantDeterminant) {
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(demiTauxTotal
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(demiTauxTotal
 				.multiply(montantDeterminant));
 	}
 

@@ -34,9 +34,10 @@ import java.math.BigDecimal;
 
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.calcul.assurancessociales.*;
+import org.impotch.util.TypeArrondi;
 
 import static org.impotch.util.BigDecimalUtil.parse;
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+
 /**
  * Cette classe permet de calculer toutes les cotisations dues par le salarié pour les salaires perçus
  * sur le cantonal de Genève.
@@ -114,123 +115,73 @@ public class CalculCotisationsSocialesSalarieGE extends ReglePeriodique implemen
 	//-------- Implémentation de l'interface CalculCotisationsAssuranceMaterniteAdoption
 	
 	@Override
-	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant) {
+	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		BigDecimal cotisation = montantDeterminant.multiply(taux);
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(cotisation);
+		return arrondi.arrondirMontant(cotisation);
 	}
 
 	//------ Implémentation de l'interface CalculCotisationsAssuranceAccidentsNonProfessionnels
-	/**
-	 * @param tauxCotisationAssuranceAccidentsNonProfessionnels
-	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
-	 * @return la part salariée de la cotisation à l'assurance contre les accidents non professionnels
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(java.math.BigDecimal, java.math.BigDecimal)
-	 */
+
 	public BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(
 			BigDecimal tauxCotisationAssuranceAccidentsNonProfessionnels,
-			BigDecimal montantDeterminant) {
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		return calculateurSuisse.calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(
 				tauxCotisationAssuranceAccidentsNonProfessionnels,
-				montantDeterminant);
+				montantDeterminant,arrondi);
 	}
 
 	//----- Implémentation de l'interface CalculCotisationAssuranceChomage
 	
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAssuranceChomage(
-			BigDecimal montantDeterminant) {
-		return calculateurSuisse.calculPartSalarieeCotisationAssuranceChomage(montantDeterminant);
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurSuisse.calculPartSalarieeCotisationAssuranceChomage(montantDeterminant,arrondi);
 	}
 
-	/**
-	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
-	 * @return le montant de la cotisation à l'assurance contre le chômage
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationAC(java.math.BigDecimal)
-	 */
-	public BigDecimal calculCotisationAC(BigDecimal montantDeterminant) {
-		return calculateurSuisse.calculCotisationAC(montantDeterminant);
+	public BigDecimal calculCotisationAC(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurSuisse.calculCotisationAC(montantDeterminant,arrondi);
 	}
 
 	//------ Implémentation de l'interface CalculCotisationAvsAiApg
-	
-	/**
-	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
-	 * @return le montant de la cotisatin à l'assurance invalidité.
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationAi(java.math.BigDecimal)
-	 */
-	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant) {
-		return calculateurSuisse.calculCotisationAi(montantDeterminant);
+
+	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurSuisse.calculCotisationAi(montantDeterminant,arrondi);
 	}
 
-	/**
-	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
-	 * @return le montant de la cotisatin à l'assurance perte de gain
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationApg(java.math.BigDecimal)
-	 */
-	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant) {
-		return calculateurSuisse.calculCotisationApg(montantDeterminant);
+	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurSuisse.calculCotisationApg(montantDeterminant, arrondi);
 	}
 
-	/**
-	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
-	 * @return le montant de la cotisatin à l'assurance vieillesse et survivant
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationAvs(java.math.BigDecimal)
-	 */
-	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant) {
-		return calculateurSuisse.calculCotisationAvs(montantDeterminant);
+	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurSuisse.calculCotisationAvs(montantDeterminant, arrondi);
 	}
 
-	/**
-	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
-	 * @return La somme des cotisations à l'assurance vieillesse et survivant, à l'assurance invalidité et à l'assurance pour perte de gain.
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculCotisationAvsAiApg(java.math.BigDecimal)
-	 */
-	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant) {
-		return calculateurSuisse.calculCotisationAvsAiApg(montantDeterminant);
+	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return calculateurSuisse.calculCotisationAvsAiApg(montantDeterminant, arrondi);
 	}
 
-	/**
-	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
-	 * @return  La part due par le salarié de la cotisation à l'assurances invalidité.
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAi(java.math.BigDecimal)
-	 */
 	public BigDecimal calculPartSalarieeCotisationAi(
-			BigDecimal montantDeterminant) {
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		return calculateurSuisse
-				.calculPartSalarieeCotisationAi(montantDeterminant);
+				.calculPartSalarieeCotisationAi(montantDeterminant, arrondi);
 	}
 
-	/**
-	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
-	 * @return La part due par le salarié de la cotisation aux assurances contre la perte de gain.
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationApg(java.math.BigDecimal)
-	 */
 	public BigDecimal calculPartSalarieeCotisationApg(
-			BigDecimal montantDeterminant) {
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		return calculateurSuisse
-				.calculPartSalarieeCotisationApg(montantDeterminant);
+				.calculPartSalarieeCotisationApg(montantDeterminant, arrondi);
 	}
 
-	/**
-	 * @param montantDeterminant Montant déterminant sur lequel sera calculé la cotisation
-	 * @return La part due par le salarié de la cotisation aux assurances vieillesse et survivant
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAvs(java.math.BigDecimal)
-	 */
 	public BigDecimal calculPartSalarieeCotisationAvs(
-			BigDecimal montantDeterminant) {
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		return calculateurSuisse
-				.calculPartSalarieeCotisationAvs(montantDeterminant);
+				.calculPartSalarieeCotisationAvs(montantDeterminant, arrondi);
 	}
 
-	/**
-	 * @param montantDeterminant  Montant déterminant sur lequel sera calculé la cotisation
-	 * @return La part due par le salarié des cotisations aux assurances vieillesse et survivant, invalidité et perte de gain.
-	 * @see org.impotch.calcul.assurancessociales.CalculCotisationsSocialesSalarie#calculPartSalarieeCotisationAvsAiApg(java.math.BigDecimal)
-	 */
 	public BigDecimal calculPartSalarieeCotisationAvsAiApg(
-			BigDecimal montantDeterminant) {
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		return calculateurSuisse
-				.calculPartSalarieeCotisationAvsAiApg(montantDeterminant);
+				.calculPartSalarieeCotisationAvsAiApg(montantDeterminant, arrondi);
 	}
 
 	

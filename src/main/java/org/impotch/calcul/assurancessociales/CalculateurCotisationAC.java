@@ -35,6 +35,7 @@ import java.math.BigDecimal;
 import org.impotch.bareme.Bareme;
 import org.impotch.bareme.ConstructeurBareme;
 import org.impotch.calcul.ReglePeriodique;
+import org.impotch.util.TypeArrondi;
 
 import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
 import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
@@ -63,14 +64,14 @@ public class CalculateurCotisationAC extends ReglePeriodique implements
 	
 	
 	@Override
-	public BigDecimal calculCotisationAC(BigDecimal montantDeterminant) {
-		return bareme.calcul(montantDeterminant);
+	public BigDecimal calculCotisationAC(BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(bareme.calcul(montantDeterminant));
 	}
 
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAssuranceChomage(
-			BigDecimal montantDeterminant) {
-		return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(calculCotisationAC(montantDeterminant).divide(BigDecimal.valueOf(2)));
+			BigDecimal montantDeterminant, TypeArrondi arrondi) {
+		return arrondi.arrondirMontant(calculCotisationAC(montantDeterminant, arrondi).divide(BigDecimal.valueOf(2)));
 	}
 
 	public static class ConstructeurCalculateurCotisationAC {

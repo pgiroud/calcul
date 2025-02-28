@@ -30,6 +30,7 @@
  */
 package org.impotch.calcul.assurancessociales;
 import java.math.BigDecimal;
+import java.util.function.Function;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,33 +39,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.calcul.assurancessociales.ContexteTestAssurancesSociales.CTX_TST_AS;
 
 public class CalculCotisationAvsAiApgSalarie2023Test {
-    private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale = CTX_TST_AS.getFournisseurRegleCalculAssuranceSociale();
 
-    private CalculCotisationsSocialesSalarie calculateur;
+    private static final int ANNEE = 2023;
+
+    private FournisseurRegleCalculCotisationsAssuranceSociale fournisseurRegle;
 
     @BeforeEach
     public void initialise() {
-        calculateur = fournisseurRegleCalculCotisationAssuranceSociale.getCalculateurCotisationsSocialesSalarie(2023);
+        fournisseurRegle = ContexteTestAssurancesSociales.CTX_TST_AS.fournisseurRegles();
+    }
+
+    private Function<BigDecimal,BigDecimal> regle(TypeAssuranceSociale type) {
+        return fournisseurRegle.reglePartSalarie(ANNEE,type).orElseThrow();
     }
 
     @Test
     public void calculCotisationAi() {
-        assertThat(calculateur.calculPartSalarieeCotisationAi(BigDecimal.valueOf(100000))).isEqualByComparingTo(BigDecimal.valueOf(700));
+        assertThat(regle(TypeAssuranceSociale.AI).apply(BigDecimal.valueOf(100000))).isEqualByComparingTo(BigDecimal.valueOf(700));
     }
 
     @Test
     public void calculCotisationApg() {
-        assertThat(calculateur.calculPartSalarieeCotisationApg(BigDecimal.valueOf(100000))).isEqualByComparingTo(BigDecimal.valueOf(250));
+        assertThat(regle(TypeAssuranceSociale.APG).apply(BigDecimal.valueOf(100000))).isEqualByComparingTo(BigDecimal.valueOf(250));
     }
 
     @Test
     public void calculCotisationAvs() {
-        assertThat(calculateur.calculPartSalarieeCotisationAvs(BigDecimal.valueOf(100000))).isEqualByComparingTo(BigDecimal.valueOf(4350));
+        assertThat(regle(TypeAssuranceSociale.AVS).apply(BigDecimal.valueOf(100000))).isEqualByComparingTo(BigDecimal.valueOf(4350));
     }
 
     @Test
     public void calculCotisationAvsAiApg() {
-        assertThat(calculateur.calculPartSalarieeCotisationAvsAiApg(BigDecimal.valueOf(100000))).isEqualByComparingTo(BigDecimal.valueOf(5300));
+        assertThat(regle(TypeAssuranceSociale.AVS_AI_APG).apply(BigDecimal.valueOf(100000))).isEqualByComparingTo(BigDecimal.valueOf(5300));
     }
 
 }

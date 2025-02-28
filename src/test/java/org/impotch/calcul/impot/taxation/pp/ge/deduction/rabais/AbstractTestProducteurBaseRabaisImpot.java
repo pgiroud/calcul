@@ -44,6 +44,7 @@ import org.impotch.calcul.assurancessociales.Fournisseur;
 
 import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE.unePersonneSeule;
 import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE.unCouple;
+import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurSituationFamilialeGE.unConjointDeFonctionnaireInternational;
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
@@ -182,7 +183,7 @@ class AbstractTestProducteurBaseRabaisImpot {
 	 */
 	public SituationFamilialeGE creerCoupleDontUnFonctionnaireInternational(
 			int nbreEnfant, boolean auMoinsUnPetit, int periodeFiscale) {
-		ConstructeurSituationFamilialeGE constructeur = unCouple().conjointFonctionnaireInternational();
+		ConstructeurSituationFamilialeGE constructeur = unConjointDeFonctionnaireInternational();
 		if (auMoinsUnPetit) {
 			constructeur.enfant().demiPart(Souverainete.CH_CANTONALE_GE).age(6).aFin(periodeFiscale);
 			IntStream.rangeClosed(1,nbreEnfant-1).forEach(

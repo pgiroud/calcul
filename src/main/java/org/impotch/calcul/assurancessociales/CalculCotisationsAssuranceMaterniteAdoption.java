@@ -31,6 +31,9 @@
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
+import org.impotch.util.TypeArrondi;
+
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
 /**
  * Calcule les cotisations pour l'assurance maternité et adoption. Ces assurances
@@ -47,8 +50,19 @@ public interface CalculCotisationsAssuranceMaterniteAdoption {
 	/**
 	 * Calcule la part due par le salarié (en général la moitié des cotisations globales. L'autre moitié étant réglée par l'employeur) de
 	 * des cotisations à l'assurance maternité et adoption.
+	 * @param montantDeterminant le salaire déterminant au sens de la législation sur l'AVS.
+	 * @param arrondi la méthode d’arrondi (en général, à l’unité près ou au vingtième près)
+	 * @return la part due par le salarié de la cotisation à l'assurance maternité adoption.
+	 */
+	BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant, TypeArrondi arrondi);
+
+	/**
+	 * Calcule la part due par le salarié (en général la moitié des cotisations globales. L'autre moitié étant réglée par l'employeur) de
+	 * des cotisations à l'assurance maternité et adoption.
 	 * @param montantDeterminant le salaire déterminant au sens de la législation sur l'AVS. 
 	 * @return la part due par le salarié de la cotisation à l'assurance maternité adoption. 
 	 */
-	BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant);
+	default BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant) {
+		return calculPartSalarieeAssuranceMaterniteAdoption(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+	}
 }

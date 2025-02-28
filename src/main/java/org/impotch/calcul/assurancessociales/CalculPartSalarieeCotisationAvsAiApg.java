@@ -31,15 +31,33 @@
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
+import org.impotch.util.TypeArrondi;
+
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
 public interface CalculPartSalarieeCotisationAvsAiApg {
 	
-    BigDecimal calculPartSalarieeCotisationAvsAiApg(BigDecimal montantDeterminant);
+    BigDecimal calculPartSalarieeCotisationAvsAiApg(BigDecimal montantDeterminant, TypeArrondi arrondi);
 
-    BigDecimal calculPartSalarieeCotisationAvs(BigDecimal montantDeterminant);
+    default BigDecimal calculPartSalarieeCotisationAvsAiApg(BigDecimal montantDeterminant) {
+        return calculPartSalarieeCotisationAvsAiApg(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+    }
 
-    BigDecimal calculPartSalarieeCotisationAi(BigDecimal montantDeterminant);
+    BigDecimal calculPartSalarieeCotisationAvs(BigDecimal montantDeterminant, TypeArrondi arrondi);
 
-    BigDecimal calculPartSalarieeCotisationApg(BigDecimal montantDeterminant);
+    default BigDecimal calculPartSalarieeCotisationAvs(BigDecimal montantDeterminant) {
+        return calculPartSalarieeCotisationAvs(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+    }
 
+    BigDecimal calculPartSalarieeCotisationAi(BigDecimal montantDeterminant, TypeArrondi arrondi);
+
+    default BigDecimal calculPartSalarieeCotisationAi(BigDecimal montantDeterminant) {
+        return calculPartSalarieeCotisationAi(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+    }
+
+    BigDecimal calculPartSalarieeCotisationApg(BigDecimal montantDeterminant, TypeArrondi arrondi);
+
+    default BigDecimal calculPartSalarieeCotisationApg(BigDecimal montantDeterminant) {
+        return calculPartSalarieeCotisationApg(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+    }
 }
