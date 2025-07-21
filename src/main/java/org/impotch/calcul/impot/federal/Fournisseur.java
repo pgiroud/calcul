@@ -122,15 +122,24 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 
 	private int montantReductionImpotParEnfant(int annee) {
-		if (annee > 2023) {
-			return 259;
-		} else if (annee > 2022) {
-			return 255;
-		} else if (annee > 2011) {
-			return 251;
-		} else {
-			return 250;
-		}
+		if (2011 == annee) return 250; // Loi fédérale sur les allégements fiscaux
+			// en faveur des familles avec enfants du 25 septembre 2009
+			// Art. 214, al. 2 2bis
+		if (2012 == annee // RO 2011 4503
+				|| 2013 == annee
+				|| 2014 == annee // https://www.fedlex.admin.ch/eli/cc/2013/589/fr RO 2013 589 Art. 2 alinea 3
+				|| 2015 == annee
+				|| 2016 == annee
+				|| 2017 == annee
+				|| 2018 == annee
+				|| 2019 == annee
+				|| 2020 == annee
+				|| 2021 == annee
+				|| 2022 == annee) return 251; // https://www.fedlex.admin.ch/eli/cc/2013/589/fr RO 2013 589 Art. 2 alinea 3
+		if (2023 == annee) return 255; // https://www.fedlex.admin.ch/eli/cc/2022/575/fr RO 2022 575 Art.2 alinea 3
+		if (2024 == annee) return 259; // https://www.fedlex.admin.ch/eli/cc/2023/493/fr RO 2023 493 Art.2 alinea 3
+		if (2025 == annee) return 263; // https://www.fedlex.admin.ch/eli/oc/2024/479/fr RO 2024 479 Art.2 alinea 3
+		throw new IllegalArgumentException("Le rabais d’impôt pour les enfants n’est pas connu pour l’année " + annee);
 	}
 
 
