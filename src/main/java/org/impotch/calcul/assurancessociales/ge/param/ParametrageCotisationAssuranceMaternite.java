@@ -37,5 +37,11 @@ import java.math.BigDecimal;
  */
 public interface ParametrageCotisationAssuranceMaternite {
     int annee();
+
+    /**
+     * Retourne le taux de l’assurance maternité comprenant la part salariée mais également la part employeur.
+     * @return une chaîne de caractère représentant le taux. Exemple : ‘1.23 %’ ou ‘0.123 ‰’
+     * @see org.impotch.util.BigDecimalUtil#parse
+     */
     String tauxAssuranceMaternite();
 }

@@ -34,7 +34,7 @@ import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 
-public class DoubleBareme extends ImpositionFamilleSansAvantage implements StrategieProductionImpotFamille {
+public class DoubleBareme extends ImpositionFamille implements StrategieProductionImpotFamille {
 	
     /**************************************************/
     /***************** Attributs **********************/

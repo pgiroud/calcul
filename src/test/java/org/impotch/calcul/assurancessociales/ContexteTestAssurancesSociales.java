@@ -30,6 +30,7 @@
  */
 package org.impotch.calcul.assurancessociales;
 
+import org.impotch.calcul.assurancessociales.ge.FournisseurRegleGECalculCotisationsAssuranceSociale;
 import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageAnnuelAssurancesSocialesGenevoises;
 import org.impotch.calcul.assurancessociales.param.FournisseurParametrageSuisseAnnuel;
 
@@ -50,8 +51,13 @@ public enum ContexteTestAssurancesSociales {
         return fournisseurRegleCalculAssuranceSociale;
     }
 
-    public FournisseurRegleCalculCotisationsAssuranceSociale fournisseurRegles() {
+    public FournisseurRegleCalculCotisationsAssuranceSociale fournisseurReglesSuisses() {
         return new FournisseurRegleCHCalculCotisationsAssuranceSociale(FournisseurParametrageSuisseAnnuel.enMemoire());
     }
+
+    public FournisseurRegleCalculCotisationsAssuranceSociale fournisseurReglesGenevoises() {
+        return new FournisseurRegleGECalculCotisationsAssuranceSociale(fournisseurReglesSuisses(),FournisseurParametrageAnnuelAssurancesSocialesGenevoises.enMemoire());
+    }
+
 
 }

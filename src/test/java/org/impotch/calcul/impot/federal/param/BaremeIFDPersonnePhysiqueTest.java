@@ -47,6 +47,7 @@ package org.impotch.calcul.impot.federal.param;
 
 import java.math.BigDecimal;
 
+import org.assertj.core.description.Description;
 import org.impotch.bareme.Bareme;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +55,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.calcul.impot.federal.ContexteTest_CH.CTX_TST_CH;
 public class BaremeIFDPersonnePhysiqueTest {
 
-    private FournisseurBaremeIFD fournisseur = CTX_TST_CH.getFournisseurBaremeIFD();
+    private FournisseurBaremeIFD fournisseur = CTX_TST_CH.getFournisseurParamIFD();
 
 
 
@@ -64,17 +65,17 @@ public class BaremeIFDPersonnePhysiqueTest {
         Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2006);
         BaremeStr bar = new BaremeStr(bareme);
 
-        assertThat(bar.pour(10000)).isEqualTo("0.00");
-        assertThat(bar.pour(16800)).isEqualTo("0.00");
-        assertThat(bar.pour(16900)).isEqualTo("25.40");
-        assertThat(bar.pour(23000)).isEqualTo("72.35");
-        assertThat(bar.pour(29800)).isEqualTo("124.70");
-        assertThat(bar.pour(35000)).isEqualTo("170.45");
-        assertThat(bar.pour(117000)).isEqualTo("4636.75");
-        assertThat(bar.pour(127100)).isEqualTo("5525.55");
-        assertThat(bar.pour(200000)).isEqualTo("14288.15");
-        assertThat(bar.pour(750000)).isEqualTo("86250.00");
-        assertThat(bar.pour(843600)).isEqualTo("97014.00");
+        assertThat(bar.pour( 10000)).as( "Valeur pour 10 000").isEqualTo(    "0.00");
+        assertThat(bar.pour( 16800)).as( "Valeur pour 16 800").isEqualTo(   "24.60");
+        assertThat(bar.pour( 16900)).as( "Valeur pour 16 900").isEqualTo(   "25.40");
+        assertThat(bar.pour( 23000)).as( "Valeur pour 23 000").isEqualTo(   "72.35");
+        assertThat(bar.pour( 29800)).as( "Valeur pour 29 800").isEqualTo(  "124.70");
+        assertThat(bar.pour( 35000)).as( "Valeur pour 35 000").isEqualTo(  "170.45");
+        assertThat(bar.pour(117000)).as("Valeur pour 117 000").isEqualTo( "4636.75");
+        assertThat(bar.pour(127100)).as("Valeur pour 127 100").isEqualTo( "5525.55");
+        assertThat(bar.pour(200000)).as("Valeur pour 200 000").isEqualTo("14288.15");
+        assertThat(bar.pour(750000)).as("Valeur pour 750 000").isEqualTo("86250.00");
+        assertThat(bar.pour(843600)).as("Valeur pour 843 600").isEqualTo("97014.00");
     }
 
     @Test
@@ -96,7 +97,7 @@ public class BaremeIFDPersonnePhysiqueTest {
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(10000)).isEqualTo("0.00");
-        assertThat(bar.pour(16000)).isEqualTo("0.00");
+        assertThat(bar.pour(16000)).isEqualTo("24.60");
         assertThat(bar.pour(16100)).isEqualTo("25.40");
         assertThat(bar.pour(27900)).isEqualTo("116.25");
         assertThat(bar.pour(37000)).isEqualTo("205.10");
@@ -222,6 +223,15 @@ public class BaremeIFDPersonnePhysiqueTest {
         assertThat(bar.pour(793_300)).isEqualTo("91229.20");
         assertThat(bar.pour(793_400)).isEqualTo("91241.00");
 
+    }
+
+    @Test
+    public void famille2025PourTestSeuillage1Enfant() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2025);
+        BaremeStr bar = new BaremeStr(bareme);
+        // Rabais 2025 1 enfant = 263 CHF
+        // On veut un montant d’impôt de base IB tel que (IB -263) < 25
+        assertThat(bar.pour( 55_600)).isEqualTo(   "281.00");
     }
 
     @Test

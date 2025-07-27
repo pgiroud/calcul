@@ -47,9 +47,6 @@ package org.impotch.calcul.impot.taxation.pp.famille;
 
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
 
 
 import org.impotch.calcul.impot.taxation.pp.*;
@@ -81,10 +78,9 @@ public class SplittingTest {
 
     @Test
     public void produireImpot() {
-        BigDecimal impot = splitting.produireImpotAnnuel(getFamille(), new BigDecimal("2000"), new BigDecimal("2000"));
-        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot);
+        BigDecimal impot = splitting.produireImpotDeterminant(getFamille(), new BigDecimal("2000"));
+        impot = TypeArrondi.VINGTIEME_LE_PLUS_PROCHE.arrondir(impot);
         assertThat(impot).isEqualTo(new BigDecimal("20.00"));
-//		assertEquals("Transfo Impot",new BigDecimal("20.00"),impot);
     }
 
     private SituationFamiliale getFamille() {

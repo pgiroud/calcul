@@ -38,11 +38,11 @@ import java.util.Optional;
 public class ParametrageAnnuelCotisationsSocialesGenevoises implements ParametrageSuisseAnnuel, ParametrageCotisationAssuranceMaternite {
 
     private final ParametrageSuisseAnnuel parametrageSuisse;
-    private final ParametrageCotisationAssuranceMaternite parametrageSsuranceMaternite;
+    private final ParametrageCotisationAssuranceMaternite parametrageAssuranceMaternite;
 
     public ParametrageAnnuelCotisationsSocialesGenevoises(ParametrageSuisseAnnuel parametrageSuisse, ParametrageCotisationAssuranceMaternite parametrageSsuranceMaternite) {
         this.parametrageSuisse = parametrageSuisse;
-        this.parametrageSsuranceMaternite = parametrageSsuranceMaternite;
+        this.parametrageAssuranceMaternite = parametrageSsuranceMaternite;
     }
 
     @Override
@@ -87,6 +87,6 @@ public class ParametrageAnnuelCotisationsSocialesGenevoises implements Parametra
 
     @Override
     public String tauxAssuranceMaternite() {
-        return parametrageSsuranceMaternite.tauxAssuranceMaternite();
+        return parametrageAssuranceMaternite.tauxAssuranceMaternite();
     }
 }

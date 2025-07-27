@@ -46,7 +46,7 @@ public class CalculateurCotisationACTest {
 
     @BeforeEach
     public void initialise() throws Exception {
-        fournisseurRegle = ContexteTestAssurancesSociales.CTX_TST_AS.fournisseurRegles();
+        fournisseurRegle = ContexteTestAssurancesSociales.CTX_TST_AS.fournisseurReglesSuisses();
     }
 
 

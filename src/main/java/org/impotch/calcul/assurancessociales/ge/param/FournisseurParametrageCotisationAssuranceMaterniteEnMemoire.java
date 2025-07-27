@@ -61,138 +61,138 @@ public class FournisseurParametrageCotisationAssuranceMaterniteEnMemoire impleme
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2025() {
         return unConstructeur(2025)
-                .tauxCotisationAssuranceMaternite("0.032 %")
+                .tauxCotisationAssuranceMaternite("0.064 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2024() {
         return unConstructeur(2024)
-                .tauxCotisationAssuranceMaternite("0.038 %")
+                .tauxCotisationAssuranceMaternite("0.076 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2023() {
         return unConstructeur(2023)
-                .tauxCotisationAssuranceMaternite("0.041 %")
+                .tauxCotisationAssuranceMaternite("0.082 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2022() {
         return unConstructeur(2022)
-                .tauxCotisationAssuranceMaternite("0.043 %")
+                .tauxCotisationAssuranceMaternite("0.086 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2021() {
         return unConstructeur(2021)
-                .tauxCotisationAssuranceMaternite("0.043 %")
+                .tauxCotisationAssuranceMaternite("0.086 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2020() {
         return unConstructeur(2020)
-                .tauxCotisationAssuranceMaternite("0.046 %")
+                .tauxCotisationAssuranceMaternite("0.092 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2019() {
         return unConstructeur(2019)
-                .tauxCotisationAssuranceMaternite("0.046 %")
+                .tauxCotisationAssuranceMaternite("0.092 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2018() {
         return unConstructeur(2018)
-                .tauxCotisationAssuranceMaternite("0.046 %")
+                .tauxCotisationAssuranceMaternite("0.092 %")
                 .cons();
     }
     private ParametrageCotisationAssuranceMaternite construireParametrage2017() {
         return unConstructeur(2017)
-                .tauxCotisationAssuranceMaternite("0.041 %")
+                .tauxCotisationAssuranceMaternite("0.082 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2016() {
         return unConstructeur(2016)
-                .tauxCotisationAssuranceMaternite("0.041 %")
+                .tauxCotisationAssuranceMaternite("0.082 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2015() {
         return unConstructeur(2015)
-                .tauxCotisationAssuranceMaternite("0.041 %")
+                .tauxCotisationAssuranceMaternite("0.082 %")
                 .cons();
     }
 
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2014() {
         return unConstructeur(2014)
-                .tauxCotisationAssuranceMaternite("0.041 %")
+                .tauxCotisationAssuranceMaternite("0.082 %")
                 .cons();
     }
     private ParametrageCotisationAssuranceMaternite construireParametrage2013() {
         return unConstructeur(2013)
-                .tauxCotisationAssuranceMaternite("0.042 %")
+                .tauxCotisationAssuranceMaternite("0.084 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2012() {
         return unConstructeur(2012)
-                .tauxCotisationAssuranceMaternite("0.045 %")
+                .tauxCotisationAssuranceMaternite("0.09 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2011() {
         return unConstructeur(2011)
-                .tauxCotisationAssuranceMaternite("0.045 %")
+                .tauxCotisationAssuranceMaternite("0.09 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2010() {
         return unConstructeur(2010)
-                .tauxCotisationAssuranceMaternite("0.045 %")
+                .tauxCotisationAssuranceMaternite("0.09 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2009() {
         return unConstructeur(2009)
-                .tauxCotisationAssuranceMaternite("0.02 %")
+                .tauxCotisationAssuranceMaternite("0.04 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2008() {
         return unConstructeur(2008)
-                .tauxCotisationAssuranceMaternite("0.02 %")
+                .tauxCotisationAssuranceMaternite("0.04 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2007() {
         return unConstructeur(2007)
-                .tauxCotisationAssuranceMaternite("0.02 %")
+                .tauxCotisationAssuranceMaternite("0.04 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2006() {
         return unConstructeur(2006)
-                .tauxCotisationAssuranceMaternite("0.02 %")
+                .tauxCotisationAssuranceMaternite("0.04 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2005() {
         return unConstructeur(2005)
-                .tauxCotisationAssuranceMaternite("0.13 %")
+                .tauxCotisationAssuranceMaternite("0.26 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2004() {
         return unConstructeur(2004)
-                .tauxCotisationAssuranceMaternite("0.13 %")
+                .tauxCotisationAssuranceMaternite("0.26 %")
                 .cons();
     }
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2003() {
         return unConstructeur(2003)
-                .tauxCotisationAssuranceMaternite("0.15 %")
+                .tauxCotisationAssuranceMaternite("0.3 %")
                 .cons();
     }
 

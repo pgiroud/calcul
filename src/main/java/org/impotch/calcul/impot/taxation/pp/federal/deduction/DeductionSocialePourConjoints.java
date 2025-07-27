@@ -35,6 +35,7 @@ import java.math.BigDecimal;
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
+import org.impotch.calcul.impot.taxation.pp.TypeDeductionSociale;
 
 public class DeductionSocialePourConjoints  extends ReglePeriodique implements DeductionSociale  {
 	
@@ -64,8 +65,8 @@ public class DeductionSocialePourConjoints  extends ReglePeriodique implements D
 		else return BigDecimal.ZERO;
 	}
 
-    @Override
-    public String getNom() {
-        return "déduc. sociale conjoint";
-    }
+	@Override
+	public TypeDeductionSociale getType() {
+		return TypeDeductionSociale.CONJOINT;
+	}
 }

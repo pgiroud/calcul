@@ -30,24 +30,24 @@
  */
 package org.impotch.calcul.impot.federal;
 
-import org.impotch.calcul.impot.federal.param.FournisseurBaremeIFD;
-import org.impotch.calcul.impot.federal.param.FournisseurBaremeIFDEnMemoire;
+import org.impotch.calcul.impot.federal.param.FournisseurParametrageAnnuelIFD;
+import org.impotch.calcul.impot.federal.param.FournisseurParametrageAnnuelIFDEnMemoire;
 
 public enum ContexteTest_CH {
     CTX_TST_CH;
 
-    private FournisseurBaremeIFD fournisseurBaremeIFD;
+    private FournisseurParametrageAnnuelIFD fournisseurParamIFD;
     private FournisseurRegleImpotFederal fournisseurRegleImpotFederal;
 
 
     ContexteTest_CH() {
-        fournisseurBaremeIFD = new FournisseurBaremeIFDEnMemoire();
+        fournisseurParamIFD = new FournisseurParametrageAnnuelIFDEnMemoire();
 
-        fournisseurRegleImpotFederal = new Fournisseur(fournisseurBaremeIFD);
+        fournisseurRegleImpotFederal = new Fournisseur(fournisseurParamIFD);
     }
 
-    public FournisseurBaremeIFD getFournisseurBaremeIFD() {
-        return fournisseurBaremeIFD;
+    public FournisseurParametrageAnnuelIFD getFournisseurParamIFD() {
+        return fournisseurParamIFD;
     }
 
     public FournisseurRegleImpotFederal getFournisseurRegleImpotFederal() {

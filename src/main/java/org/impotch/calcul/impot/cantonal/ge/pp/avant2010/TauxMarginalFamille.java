@@ -36,6 +36,10 @@ import org.slf4j.LoggerFactory;
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.util.math.Fonction;
 
+import java.math.BigDecimal;
+
+import static org.impotch.util.BigDecimalUtil.tx;
+
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
@@ -79,6 +83,10 @@ public strictfp class TauxMarginalFamille extends ReglePeriodique implements Fon
 	public void setTauxMarginalSeul(TauxMarginalSeul tauxMarginalSeul) {
 		assert this.getAnnee() == tauxMarginalSeul.getAnnee();
 		this.tauxMarginalSeul = tauxMarginalSeul;
+	}
+
+	public BigDecimal getTauxMax() {
+		return this.tauxMarginalSeul.getTauxMax();
 	}
 
     /**************************************************/

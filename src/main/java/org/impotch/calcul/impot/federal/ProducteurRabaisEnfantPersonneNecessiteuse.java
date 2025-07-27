@@ -61,11 +61,6 @@ public class ProducteurRabaisEnfantPersonneNecessiteuse implements ProducteurImp
         montantRabaisParPersonneNecessiteuse = montant;
     }
 
-    public void setMontantRabaisParEnfantEtPersonneNecessiteuse(int montant) {
-        setMontantRabaisParEnfantEtPersonneNecessiteuse(BigDecimal.valueOf(montant));
-    }
-
-
     @Override
     public BigDecimal produireImpotBase(SituationFamiliale situation, FournisseurAssiettePeriodique fournisseur) {
         BigDecimal nbreEnfant = ZERO;

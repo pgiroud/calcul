@@ -31,6 +31,7 @@
 package org.impotch.calcul.impot.taxation.pp.famille;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
@@ -38,7 +39,7 @@ import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.TypeArrondi;
 
-public class Splitting extends ImpositionFamilleSansAvantage implements StrategieProductionImpotFamille {
+public class Splitting extends ImpositionFamille implements StrategieProductionImpotFamille {
 
     /**************************************************/
     /***************** Attributs **********************/
@@ -46,7 +47,7 @@ public class Splitting extends ImpositionFamilleSansAvantage implements Strategi
 	
 	private final BigDecimal tauxSplitting;
 	private TypeArrondi typeArrondi = TypeArrondi.UNITE_INF;
-	private TypeArrondi typeArrondiImpot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+	private TypeArrondi typeArrondiImpot = TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 	
     /**************************************************/
     /**************** Constructeurs *******************/
@@ -58,7 +59,7 @@ public class Splitting extends ImpositionFamilleSansAvantage implements Strategi
 	}
 	
 	public Splitting(Bareme bareme, String taux) {
-		this(bareme, BigDecimalUtil.parseTaux(taux));
+		this(bareme, BigDecimalUtil.parse(taux));
 	}
 	
     /**************************************************/
@@ -85,39 +86,29 @@ public class Splitting extends ImpositionFamilleSansAvantage implements Strategi
     /******************* Méthodes *********************/
     /**************************************************/
 
-	protected BigDecimal produireImpotAvecSplitting(BigDecimal determinantArrondi, BigDecimal imposableArrondi, BigDecimal tauxSplitting) {
-		BigDecimal determinantApresSplitting = typeArrondi.arrondirMontant(tauxSplitting.multiply(determinantArrondi));
+	protected BigDecimal produireImpotAvecSplitting(BigDecimal determinantArrondi, BigDecimal tauxSplitting) {
+		BigDecimal determinantApresSplitting = typeArrondi.arrondir(tauxSplitting.multiply(determinantArrondi));
 		BigDecimal impotDeterminantApresSplitting = getBareme().calcul(determinantApresSplitting);
-		impotDeterminantApresSplitting = typeArrondiImpot.arrondirMontant(impotDeterminantApresSplitting);
+		impotDeterminantApresSplitting = typeArrondiImpot.arrondir(impotDeterminantApresSplitting);
 		if (0 == BigDecimal.ZERO.compareTo(impotDeterminantApresSplitting)) return impotDeterminantApresSplitting;
-		else return typeArrondiImpot.arrondirMontant(impotDeterminantApresSplitting.multiply(determinantArrondi).divide(determinantApresSplitting,10,BigDecimal.ROUND_HALF_UP));
+		else return typeArrondiImpot.arrondir(impotDeterminantApresSplitting.multiply(determinantArrondi).divide(determinantApresSplitting,10, RoundingMode.HALF_UP));
 
 	}
 
-	private BigDecimal produireImpotDeterminantFamille(BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
-		return produireImpotAvecSplitting(determinantArrondi,imposableArrondi,tauxSplitting);
+	private BigDecimal produireImpotDeterminantFamille(BigDecimal determinantArrondi) {
+		return produireImpotAvecSplitting(determinantArrondi,tauxSplitting);
 	}
 	
 	
-	private BigDecimal produireImpotDeterminantSeul(BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
+	private BigDecimal produireImpotDeterminantSeul(BigDecimal determinantArrondi) {
 		BigDecimal impotDeterminant = getBareme().calcul(determinantArrondi);
-		return typeArrondiImpot.arrondirMontant(impotDeterminant);
-	}
-
-	protected BigDecimal determineImpot(BigDecimal imposableArrondi, BigDecimal determinantArrondi, BigDecimal impotDeterminant) {
-		if (0 == imposableArrondi.compareTo(determinantArrondi)) return impotDeterminant;
-		else return typeArrondiImpot.arrondirMontant(imposableArrondi.multiply(impotDeterminant).divide(determinantArrondi,10,BigDecimal.ROUND_HALF_UP));
+		return typeArrondiImpot.arrondir(impotDeterminant);
 	}
 
 	@Override
-	public BigDecimal produireImpotAnnuel(SituationFamiliale situation,
-			BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
-		BigDecimal impotDeterminant = null;
-		if (isFamille(situation)) {
-			impotDeterminant = this.produireImpotDeterminantFamille(determinantArrondi,imposableArrondi);
-		} else {
-			impotDeterminant = this.produireImpotDeterminantSeul(determinantArrondi, imposableArrondi);
-		}
-		return determineImpot(imposableArrondi,determinantArrondi,impotDeterminant);
+	public BigDecimal produireImpotDeterminant(SituationFamiliale situation,
+											   BigDecimal determinantArrondi) {
+		return isFamille(situation) ?
+				produireImpotDeterminantFamille(determinantArrondi) : produireImpotDeterminantSeul(determinantArrondi);
 	}
 }

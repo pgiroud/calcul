@@ -37,5 +37,5 @@ public interface FournisseurParametrageSuisseAnnuel {
         return new FournisseurParametrageSuisseAnnuelEnMemoire();
     }
 
-    Optional<ParametrageSuisseAnnuel> parametrage(int annee);
+    Optional<? extends ParametrageSuisseAnnuel> parametrage(int annee);
 }

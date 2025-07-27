@@ -33,6 +33,7 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 import java.math.BigDecimal;
 
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
+import org.impotch.util.BigDecimalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +41,7 @@ import org.impotch.calcul.ReglePeriodique;
 import org.impotch.util.math.Fonction;
 import org.impotch.util.math.integration.Primitivable;
 
+import static org.impotch.util.BigDecimalUtil.tx;
 /**
  * Cette classe fournit le taux marginal de l'impôt sur le revenu des personnes
  * physiques seule suivant le barème défini dans l'annexe A de la 
@@ -156,5 +158,8 @@ class TauxMarginalSeul extends ReglePeriodique implements Primitivable {
 		};
 	}
 
+	public BigDecimal getTauxMax() {
+		return tx("19 %");
+	}
 	
 }

@@ -70,8 +70,8 @@ class ConstructeurBaremeIFD {
         cons = unBaremeATauxMarginal()
                 .fermeAGauche()
                 .typeArrondiSurEntrant(arrondiSurAssiette)
-                .typeArrondiSurChaqueTranche(ARRONDI_SUR_CHAQUE_TRANCHE)
-                .seuil(!(source) ? 25 : 0);
+                .typeArrondiSurChaqueTranche(ARRONDI_SUR_CHAQUE_TRANCHE);
+                //.seuil(!(source) ? 25 : 0);
     }
 
     private void controleAbsenceTauxEffectif() {

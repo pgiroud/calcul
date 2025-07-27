@@ -97,7 +97,10 @@ public class ProducteurImpotRevenu2007Test extends ProducteurImpotTst {
 		ProducteurImpot producteur = fournisseur.getProducteurImpotsICRevenu(2007);
 		RecepteurMultipleImpot recepteur = recepteur("RCAN");
 		
-		producteur.produireImpot(this.creerSituationFamilleAvecEnfant(PERIODE_FISCALE,11,13), this.creerAssiettes(2007, 91256, 92352,fournisseurLieu.getCommune(2321)), recepteur);
+		producteur.produireImpot(
+				this.creerSituationFamilleAvecEnfant(PERIODE_FISCALE,11,13),
+				this.creerAssiettes(2007, 91256, 92352,fournisseurLieu.getCommune(2321)),
+				recepteur);
 		verifierMontantImpot(recepteur,"RCAN",  "7721.00");
 	}
 	

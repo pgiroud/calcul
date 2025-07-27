@@ -1,6 +1,5 @@
 package org.impotch.calcul.assurancessociales.ge;
 
-import org.impotch.calcul.assurancessociales.FournisseurRegleCHCalculCotisationsAssuranceSociale;
 import org.impotch.calcul.assurancessociales.FournisseurRegleCalculCotisationsAssuranceSociale;
 import org.impotch.calcul.assurancessociales.TypeAssuranceSociale;
 import org.impotch.calcul.assurancessociales.ge.param.FournisseurParametrageAnnuelAssurancesSocialesGenevoises;
@@ -13,10 +12,10 @@ import java.util.function.Function;
 
 public class FournisseurRegleGECalculCotisationsAssuranceSociale implements FournisseurRegleCalculCotisationsAssuranceSociale {
 
-    private final FournisseurRegleCHCalculCotisationsAssuranceSociale fournisseurCH;
+    private final FournisseurRegleCalculCotisationsAssuranceSociale fournisseurCH;
     private final FournisseurParametrageAnnuelAssurancesSocialesGenevoises fournisseurParametrage;
 
-    public FournisseurRegleGECalculCotisationsAssuranceSociale(FournisseurRegleCHCalculCotisationsAssuranceSociale fournisseurCH, FournisseurParametrageAnnuelAssurancesSocialesGenevoises fournisseurParametrage) {
+    public FournisseurRegleGECalculCotisationsAssuranceSociale(FournisseurRegleCalculCotisationsAssuranceSociale fournisseurCH, FournisseurParametrageAnnuelAssurancesSocialesGenevoises fournisseurParametrage) {
         this.fournisseurCH = fournisseurCH;
         this.fournisseurParametrage = fournisseurParametrage;
     }

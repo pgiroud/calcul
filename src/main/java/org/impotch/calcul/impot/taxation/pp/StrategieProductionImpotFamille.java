@@ -32,6 +32,7 @@ package org.impotch.calcul.impot.taxation.pp;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.taxation.pp.famille.DoubleBareme;
+import org.impotch.calcul.impot.taxation.pp.famille.ImpositionFamille;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
 
 import java.math.BigDecimal;
@@ -43,10 +44,16 @@ public interface StrategieProductionImpotFamille {
 		return new DoubleBareme(baremeSeul,baremeFamille);
 	}
 
+	public static StrategieProductionImpotFamille doubleBaremeAvecRabaisCharge(Bareme baremeSeul, Bareme baremeFamille, int rabais) {
+		ImpositionFamille strat = new DoubleBareme(baremeSeul,baremeFamille);
+		strat.setRabaisParCharge(rabais);
+		return strat;
+	}
+
 	public static StrategieProductionImpotFamille splittingIntegral(Bareme bareme) {
 		return new Splitting(bareme, "50 %");
 	}
 
-	BigDecimal produireImpotAnnuel(SituationFamiliale situation, BigDecimal determinantArrondi, BigDecimal imposableArrondi);
-	BigDecimal produireImpotAnnuelAuTauxMaximal(SituationFamiliale situation, BigDecimal imposableArrondi);
+	BigDecimal produireImpotDeterminant(SituationFamiliale situation, BigDecimal determinantArrondi);
+	BigDecimal produireImpotAuTauxMaximal(SituationFamiliale situation, BigDecimal imposableArrondi);
 }

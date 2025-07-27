@@ -65,10 +65,11 @@ public class SplittingFR extends Splitting {
 	}
 
 
-	protected BigDecimal getTauxFamille(BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
+	protected BigDecimal getTauxFamille(BigDecimal determinantArrondi) {
 		BigDecimal determinant = getTypeArrondi().arrondirMontant(determinantArrondi.multiply(getTauxSplitting()));
 		if (0 <= montantImposableMinimum.compareTo(determinant)
-				&& 0 >= montantImposableMinimum.compareTo(imposableArrondi)) {
+				// && 0 >= montantImposableMinimum.compareTo(imposableArrondi)
+		) {
 			return tauxMinimum;
 		} else {
 			return getBareme().getTaux(determinant);
@@ -80,12 +81,12 @@ public class SplittingFR extends Splitting {
 	}
 
 	@Override
-	public BigDecimal produireImpotAnnuel(SituationFamiliale situation,
-										  BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
+	public BigDecimal produireImpotDeterminant(SituationFamiliale situation,
+											   BigDecimal determinantArrondi) {
 		BigDecimal taux = isFamille(situation) ?
-				getTauxFamille(determinantArrondi, imposableArrondi)
+				getTauxFamille(determinantArrondi)
 				: getTauxSeul(determinantArrondi);
-		return imposableArrondi.multiply(taux);
+		return determinantArrondi.multiply(taux);
 	}
 
 	public static class ConstructeurSplittingFR {

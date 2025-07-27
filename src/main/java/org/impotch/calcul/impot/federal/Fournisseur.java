@@ -31,20 +31,23 @@
 package org.impotch.calcul.impot.federal;
 
 import java.math.BigDecimal;
+import java.util.OptionalInt;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.federal.param.FournisseurBaremeIFD;
+import org.impotch.calcul.impot.federal.param.FournisseurParametrageAnnuelIFD;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpotAvecRabais;
-import org.impotch.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
+import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
 
 import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
 import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille.doubleBareme;
+import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille.doubleBaremeAvecRabaisCharge;
 
 public class Fournisseur implements FournisseurRegleImpotFederal {
 
@@ -56,10 +59,10 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<>();
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotSourcePrestationCapital = new ConcurrentHashMap<>();
 
-    private final FournisseurBaremeIFD fournisseurBaremeIFD;
+    private final FournisseurParametrageAnnuelIFD fournisseurParametrageAnnuelIFD;
 
-	public Fournisseur(FournisseurBaremeIFD fournisseurBaremeIFD) {
-		this.fournisseurBaremeIFD = fournisseurBaremeIFD;
+	public Fournisseur(FournisseurParametrageAnnuelIFD fournisseurParamIFD) {
+		this.fournisseurParametrageAnnuelIFD = fournisseurParamIFD;
 	}
 
 	public ProducteurImpot getProducteurImpotsFederauxPP(int annee) {
@@ -86,7 +89,7 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 //	}
 	
 	private Bareme getBaremeRevenu(int annee) {
-        return fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
+        return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
 	}
 
 //	private Bareme construireBaremePrestationCapital(final Bareme bareme) {
@@ -108,13 +111,13 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 //	}
 	
 	private Bareme getBaremeRevenuFamille(int annee) {
-        return fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
+        return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
 	}
 
 	private Bareme getBaremePrestationCapitalFamille(int annee) {
 //        Bareme bareme =  2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
 //        return construireBaremePrestationCapital(bareme);
-		return  2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
+		return  2011 > annee ? fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
 	}
 		
 	private IExplicationDetailleeBuilder getNewExplicationBuilder() {
@@ -144,18 +147,27 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 
 
 	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee) {
-        ProducteurImpot producteur = null;
-        if (annee < 2011) {
-            producteur = new ProducteurImpot("IBR","");
-        } else {
-             ProducteurImpotAvecRabais prodAvecRabais = new ProducteurImpotAvecRabais("IBR","RI","");
-            prodAvecRabais.setProducteurBaseRabais(new  ProducteurRabaisEnfantPersonneNecessiteuse(montantReductionImpotParEnfant(annee)));
-            producteur = prodAvecRabais;
-        }
+//        ProducteurImpot producteur = null;
+//        if (annee < 2011) {
+//            producteur = new ProducteurImpot("IBR","");
+//        } else {
+//			ProducteurImpotAvecRabais prodAvecRabais = new ProducteurImpotAvecRabais("IBR","RI","");
+//            prodAvecRabais.setProducteurBaseRabais(new  ProducteurRabaisEnfantPersonneNecessiteuse(fournisseurParametrageAnnuelIFD.rabaisImpotCharge(annee).getAsInt()));
+//            producteur = prodAvecRabais;
+//        }
+		ProducteurImpot producteur = new ProducteurImpot("IBR","");
+		StrategieProductionImpotFamille strat;
+		OptionalInt mntRabais = fournisseurParametrageAnnuelIFD.rabaisImpotCharge(annee);
+		if (mntRabais.isPresent()) {
+			strat = doubleBaremeAvecRabaisCharge(getBaremeRevenu(annee), getBaremeRevenuFamille(annee),mntRabais.getAsInt());
+		} else {
+			strat = doubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
+		}
 		producteur.setProducteurBase(
-				unProducteurImpotBaseProgressif(doubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee)))
+				unProducteurImpotBaseProgressif(strat)
 						.arrondiAssiettes(ARRONDI_ASSIETTES)
 						.arrondiImpot(ARRONDI_IMPOT)
+						.seuilSurImpotDeterminant(BigDecimal.valueOf(25))
 						.construire()
 		);
 		return producteur;

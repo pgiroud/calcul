@@ -39,10 +39,12 @@ import org.impotch.util.math.Fonction;
 import org.impotch.util.math.integration.MethodeIntegration;
 import org.impotch.util.math.integration.MethodeIntegrationPointMilieu;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.impotch.util.TypeArrondi.CENTIEME_LE_PLUS_PROCHE;
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
+
 public class ConstructeurBaremeRevenuAvecFormuleUniversite {
 
     private final FournisseurIndicePeriodique fournisseurIndicePeriodique;
@@ -67,10 +69,16 @@ public class ConstructeurBaremeRevenuAvecFormuleUniversite {
         return txMarginal;
     }
 
-    public Bareme construireBaremeRevenu(int annee) {
-        BaremeTauxMarginalIntegrable bareme = new BaremeTauxMarginalIntegrable();
-        bareme.setTypeArrondi(CINQ_CENTIEMES_LES_PLUS_PROCHES);
-        bareme.setTauxMarginal(construireTauxMarginal(annee));
+    public BaremeTauxMarginalIntegrable construireBaremeRevenu(int annee) {
+        final TauxMarginalSeul taux = construireTauxMarginal(annee);
+        BaremeTauxMarginalIntegrable bareme = new BaremeTauxMarginalIntegrable() {
+            @Override
+            public BigDecimal getTauxMaximum() {
+                return taux.getTauxMax();
+            }
+        };
+        bareme.setTypeArrondi(VINGTIEME_LE_PLUS_PROCHE);
+        bareme.setTauxMarginal(taux);
         return bareme;
     }
 
@@ -82,7 +90,7 @@ public class ConstructeurBaremeRevenuAvecFormuleUniversite {
             BaremeFamille bareme = new BaremeFamille();
             bareme.setMethodeIntegration(methode);
             bareme.setTauxMarginal(tauxMarginal);
-            bareme.setArrondi(CINQ_CENTIEMES_LES_PLUS_PROCHES);
+            bareme.setArrondi(VINGTIEME_LE_PLUS_PROCHE);
             return bareme;
         } else {
             DiscretisationBaremeMarie discretisateur = new DiscretisationBaremeMarie();
@@ -92,7 +100,7 @@ public class ConstructeurBaremeRevenuAvecFormuleUniversite {
                 discretisateur.largeur(200).jusqua(1000000);
                 discretisateur.setArrondi(CENTIEME_LE_PLUS_PROCHE);
             } else {
-                discretisateur.setArrondi(CINQ_CENTIEMES_LES_PLUS_PROCHES);
+                discretisateur.setArrondi(VINGTIEME_LE_PLUS_PROCHE);
                 if (2003 == annee) {
                     discretisateur.largeur(100).jusqua(30000)
                             .largeur(200).jusqua(50000)

@@ -47,9 +47,6 @@ package org.impotch.calcul.impot.cantonal.fr.pp;
 
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
 
 import org.impotch.bareme.BaremeTauxEffectifParTranche;
 import org.impotch.calcul.impot.taxation.pp.*;
@@ -378,16 +375,16 @@ public class SplittingFRTest {
 
     private void testSplitting(SplittingFR splitting, int assiette, String montantAttendu) {
         BigDecimal assietteBG = new BigDecimal(assiette);
-        BigDecimal impot = splitting.produireImpotAnnuel(getSituation(true), assietteBG, assietteBG);
-        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot);
+        BigDecimal impot = splitting.produireImpotDeterminant(getSituation(true), assietteBG);
+        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondir(impot);
         assertThat(impot).isEqualTo(new BigDecimal(montantAttendu));
 //		assertEquals("Splitting",new BigDecimal(montantAttendu),impot);
     }
 
     private void testSansSplitting(SplittingFR splitting, int assiette, String montantAttendu) {
         BigDecimal assietteBG = new BigDecimal(assiette);
-        BigDecimal impot = splitting.produireImpotAnnuel(getSituation(false), assietteBG, assietteBG);
-        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot);
+        BigDecimal impot = splitting.produireImpotDeterminant(getSituation(false), assietteBG);
+        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondir(impot);
         assertThat(impot).isEqualTo(new BigDecimal(montantAttendu));
 //		assertEquals("Splitting",new BigDecimal(montantAttendu),impot);
     }

@@ -32,6 +32,7 @@ package org.impotch.calcul.impot.taxation.pp.ge.deduction;
 
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
+import org.impotch.calcul.impot.taxation.pp.TypeDeductionSociale;
 
 import java.math.BigDecimal;
 
@@ -57,7 +58,7 @@ public class DeductionDoubleActivite implements DeductionSociale {
     }
 
     @Override
-    public String getNom() {
-        return "Déduction sociale double activite GE";
+    public TypeDeductionSociale getType() {
+        return TypeDeductionSociale.DOUBLE_ACTIVITE;
     }
 }

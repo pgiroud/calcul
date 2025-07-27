@@ -38,6 +38,7 @@ import org.impotch.calcul.impot.Souverainete;
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
+import org.impotch.calcul.impot.taxation.pp.TypeDeductionSociale;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -77,8 +78,8 @@ public class DeductionChargeFamille extends ReglePeriodique implements Deduction
 		return montantCharge.multiply(nombreCharge).setScale(0, RoundingMode.HALF_UP);
 	}
 
-    @Override
-    public String getNom() {
-        return "déduc. sociale charge famille";
-    }
+	@Override
+	public TypeDeductionSociale getType() {
+		return TypeDeductionSociale.CHARGE_FAMILIALE;
+	}
 }

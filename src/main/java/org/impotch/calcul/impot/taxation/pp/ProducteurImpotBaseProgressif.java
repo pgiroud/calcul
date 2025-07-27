@@ -31,16 +31,19 @@
 package org.impotch.calcul.impot.taxation.pp;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
+import org.impotch.util.BigDecimalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static java.math.BigDecimal.ZERO;
 import static org.impotch.util.BigDecimalUtil.isStrictementPositif;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.taxation.pp.annualisation.StrategieAnnualisationComptable;
-import org.impotch.calcul.impot.taxation.pp.famille.ImpositionFamilleSansAvantage;
+import org.impotch.calcul.impot.taxation.pp.famille.ImpositionFamille;
 import org.impotch.util.TypeArrondi;
 
 
@@ -69,7 +72,8 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 	private TypeArrondi typeArrondiImposable;
 	private TypeArrondi typeArrondiDeterminant;
 	private TypeArrondi typeArrondiImpot;
-	
+	private BigDecimal seuilSurImpotDeterminant;
+
 	private StrategieProductionImpotFamille impositionFamille;
 	private StrategieAnnualisation stratAnnualisation;
 
@@ -119,7 +123,11 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 	protected TypeArrondi getTypeArrondiDeterminant() {
 		return typeArrondiDeterminant;
 	}
-	
+
+
+	private void setSeuilSurImpotDeterminant(BigDecimal seuil) {
+		this.seuilSurImpotDeterminant = seuil;
+	}
 	/**
 	 * Spécifie le type d'arrondi à appliquer à l'impôt calculé. Par défaut, l'arrondi se fait aux 5 centimes
 	 * les plus proches.
@@ -177,32 +185,40 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 	}
 
     public void setPartBase(BigDecimal partBase) {
-        this.partBase = Optional.of(partBase);
-    }
+		this.partBase = Optional.of(partBase);
+	}
 
 	/**************************************************/
     /******************* Méthodes *********************/
     /**************************************************/
 
 
-	private BigDecimal impotAnnuel(SituationFamiliale situation, BigDecimal montantImposable, Optional<BigDecimal> montantDeterminant) {
-		if (montantDeterminant.isPresent()) {
-			BigDecimal determinant = getTypeArrondiDeterminant().arrondirMontant(montantDeterminant.get());
-			if (!isStrictementPositif(determinant) || !isStrictementPositif(montantImposable)) return BigDecimal.ZERO;
-			return getStrategieImpositionFamille().produireImpotAnnuel(situation,determinant,montantImposable);
-		} else {
-			return getStrategieImpositionFamille().produireImpotAnnuelAuTauxMaximal(situation,montantImposable);
-		}
+	private BigDecimal impotAnnuel(SituationFamiliale situation, BigDecimal montantImposable, BigDecimal montantDeterminant) {
+			BigDecimal determinant = getTypeArrondiDeterminant().arrondir(montantDeterminant);
+			if (!isStrictementPositif(determinant) || !isStrictementPositif(montantImposable)) return ZERO;
+			BigDecimal impotDeterminant = getStrategieImpositionFamille().produireImpotDeterminant(situation,determinant);
+			if (isStrictementPositif(seuilSurImpotDeterminant)
+				&& 0 < seuilSurImpotDeterminant.compareTo(impotDeterminant)) {
+				return ZERO;
+			}
+			if (0 == montantImposable.compareTo(determinant)) return impotDeterminant;
+			else return typeArrondiImpot.arrondir(montantImposable.multiply(impotDeterminant).divide(determinant,10, RoundingMode.HALF_UP));
+	}
+
+	private BigDecimal impotAnnuelTauxMax(SituationFamiliale situation, BigDecimal montantImposable) {
+		return getStrategieImpositionFamille().produireImpotAuTauxMaximal(situation,montantImposable);
 	}
 
 	public BigDecimal produireImpotBase(SituationFamiliale situation, FournisseurAssiettePeriodique fournisseur) {
 		BigDecimal impot = null;
-		BigDecimal imposable = getTypeArrondiImposable().arrondirMontant(fournisseur.getMontantImposable());
-		BigDecimal impotAnnuel = impotAnnuel(situation,imposable,fournisseur.getMontantDeterminant());
+		BigDecimal imposable = getTypeArrondiImposable().arrondir(fournisseur.getMontantImposable());
+		BigDecimal impotAnnuel = fournisseur.getMontantDeterminant()
+				.map(md -> impotAnnuel(situation,imposable,md))
+				.orElse(impotAnnuelTauxMax(situation,imposable));
 		impot = getStrategieAnnualisation().reduireImpot(impotAnnuel, fournisseur.getNombreJourPourAnnualisation());
-		impot = getTypeArrondiImpot().arrondirMontant(impot);
+		impot = getTypeArrondiImpot().arrondir(impot);
 		if (partBase.isPresent()) {
-			impot = getTypeArrondiImpot().arrondirMontant(partBase.get().multiply(impot));
+			impot = getTypeArrondiImpot().arrondir(partBase.get().multiply(impot));
 		}
 		return impot;
 	}
@@ -216,19 +232,24 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 		private final StrategieProductionImpotFamille strategieImpositionFamiliale;
 		private TypeArrondi typeArrondiImposable	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
 		private TypeArrondi typeArrondiDeterminant	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
-		private TypeArrondi typeArrondiImpot		= TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+		private BigDecimal seuilSurImpotDeterminant = ZERO;
+		private TypeArrondi typeArrondiImpot		= TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
+
 		private StrategieAnnualisation stratAnnualisation = new StrategieAnnualisationComptable();
 
 
 		private Constructeur(Bareme bareme) {
-			this(new ImpositionFamilleSansAvantage(bareme));
+			this(new ImpositionFamille(bareme));
 		}
 
 		private Constructeur(StrategieProductionImpotFamille strategie) {
 			this.strategieImpositionFamiliale = strategie;
 		}
 
-
+		public Constructeur seuilSurImpotDeterminant(BigDecimal seuil) {
+			this.seuilSurImpotDeterminant = seuil;
+			return this;
+		}
 
 		public Constructeur arrondiAssiettes(TypeArrondi typeArrondi) {
 			return arrondiImposable(typeArrondi).arrondiDeterminant(typeArrondi);
@@ -265,6 +286,7 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 			prod.setStrategieProductionImpotFamille(strategieImpositionFamiliale);
 			prod.setTypeArrondiImposable(typeArrondiImposable);
 			prod.setTypeArrondiDeterminant(typeArrondiDeterminant);
+			prod.setSeuilSurImpotDeterminant(seuilSurImpotDeterminant);
 			prod.setTypeArrondiImpot(typeArrondiImpot);
 			prod.setStrategieAnnualisation(stratAnnualisation);
 			return prod;

@@ -32,26 +32,32 @@ package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 import org.impotch.bareme.Bareme;
+import org.impotch.bareme.BaremeTauxMaximal;
 
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public class BaremeRevenuChoixSuivantMontant implements Bareme {
+public class BaremeRevenuChoixSuivantMontant implements BaremeTauxMaximal {
 
 	private int limiteBaremeFamille;
 	private BigDecimal constanteEntreMarieEtCelibataire;
 	
 	private Bareme baremeFamille;
-	private Bareme baremeSeul;
+	private BaremeTauxMaximal baremeSeul;
 	
 	public void setBaremeFamille(Bareme baremeFamille) {
 		this.baremeFamille = baremeFamille;
 	}
 
-	public void setBaremeSeul(Bareme baremeSeul) {
+	public void setBaremeSeul(BaremeTauxMaximal baremeSeul) {
 		this.baremeSeul = baremeSeul;
+	}
+
+	@Override
+	public BigDecimal getTauxMaximum() {
+		return baremeSeul.getTauxMaximum();
 	}
 
 	public void setLimiteBaremeFamille(int limiteBaremeFamille) {
@@ -75,7 +81,7 @@ public class BaremeRevenuChoixSuivantMontant implements Bareme {
 		if (null == pAssiette) return null;
 		if (pAssiette.intValue() >= limiteBaremeFamille) {
 			BigDecimal impot = getConstanteEntreMarieEtCelibataire().add(baremeSeul.calcul(pAssiette));
-			return CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot);
+			return VINGTIEME_LE_PLUS_PROCHE.arrondir(impot);
 		} else return baremeFamille.calcul(pAssiette);
 	}
 

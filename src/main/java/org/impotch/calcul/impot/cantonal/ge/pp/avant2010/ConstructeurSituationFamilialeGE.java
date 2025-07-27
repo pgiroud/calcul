@@ -55,6 +55,9 @@ public class ConstructeurSituationFamilialeGE {
     private ConstructeurSituationFamiliale constructeurSituationFamiliale;
     private boolean coupleDomicilieGE;
     private final boolean conjointFonctionnaireInternational;
+    // Les couples avec un fonctionnaires internationales sont considérés en couple pour IFD mais pas à l'ICC (pour rabais d’impôt)
+    // On a donc besoin du contexte
+    private boolean contexteIFD;
 
     public ConstructeurSituationFamilialeGE(ConstructeurSituationFamiliale constructeurSituationFamiliale) {
         this.constructeurSituationFamiliale = constructeurSituationFamiliale;
@@ -64,6 +67,11 @@ public class ConstructeurSituationFamilialeGE {
     public ConstructeurSituationFamilialeGE(boolean conjointFonctionnaireInternational, ConstructeurSituationFamiliale constructeurSituationFamiliale) {
         this.conjointFonctionnaireInternational = conjointFonctionnaireInternational;
         this.constructeurSituationFamiliale = constructeurSituationFamiliale;
+    }
+
+    public ConstructeurSituationFamilialeGE ifd() {
+        this.contexteIFD = true;
+        return this;
     }
 
     public ConstructeurSituationFamilialeGE enfant() {
@@ -120,7 +128,7 @@ public class ConstructeurSituationFamilialeGE {
     }
 
     public SituationFamilialeGE fournir() {
-        SituationFamilialeGEImpositionFoyer situation = new SituationFamilialeGEImpositionFoyer(constructeurSituationFamiliale.fournir());
+        SituationFamilialeGEImpositionFoyer situation = new SituationFamilialeGEImpositionFoyer(constructeurSituationFamiliale.fournir(),contexteIFD);
         situation.conjointFonctionnaireInternational = conjointFonctionnaireInternational;
         situation.coupleDomicilieGE = coupleDomicilieGE;
         return situation;
@@ -130,16 +138,19 @@ public class ConstructeurSituationFamilialeGE {
     private static class SituationFamilialeGEImpositionFoyer implements SituationFamilialeGE {
 
         private final SituationFamiliale situation;
+        private final boolean ifd;
         public boolean coupleDomicilieGE;
         public boolean conjointFonctionnaireInternational;
 
-        public SituationFamilialeGEImpositionFoyer(SituationFamiliale situation) {
+        public SituationFamilialeGEImpositionFoyer(SituationFamiliale situation, boolean ifd) {
             this.situation = situation;
+            this.ifd = ifd;
         }
 
         @Override
         public boolean isCouple() {
-            return !conjointFonctionnaireInternational && SituationFamilialeGE.super.isCouple();
+            return SituationFamilialeGE.super.isCouple()
+                && (ifd || !conjointFonctionnaireInternational);
         }
 
         @Override

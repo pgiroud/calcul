@@ -37,17 +37,14 @@ public class SplittingEventuellementPartiel extends Splitting {
                 .findAny().isPresent();
     }
 
-    private BigDecimal produireImpotDeterminantGardeAlternee(BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
-        return this.produireImpotAvecSplitting(determinantArrondi,imposableArrondi,tauxSplittingPartiel);
+    private BigDecimal produireImpotDeterminantGardeAlternee(BigDecimal determinantArrondi) {
+        return this.produireImpotAvecSplitting(determinantArrondi,tauxSplittingPartiel);
     }
 
     @Override
-    public BigDecimal produireImpotAnnuel(SituationFamiliale situation, BigDecimal determinantArrondi, BigDecimal imposableArrondi) {
-        if (estCandidatAuSplittingPartiel(situation)) {
-            BigDecimal impotDeterminant = this.produireImpotDeterminantGardeAlternee(determinantArrondi,imposableArrondi);
-            return this.determineImpot(imposableArrondi, determinantArrondi, impotDeterminant);
-        } else {
-            return super.produireImpotAnnuel(situation, determinantArrondi, imposableArrondi);
-        }
+    public BigDecimal produireImpotDeterminant(SituationFamiliale situation, BigDecimal determinantArrondi) {
+        return estCandidatAuSplittingPartiel(situation) ?
+                produireImpotDeterminantGardeAlternee(determinantArrondi) :
+                produireImpotDeterminant(situation, determinantArrondi);
     }
 }

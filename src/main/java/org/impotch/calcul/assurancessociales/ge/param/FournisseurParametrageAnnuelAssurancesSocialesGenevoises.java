@@ -30,14 +30,14 @@
  */
 package org.impotch.calcul.assurancessociales.ge.param;
 
+import org.impotch.calcul.assurancessociales.param.FournisseurParametrageSuisseAnnuel;
+
 import java.util.Optional;
 
-public interface FournisseurParametrageAnnuelAssurancesSocialesGenevoises {
+public interface FournisseurParametrageAnnuelAssurancesSocialesGenevoises extends FournisseurParametrageSuisseAnnuel {
     static FournisseurParametrageAnnuelAssurancesSocialesGenevoises enMemoire() {
         return new FournisseurParametrageAnnuelAssurancesSocialesGenevoisesEnMemoire();
     }
-
-    FournisseurParametrageCotisationAssuranceMaternite fournisseurParametrageCotisationAssuranceMaternite();
 
     Optional<ParametrageAnnuelCotisationsSocialesGenevoises> parametrage(int annee);
 }

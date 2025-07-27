@@ -66,7 +66,7 @@ public class CalculCotisationAvsAiApgSalarie2009Test {
 
     @BeforeEach
     public void initialise() {
-        fournisseurRegle = ContexteTestAssurancesSociales.CTX_TST_AS.fournisseurRegles();
+        fournisseurRegle = ContexteTestAssurancesSociales.CTX_TST_AS.fournisseurReglesSuisses();
     }
 
     private Function<BigDecimal,BigDecimal> regle(TypeAssuranceSociale type) {
