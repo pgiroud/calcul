@@ -56,8 +56,11 @@ class IFDPostNumerando {
 
     /* ---------------------- Personne seule -------------------------------*/
     public Bareme personneSeule(int annee) {
-        if (annee >= 2026)
+        if (annee >= 2027)
             throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas encore défini pour l'année " + annee);
+        if (2026 <= annee) {
+            return personneSeule2026();
+        }
         if (2025 <= annee) {
             return personneSeule2025();
         }
@@ -82,6 +85,19 @@ class IFDPostNumerando {
         throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas défini pour l'année " + annee);
     }
 
+    private Bareme personneSeule2026() {
+        return unBaremeIFD()
+                .jusqua(15_200).a("0.00").etPar100FrancsEnPlus("0.77")
+                .pour(33_200).a("138.60").etPar100FrancsEnPlus("0.88")
+                .pour(43_500).a("229.20").etPar100FrancsEnPlus("2.64")
+                .pour(58_000).a("612.00").etPar100FrancsEnPlus("2.97")
+                .pour(76_200).a("1152.55").etPar100FrancsEnPlus("5.94")
+                .pour(82_100).a("1502.95").etPar100FrancsEnPlus("6.60")
+                .pour(108_900).a("3271.75").etPar100FrancsEnPlus("8.80")
+                .pour(141_500).a("6140.55").etPar100FrancsEnPlus("11.00")
+                .pour(185_100).a("10936.55").etPar100FrancsEnPlus("13.20")
+                .tauxEffectifMax("11.5 %").construire();
+    }
 
     /**
      * Adapté à l'indice de juin 2024: 170,3
@@ -226,8 +242,11 @@ class IFDPostNumerando {
 
 
     public Bareme famille(int annee) {
-        if (annee >= 2026)
+        if (annee >= 2027)
             throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas encore défini pour l'année " + annee);
+        if (2026 <= annee) {
+            return famille2026();
+        }
         if (2025 <= annee) {
             return famille2025();
         }
@@ -237,20 +256,41 @@ class IFDPostNumerando {
         if (2023 <= annee) {
             return famille2023();
         }
-        if (2012 <= annee && 2022 >= annee) {
+        if (2012 <= annee) {
             return famille2012();
         }
         if (2011 == annee) {
             return famille2011();
         }
-        if (2006 <= annee && 2010 >= annee) {
+        if (2006 <= annee) {
             return famille2006();
         }
-        if (1996 <= annee && 2005 >= annee) {
+        if (1996 <= annee) {
             return famille1996();
         }
         throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas défini pour l'année " + annee);
     }
+
+
+    private Bareme famille2026() {
+        return unBaremeIFD()
+                .jusqua(29_700).a(   "0.00").etPar100FrancsEnPlus("1.00")
+                .pour(  53_400).a( "237.00").etPar100FrancsEnPlus("2.00")
+                .pour(  61_300).a( "395.00").etPar100FrancsEnPlus("3.00")
+                .pour(  79_100).a( "929.00").etPar100FrancsEnPlus("4.00")
+                .pour(  94_900).a("1561.00").etPar100FrancsEnPlus("5.00")
+                .pour( 108_700).a("2251.00").etPar100FrancsEnPlus("6.00")
+                .pour( 120_600).a("2965.00").etPar100FrancsEnPlus("7.00")
+                .pour( 130_500).a("3658.00").etPar100FrancsEnPlus("8.00")
+                .pour( 138_400).a("4290.00").etPar100FrancsEnPlus("9.00")
+                .pour( 144_300).a("4821.00").etPar100FrancsEnPlus("10.00")
+                .pour( 148_300).a("5221.00").etPar100FrancsEnPlus("11.00")
+                .pour( 150_400).a("5452.00").etPar100FrancsEnPlus("12.00")
+                .pour( 152_400).a("5692.00").etPar100FrancsEnPlus("13.00")
+                .tauxEffectifMax("11.5 %").construire();
+    }
+
+
 
     /**
      * Adapté à l'indice de juin 2024: 170,3

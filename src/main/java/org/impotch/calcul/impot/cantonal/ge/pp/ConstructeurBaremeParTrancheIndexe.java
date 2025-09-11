@@ -31,6 +31,7 @@
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.impotch.bareme.BaremeParTranche;
 import org.impotch.bareme.ConstructeurBareme;
@@ -183,7 +184,7 @@ public class ConstructeurBaremeParTrancheIndexe {
 		
 		BigDecimal indiceReference = calculIndice(anneeReference);
 		BigDecimal indiceRencherissement = calculIndice(annee);
-		BigDecimal rapportRencherissement = indiceRencherissement.divide(indiceReference, 15, BigDecimal.ROUND_HALF_UP);
+		BigDecimal rapportRencherissement = indiceRencherissement.divide(indiceReference, 15, RoundingMode.HALF_UP);
 		
 
 		return constructeur.construire()

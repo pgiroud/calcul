@@ -305,6 +305,45 @@ public class BaremeIFDPersonnePhysiqueTest {
         assertThat(bar.pour(896000)).isEqualTo("103040.00");
     }
 
+    @Test
+    public void seul2026() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2026);
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(15_200)).isEqualTo("0.00");
+        assertThat(bar.pour(33_200)).isEqualTo("138.60");
+        assertThat(bar.pour(43_500)).isEqualTo("229.20");
+        assertThat(bar.pour(58_000)).isEqualTo("612.00");
+        assertThat(bar.pour(76_200)).isEqualTo("1152.55");
+        assertThat(bar.pour(82_100)).isEqualTo("1502.95");
+        assertThat(bar.pour(108_900)).isEqualTo("3271.75");
+        assertThat(bar.pour(141_500)).isEqualTo("6140.55");
+        assertThat(bar.pour(185_100)).isEqualTo("10936.55");
+        assertThat(bar.pour(793_900)).isEqualTo("91298.15");
+        assertThat(bar.pour(794_000)).isEqualTo("91310.00");
+    }
+
+    @Test
+    public void famille2026() {
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2026);
+        BaremeStr bar = new BaremeStr(bareme);
+
+        assertThat(bar.pour(29_700)).isEqualTo("0.00");
+        assertThat(bar.pour(53_400)).isEqualTo("237.00");
+        assertThat(bar.pour(61_300)).isEqualTo("395.00");
+        assertThat(bar.pour(79_100)).isEqualTo("929.00");
+        assertThat(bar.pour(94_900)).isEqualTo("1561.00");
+        assertThat(bar.pour(108_700)).isEqualTo("2251.00");
+        assertThat(bar.pour(120_600)).isEqualTo("2965.00");
+        assertThat(bar.pour(130_500)).isEqualTo("3658.00");
+        assertThat(bar.pour(138_400)).isEqualTo("4290.00");
+        assertThat(bar.pour(144_300)).isEqualTo("4821.00");
+        assertThat(bar.pour(148_300)).isEqualTo("5221.00");
+        assertThat(bar.pour(150_400)).isEqualTo("5452.00");
+        assertThat(bar.pour(152_400)).isEqualTo("5692.00");
+        assertThat(bar.pour(941_300)).isEqualTo("108249.00");
+        assertThat(bar.pour(941_400)).isEqualTo("108261.00");
+    }
 
     private static class BaremeStr {
         private final Bareme bareme;

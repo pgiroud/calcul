@@ -141,7 +141,8 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 				|| 2022 == annee) return 251; // https://www.fedlex.admin.ch/eli/cc/2013/589/fr RO 2013 589 Art. 2 alinea 3
 		if (2023 == annee) return 255; // https://www.fedlex.admin.ch/eli/cc/2022/575/fr RO 2022 575 Art.2 alinea 3
 		if (2024 == annee) return 259; // https://www.fedlex.admin.ch/eli/cc/2023/493/fr RO 2023 493 Art.2 alinea 3
-		if (2025 == annee) return 263; // https://www.fedlex.admin.ch/eli/oc/2024/479/fr RO 2024 479 Art.2 alinea 3
+		if (2025 == annee
+			|| 2026 == annee) return 263; // https://www.fedlex.admin.ch/eli/oc/2024/479/fr RO 2024 479 Art.2 alinea 3
 		throw new IllegalArgumentException("Le rabais d’impôt pour les enfants n’est pas connu pour l’année " + annee);
 	}
 

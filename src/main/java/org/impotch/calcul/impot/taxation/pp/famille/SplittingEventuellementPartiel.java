@@ -45,6 +45,6 @@ public class SplittingEventuellementPartiel extends Splitting {
     public BigDecimal produireImpotDeterminant(SituationFamiliale situation, BigDecimal determinantArrondi) {
         return estCandidatAuSplittingPartiel(situation) ?
                 produireImpotDeterminantGardeAlternee(determinantArrondi) :
-                produireImpotDeterminant(situation, determinantArrondi);
+                super.produireImpotDeterminant(situation, determinantArrondi);
     }
 }
