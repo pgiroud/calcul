@@ -36,9 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.bareme.Bareme;
-import org.impotch.calcul.impot.federal.param.FournisseurBaremeIFD;
 import org.impotch.calcul.impot.federal.param.FournisseurParametrageAnnuelIFD;
-import org.impotch.calcul.impot.taxation.pp.ProducteurImpotAvecRabais;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
 import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
@@ -72,51 +70,16 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		return producteurImpotsFederauxPP.get(annee);
 	}
 
-//	public ProducteurImpot getProducteurImpotsPrestationCapital(int annee) {
-//
-//		if (!producteurImpotsPrestationCapital.containsKey(annee))
-//			producteurImpotsPrestationCapital.putIfAbsent(annee,
-//					construireProducteurImpotsPrestationCapital(annee));
-//		return producteurImpotsPrestationCapital.get(annee);
-//	}
-//
-//	public ProducteurImpot getProducteurImpotSourcePrestationCapital(int annee) {
-//
-//		if (!producteurImpotSourcePrestationCapital.containsKey(annee))
-//			producteurImpotSourcePrestationCapital.putIfAbsent(annee,
-//					construireProducteurImpotSourcePrestationCapital(annee));
-//		return producteurImpotSourcePrestationCapital.get(annee);
-//	}
-	
 	private Bareme getBaremeRevenu(int annee) {
         return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
 	}
 
-//	private Bareme construireBaremePrestationCapital(final Bareme bareme) {
-//		return new Bareme() {
-//
-//			@Override
-//			public BigDecimal calcul(BigDecimal assiette) {
-//				BigDecimal impot = bareme.calcul(assiette);
-//				return TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(impot.multiply(new BigDecimal("0.2")));
-//			}
-//
-//		};
-//	}
-//
-//	private Bareme getBaremePrestationCapital(int annee) {
-////        Bareme bareme = 2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
-////        return construireBaremePrestationCapital(bareme);
-//		return 2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
-//	}
-	
+
 	private Bareme getBaremeRevenuFamille(int annee) {
         return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
 	}
 
 	private Bareme getBaremePrestationCapitalFamille(int annee) {
-//        Bareme bareme =  2011 > annee ? fournisseurBaremeIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurBaremeIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
-//        return construireBaremePrestationCapital(bareme);
 		return  2011 > annee ? fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
 	}
 		
@@ -148,17 +111,10 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 
 
 	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee) {
-//        ProducteurImpot producteur = null;
-//        if (annee < 2011) {
-//            producteur = new ProducteurImpot("IBR","");
-//        } else {
-//			ProducteurImpotAvecRabais prodAvecRabais = new ProducteurImpotAvecRabais("IBR","RI","");
-//            prodAvecRabais.setProducteurBaseRabais(new  ProducteurRabaisEnfantPersonneNecessiteuse(fournisseurParametrageAnnuelIFD.rabaisImpotCharge(annee).getAsInt()));
-//            producteur = prodAvecRabais;
-//        }
 		ProducteurImpot producteur = new ProducteurImpot("IBR","");
 		StrategieProductionImpotFamille strat;
 		OptionalInt mntRabais = fournisseurParametrageAnnuelIFD.rabaisImpotCharge(annee);
+
 		if (mntRabais.isPresent()) {
 			strat = doubleBaremeAvecRabaisCharge(getBaremeRevenu(annee), getBaremeRevenuFamille(annee),mntRabais.getAsInt());
 		} else {

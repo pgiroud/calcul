@@ -39,7 +39,7 @@ import java.util.stream.Stream;
 
 import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
 
-class ConstructeurBaremeIFD {
+public class ConstructeurBaremeIFD {
 
     // 3 sujets : arrondi avant d’entrer dans le barème, arrondi sur calcul de tranche (sauf PC), taux effective max atteint
 
