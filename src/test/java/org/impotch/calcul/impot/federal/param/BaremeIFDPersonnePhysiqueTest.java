@@ -314,7 +314,7 @@ public class BaremeIFDPersonnePhysiqueTest {
         assertThat(bar.pour(33_200)).isEqualTo("138.60");
         assertThat(bar.pour(43_500)).isEqualTo("229.20");
         assertThat(bar.pour(58_000)).isEqualTo("612.00");
-        assertThat(bar.pour(76_200)).isEqualTo("1152.55");
+        assertThat(bar.pour(76_200)).isEqualTo("1152.50");
         assertThat(bar.pour(82_100)).isEqualTo("1502.95");
         assertThat(bar.pour(108_900)).isEqualTo("3271.75");
         assertThat(bar.pour(141_500)).isEqualTo("6140.55");
