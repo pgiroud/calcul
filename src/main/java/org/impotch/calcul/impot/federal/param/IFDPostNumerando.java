@@ -85,13 +85,23 @@ class IFDPostNumerando {
         throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas défini pour l'année " + annee);
     }
 
+    /**
+     *  Au 30 juin 2025, l'indice de référence s'élevait à 170,4 points, ce qui correspond à une augmentation
+     *  de 0,06 pour cent par rapport à l'indice du 30 juin 2024.
+     *  Voir <a href="https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-215-d-2025-fr.pdf.download.pdf/dbst-rs-2-215-d-2025-fr.pdf">lettre circulaire n 215</a>
+     *  et l’ordonnance sur la progression à froid <a href="https://www.fedlex.admin.ch/eli/oc/2025/579/fr">RO 2025 579</a>
+     *
+     * Attention, il y a eu une erreur sur une tranche dans la circulaire publiée (pour 76200, il était indiqué un montant d’impôt de 1152.55 alors que le
+     * montant doit être 1152.50). Voir erratum <a href="https://www.fedlex.admin.ch/eli/oc/2025/621/fr">RO 2025 621</a>
+     * @return barème IFD pour personne seule valable dès 2025
+     */
     private Bareme personneSeule2026() {
         return unBaremeIFD()
                 .jusqua(15_200).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(33_200).a("138.60").etPar100FrancsEnPlus("0.88")
                 .pour(43_500).a("229.20").etPar100FrancsEnPlus("2.64")
                 .pour(58_000).a("612.00").etPar100FrancsEnPlus("2.97")
-                .pour(76_200).a("1152.55").etPar100FrancsEnPlus("5.94")
+                .pour(76_200).a("1152.50").etPar100FrancsEnPlus("5.94")
                 .pour(82_100).a("1502.95").etPar100FrancsEnPlus("6.60")
                 .pour(108_900).a("3271.75").etPar100FrancsEnPlus("8.80")
                 .pour(141_500).a("6140.55").etPar100FrancsEnPlus("11.00")
@@ -106,7 +116,7 @@ class IFDPostNumerando {
      * https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf
      * Attention, il y a une erreur sur une tranche dans la directive fédérale.
      * Se référer à l’article 36 de la LIFD en vigueur au 1er janvier 2025
-     * @return barème IFD pour personne seule valable dès 2024
+     * @return barème IFD pour personne seule valable dès 2025
      */
     private Bareme personneSeule2025() {
         return unBaremeIFD()
