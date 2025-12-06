@@ -58,6 +58,11 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         }
     }
 
+    private ParametrageSuisseAnnuel construireParametrage2026() {
+        // Le paramétrage 2026 est le même que celui de 2025
+        return unConstructeur(2026).copie(construireParametrage2025()).cons();
+    }
+
     private ParametrageSuisseAnnuel construireParametrage2025() {
         // Adaptation de la rente mensuelle minimum : 1225 CHF --> 1260 CHF https://www.fedlex.admin.ch/eli/cc/2024/463/fr#art_3
         return unConstructeur(2025)

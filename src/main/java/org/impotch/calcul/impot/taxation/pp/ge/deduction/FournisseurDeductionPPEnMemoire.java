@@ -65,7 +65,7 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
 
     private DeductionSociale construireRegleDeductionSocialeCharge(int annee) {
         if (annee < 2010) return null;
-        if (annee > 2025) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
+        if (annee > 2026) throw new IllegalArgumentException("Le montant des déductions sociales pour l'année '"
                 + annee + "' doit être adapté !");
         int montant = fournisseurParametrage.revenu(annee).deductionSocialeRevenuParChargeDeFamille();
         DeductionChargeFamille deduction = new DeductionChargeFamille(annee);

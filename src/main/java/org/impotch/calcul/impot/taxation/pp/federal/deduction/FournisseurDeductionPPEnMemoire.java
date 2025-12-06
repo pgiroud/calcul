@@ -57,7 +57,13 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
             regle.setPlafond(7000);
         } else {
             regle.setTaux("50 %");
-            if (annee >= 2023) {
+            if (annee >= 2025) {
+                regle.setPlancher(8600);
+                regle.setPlafond(14100);
+            } else if (annee >= 2024) {
+                regle.setPlancher(8500);
+                regle.setPlafond(13900);
+            } else if (annee >= 2023) {
                 regle.setPlancher(8300);
                 regle.setPlafond(13600);
             } else if (annee >= 2012) {
@@ -80,7 +86,9 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
 
     protected DeductionSociale construireRegleDeductionSocialeEnfant(int annee) {
         DeductionSocialeParEnfant deduction = new DeductionSocialeParEnfant(annee);
-        if (annee > 2023) {
+        if (annee > 2024) {
+            deduction.setDeductionSocialeParEnfant(6800);
+        } else if (annee > 2023) {
             deduction.setDeductionSocialeParEnfant(6700);
         } else if (annee > 2022) {
             deduction.setDeductionSocialeParEnfant(6600);

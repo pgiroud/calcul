@@ -160,6 +160,20 @@ public class ParametrageSuisseAnnuelEnMemoire implements ParametrageSuisseAnnuel
             this.renteMensuelleMinimum = param.renteMensuelleMinimum();
         }
 
+        public Constructeur copie(ParametrageSuisseAnnuel param) {
+            this.montantMaxAssure = param.montantMaximumDuGainAssure();
+            this.tauxAVS = param.tauxAVS();
+            this.tauxAI = param.tauxAI();
+            this.tauxAPG = param.tauxAPG();
+            this.tauxAC = param.tauxAC();
+            this.avecParticipationHautRevenuAC = avecParticipationRevenuAuDelaDuMontantMaxAssure().avecParticipationHautRevenuAC;
+            if (param.participationHautRevenu().isPresent()) {
+                this.participation = param.participationHautRevenu().orElse(null);
+            }
+
+            this.renteMensuelleMinimum = param.renteMensuelleMinimum();        return this;
+        }
+
         public Constructeur montantMaxAssure(int montant) {
             montantMaxAssure = montant;
             return this;
