@@ -31,6 +31,7 @@
 package org.impotch.calcul.impot.federal.param;
 
 import org.impotch.bareme.Bareme;
+import org.impotch.util.TypeArrondi;
 
 import java.util.Optional;
 
@@ -47,9 +48,10 @@ public interface FournisseurBaremeIFD {
      * Ce barème est décrit dans la LIFD article 214 alinea 1.
      * Ces barèmes incluent le seuillage à 25 francs tel que décrit dans l'alinea 3 de l'article 214 de la LIFD.
      * @param annee l'année pour laquelle on désire ce barème
+     * @param arrondiSurChaqueTranche Pour l’impôt ordinaire, les arrondis sont au vingtième inférieur mais pour la source, au vingtième les plus proche
      * @return le barème permettant de calculer l'impôt à partir du revenu pour une personne seule.
      */
-    Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee);
+    Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche);
 
 
     /**
@@ -57,11 +59,12 @@ public interface FournisseurBaremeIFD {
      * Ce barème est décrit dans la LIFD article 214 alinea 2.
      * Ces barèmes incluent le seuillage à 25 francs tel que décrit dans l'alinea 3 de l'article 214 de la LIFD.
      * @param annee l'année pour laquelle on désire ce barème
+     * @param arrondiSurChaqueTranche Pour l’impôt ordinaire, les arrondis sont au vingtième inférieur mais pour la source, au vingtième les plus proche
      * @return le barème permettant de calculer l'impôt à partir du revenu pour des personnes mariées ou des familles mono-parentales.
      */
-    Bareme getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee);
+    Bareme getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche);
 
-    Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee);
-    Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee);
+    Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche);
+    Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche);
 
 }

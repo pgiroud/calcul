@@ -1,6 +1,7 @@
 package org.impotch.calcul.impot.federal.param;
 
 import org.impotch.bareme.Bareme;
+import org.impotch.util.TypeArrondi;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -13,23 +14,23 @@ public class FournisseurParametrageAnnuelIFDEnMemoire implements FournisseurPara
     private final FournisseurBaremeIFD baremes = new FournisseurBaremeIFDEnMemoire();
 
     @Override
-    public Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee) {
-        return baremes.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
+    public Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return baremes.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee,arrondiSurChaqueTranche);
     }
 
     @Override
-    public Bareme getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee) {
-        return baremes.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
+    public Bareme getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return baremes.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee,arrondiSurChaqueTranche);
     }
 
     @Override
-    public Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee) {
-        return baremes.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee);
+    public Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return baremes.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee,arrondiSurChaqueTranche);
     }
 
     @Override
-    public Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee) {
-        return baremes.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee);
+    public Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return baremes.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee,arrondiSurChaqueTranche);
     }
 
     @Override

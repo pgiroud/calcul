@@ -43,19 +43,17 @@ public class ConstructeurBaremeIFD {
 
     // 3 sujets : arrondi avant d’entrer dans le barème, arrondi sur calcul de tranche (sauf PC), taux effective max atteint
 
-
-    private static final TypeArrondi ARRONDI_SUR_CHAQUE_TRANCHE = TypeArrondi.CINQ_CENTIEMES_INF;
-
-    public static ConstructeurBaremeIFD unBaremeIFD() {
-        return new ConstructeurBaremeIFD(TypeArrondi.CENTAINE_INF, false);
+    public static ConstructeurBaremeIFD unBaremeIFD(TypeArrondi typeArrondiSurChaqueTranche) {
+        return new ConstructeurBaremeIFD(TypeArrondi.CENTAINE_INF, typeArrondiSurChaqueTranche, false);
     }
 
-    public static ConstructeurBaremeIFD unBaremeIFDPrestationEnCapitalImposeeSource() {
-        return new ConstructeurBaremeIFD(TypeArrondi.MILLE_INF, true);
+    public static ConstructeurBaremeIFD unBaremeIFDPrestationEnCapitalImposeeSource(TypeArrondi typeArrondiSurChaqueTranche) {
+        return new ConstructeurBaremeIFD(TypeArrondi.MILLE_INF, typeArrondiSurChaqueTranche,true);
     }
 
     private final BigDecimal precisionArrondiSurAssiette;
     private final ConstructeurBareme cons;
+    private final TypeArrondi arrondiSurChaqueTranche;
 
     private BigDecimal taux = BigDecimal.ZERO;
     private BigDecimal debutTranche = BigDecimal.ZERO;
@@ -64,13 +62,14 @@ public class ConstructeurBaremeIFD {
 
 
 
-    private ConstructeurBaremeIFD(TypeArrondi arrondiSurAssiette, boolean source) {
+    private ConstructeurBaremeIFD(TypeArrondi arrondiSurAssiette, TypeArrondi arrondiSurChaqueTranche, boolean source) {
         super();
         precisionArrondiSurAssiette = arrondiSurAssiette.precision();
+        this.arrondiSurChaqueTranche = arrondiSurChaqueTranche;
         cons = unBaremeATauxMarginal()
                 .fermeAGauche()
                 .typeArrondiSurEntrant(arrondiSurAssiette)
-                .typeArrondiSurChaqueTranche(ARRONDI_SUR_CHAQUE_TRANCHE);
+                .typeArrondiSurChaqueTranche(arrondiSurChaqueTranche);
                 //.seuil(!(source) ? 25 : 0);
     }
 
@@ -83,7 +82,7 @@ public class ConstructeurBaremeIFD {
         // Les valeurs pour la tranche suivante. On ne peut malheureusement pas utiliser la tranche construite car l'intervalle est ouvert
         // en fin de tranche. Ceci est nécessaire pour l'algo de calcul.
         // La valeur en début de tranche peut bien sûr être modifiée en cas de fixation d'arrondi (les 11.5 % doivent être atteints)
-        valeurEnDebutTranche = valeurEnDebutTranche.add(ARRONDI_SUR_CHAQUE_TRANCHE.arrondirMontant(taux.multiply(finTranche.subtract(debutTranche))));
+        valeurEnDebutTranche = valeurEnDebutTranche.add(arrondiSurChaqueTranche.arrondir(taux.multiply(finTranche.subtract(debutTranche))));
         debutTranche = finTranche;
     }
 
@@ -139,7 +138,7 @@ public class ConstructeurBaremeIFD {
 
     private BigDecimal calculImpot(BigDecimal revenu) {
         BigDecimal revenuDansLaTranche = revenu.subtract(debutTranche);
-        BigDecimal impotDansLaTranche = ARRONDI_SUR_CHAQUE_TRANCHE.arrondirMontant(taux.multiply(revenuDansLaTranche));
+        BigDecimal impotDansLaTranche = arrondiSurChaqueTranche.arrondir(taux.multiply(revenuDansLaTranche));
         return valeurEnDebutTranche.add(impotDansLaTranche);
     }
 
@@ -154,7 +153,7 @@ public class ConstructeurBaremeIFD {
         cons.tranche(debutTranche,borneSuperieure,valeurEnDebutTranche, taux);
         debutTranche = borneSuperieure;
         taux = tauxEffectifMax;
-        valeurEnDebutTranche = ARRONDI_SUR_CHAQUE_TRANCHE.arrondirMontant(taux.multiply(borneSuperieure));
+        valeurEnDebutTranche = arrondiSurChaqueTranche.arrondir(taux.multiply(borneSuperieure));
         cons.derniereTranche(borneSuperieure,valeurEnDebutTranche,taux);
         return cons.construire();
     }
@@ -163,7 +162,7 @@ public class ConstructeurBaremeIFD {
     // Prestation en capital
 
     public ConstructeurBaremeIFD taux(String taux) {
-        this.taux =  BigDecimalUtil.parseTaux(taux);
+        this.taux =  BigDecimalUtil.parse(taux);
         return this;
     }
 

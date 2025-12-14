@@ -80,7 +80,7 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
 
     @Test
     public void produireImpotIFD() {
-        ProducteurImpot prod = constructeur.getProducteurImpotsFederauxPP(2013);
+        ProducteurImpot prod = constructeur.producteurImpotsFederauxPP(2013);
         RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(annee(2013), 12), this.creerAssiettes(2013, 52400), recepteur);
         // Impôt de base : 256 - 251 (rabais enfant) = 5 francs < 25 francs --> 0
@@ -89,7 +89,7 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
 
     @Test
     public void produireImpotIFD2021() {
-        ProducteurImpot prod = constructeur.getProducteurImpotsFederauxPP(2021);
+        ProducteurImpot prod = constructeur.producteurImpotsFederauxPP(2021);
         RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(annee(2021),16,13),
                 this.creerAssiettes(2021, 120400, 105300), recepteur);
@@ -99,7 +99,7 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
     @Test
     public void produireImpotCouple1EnfantJusteAuDessousDuSeuil() {
         int periode = 2025;
-        ProducteurImpot prod = constructeur.getProducteurImpotsFederauxPP(periode);
+        ProducteurImpot prod = constructeur.producteurImpotsFederauxPP(periode);
         RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(annee(periode),16),
                 this.creerAssiettes(periode, 56_000, 55_999), recepteur);
@@ -109,7 +109,7 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
     @Test
     public void produireImpotCouple1EnfantJusteAuDessusDuSeuil() {
         int periode = 2025;
-        ProducteurImpot prod = constructeur.getProducteurImpotsFederauxPP(periode);
+        ProducteurImpot prod = constructeur.producteurImpotsFederauxPP(periode);
         RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(annee(periode),16),
                 this.creerAssiettes(periode, 56_000, 56_000), recepteur);

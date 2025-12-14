@@ -31,6 +31,7 @@
 package org.impotch.calcul.impot.federal.param;
 
 import org.impotch.bareme.Bareme;
+import org.impotch.util.TypeArrondi;
 
 import java.util.Optional;
 
@@ -41,24 +42,24 @@ public class FournisseurBaremeIFDEnMemoire implements FournisseurBaremeIFD {
     private IFDPraeNumerando praeNumerando = new IFDPraeNumerando();
 
     @Override
-    public Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee) {
-        return postNumerando.personneSeule(annee);
+    public Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return postNumerando.personneSeule(annee,arrondiSurChaqueTranche);
     }
 
 
     @Override
-    public Bareme getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee) {
-        return postNumerando.famille(annee);
+    public Bareme getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return postNumerando.famille(annee,arrondiSurChaqueTranche);
     }
 
     @Override
-    public Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee) {
-        return praeNumerando.personneSeule(annee);
+    public Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return praeNumerando.personneSeule(annee,arrondiSurChaqueTranche);
     }
 
     @Override
-    public Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee) {
-        return praeNumerando.famille(annee);
+    public Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return praeNumerando.famille(annee,arrondiSurChaqueTranche);
     }
 
 }

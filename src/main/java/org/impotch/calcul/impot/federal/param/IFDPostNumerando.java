@@ -46,6 +46,8 @@
 package org.impotch.calcul.impot.federal.param;
 
 import org.impotch.bareme.Bareme;
+import org.impotch.util.TypeArrondi;
+
 import static org.impotch.calcul.impot.federal.param.ConstructeurBaremeIFD.unBaremeIFD;
 class IFDPostNumerando {
 
@@ -55,32 +57,32 @@ class IFDPostNumerando {
 
 
     /* ---------------------- Personne seule -------------------------------*/
-    public Bareme personneSeule(int annee) {
+    public Bareme personneSeule(int annee, TypeArrondi arrondiSurChaqueTranche) {
         if (annee >= 2027)
             throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas encore défini pour l'année " + annee);
         if (2026 <= annee) {
-            return personneSeule2026();
+            return personneSeule2026(arrondiSurChaqueTranche);
         }
         if (2025 <= annee) {
-            return personneSeule2025();
+            return personneSeule2025(arrondiSurChaqueTranche);
         }
         if (2024 <= annee) {
-            return personneSeule2024();
+            return personneSeule2024(arrondiSurChaqueTranche);
         }
         if (2023 <= annee) {
-            return personneSeule2023();
+            return personneSeule2023(arrondiSurChaqueTranche);
         }
         if (2012 <= annee && 2022 >= annee) {
-            return personneSeule2012();
+            return personneSeule2012(arrondiSurChaqueTranche);
         }
         if (2011 == annee) {
-            return personneSeule2011();
+            return personneSeule2011(arrondiSurChaqueTranche);
         }
         if (2006 <= annee && 2010 >= annee) {
-            return personneSeule2006();
+            return personneSeule2006(arrondiSurChaqueTranche);
         }
         if (1996 <= annee && 2005 >= annee) {
-            return personneSeule1996();
+            return personneSeule1996(arrondiSurChaqueTranche);
         }
         throw new IllegalArgumentException("Le barème IFD pour les personnes seules n'est pas défini pour l'année " + annee);
     }
@@ -95,8 +97,8 @@ class IFDPostNumerando {
      * montant doit être 1152.50). Voir erratum <a href="https://www.fedlex.admin.ch/eli/oc/2025/621/fr">RO 2025 621</a>
      * @return barème IFD pour personne seule valable dès 2025
      */
-    private Bareme personneSeule2026() {
-        return unBaremeIFD()
+    private Bareme personneSeule2026(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(15_200).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(33_200).a("138.60").etPar100FrancsEnPlus("0.88")
                 .pour(43_500).a("229.20").etPar100FrancsEnPlus("2.64")
@@ -118,8 +120,8 @@ class IFDPostNumerando {
      * Se référer à l’article 36 de la LIFD en vigueur au 1er janvier 2025
      * @return barème IFD pour personne seule valable dès 2025
      */
-    private Bareme personneSeule2025() {
-        return unBaremeIFD()
+    private Bareme personneSeule2025(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(15_200).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(33_200).a("138.60").etPar100FrancsEnPlus("0.88")
                 .pour(43_500).a("229.20").etPar100FrancsEnPlus("2.64")
@@ -138,8 +140,8 @@ class IFDPostNumerando {
      * https://lex.weblaw.ch/lex.php?norm_id=642.119.2&source=SR&lex_id=87133&q=
      * @return barème IFD pour personne seule valable dès 2024
      */
-    private Bareme personneSeule2024() {
-        return unBaremeIFD()
+    private Bareme personneSeule2024(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(15_000).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(32_800).a("137.05").etPar100FrancsEnPlus("0.88")
                 .pour(42_900).a("225.90").etPar100FrancsEnPlus("2.64")
@@ -157,8 +159,8 @@ class IFDPostNumerando {
      * barème 2012 étiré de 2.04 %
      * @return Constructeur pour les périodes fiscales 2023
      */
-    private Bareme personneSeule2023() {
-        return unBaremeIFD()
+    private Bareme personneSeule2023(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(14_800).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(32_200).a("133.95").etPar100FrancsEnPlus("0.88")
                 .pour(42_200).a("221.95").etPar100FrancsEnPlus("2.64")
@@ -176,8 +178,8 @@ class IFDPostNumerando {
      * barème 2011 étiré de 0.6 %
      * @return Constructeur pour les périodes fiscales 2012, 2013
      */
-    private Bareme personneSeule2012() {
-        return unBaremeIFD()
+    private Bareme personneSeule2012(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(14500).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(31600).a("131.65").etPar100FrancsEnPlus("0.88")
                 .pour(41400).a("217.90").etPar100FrancsEnPlus("2.64")
@@ -195,8 +197,8 @@ class IFDPostNumerando {
      * barème 2006 étiré de 5,2 %
      * @return Constructeur pour la période fiscale 2011
      */
-    private Bareme personneSeule2011() {
-        return unBaremeIFD()
+    private Bareme personneSeule2011(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(14400).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(31500).a("131.65").etPar100FrancsEnPlus("0.88")
                 .pour(41200).a("217.00").etPar100FrancsEnPlus("2.64")
@@ -214,8 +216,8 @@ class IFDPostNumerando {
      * barème 1996 étiré de 7,6 %
      * @return Constructeur pour les périodes fiscales 2006, 2007, 2008, 2009, 2010
      */
-    private Bareme personneSeule2006() {
-        return unBaremeIFD()
+    private Bareme personneSeule2006(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(13600).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(29800).a("124.70").etPar100FrancsEnPlus("0.88")
                 .pour(39000).a("205.65").etPar100FrancsEnPlus("2.64")
@@ -233,8 +235,8 @@ class IFDPostNumerando {
      * barème 1993 étiré de 8.5 %
      * @return Constructeur pour les périodes fiscales 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004 et 2005
      */
-    private Bareme personneSeule1996() {
-        return unBaremeIFD()
+    private Bareme personneSeule1996(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(12800).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(27900).a("116.25").etPar100FrancsEnPlus("0.88")
                 .pour(36500).a("191.90").etPar100FrancsEnPlus("2.64")
@@ -251,39 +253,39 @@ class IFDPostNumerando {
     /* --------------------------- Famille -------------------------------*/
 
 
-    public Bareme famille(int annee) {
+    public Bareme famille(int annee, TypeArrondi arrondiSurChaqueTranche) {
         if (annee >= 2027)
             throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas encore défini pour l'année " + annee);
         if (2026 <= annee) {
-            return famille2026();
+            return famille2026(arrondiSurChaqueTranche);
         }
         if (2025 <= annee) {
-            return famille2025();
+            return famille2025(arrondiSurChaqueTranche);
         }
         if (2024 <= annee) {
-            return famille2024();
+            return famille2024(arrondiSurChaqueTranche);
         }
         if (2023 <= annee) {
-            return famille2023();
+            return famille2023(arrondiSurChaqueTranche);
         }
         if (2012 <= annee) {
-            return famille2012();
+            return famille2012(arrondiSurChaqueTranche);
         }
         if (2011 == annee) {
-            return famille2011();
+            return famille2011(arrondiSurChaqueTranche);
         }
         if (2006 <= annee) {
-            return famille2006();
+            return famille2006(arrondiSurChaqueTranche);
         }
         if (1996 <= annee) {
-            return famille1996();
+            return famille1996(arrondiSurChaqueTranche);
         }
         throw new IllegalArgumentException("Le barème IFD pour les familles n'est pas défini pour l'année " + annee);
     }
 
 
-    private Bareme famille2026() {
-        return unBaremeIFD()
+    private Bareme famille2026(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(29_700).a(   "0.00").etPar100FrancsEnPlus("1.00")
                 .pour(  53_400).a( "237.00").etPar100FrancsEnPlus("2.00")
                 .pour(  61_300).a( "395.00").etPar100FrancsEnPlus("3.00")
@@ -309,8 +311,8 @@ class IFDPostNumerando {
      * https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf
      * @return barème IFD pour famille valable dès 2025
      */
-    private Bareme famille2025() {
-        return unBaremeIFD()
+    private Bareme famille2025(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(29_700).a(   "0.00").etPar100FrancsEnPlus("1.00")
                 .pour(  53_400).a( "237.00").etPar100FrancsEnPlus("2.00")
                 .pour(  61_300).a( "395.00").etPar100FrancsEnPlus("3.00")
@@ -334,8 +336,8 @@ class IFDPostNumerando {
      * https://lex.weblaw.ch/lex.php?norm_id=642.119.2&source=SR&lex_id=87133&q=
      * @return le barème IFD pour famille pour l’année 2024
      */
-    private Bareme famille2024() {
-        return unBaremeIFD()
+    private Bareme famille2024(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(29_300).a(   "0.00").etPar100FrancsEnPlus("1.00")
                 .pour(  52_700).a( "234.00").etPar100FrancsEnPlus("2.00")
                 .pour(  60_500).a( "390.00").etPar100FrancsEnPlus("3.00")
@@ -357,8 +359,8 @@ class IFDPostNumerando {
      * barème 2012 étiré de 2.04 %
      * @return barèmè pour la période fiscale >= 2023
      */
-    private Bareme famille2023() {
-        return unBaremeIFD()
+    private Bareme famille2023(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(28_800).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(51_800).a("230.00").etPar100FrancsEnPlus("2.00")
                 .pour(59_400).a("382.00").etPar100FrancsEnPlus("3.00")
@@ -380,8 +382,8 @@ class IFDPostNumerando {
      * barème 2011 étiré de 0.6 %
      * @return Constructeur pour les périodes fiscales 2012, 2013
      */
-    private Bareme famille2012() {
-        return unBaremeIFD()
+    private Bareme famille2012(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(28300).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(50900).a("226.00").etPar100FrancsEnPlus("2.00")
                 .pour(58400).a("376.00").etPar100FrancsEnPlus("3.00")
@@ -403,8 +405,8 @@ class IFDPostNumerando {
      * barème 2006 étiré de 5,2 %
      * @return Constructeur pour la période fiscale 2011
      */
-    private Bareme famille2011() {
-        return unBaremeIFD()
+    private Bareme famille2011(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(28100).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(50400).a("223.00").etPar100FrancsEnPlus("2.00")
                 .pour(57900).a("373.00").etPar100FrancsEnPlus("3.00")
@@ -426,8 +428,8 @@ class IFDPostNumerando {
      * barème 1996 étiré de 7,6 %
      * @return Constructeur pour les périodes fiscales 2006, 2007, 2008, 2009, 2010
      */
-    private Bareme famille2006() {
-        return unBaremeIFD()
+    private Bareme famille2006(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(26700).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(47900).a("212.00").etPar100FrancsEnPlus("2.00")
                 .pour(54900).a("352.00").etPar100FrancsEnPlus("3.00")
@@ -449,8 +451,8 @@ class IFDPostNumerando {
      * barème 1993 étiré de 8.5 %
      * @return Constructeur pour les périodes fiscales 1996 à 2005
      */
-    private Bareme famille1996() {
-        return unBaremeIFD()
+    private Bareme famille1996(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(24900).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(44700).a("198.00").etPar100FrancsEnPlus("2.00")
                 .pour(51300).a("330.00").etPar100FrancsEnPlus("3.00")

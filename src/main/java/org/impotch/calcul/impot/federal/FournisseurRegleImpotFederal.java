@@ -30,9 +30,15 @@
  */
 package org.impotch.calcul.impot.federal;
 
-import org.impotch.calcul.impot.federal.pp.source.CalculateurImpotSourcePrestationCapitalIFD;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
+import org.impotch.util.TypeArrondi;
+
+import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_INF;
 
 public interface FournisseurRegleImpotFederal {
-	ProducteurImpot getProducteurImpotsFederauxPP(int annee);
+
+	default ProducteurImpot producteurImpotsFederauxPP(int annee) {
+        return producteurImpotsFederauxPP(annee, CINQ_CENTIEMES_INF);
+    }
+    ProducteurImpot producteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTrancheBareme);
 }

@@ -50,7 +50,6 @@ import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamil
 public class Fournisseur implements FournisseurRegleImpotFederal {
 
 	private static final TypeArrondi ARRONDI_ASSIETTES = TypeArrondi.CENTAINE_INF;
-	private static final TypeArrondi ARRONDI_IMPOT = TypeArrondi.CINQ_CENTIEMES_INF;
 
 
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsFederauxPP = new ConcurrentHashMap<>();
@@ -63,24 +62,23 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		this.fournisseurParametrageAnnuelIFD = fournisseurParamIFD;
 	}
 
-	public ProducteurImpot getProducteurImpotsFederauxPP(int annee) {
+	public ProducteurImpot producteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche) {
 		if (!producteurImpotsFederauxPP.containsKey(annee))
 			producteurImpotsFederauxPP.putIfAbsent(annee,
-					construireProducteurImpotsFederauxPP(annee));
+					construireProducteurImpotsFederauxPP(annee,arrondiSurChaqueTranche));
 		return producteurImpotsFederauxPP.get(annee);
 	}
 
-	private Bareme getBaremeRevenu(int annee) {
-        return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee);
+	private Bareme getBaremeRevenu(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee,arrondiSurChaqueTranche);
 	}
 
-
-	private Bareme getBaremeRevenuFamille(int annee) {
-        return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
+	private Bareme getBaremeRevenuFamille(int annee, TypeArrondi arrondiSurChaqueTranche) {
+        return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee,arrondiSurChaqueTranche);
 	}
 
 	private Bareme getBaremePrestationCapitalFamille(int annee) {
-		return  2011 > annee ? fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee) : fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee);
+		return  2011 > annee ? fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee, TypeArrondi.CINQ_CENTIEMES_INF) : fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee, TypeArrondi.CINQ_CENTIEMES_INF);
 	}
 		
 	private IExplicationDetailleeBuilder getNewExplicationBuilder() {
@@ -110,20 +108,20 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 
 
-	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee) {
+	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche) {
 		ProducteurImpot producteur = new ProducteurImpot("IBR","");
 		StrategieProductionImpotFamille strat;
 		OptionalInt mntRabais = fournisseurParametrageAnnuelIFD.rabaisImpotCharge(annee);
 
 		if (mntRabais.isPresent()) {
-			strat = doubleBaremeAvecRabaisCharge(getBaremeRevenu(annee), getBaremeRevenuFamille(annee),mntRabais.getAsInt());
+			strat = doubleBaremeAvecRabaisCharge(getBaremeRevenu(annee,arrondiSurChaqueTranche), getBaremeRevenuFamille(annee,arrondiSurChaqueTranche),mntRabais.getAsInt());
 		} else {
-			strat = doubleBareme(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
+			strat = doubleBareme(getBaremeRevenu(annee,arrondiSurChaqueTranche), getBaremeRevenuFamille(annee,arrondiSurChaqueTranche));
 		}
 		producteur.setProducteurBase(
 				unProducteurImpotBaseProgressif(strat)
 						.arrondiAssiettes(ARRONDI_ASSIETTES)
-						.arrondiImpot(ARRONDI_IMPOT)
+						.arrondiImpot(arrondiSurChaqueTranche)
 						.seuilSurImpotDeterminant(BigDecimal.valueOf(25))
 						.construire()
 		);

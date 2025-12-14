@@ -46,6 +46,8 @@
 package org.impotch.calcul.impot.federal.param;
 
 import org.impotch.bareme.Bareme;
+import org.impotch.util.TypeArrondi;
+
 import static org.impotch.calcul.impot.federal.param.ConstructeurBaremeIFD.unBaremeIFD;
 
 class IFDPraeNumerando {
@@ -57,20 +59,20 @@ class IFDPraeNumerando {
 
     /* ---------------------- Personne seule -------------------------------*/
 
-    public Bareme personneSeule(int annee) {
+    public Bareme personneSeule(int annee, TypeArrondi arrondiSurChaqueTranche) {
         if (annee > 2013)
             throw new IllegalArgumentException("Les barèmes praenumerando ne sont plus valables après 2013 !");
         if (2012 == annee || 2013 == annee) {
-            return personneSeule2012();
+            return personneSeule2012(arrondiSurChaqueTranche);
         }
         if (2011 == annee) {
-            return personneSeule2011();
+            return personneSeule2011(arrondiSurChaqueTranche);
         }
         if (2007 <= annee && 2010 >= annee) {
-            return personneSeule2007();
+            return personneSeule2007(arrondiSurChaqueTranche);
         }
         if (1997 <= annee && 2006 >= annee) {
-            return personneSeule1997();
+            return personneSeule1997(arrondiSurChaqueTranche);
         }
         throw new IllegalArgumentException("Le barème IFD praenumerando pour les familles n'est pas défini pour l'année " + annee);
     }
@@ -80,8 +82,8 @@ class IFDPraeNumerando {
      * barème 2011 étiré de 0.6 %
      * @return Constructeur pour les périodes fiscales 2012 et 2013
      */
-    private Bareme personneSeule2012() {
-        return unBaremeIFD()
+    private Bareme personneSeule2012(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(13200).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(28700).a("119.35").etPar100FrancsEnPlus("0.88")
                 .pour(37600).a("197.65").etPar100FrancsEnPlus("2.64")
@@ -100,8 +102,8 @@ class IFDPraeNumerando {
      * barème 2007 étiré de 4.1 %
      * @return Constructeur pour la période fiscale 2011
      */
-    private Bareme personneSeule2011() {
-        return unBaremeIFD()
+    private Bareme personneSeule2011(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(13100).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(28600).a("119.35").etPar100FrancsEnPlus("0.88")
                 .pour(37400).a("196.75").etPar100FrancsEnPlus("2.64")
@@ -119,8 +121,8 @@ class IFDPraeNumerando {
      * barème 1993 étiré de 8,6 %
      * @return Constructeur pour les périodes fiscales 2007, 2008, 2009, 2010
      */
-    private Bareme personneSeule2007() {
-        return unBaremeIFD()
+    private Bareme personneSeule2007(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(12600).a("0.00").etPar100FrancsEnPlus("0.77")
                 .pour(27400).a("113.95").etPar100FrancsEnPlus("0.88")
                 .pour(35900).a("188.75").etPar100FrancsEnPlus("2.64")
@@ -139,7 +141,7 @@ class IFDPraeNumerando {
             {12600, 27400, 35900, 47900, 62900, 67700, 89800, 116800, 152700, 655000},  // 2007
             {11600, 25200, 33000, 44000, 57800, 62300, 82600, 107400, 140400, 603000}}; // 1997
 
-    private Bareme personneSeule1997() {
+    private Bareme personneSeule1997(TypeArrondi arrondiSurChaqueTranche) {
         throw new RuntimeException("La méthode n'est pas finalisée !!");
 //        return new ConstructeurBaremeIFD()
 //        .jusqua(0).a("0.00").etPar100FrancsEnPlus("0.77")
@@ -156,20 +158,20 @@ class IFDPraeNumerando {
 
     /* --------------------------- Famille -------------------------------*/
 
-    public Bareme famille(int annee) {
+    public Bareme famille(int annee, TypeArrondi arrondiSurChaqueTranche) {
         if (annee > 2013)
             throw new IllegalArgumentException("Les barèmes praenumerando ne sont plus valables après 2013 !");
         if (2012 == annee || 2013 == annee) {
-            return famille2012();
+            return famille2012(arrondiSurChaqueTranche);
         }
         if (2011 == annee) {
-            return famille2011();
+            return famille2011(arrondiSurChaqueTranche);
         }
         if (2007 <= annee && 2010 >= annee) {
-            return famille2007();
+            return famille2007(arrondiSurChaqueTranche);
         }
         if (1997 <= annee && 2006 >= annee) {
-            return famille1997();
+            return famille1997(arrondiSurChaqueTranche);
         }
         throw new IllegalArgumentException("Le barème IFD praenumerando pour les familles n'est pas défini pour l'année " + annee);
     }
@@ -180,7 +182,7 @@ class IFDPraeNumerando {
             {24500, 44000, 50500, 65200, 78200, 89600, 99400, 107600, 114100, 118900, 122200, 123900, 125600, 775900}, // 2007
             {22600, 40500, 46500, 60000, 72000, 82500, 91600, 99100, 105100, 109600, 112700, 114200, 115700, 715500}}; // 1997
 
-    private Bareme famille2012() {
+    private Bareme famille2012(TypeArrondi arrondiSurChaqueTranche) {
         throw new RuntimeException("La méthode n'est pas finalisée !!");
 //        return new ConstructeurBaremeIFD()
 //        .jusqua(0).a("0.00").etPar100FrancsEnPlus("1.00")
@@ -199,7 +201,7 @@ class IFDPraeNumerando {
 //                .tauxEffectifMax("11.5 %").construire();
     }
 
-    private Bareme famille2011() {
+    private Bareme famille2011(TypeArrondi arrondiSurChaqueTranche) {
         throw new RuntimeException("La méthode n'est pas finalisée !!");
 //        return new ConstructeurBaremeIFD()
 //        .jusqua(0).a("0.00").etPar100FrancsEnPlus("1.00")
@@ -218,8 +220,8 @@ class IFDPraeNumerando {
 //                .tauxEffectifMax("11.5 %").construire();
     }
 
-    private Bareme famille2007() {
-        return unBaremeIFD()
+    private Bareme famille2007(TypeArrondi arrondiSurChaqueTranche) {
+        return unBaremeIFD(arrondiSurChaqueTranche)
                 .jusqua(24500).a("0.00").etPar100FrancsEnPlus("1.00")
                 .pour(44000).a("195.00").etPar100FrancsEnPlus("2.00")
                 .pour(50500).a("325.00").etPar100FrancsEnPlus("3.00")
@@ -236,7 +238,7 @@ class IFDPraeNumerando {
                 .tauxEffectifMax("11.5 %").construire();
     }
 
-    private Bareme famille1997() {
+    private Bareme famille1997(TypeArrondi arrondiSurChaqueTranche) {
         throw new RuntimeException("La méthode n'est pas finalisée !!");
 //        return new ConstructeurBaremeIFD()
 //        .jusqua(0).a("0.00").etPar100FrancsEnPlus("1.00")
