@@ -31,6 +31,7 @@
 package org.impotch.calcul.impot.federal;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -62,67 +63,48 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		this.fournisseurParametrageAnnuelIFD = fournisseurParamIFD;
 	}
 
-	public ProducteurImpot producteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche) {
+	public ProducteurImpot producteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche, boolean avecSeuillage) {
 		if (!producteurImpotsFederauxPP.containsKey(annee))
 			producteurImpotsFederauxPP.putIfAbsent(annee,
-					construireProducteurImpotsFederauxPP(annee,arrondiSurChaqueTranche));
+					construireProducteurImpotsFederauxPP(annee,arrondiSurChaqueTranche,avecSeuillage));
 		return producteurImpotsFederauxPP.get(annee);
 	}
 
-	private Bareme getBaremeRevenu(int annee, TypeArrondi arrondiSurChaqueTranche) {
+	private Optional<Bareme> getBaremeRevenu(int annee, TypeArrondi arrondiSurChaqueTranche) {
         return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee,arrondiSurChaqueTranche);
 	}
 
-	private Bareme getBaremeRevenuFamille(int annee, TypeArrondi arrondiSurChaqueTranche) {
+	private Optional<Bareme> getBaremeRevenuFamille(int annee, TypeArrondi arrondiSurChaqueTranche) {
         return fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee,arrondiSurChaqueTranche);
 	}
 
 	private Bareme getBaremePrestationCapitalFamille(int annee) {
-		return  2011 > annee ? fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee, TypeArrondi.CINQ_CENTIEMES_INF) : fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee, TypeArrondi.CINQ_CENTIEMES_INF);
+		return  2011 > annee ? fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee, TypeArrondi.CINQ_CENTIEMES_INF)
+				: fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee, TypeArrondi.CINQ_CENTIEMES_INF).orElseThrow();
 	}
 		
 	private IExplicationDetailleeBuilder getNewExplicationBuilder() {
 		return new ExplicationDetailleTexteBuilder();
 	}
 
-	private int montantReductionImpotParEnfant(int annee) {
-		if (2011 == annee) return 250; // Loi fédérale sur les allégements fiscaux
-			// en faveur des familles avec enfants du 25 septembre 2009
-			// Art. 214, al. 2 2bis
-		if (2012 == annee // RO 2011 4503
-				|| 2013 == annee
-				|| 2014 == annee // https://www.fedlex.admin.ch/eli/cc/2013/589/fr RO 2013 589 Art. 2 alinea 3
-				|| 2015 == annee
-				|| 2016 == annee
-				|| 2017 == annee
-				|| 2018 == annee
-				|| 2019 == annee
-				|| 2020 == annee
-				|| 2021 == annee
-				|| 2022 == annee) return 251; // https://www.fedlex.admin.ch/eli/cc/2013/589/fr RO 2013 589 Art. 2 alinea 3
-		if (2023 == annee) return 255; // https://www.fedlex.admin.ch/eli/cc/2022/575/fr RO 2022 575 Art.2 alinea 3
-		if (2024 == annee) return 259; // https://www.fedlex.admin.ch/eli/cc/2023/493/fr RO 2023 493 Art.2 alinea 3
-		if (2025 == annee
-			|| 2026 == annee) return 263; // https://www.fedlex.admin.ch/eli/oc/2024/479/fr RO 2024 479 Art.2 alinea 3
-		throw new IllegalArgumentException("Le rabais d’impôt pour les enfants n’est pas connu pour l’année " + annee);
-	}
-
-
-	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche) {
+	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche, boolean avecSeuillage) {
 		ProducteurImpot producteur = new ProducteurImpot("IBR","");
 		StrategieProductionImpotFamille strat;
 		OptionalInt mntRabais = fournisseurParametrageAnnuelIFD.rabaisImpotCharge(annee);
 
+		Bareme baremeRevenuSeul = getBaremeRevenu(annee,arrondiSurChaqueTranche).orElseThrow();
+		Bareme baremeRevenuFamille = getBaremeRevenuFamille(annee,arrondiSurChaqueTranche).orElseThrow();
+
 		if (mntRabais.isPresent()) {
-			strat = doubleBaremeAvecRabaisCharge(getBaremeRevenu(annee,arrondiSurChaqueTranche), getBaremeRevenuFamille(annee,arrondiSurChaqueTranche),mntRabais.getAsInt());
+			strat = doubleBaremeAvecRabaisCharge(baremeRevenuSeul,baremeRevenuFamille,mntRabais.getAsInt());
 		} else {
-			strat = doubleBareme(getBaremeRevenu(annee,arrondiSurChaqueTranche), getBaremeRevenuFamille(annee,arrondiSurChaqueTranche));
+			strat = doubleBareme(baremeRevenuSeul, baremeRevenuFamille);
 		}
 		producteur.setProducteurBase(
 				unProducteurImpotBaseProgressif(strat)
 						.arrondiAssiettes(ARRONDI_ASSIETTES)
 						.arrondiImpot(arrondiSurChaqueTranche)
-						.seuilSurImpotDeterminant(BigDecimal.valueOf(25))
+						.seuilSurImpotDeterminant(avecSeuillage ? BigDecimal.valueOf(25) : BigDecimal.ZERO)
 						.construire()
 		);
 		return producteur;

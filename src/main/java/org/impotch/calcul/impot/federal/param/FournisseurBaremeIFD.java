@@ -33,6 +33,7 @@ package org.impotch.calcul.impot.federal.param;
 import org.impotch.bareme.Bareme;
 import org.impotch.util.TypeArrondi;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 /**
@@ -43,28 +44,49 @@ import java.util.Optional;
  * To change this template use File | Settings | File Templates.
  */
 public interface FournisseurBaremeIFD {
+
+
+    static final TypeArrondi ARRONDI_IFD = TypeArrondi.CINQ_CENTIEMES_INF;
+
+    default Optional<Bareme> getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee) {
+        return getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee, ARRONDI_IFD);
+    }
+
     /**
      * Retourne le barème de l'impôt sur le revenu des personnes physiques postnumerando IFD pour personne seul.
-     * Ce barème est décrit dans la LIFD article 214 alinea 1.
-     * Ces barèmes incluent le seuillage à 25 francs tel que décrit dans l'alinea 3 de l'article 214 de la LIFD.
+     * Ce barème est décrit dans la LIFD article 36 alinea 1.
      * @param annee l'année pour laquelle on désire ce barème
      * @param arrondiSurChaqueTranche Pour l’impôt ordinaire, les arrondis sont au vingtième inférieur mais pour la source, au vingtième les plus proche
      * @return le barème permettant de calculer l'impôt à partir du revenu pour une personne seule.
      */
-    Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche);
+    Optional<Bareme> getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche);
 
+    default Optional<Bareme> getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee) {
+        return getBaremeImpotRevenuPersonnePhysiquePourFamille(annee,ARRONDI_IFD);
+    }
 
     /**
      * Retourne le barème de l'impôt sur le revenu des personnes physiques postnumerando IFD pour les familles (marié ou mono-parentale).
-     * Ce barème est décrit dans la LIFD article 214 alinea 2.
-     * Ces barèmes incluent le seuillage à 25 francs tel que décrit dans l'alinea 3 de l'article 214 de la LIFD.
+     * Ce barème est décrit dans la LIFD article 36 alinea 2.
      * @param annee l'année pour laquelle on désire ce barème
      * @param arrondiSurChaqueTranche Pour l’impôt ordinaire, les arrondis sont au vingtième inférieur mais pour la source, au vingtième les plus proche
      * @return le barème permettant de calculer l'impôt à partir du revenu pour des personnes mariées ou des familles mono-parentales.
      */
-    Bareme getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche);
+    Optional<Bareme> getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche);
+
+    // Anciens barèmes en vigueur jusqu’en 2011 pour les prestations en capital
+
+    default Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee) {
+        return getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee,ARRONDI_IFD);
+    }
 
     Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche);
+
+
+    default Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee) {
+        return getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee,ARRONDI_IFD);
+    }
+
     Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche);
 
 }

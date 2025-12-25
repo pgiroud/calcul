@@ -65,7 +65,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire2006() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2006,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2006).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour( 10000)).as( "Valeur pour 10 000").isEqualTo(    "0.00");
@@ -83,7 +83,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoMarie2006() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2006, CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2006, CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(10000)).isEqualTo("0.00");
@@ -96,7 +96,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire1996() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(1996,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(1996,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(10000)).isEqualTo("0.00");
@@ -138,7 +138,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire2011() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2011,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2011,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(20000)).isEqualTo("43.10");
@@ -159,7 +159,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoMarie2011() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2011,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2011,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(889400)).isEqualTo("102281.00");
@@ -168,7 +168,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire2012() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2012,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2012,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(41600)).isEqualTo("223.15");
@@ -177,7 +177,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire2023AvecAssietteNonArrondie() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2023,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2023,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(32227)).isEqualTo("133.95");
@@ -185,7 +185,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoFamille2025AuLimiteDeTranche() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2025,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2025,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(940_800)).isEqualTo("108191.00");
@@ -194,7 +194,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoFamille2024AuLimiteDeTranche() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2024,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2024,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour( 52_700)).isEqualTo(   "234.00");
@@ -216,7 +216,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire2025AuLimiteDeTranche() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2025,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2025,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(15_200)).isEqualTo("0.00");
@@ -230,7 +230,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void famille2025PourTestSeuillage1Enfant() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2025,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2025,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
         // Rabais 2025 1 enfant = 263 CHF
         // On veut un montant d’impôt de base IB tel que (IB -263) < 25
@@ -239,7 +239,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire2024AuLimiteDeTranche() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2024,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2024,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(15000)).isEqualTo("0.00");
@@ -257,7 +257,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire2024() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2024,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2024,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
         // Dans les tabelles fournies par l'Administration fédérale, devrait être 704.38
         // Mais l’IFD est arrondi aux cin centimes inférieurs
@@ -267,7 +267,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire2023AuLimiteDeTranche() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2023,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2023,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(14800)).isEqualTo("0.00");
@@ -285,7 +285,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoCelibataire2012AuLimiteDeTranche() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2012,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2012,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(14500)).isEqualTo("0.00");
@@ -302,7 +302,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void postNumerandoMarie2012() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2012,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2012,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(896000)).isEqualTo("103040.00");
@@ -310,7 +310,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void seul2026() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2026,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(2026,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(15_200)).isEqualTo("0.00");
@@ -328,7 +328,7 @@ public class BaremeIFDPersonnePhysiqueTest {
 
     @Test
     public void famille2026() {
-        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2026,CINQ_CENTIEMES_INF);
+        Bareme bareme = fournisseur.getBaremeImpotRevenuPersonnePhysiquePourFamille(2026,CINQ_CENTIEMES_INF).orElseThrow();
         BaremeStr bar = new BaremeStr(bareme);
 
         assertThat(bar.pour(29_700)).isEqualTo("0.00");

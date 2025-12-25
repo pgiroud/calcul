@@ -38,7 +38,9 @@ import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_INF;
 public interface FournisseurRegleImpotFederal {
 
 	default ProducteurImpot producteurImpotsFederauxPP(int annee) {
-        return producteurImpotsFederauxPP(annee, CINQ_CENTIEMES_INF);
+        return producteurImpotsFederauxPP(annee, CINQ_CENTIEMES_INF,true);
     }
-    ProducteurImpot producteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTrancheBareme);
+    ProducteurImpot producteurImpotsFederauxPP(int annee,
+                                               TypeArrondi arrondiSurChaqueTrancheBareme,
+                                               boolean avecSeuillage);
 }

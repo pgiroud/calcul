@@ -9,17 +9,15 @@ import java.util.OptionalInt;
 
 public class FournisseurParametrageAnnuelIFDEnMemoire implements FournisseurParametrageAnnuelIFD {
 
-
-
     private final FournisseurBaremeIFD baremes = new FournisseurBaremeIFDEnMemoire();
 
     @Override
-    public Bareme getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche) {
+    public Optional<Bareme> getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche) {
         return baremes.getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee,arrondiSurChaqueTranche);
     }
 
     @Override
-    public Bareme getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche) {
+    public Optional<Bareme> getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche) {
         return baremes.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee,arrondiSurChaqueTranche);
     }
 

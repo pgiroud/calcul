@@ -44,11 +44,11 @@ public class ConstructeurBaremeIFD {
     // 3 sujets : arrondi avant d’entrer dans le barème, arrondi sur calcul de tranche (sauf PC), taux effective max atteint
 
     public static ConstructeurBaremeIFD unBaremeIFD(TypeArrondi typeArrondiSurChaqueTranche) {
-        return new ConstructeurBaremeIFD(TypeArrondi.CENTAINE_INF, typeArrondiSurChaqueTranche, false);
+        return new ConstructeurBaremeIFD(TypeArrondi.CENTAINE_INF, typeArrondiSurChaqueTranche);
     }
 
     public static ConstructeurBaremeIFD unBaremeIFDPrestationEnCapitalImposeeSource(TypeArrondi typeArrondiSurChaqueTranche) {
-        return new ConstructeurBaremeIFD(TypeArrondi.MILLE_INF, typeArrondiSurChaqueTranche,true);
+        return new ConstructeurBaremeIFD(TypeArrondi.MILLE_INF, typeArrondiSurChaqueTranche);
     }
 
     private final BigDecimal precisionArrondiSurAssiette;
@@ -62,7 +62,7 @@ public class ConstructeurBaremeIFD {
 
 
 
-    private ConstructeurBaremeIFD(TypeArrondi arrondiSurAssiette, TypeArrondi arrondiSurChaqueTranche, boolean source) {
+    private ConstructeurBaremeIFD(TypeArrondi arrondiSurAssiette, TypeArrondi arrondiSurChaqueTranche) {
         super();
         precisionArrondiSurAssiette = arrondiSurAssiette.precision();
         this.arrondiSurChaqueTranche = arrondiSurChaqueTranche;
@@ -70,7 +70,6 @@ public class ConstructeurBaremeIFD {
                 .fermeAGauche()
                 .typeArrondiSurEntrant(arrondiSurAssiette)
                 .typeArrondiSurChaqueTranche(arrondiSurChaqueTranche);
-                //.seuil(!(source) ? 25 : 0);
     }
 
     private void controleAbsenceTauxEffectif() {
@@ -128,7 +127,7 @@ public class ConstructeurBaremeIFD {
     }
 
     public ConstructeurBaremeIFD tauxEffectifMax(String taux) {
-        this.tauxEffectifMax = BigDecimalUtil.parseTaux(taux);
+        this.tauxEffectifMax = BigDecimalUtil.parse(taux);
         return this;
     }
 
@@ -175,7 +174,7 @@ public class ConstructeurBaremeIFD {
     }
 
     public ConstructeurBaremeIFD etFinalementTaux(String taux) {
-        this.taux =  BigDecimalUtil.parseTaux(taux);
+        this.taux =  BigDecimalUtil.parse(taux);
         return this;
     }
 
