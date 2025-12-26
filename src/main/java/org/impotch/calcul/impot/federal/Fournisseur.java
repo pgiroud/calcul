@@ -53,7 +53,6 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	private static final TypeArrondi ARRONDI_ASSIETTES = TypeArrondi.CENTAINE_INF;
 
 
-	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsFederauxPP = new ConcurrentHashMap<>();
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<>();
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotSourcePrestationCapital = new ConcurrentHashMap<>();
 
@@ -64,10 +63,7 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 
 	public ProducteurImpot producteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche, boolean avecSeuillage) {
-		if (!producteurImpotsFederauxPP.containsKey(annee))
-			producteurImpotsFederauxPP.putIfAbsent(annee,
-					construireProducteurImpotsFederauxPP(annee,arrondiSurChaqueTranche,avecSeuillage));
-		return producteurImpotsFederauxPP.get(annee);
+		return construireProducteurImpotsFederauxPP(annee,arrondiSurChaqueTranche,avecSeuillage);
 	}
 
 	private Optional<Bareme> getBaremeRevenu(int annee, TypeArrondi arrondiSurChaqueTranche) {
