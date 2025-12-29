@@ -138,119 +138,251 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 //--------------- Indépendants --------------------
 
 	protected CalculCotisationAvsAiApg construireCalculateurCotisationAvsAiApgIndependant(int annee) {
-		CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
-		constructeur.tauxAvs("7.8 %").tauxAi("1.4 %");
-		if (annee < 2009) {
-            constructeur.tauxApg("0.3 %");
-			constructeur.cotisationAvsAiApgMinimum("445");
-			constructeur.trancheBareme( "8900", "4.2 %");
-			constructeur.trancheBareme("15900", "4.2 %");
-			constructeur.trancheBareme("20100", "4.3 %");
-			constructeur.trancheBareme("22300", "4.4 %");
-			constructeur.trancheBareme("24500", "4.5 %");
-			constructeur.trancheBareme("26700", "4.6 %");
-			constructeur.trancheBareme("28900", "4.7 %");
-			constructeur.trancheBareme("31100", "4.9 %");
-			constructeur.trancheBareme("33300", "5.1 %");
-			constructeur.trancheBareme("35500", "5.3 %");
-			constructeur.trancheBareme("37700", "5.5 %");
-			constructeur.trancheBareme("39900", "5.7 %");
-			constructeur.trancheBareme("42100", "5.9 %");
-			constructeur.trancheBareme("44300", "6.2 %");
-			constructeur.trancheBareme("46500", "6.5 %");
-			constructeur.trancheBareme("48700", "6.8 %");
-			constructeur.trancheBareme("50900", "7.1 %");
-			constructeur.trancheBareme("53100", "7.4 %");
-			return constructeur.construire(annee);
-			
-		} else if (annee < 2011) {
-            constructeur.tauxApg("0.3 %");
-			constructeur.cotisationAvsAiApgMinimum("460");
-			constructeur.trancheBareme( "9200", "4.2 %");
-			constructeur.trancheBareme("16000", "4.2 %");
-			constructeur.trancheBareme("20300", "4.3 %");
-			constructeur.trancheBareme("22600", "4.4 %");
-			constructeur.trancheBareme("24900", "4.5 %");
-			constructeur.trancheBareme("27200", "4.6 %");
-			constructeur.trancheBareme("29500", "4.7 %");
-			constructeur.trancheBareme("31800", "4.9 %");
-			constructeur.trancheBareme("34100", "5.1 %");
-			constructeur.trancheBareme("36400", "5.3 %");
-			constructeur.trancheBareme("38700", "5.5 %");
-			constructeur.trancheBareme("41000", "5.7 %");
-			constructeur.trancheBareme("43300", "5.9 %");
-			constructeur.trancheBareme("45600", "6.2 %");
-			constructeur.trancheBareme("47900", "6.5 %");
-			constructeur.trancheBareme("50200", "6.8 %");
-			constructeur.trancheBareme("52500", "7.1 %");
-			constructeur.trancheBareme("54800", "7.4 %");
-			return constructeur.construire(annee);
-		} else if (annee < 2013) {
-            constructeur.tauxApg("0.5 %");
-            constructeur.cotisationAvsAiApgMinimum("475");
-            constructeur.trancheBareme( "9300", "4.2 %");
-            constructeur.trancheBareme("16900", "4.2 %");
-            constructeur.trancheBareme("21200", "4.3 %");
-            constructeur.trancheBareme("23500", "4.4 %");
-            constructeur.trancheBareme("25800", "4.5 %");
-            constructeur.trancheBareme("28100", "4.6 %");
-            constructeur.trancheBareme("30400", "4.7 %");
-            constructeur.trancheBareme("32700", "4.9 %");
-            constructeur.trancheBareme("35000", "5.1 %");
-            constructeur.trancheBareme("37300", "5.3 %");
-            constructeur.trancheBareme("39600", "5.5 %");
-            constructeur.trancheBareme("41900", "5.7 %");
-            constructeur.trancheBareme("44200", "5.9 %");
-            constructeur.trancheBareme("46500", "6.2 %");
-            constructeur.trancheBareme("48800", "6.5 %");
-            constructeur.trancheBareme("51100", "6.8 %");
-            constructeur.trancheBareme("53400", "7.1 %");
-            constructeur.trancheBareme("55700", "7.4 %");
-            return constructeur.construire(annee);
-        } else if (annee < 2015) {
-            constructeur.tauxApg("0.5 %");
-            constructeur.cotisationAvsAiApgMinimum("480");
-            constructeur.trancheBareme( "9400", "4.2 %");
-            constructeur.trancheBareme("17200", "4.2 %");
-            constructeur.trancheBareme("21700", "4.3 %");
-            constructeur.trancheBareme("24000", "4.4 %");
-            constructeur.trancheBareme("26300", "4.5 %");
-            constructeur.trancheBareme("28600", "4.6 %");
-            constructeur.trancheBareme("30900", "4.7 %");
-            constructeur.trancheBareme("33200", "4.9 %");
-            constructeur.trancheBareme("35500", "5.1 %");
-            constructeur.trancheBareme("37800", "5.3 %");
-            constructeur.trancheBareme("40100", "5.5 %");
-            constructeur.trancheBareme("42400", "5.7 %");
-            constructeur.trancheBareme("44700", "5.9 %");
-            constructeur.trancheBareme("47000", "6.2 %");
-            constructeur.trancheBareme("49300", "6.5 %");
-            constructeur.trancheBareme("51600", "6.8 %");
-            constructeur.trancheBareme("53900", "7.1 %");
-            constructeur.trancheBareme("56200", "7.4 %");
-            return constructeur.construire(annee);
-        } else if (annee < 2017) {
-            constructeur.tauxApg("0.5 %");
-            constructeur.cotisationAvsAiApgMinimum("480");
-            constructeur.trancheBareme( "9400", "4.2 %");
-            constructeur.trancheBareme("17200", "4.2 %");
-            constructeur.trancheBareme("21900", "4.3 %");
-            constructeur.trancheBareme("24200", "4.4 %");
-            constructeur.trancheBareme("26500", "4.5 %");
-            constructeur.trancheBareme("28800", "4.6 %");
-            constructeur.trancheBareme("31100", "4.7 %");
-            constructeur.trancheBareme("33400", "4.9 %");
-            constructeur.trancheBareme("35700", "5.1 %");
-            constructeur.trancheBareme("38000", "5.3 %");
-            constructeur.trancheBareme("40300", "5.5 %");
-            constructeur.trancheBareme("42600", "5.7 %");
-            constructeur.trancheBareme("44900", "5.9 %");
-            constructeur.trancheBareme("47200", "6.2 %");
-            constructeur.trancheBareme("49500", "6.5 %");
-            constructeur.trancheBareme("51800", "6.8 %");
-            constructeur.trancheBareme("54100", "7.1 %");
-            constructeur.trancheBareme("56400", "7.4 %");
-            return constructeur.construire(annee);
+//		if (annee < 2009) {
+//            CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
+//            constructeur.tauxAvs("7.8 %").tauxAi("1.4 %").tauxApg("0.3 %");
+//			constructeur.cotisationAvsAiApgMinimum("445");
+//			constructeur.trancheBareme( "8900", "4.2 %");
+//			constructeur.trancheBareme("15900", "4.3 %");
+//			constructeur.trancheBareme("20100", "4.4 %");
+//			constructeur.trancheBareme("22300", "4.5 %");
+//			constructeur.trancheBareme("24500", "4.6 %");
+//			constructeur.trancheBareme("26700", "4.7 %");
+//			constructeur.trancheBareme("28900", "4.9 %");
+//			constructeur.trancheBareme("31100", "5.1 %");
+//			constructeur.trancheBareme("33300", "5.3 %");
+//			constructeur.trancheBareme("35500", "5.5 %");
+//			constructeur.trancheBareme("37700", "5.7 %");
+//			constructeur.trancheBareme("39900", "5.9 %");
+//			constructeur.trancheBareme("42100", "6.2 %");
+//			constructeur.trancheBareme("44300", "6.5 %");
+//			constructeur.trancheBareme("46500", "6.8 %");
+//			constructeur.trancheBareme("48700", "7.1 %");
+//			constructeur.trancheBareme("50900", "7.4 %");
+//			constructeur.trancheBareme("53100", "7.8 %");
+//			return constructeur.construire(annee);
+//
+//		} else if (annee < 2011) {
+//            CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
+//            constructeur.tauxAvs("7.8 %").tauxAi("1.4 %").tauxApg("0.3 %");
+//			constructeur.cotisationAvsAiApgMinimum("460");
+//			constructeur.trancheBareme( "9200", "4.2 %");
+//			constructeur.trancheBareme("16000", "4.3 %");
+//			constructeur.trancheBareme("20300", "4.4 %");
+//			constructeur.trancheBareme("22600", "4.5 %");
+//			constructeur.trancheBareme("24900", "4.6 %");
+//			constructeur.trancheBareme("27200", "4.7 %");
+//			constructeur.trancheBareme("29500", "4.9 %");
+//			constructeur.trancheBareme("31800", "5.1 %");
+//			constructeur.trancheBareme("34100", "5.3 %");
+//			constructeur.trancheBareme("36400", "5.5 %");
+//			constructeur.trancheBareme("38700", "5.7 %");
+//			constructeur.trancheBareme("41000", "5.9 %");
+//			constructeur.trancheBareme("43300", "6.2 %");
+//			constructeur.trancheBareme("45600", "6.5 %");
+//			constructeur.trancheBareme("47900", "6.8 %");
+//			constructeur.trancheBareme("50200", "7.1 %");
+//			constructeur.trancheBareme("52500", "7.4 %");
+//			constructeur.trancheBareme("54800", "7.8 %");
+//			return constructeur.construire(annee);
+//		} else if (annee < 2013) {
+//            CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
+//            constructeur.tauxAvs("7.8 %").tauxAi("1.4 %").tauxApg("0.5 %");
+//            constructeur.cotisationAvsAiApgMinimum("475");
+//            constructeur.trancheBareme( "9300", "4.2 %");
+//            constructeur.trancheBareme("16900", "4.3 %");
+//            constructeur.trancheBareme("21200", "4.4 %");
+//            constructeur.trancheBareme("23500", "4.5 %");
+//            constructeur.trancheBareme("25800", "4.6 %");
+//            constructeur.trancheBareme("28100", "4.7 %");
+//            constructeur.trancheBareme("30400", "4.9 %");
+//            constructeur.trancheBareme("32700", "5.1 %");
+//            constructeur.trancheBareme("35000", "5.3 %");
+//            constructeur.trancheBareme("37300", "5.5 %");
+//            constructeur.trancheBareme("39600", "5.7 %");
+//            constructeur.trancheBareme("41900", "5.9 %");
+//            constructeur.trancheBareme("44200", "6.2 %");
+//            constructeur.trancheBareme("46500", "6.5 %");
+//            constructeur.trancheBareme("48800", "6.8 %");
+//            constructeur.trancheBareme("51100", "7.1 %");
+//            constructeur.trancheBareme("53400", "7.4 %");
+//            constructeur.trancheBareme("55700", "7.8 %");
+//            return constructeur.construire(annee);
+//        } else if (annee < 2015) {
+//            CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
+//            constructeur.tauxAvs("7.8 %").tauxAi("1.4 %").tauxApg("0.5 %");
+//            constructeur.cotisationAvsAiApgMinimum("480");
+//            constructeur.trancheBareme( "9400", "4.2 %");
+//            constructeur.trancheBareme("17200", "4.3 %");
+//            constructeur.trancheBareme("21700", "4.4 %");
+//            constructeur.trancheBareme("24000", "4.5 %");
+//            constructeur.trancheBareme("26300", "4.6 %");
+//            constructeur.trancheBareme("28600", "4.7 %");
+//            constructeur.trancheBareme("30900", "4.9 %");
+//            constructeur.trancheBareme("33200", "5.1 %");
+//            constructeur.trancheBareme("35500", "5.3 %");
+//            constructeur.trancheBareme("37800", "5.5 %");
+//            constructeur.trancheBareme("40100", "5.7 %");
+//            constructeur.trancheBareme("42400", "5.9 %");
+//            constructeur.trancheBareme("44700", "6.2 %");
+//            constructeur.trancheBareme("47000", "6.5 %");
+//            constructeur.trancheBareme("49300", "6.8 %");
+//            constructeur.trancheBareme("51600", "7.1 %");
+//            constructeur.trancheBareme("53900", "7.4 %");
+//            constructeur.trancheBareme("56200", "7.8 %");
+//            return constructeur.construire(annee);
+//        } else if (annee < 2016) {
+//            CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
+//            constructeur.tauxAvs("7.8 %").tauxAi("1.4 %").tauxApg("0.5 %");
+//            constructeur.cotisationAvsAiApgMinimum("480");
+//            constructeur.trancheBareme( "9400", "4.2 %");
+//            constructeur.trancheBareme("17200", "4.3 %");
+//            constructeur.trancheBareme("21900", "4.4 %");
+//            constructeur.trancheBareme("24200", "4.5 %");
+//            constructeur.trancheBareme("26500", "4.6 %");
+//            constructeur.trancheBareme("28800", "4.7 %");
+//            constructeur.trancheBareme("31100", "4.9 %");
+//            constructeur.trancheBareme("33400", "5.1 %");
+//            constructeur.trancheBareme("35700", "5.3 %");
+//            constructeur.trancheBareme("38000", "5.5 %");
+//            constructeur.trancheBareme("40300", "5.7 %");
+//            constructeur.trancheBareme("42600", "5.9 %");
+//            constructeur.trancheBareme("44900", "6.2 %");
+//            constructeur.trancheBareme("47200", "6.5 %");
+//            constructeur.trancheBareme("49500", "6.8 %");
+//            constructeur.trancheBareme("51800", "7.1 %");
+//            constructeur.trancheBareme("54100", "7.4 %");
+//            constructeur.trancheBareme("56400", "7.8 %");
+//            return constructeur.construire(annee);
+//        } else if (annee < 2019) {
+//            CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
+//            constructeur.tauxAvs("7.8 %").tauxAi("1.4 %").tauxApg("0.45 %");
+//            constructeur.cotisationAvsAiApgMinimum("478");
+//            constructeur.trancheBareme( "9400", "4.2 %");
+//            constructeur.trancheBareme("17200", "4.3 %");
+//            constructeur.trancheBareme("21900", "4.4 %");
+//            constructeur.trancheBareme("24200", "4.5 %");
+//            constructeur.trancheBareme("26500", "4.6 %");
+//            constructeur.trancheBareme("28800", "4.7 %");
+//            constructeur.trancheBareme("31100", "4.9 %");
+//            constructeur.trancheBareme("33400", "5.1 %");
+//            constructeur.trancheBareme("35700", "5.3 %");
+//            constructeur.trancheBareme("38000", "5.5 %");
+//            constructeur.trancheBareme("40300", "5.7 %");
+//            constructeur.trancheBareme("42600", "5.9 %");
+//            constructeur.trancheBareme("44900", "6.2 %");
+//            constructeur.trancheBareme("47200", "6.5 %");
+//            constructeur.trancheBareme("49500", "6.8 %");
+//            constructeur.trancheBareme("51800", "7.1 %");
+//            constructeur.trancheBareme("54100", "7.4 %");
+//            constructeur.trancheBareme("56400", "7.8 %");
+//            return constructeur.construire(annee);
+//        } else if (annee < 2020) {
+//            CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
+//            constructeur.tauxAvs("7.8 %").tauxAi("1.4 %").tauxApg("0.45 %");
+//            constructeur.cotisationAvsAiApgMinimum("482");
+//            constructeur.trancheBareme( "9500", "4.2 %");
+//            constructeur.trancheBareme("17300", "4.3 %");
+//            constructeur.trancheBareme("20900", "4.4 %");
+//            constructeur.trancheBareme("23300", "4.5 %");
+//            constructeur.trancheBareme("25700", "4.6 %");
+//            constructeur.trancheBareme("28100", "4.7 %");
+//            constructeur.trancheBareme("30500", "4.9 %");
+//            constructeur.trancheBareme("32900", "5.1 %");
+//            constructeur.trancheBareme("35300", "5.3 %");
+//            constructeur.trancheBareme("37700", "5.5 %");
+//            constructeur.trancheBareme("40100", "5.7 %");
+//            constructeur.trancheBareme("42500", "5.9 %");
+//            constructeur.trancheBareme("44900", "6.2 %");
+//            constructeur.trancheBareme("47300", "6.5 %");
+//            constructeur.trancheBareme("49700", "6.8 %");
+//            constructeur.trancheBareme("52100", "7.1 %");
+//            constructeur.trancheBareme("54500", "7.4 %");
+//            constructeur.trancheBareme("56900", "7.8 %");
+//            return constructeur.construire(annee);
+//        } else if (annee < 2021) {
+//            return null;
+//        } else if (annee < 2021) {
+//            return null;
+//        } else if (annee < 2021) {
+//            return null;
+//        } else if (annee < 2025) {
+//            return null;
+//        } else if (annee == 2025) {
+//            // Article 21 du RAVS : https://www.fedlex.admin.ch/eli/cc/63/1185_1183_1185/fr#a21
+//            CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
+//            constructeur.tauxAvs("8.1 %").tauxAi("1.4 %").tauxApg("0.5 %");
+//            constructeur.cotisationAvsAiApgMinimum("530");
+//            constructeur.trancheBareme( "10100", "4.35 %");
+//            constructeur.trancheBareme("17600", "4.45 %");
+//            constructeur.trancheBareme("23000", "4.55 %");
+//            constructeur.trancheBareme("25500", "4.65 %");
+//            constructeur.trancheBareme("28000", "4.75 %");
+//            constructeur.trancheBareme("30500", "4.85 %");
+//            constructeur.trancheBareme("33000", "5.05 %");
+//            constructeur.trancheBareme("35500", "5.25 %");
+//            constructeur.trancheBareme("38000", "5.45 %");
+//            constructeur.trancheBareme("40500", "5.65 %");
+//            constructeur.trancheBareme("43000", "5.85 %");
+//            constructeur.trancheBareme("45500", "6.05 %");
+//            constructeur.trancheBareme("48000", "6.35 %");
+//            constructeur.trancheBareme("50500", "6.65 %");
+//            constructeur.trancheBareme("53000", "6.95 %");
+//            constructeur.trancheBareme("55500", "7.25 %");
+//            constructeur.trancheBareme("58000", "7.55 %");
+//            constructeur.trancheBareme("60500", "8.1 %");
+//            return constructeur.construire(annee);
+//        } else if (annee == 2026) {
+//            CalculCotisationAvsAiApgIndependant.Constructeur constructeur = new CalculCotisationAvsAiApgIndependant.Constructeur();
+//            constructeur.tauxAvs("8.1 %").tauxAi("1.4 %").tauxApg("0.5 %");
+//            constructeur.cotisationAvsAiApgMinimum("530");
+//            constructeur.trancheBareme( "9500", "4.2 %");
+//            constructeur.trancheBareme("17300", "4.2 %");
+//            constructeur.trancheBareme("20900", "4.3 %");
+//            constructeur.trancheBareme("23300", "4.4 %");
+//            constructeur.trancheBareme("25700", "4.5 %");
+//            constructeur.trancheBareme("28100", "4.6 %");
+//            constructeur.trancheBareme("30500", "4.7 %");
+//            constructeur.trancheBareme("32900", "4.9 %");
+//            constructeur.trancheBareme("35300", "5.1 %");
+//            constructeur.trancheBareme("37700", "5.3 %");
+//            constructeur.trancheBareme("40100", "5.5 %");
+//            constructeur.trancheBareme("42500", "5.7 %");
+//            constructeur.trancheBareme("44900", "5.9 %");
+//            constructeur.trancheBareme("47300", "6.2 %");
+//            constructeur.trancheBareme("49700", "6.5 %");
+//            constructeur.trancheBareme("52100", "6.8 %");
+//            constructeur.trancheBareme("54500", "7.1 %");
+//            constructeur.trancheBareme("56900", "7.4 %");
+//            return constructeur.construire(annee);
+//        }
+        if (2025 == annee) {
+            // Article 21 du RAVS : https://www.fedlex.admin.ch/eli/cc/63/1185_1183_1185/fr#a21
+            return new CalculCotisationAvsAiApgIndependant.Constructeur()
+                    .avs().cotisationMinimale(435)
+                        .jusqua(    10_100).taux("0")
+                        .puisJusqua(17_600).taux("4.35 %")
+                        .puisJusqua(23_000).taux("4.45 %")
+                        .puisJusqua(25_500).taux("4.55 %")
+                        .puisJusqua(28_000).taux("4.65 %")
+                        .puisJusqua(30_500).taux("4.75 %")
+                        .puisJusqua(33_000).taux("4.85 %")
+                        .puisJusqua(35_500).taux("5.05 %")
+                        .puisJusqua(38_000).taux("5.25 %")
+                        .puisJusqua(40_500).taux("5.45 %")
+                        .puisJusqua(43_000).taux("5.65 %")
+                        .puisJusqua(45_500).taux("5.85 %")
+                        .puisJusqua(48_000).taux("6.05 %")
+                        .puisJusqua(50_500).taux("6.35 %")
+                        .puisJusqua(53_000).taux("6.65 %")
+                        .puisJusqua(55_500).taux("6.95 %")
+                        .puisJusqua(58_000).taux("7.25 %")
+                        .puisJusqua(60_500).taux("7.55 %")
+                        .puis()                           .taux("8.1 %")
+
+                    .ai() .cotisationMinimale(70).taux("1.4 %")
+                    .apg().cotisationMinimale(25).taux("0.5 %")
+                .construire(annee);
         } else {
             throw new IllegalArgumentException("Le barème des cotisations AVS indépendants n'est pas connu pour l'année " + annee);
         }

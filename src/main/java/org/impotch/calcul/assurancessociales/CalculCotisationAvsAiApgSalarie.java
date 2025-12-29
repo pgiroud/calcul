@@ -104,25 +104,25 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	
 	@Override
 	public BigDecimal calculCotisationAi(BigDecimal montantDeterminant, TypeArrondi arrondi) {
-		return arrondi.arrondirMontant(tauxAI
+		return arrondi.arrondir(tauxAI
 				.multiply(montantDeterminant));
 	}
 
 	@Override
 	public BigDecimal calculCotisationApg(BigDecimal montantDeterminant, TypeArrondi arrondi) {
-		return arrondi.arrondirMontant(tauxAPG
+		return arrondi.arrondir(tauxAPG
 				.multiply(montantDeterminant));
 	}
 
 	@Override
 	public BigDecimal calculCotisationAvs(BigDecimal montantDeterminant, TypeArrondi arrondi) {
-		return arrondi.arrondirMontant(tauxAVS
+		return arrondi.arrondir(tauxAVS
 				.multiply(montantDeterminant));
 	}
 
 	@Override
 	public BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant, TypeArrondi arrondi) {
-		return arrondi.arrondirMontant(tauxTotal
+		return arrondi.arrondir(tauxTotal
 				.multiply(montantDeterminant));
 	}
 
@@ -134,7 +134,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAi(
 			BigDecimal montantDeterminant, TypeArrondi arrondi) {
-		return arrondi.arrondirMontant(demiTauxAI
+		return arrondi.arrondir(demiTauxAI
 				.multiply(montantDeterminant));
 	}
 
@@ -144,7 +144,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationApg(
 			BigDecimal montantDeterminant, TypeArrondi arrondi) {
-		return arrondi.arrondirMontant(demiTauxAPG
+		return arrondi.arrondir(demiTauxAPG
 				.multiply(montantDeterminant));
 	}
 
@@ -154,7 +154,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAvs(
 			BigDecimal montantDeterminant, TypeArrondi arrondi) {
-		return arrondi.arrondirMontant(demiTauxAVS
+		return arrondi.arrondir(demiTauxAVS
 				.multiply(montantDeterminant));
 	}
 
@@ -164,7 +164,7 @@ class CalculCotisationAvsAiApgSalarie extends ReglePeriodique implements
 	@Override
 	public BigDecimal calculPartSalarieeCotisationAvsAiApg(
 			BigDecimal montantDeterminant, TypeArrondi arrondi) {
-		return arrondi.arrondirMontant(demiTauxTotal
+		return arrondi.arrondir(demiTauxTotal
 				.multiply(montantDeterminant));
 	}
 

@@ -80,7 +80,7 @@ public class IndexateurGenevois implements Indexateur {
     @Override
     public BigDecimal indexer(int anneeDebut, BigDecimal montantBase, int annee, TypeArrondi arrondi) {
         if (annee < 2001) throw new IllegalArgumentException("L'indexateur genvois n’est défini qu’à partir de 2001. Il faudrait compléter pour les années précédentes.");
-        if (2001 <= annee && annee <= 2009) {
+        if (annee <= 2009) {
             return indexateurQuadriennalLIPP5_D_3_16_2000.indexer(anneeDebut, montantBase,annee,arrondi);
         }
         if (annee < 2024) {
@@ -94,7 +94,7 @@ public class IndexateurGenevois implements Indexateur {
     @Override
     public BaremeParTranche indexer(int anneeDebut, BaremeParTranche bareme, int annee, TypeArrondi arrondi) {
         if (annee < 2001) throw new IllegalArgumentException("L'indexateur genvois n’est défini qu’à partir de 2001. Il faudrait compléter pour les années précédentes.");
-        if (2001 <= annee && annee <= 2009) {
+        if (annee <= 2009) {
             return indexateurQuadriennalLIPP5_D_3_16_2000.indexer(anneeDebut, bareme,annee,arrondi);
         }
         if (annee < 2024) {
@@ -108,7 +108,7 @@ public class IndexateurGenevois implements Indexateur {
     @Override
     public BaremeTauxMarginalConstantParTranche indexer(int anneeDebut, BaremeTauxMarginalConstantParTranche bareme, int annee, TypeArrondi arrondi) {
         if (annee < 2001) throw new IllegalArgumentException("L'indexateur genvois n’est défini qu’à partir de 2001. Il faudrait compléter pour les années précédentes.");
-        if (2001 <= annee && annee <= 2009) {
+        if (annee <= 2009) {
             throw new IllegalStateException("Entre 2001 et 2009, les barèmes genevois n’était pas constant par tranche !!");
         }
         return indexateurAnnuelLIPP2009.indexer(anneeDebut, bareme,annee,arrondi);
