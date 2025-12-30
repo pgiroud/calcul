@@ -87,7 +87,7 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 		this.baremeAPG = baremeAPG;
 	}
 
-	void construireBaremeAvsAiApg(Bareme baremeAvsAiApg) {
+	void construireBaremeAvsAiApg() {
 		assert null != baremeAVS;
 		assert null != baremeAI;
 		assert null != baremeAPG;
@@ -227,7 +227,7 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 			Bareme baremeMisALEchelle = baremeAvs.homothetieValeur(rapport,TypeArrondi.CENT_MILLIEME_LE_PLUS_PROCHE);
 
 			ConstructeurBareme consBaremeMinimum =
-					unBareme().jusqua(limiteInfArt8alinea1LAVS).valeur(minimum).puis().valeur(0);;
+					unBareme().fermeAGauche().jusqua(limiteInfArt8alinea1LAVS).valeur(minimum).puis().valeur(0);;
 
 			return SommeBareme.somme(consBaremeMinimum.construire(), baremeMisALEchelle);
 		}
@@ -235,7 +235,7 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 
 		public CalculCotisationAvsAiApgIndependant construire(int annee) {
 			CalculCotisationAvsAiApgIndependant calculateur = new CalculCotisationAvsAiApgIndependant(annee);
-			Bareme baremeMinimumAVS = unBareme()
+			Bareme baremeMinimumAVS = unBareme().fermeAGauche()
 					.jusqua(limiteInfArt8alinea1LAVS).valeur(minimumAvs).puis().valeur(0).construire();
 
 			BaremeParTranche baremeAVSProgressif = consBaremeTxEffectifAVS.construire();
@@ -244,6 +244,8 @@ class CalculCotisationAvsAiApgIndependant extends ReglePeriodique
 
 			calculateur.setBaremeAI(metALechellePuisCompose(baremeAVSProgressif,tauxAi,minimumAi));
 			calculateur.setBaremeAPG(metALechellePuisCompose(baremeAVSProgressif,tauxApg,minimumApg));
+
+			calculateur.construireBaremeAvsAiApg();
 
 			return calculateur;
 		}

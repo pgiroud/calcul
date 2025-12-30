@@ -16,19 +16,19 @@
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
-
-import org.impotch.util.TauxAssert;
+import java.math.RoundingMode;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.util.TypeArrondi.CENT_MILLIEME_LE_PLUS_PROCHE;
+import static org.impotch.util.BigDecimalUtil.parse;
 
 import static org.impotch.calcul.assurancessociales.ContexteTestAssurancesSociales.CTX_TST_AS;
-public class CalculCotisationAvsAiApgIndependantTest {
+public class CalculCotisationAvsAiApgIndependant2025Test {
 
 	
-//	private CalculCotisationAvsAiApgIndependant calculateur2008;
 //	private CalculCotisationAvsAiApgIndependant calculateur2009;
 //    private CalculCotisationAvsAiApgIndependant calculateur2011;
 //    private CalculCotisationAvsAiApgIndependant calculateur2013;
@@ -56,25 +56,50 @@ public class CalculCotisationAvsAiApgIndependantTest {
         assertThat(cotisationPremiereTranche).isNotEqualTo(new BigDecimal("435.00"));
     }
 
+    @Test
+    public void ai2025_cotisationMinimale() {
+        assertThat(calculateur2025.calculCotisationAi(BigDecimal.ZERO)).isEqualTo("70.00");
+        assertThat(calculateur2025.calculCotisationAi(BigDecimal.valueOf(5000))).isEqualTo("70.00");
+        assertThat(calculateur2025.calculCotisationAi(BigDecimal.valueOf(10099))).isEqualTo("70.00");
+
+        BigDecimal cotisationPremiereTranche = calculateur2025.calculCotisationAi(BigDecimal.valueOf(10100));
+        assertThat(cotisationPremiereTranche).isNotEqualTo(new BigDecimal("70.00"));
+    }
+
+    @Test
+    public void apg2025_cotisationMinimale() {
+        assertThat(calculateur2025.calculCotisationApg(BigDecimal.ZERO)).isEqualTo("25.00");
+        assertThat(calculateur2025.calculCotisationApg(BigDecimal.valueOf(5000))).isEqualTo("25.00");
+        assertThat(calculateur2025.calculCotisationApg(BigDecimal.valueOf(10099))).isEqualTo("25.00");
+
+        BigDecimal cotisationPremiereTranche = calculateur2025.calculCotisationApg(BigDecimal.valueOf(10100));
+        assertThat(cotisationPremiereTranche).isNotEqualTo(new BigDecimal("25.00"));
+    }
+
+    @Test
+    public void tauxTotalAvsAiApg_2025() {
+        assertThat(tauxTotalAvsAiApg(10_100)).isEqualTo(parse( "5.371 %"));
+        assertThat(tauxTotalAvsAiApg(17_600)).isEqualTo(parse( "5.494 %"));
+        assertThat(tauxTotalAvsAiApg(23_000)).isEqualTo(parse( "5.617 %"));
+        assertThat(tauxTotalAvsAiApg(25_500)).isEqualTo(parse( "5.741 %"));
+        assertThat(tauxTotalAvsAiApg(28_000)).isEqualTo(parse( "5.864 %"));
+        assertThat(tauxTotalAvsAiApg(30_500)).isEqualTo(parse( "5.987 %"));
+        assertThat(tauxTotalAvsAiApg(33_000)).isEqualTo(parse( "6.235 %"));
+        assertThat(tauxTotalAvsAiApg(58_000)).isEqualTo(parse( "9.321 %"));
+        assertThat(tauxTotalAvsAiApg(60_500)).isEqualTo(parse("10.000 %"));
+    }
+
+    private BigDecimal tauxTotalAvsAiApg(int revenu) {
+        BigDecimal rev = BigDecimal.valueOf(revenu);
+        BigDecimal cotisation = calculateur2025.calculCotisationAvsAiApg(rev);
+        return CENT_MILLIEME_LE_PLUS_PROCHE.arrondir(cotisation.divide(rev,15, RoundingMode.HALF_UP));
+    }
 
 //	private boolean compare(String montantAttendu, BigDecimal montantCalcule) {
 //		return 0 == new BigDecimal(montantAttendu).compareTo(montantCalcule);
 //	}
 //
-//	@Test
-//	public void calculCotisationAi() {
-//        assertThat(calculateur2008.calculCotisationAi(BigDecimal.valueOf(100000))).isEqualTo("1400.00");
-//	}
-//
-//	@Test
-//	public void calculCotisationApg() {
-//        assertThat(calculateur2008.calculCotisationApg(BigDecimal.valueOf(100000))).isEqualTo("300.00");
-//	}
-//
-//	@Test
-//	public void calculCotisationAvs() {
-//        assertThat(calculateur2008.calculCotisationAvs(BigDecimal.valueOf(100000))).isEqualTo("7800.00");
-//	}
+
 //
 //	@Test
 //	public void calculCotisationAvsAiApg() {
@@ -87,34 +112,7 @@ public class CalculCotisationAvsAiApgIndependantTest {
 //        assertThat(calculateur2009.calculCotisationAvsAiApg(BigDecimal.valueOf(1000))).isEqualByComparingTo("460.00");
 //        assertThat(calculateur2009.calculCotisationAvsAiApg(BigDecimal.valueOf(100000))).isEqualTo("9500.00");
 //	}
-//
-//	@Test
-//	public void getTauxTotal2008(){
-//		// 2008
-//        assertThat(getTxTotal(calculateur2008,  1000)).isNull();
-//        assertThat(getTxTotal(calculateur2008,  8899)).isNull();
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 8900)).isEqualTo("5.116 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 10000)).isEqualTo("5.116 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 15899)).isEqualTo("5.116 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 15900)).isEqualTo("5.237 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 16000)).isEqualTo("5.237 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 21000)).isEqualTo("5.359 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 23000)).isEqualTo("5.481 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 25000)).isEqualTo("5.603 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 27000)).isEqualTo("5.725 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 30000)).isEqualTo("5.967 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 32000)).isEqualTo("6.211 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 34000)).isEqualTo("6.455 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 36000)).isEqualTo("6.699 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 38000)).isEqualTo("6.942 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 40000)).isEqualTo("7.186 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 43000)).isEqualTo("7.551 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 45000)).isEqualTo("7.917 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 48000)).isEqualTo("8.283 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 50000)).isEqualTo("8.647 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 51000)).isEqualTo("9.013 %");
-//        TauxAssert.assertThat(getTxTotal(calculateur2008, 53100)).isEqualTo("9.5   %");
-//	}
+
 //
 //	@Test
 //	public void getTauxTotal2009(){

@@ -356,6 +356,38 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
 //            constructeur.trancheBareme("56900", "7.4 %");
 //            return constructeur.construire(annee);
 //        }
+        if (2008 == annee) {
+            return new CalculCotisationAvsAiApgIndependant.Constructeur()
+                    .avs().cotisationMinimale(370) // Voir art. 2 al. 2 de l’O 07 du 22 sept. 2006 – RS 831.108
+                    .jusqua(     8_900).taux("0")
+                    .puisJusqua(15_900).taux("4.2 %")
+                    .puisJusqua(20_100).taux("4.3 %")
+                    .puisJusqua(22_300).taux("4.4 %")
+                    .puisJusqua(24_500).taux("4.5 %")
+                    .puisJusqua(26_700).taux("4.6 %")
+                    .puisJusqua(28_900).taux("4.7 %")
+                    .puisJusqua(31_100).taux("4.9 %")
+                    .puisJusqua(33_300).taux("5.1 %")
+                    .puisJusqua(35_500).taux("5.3 %")
+                    .puisJusqua(37_700).taux("5.5 %")
+                    .puisJusqua(39_900).taux("5.7 %")
+                    .puisJusqua(42_100).taux("5.9 %")
+                    .puisJusqua(44_300).taux("6.2 %")
+                    .puisJusqua(46_500).taux("6.5 %")
+                    .puisJusqua(48_700).taux("6.8 %")
+                    .puisJusqua(50_900).taux("7.1 %")
+                    .puisJusqua(53_100).taux("7.4 %")
+                    .puis()                            .taux("7.8 %")
+
+
+                    .ai()
+                        .cotisationMinimale(62) // Voir article 6 https://www.fedlex.admin.ch/eli/cc/2006/611/fr
+                        .taux("1.4 %")
+                    .apg()
+                        .cotisationMinimale(13) // Voir article 7 https://www.fedlex.admin.ch/eli/cc/2006/611/fr
+                        .taux("0.3 %")
+                    .construire(annee);
+        }
         if (2025 == annee) {
             // Article 21 du RAVS : https://www.fedlex.admin.ch/eli/cc/63/1185_1183_1185/fr#a21
             return new CalculCotisationAvsAiApgIndependant.Constructeur()
@@ -380,8 +412,12 @@ public class Fournisseur implements FournisseurRegleCalculAssuranceSociale {
                         .puisJusqua(60_500).taux("7.55 %")
                         .puis()                           .taux("8.1 %")
 
-                    .ai() .cotisationMinimale(70).taux("1.4 %")
-                    .apg().cotisationMinimale(25).taux("0.5 %")
+                    .ai()
+                        .cotisationMinimale(70) // Voir article 6 de l’ Ordonnance sur les adaptations à l’évolution des salaires et des prix dans le régime de l’AVS, de l’AI et des APG à partir de 2025 https://www.fedlex.admin.ch/eli/oc/2024/463/fr#art_6
+                        .taux("1.4 %")
+                    .apg()
+                        .cotisationMinimale(25) // Voir article 9 de l’ Ordonnance sur les adaptations à l’évolution des salaires et des prix dans le régime de l’AVS, de l’AI et des APG à partir de 2025 https://www.fedlex.admin.ch/eli/oc/2024/463/fr#art_9
+                        .taux("0.5 %")
                 .construire(annee);
         } else {
             throw new IllegalArgumentException("Le barème des cotisations AVS indépendants n'est pas connu pour l'année " + annee);
