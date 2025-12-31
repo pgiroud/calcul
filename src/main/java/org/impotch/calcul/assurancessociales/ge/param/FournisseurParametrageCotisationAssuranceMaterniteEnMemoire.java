@@ -47,7 +47,7 @@ public class FournisseurParametrageCotisationAssuranceMaterniteEnMemoire impleme
 
     private ParametrageCotisationAssuranceMaternite construireParametrage2026() {
         return unConstructeur(2026)
-                .tauxCotisationAssuranceMaternite("0.064 %")
+                .tauxCotisationAssuranceMaternite("0.058 %")
                 .cons();
     }
 
