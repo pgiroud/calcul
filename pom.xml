@@ -25,35 +25,19 @@
         <dependency>
             <groupId>org.impotch</groupId>
             <artifactId>bareme</artifactId>
-            <version>3.1.5</version>
+            <version>${bareme.version}</version>
         </dependency>
         <dependency>
             <groupId>org.impotch</groupId>
             <artifactId>bareme</artifactId>
             <type>test-jar</type>
-            <version>3.1.5</version>
+            <version>${bareme.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.impotch</groupId>
-            <artifactId>util</artifactId>
-            <version>1.1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.impotch</groupId>
-            <artifactId>util</artifactId>
-            <version>1.1.7</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
+            <!-- Dépend de SLF4J donc inutile de le rajouter -->
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
+            <version>${logback-classic.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -70,10 +54,27 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
-        <assertj.version>3.27.6</assertj.version>
-        <logback.version>1.5.20</logback.version>
-        <slf4j.version>2.0.17</slf4j.version>
-        <junit.version>6.0.0</junit.version>
+
+        <junit.version>6.0.2</junit.version>
+        <assertj.version>3.27.7</assertj.version> <!-- 24/01/2026 -->
+        <logback-classic.version>1.5.25</logback-classic.version>
+
+        <bareme.version>3.1.5</bareme.version>
+
+        <!-- Plugin maven -->
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version> <!-- 15/11/2025 -->
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version> <!-- 10/09/2025 -->
+        <maven-source-plugin.version>3.4.0</maven-source-plugin.version> <!-- 29/11/2025 -->
+
+        <maven-site-plugin.version>3.21.0</maven-site-plugin.version> <!-- 22/10/2024 -->
+        <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version> <!-- 26/02/2025 -->
+        <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version> <!-- 21/09/2025 -->
+        <maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version> <!-- 25/10/2024 -->
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version> <!-- 11/10/2025 -->
+        <maven-surefire-report-plugin.version>3.5.4</maven-surefire-report-plugin.version> <!-- 10/09/2025 -->
+        <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
+
     </properties>
 
     <!-- Build Settings -->
@@ -82,12 +83,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.14.1</version>
+                <version>${maven-compiler-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
+                <version>${maven-jar-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -99,7 +100,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.4</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <argLine>-Xms256m -Xmx512m</argLine>
                     <parallel>methods</parallel>
@@ -109,7 +110,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>${maven-source-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -161,7 +162,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.21.0</version>
+                <version>${maven-site-plugin.version}</version>
             </plugin>
 
         </plugins>
@@ -171,17 +172,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.21.0</version>
+                <version>${maven-site-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.9.0</version>
+                <version>${maven-project-info-reports-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.12.0</version>
+                <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <show>package</show>
                     <charset>${project.build.sourceEncoding}</charset>
@@ -198,23 +199,25 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven-surefire-report-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${maven-pmd-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>${maven-jxr-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.14</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>3.5.4</version>
+                <version>${jacoco-maven-plugin.version}</version>
             </plugin>
         </plugins>
-
-
-
     </reporting>
 
     <!-- More Project Information -->
