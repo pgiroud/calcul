@@ -13,21 +13,6 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.impotch.calcul.impot.cantonal.ge;
 
 import java.math.BigDecimal;
@@ -44,7 +29,8 @@ import org.impotch.calcul.impot.taxation.repart.Repartition;
 import org.impotch.calcul.lieu.ICommuneSuisse;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
-import org.impotch.util.TypeArrondi;
+
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
 /**
  * Classe chargée de produire les impôts communaux pour les communes du cantonal
@@ -139,13 +125,13 @@ public abstract class ProducteurImpotCommunalGE implements ProducteurImpotCommun
 				builder.nouvelleLigne();
 			} 
 			Repartition<ForCommunal> repartitionAssiette = fournisseur.getRepartition();
-			Repartition<ForCommunal> repartition = repartitionAssiette.repartir(partARepartir,TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
+			Repartition<ForCommunal> repartition = repartitionAssiette.repartir(partARepartir,VINGTIEME_LE_PLUS_PROCHE);
 			for (ForCommunal forComm : repartition.getForImposition()) {
 				Part part = repartition.getPart(forComm);
 				ICommuneSuisse commune = forComm.getLieu();
 				BigDecimal baseCalcul = part.getMontant();
 				BigDecimal taux = fournisseurParametre.getTauxCentimes(fournisseur.getPeriodeFiscale().annee(),commune);
-				BigDecimal impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(baseCalcul.multiply(taux));
+				BigDecimal impot = VINGTIEME_LE_PLUS_PROCHE.arrondir(baseCalcul.multiply(taux));
 				if (BigDecimalUtil.isStrictementPositif(impot)) {
 					// Explication de calcul
 					builder.ajouter("Part de la commune " + commune.getNom());

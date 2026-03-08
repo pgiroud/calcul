@@ -19,8 +19,8 @@ import java.math.BigDecimal;
 
 public class ExtremaRenteAVS {
 
-	private static final BigDecimal NBRE_MOIS_ANNEE = new BigDecimal(12);
-	private static final BigDecimal RATIO_MINIMUM_MAXIMUM = new BigDecimal(2);
+	private static final BigDecimal NBRE_MOIS_ANNEE = BigDecimal.valueOf(12);
+	private static final BigDecimal RATIO_MINIMUM_MAXIMUM = BigDecimal.TWO;
 	
 	private final BigDecimal montantMensuelMinimum;
 	

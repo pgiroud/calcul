@@ -38,7 +38,7 @@ public enum CommunauteReligieuse {
 	
 	private String nom;
 	
-	private CommunauteReligieuse(String nom) {
+	CommunauteReligieuse(String nom) {
 		this.nom = nom;
 	}
 	

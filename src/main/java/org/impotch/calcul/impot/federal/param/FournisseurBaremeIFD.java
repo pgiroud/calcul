@@ -13,28 +13,15 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot.federal.param;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.util.TypeArrondi;
 
-import java.math.BigDecimal;
 import java.util.Optional;
+
+import static org.impotch.util.TypeArrondi.VINGTIEME_INF;
 
 /**
  * Created by IntelliJ IDEA.
@@ -46,10 +33,9 @@ import java.util.Optional;
 public interface FournisseurBaremeIFD {
 
 
-    static final TypeArrondi ARRONDI_IFD = TypeArrondi.CINQ_CENTIEMES_INF;
 
     default Optional<Bareme> getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee) {
-        return getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee, ARRONDI_IFD);
+        return getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(annee, VINGTIEME_INF);
     }
 
     /**
@@ -62,7 +48,7 @@ public interface FournisseurBaremeIFD {
     Optional<Bareme> getBaremeImpotRevenuPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche);
 
     default Optional<Bareme> getBaremeImpotRevenuPersonnePhysiquePourFamille(int annee) {
-        return getBaremeImpotRevenuPersonnePhysiquePourFamille(annee,ARRONDI_IFD);
+        return getBaremeImpotRevenuPersonnePhysiquePourFamille(annee,VINGTIEME_INF);
     }
 
     /**
@@ -77,16 +63,17 @@ public interface FournisseurBaremeIFD {
     // Anciens barèmes en vigueur jusqu’en 2011 pour les prestations en capital
 
     default Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee) {
-        return getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee,ARRONDI_IFD);
+        return getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(annee,VINGTIEME_INF);
     }
 
     Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourPersonneSeule(int annee, TypeArrondi arrondiSurChaqueTranche);
 
 
     default Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee) {
-        return getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee,ARRONDI_IFD);
+        return getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee,VINGTIEME_INF);
     }
 
-    Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(int annee, TypeArrondi arrondiSurChaqueTranche);
+    Bareme getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(
+            int annee, TypeArrondi arrondiSurChaqueTranche);
 
 }

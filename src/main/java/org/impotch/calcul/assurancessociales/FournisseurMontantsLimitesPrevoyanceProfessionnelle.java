@@ -27,7 +27,7 @@ import java.math.BigDecimal;
  */
 public interface FournisseurMontantsLimitesPrevoyanceProfessionnelle {
 
-    public static FournisseurMontantsLimitesPrevoyanceProfessionnelle limitesLPP(ParametrageSuisseAnnuel parametrage) {
+    static FournisseurMontantsLimitesPrevoyanceProfessionnelle limitesLPP(ParametrageSuisseAnnuel parametrage) {
         FournisseurMontantsLimitesLPP fournisseur = new FournisseurMontantsLimitesLPP();
         fournisseur.setRenteAVSMensuelleMinimale(BigDecimal.valueOf(parametrage.renteMensuelleMinimum()));
         return fournisseur;

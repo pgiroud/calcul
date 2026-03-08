@@ -120,7 +120,7 @@ public class ImpositionFamille implements
 
 
 	protected boolean hasCharge(SituationFamiliale situation) {
-		return situation.getEnfants().size() > 0 || situation.getPersonnesNecessiteuses().size() > 0;
+		return !situation.getEnfants().isEmpty() || !situation.getPersonnesNecessiteuses().isEmpty();
 	}
 	
 	protected boolean isFamille(SituationFamiliale situation) {

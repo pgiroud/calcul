@@ -34,6 +34,17 @@ import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 
+/**
+ * En 2026, le système à double barème est celui qui est le plus répandu, avec huit cantons qui l'appliquent.
+ * Il prévoit des tarifs différents pour les personnes mariées et pour les personnes non mariées.
+ * Les couples mariés sont taxés ensemble, tandis que les non-mariés sont taxés séparément.
+ * Un barème standard s’applique aux personnes célibataires, tandis qu'un barème plus favorable
+ * est prévu pour les couples mariés afin de réduire les effets de progression.
+ * Cela permet de prendre en considération la capacité économique des couples, toutes classes
+ * de revenus confondues, et de déterminer la charge fiscale appropriée à chaque niveau de
+ * revenu. En 2026, ce modèle s'applique en Argovie, à Berne, à Bâle-Ville, à Zurich, à Zoug,
+ * à Lucerne, au Tessin et dans le Jura.
+ */
 public class DoubleBareme extends ImpositionFamille implements StrategieProductionImpotFamille {
 	
     /**************************************************/

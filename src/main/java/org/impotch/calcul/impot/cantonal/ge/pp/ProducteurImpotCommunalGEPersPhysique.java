@@ -13,21 +13,6 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
@@ -102,9 +87,9 @@ public class ProducteurImpotCommunalGEPersPhysique extends
 		BigDecimal partPrivilegiee = BigDecimal.ZERO;
 		if ("GE".equals(domicile.getCanton().getCodeIso2())) {
 			BigDecimal tauxPartPrivilegiee = getFournisseurParametrage().getPartPrivilegiee(fournisseur.getPeriodeFiscale().annee(), domicile);
-			partPrivilegiee = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(montantCantonalBase.multiply(tauxPartPrivilegiee));
+			partPrivilegiee = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondir(montantCantonalBase.multiply(tauxPartPrivilegiee));
 			BigDecimal taux = getFournisseurParametrage().getTauxCentimes(fournisseur.getPeriodeFiscale().annee(), domicile);
-			BigDecimal impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondirMontant(partPrivilegiee.multiply(taux));
+			BigDecimal impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondir(partPrivilegiee.multiply(taux));
 			if (BigDecimalUtil.isStrictementPositif(impot)) {
 				ImpotProduit impotProduit = new ImpotProduit.Cons(getCodePartPrivilegiee(),impot)
 						.baseCalcul(partPrivilegiee)

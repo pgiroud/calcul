@@ -43,11 +43,13 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
         }
     }
 
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2026() {
         // Le paramétrage 2026 est le même que celui de 2025
         return unConstructeur(2026).copie(construireParametrage2025()).cons();
     }
 
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2025() {
         // Adaptation de la rente mensuelle minimum : 1225 CHF --> 1260 CHF https://www.fedlex.admin.ch/eli/cc/2024/463/fr#art_3
         return unConstructeur(2025)
@@ -68,6 +70,7 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .cons();
     }
 
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2024() {
         return unConstructeur(2024)
                 .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.5 %")
@@ -79,6 +82,7 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .cons();
     }
 
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2023() {
         // Suppression de la participation des hauts revenus dans l'assurance chômage
         return unConstructeur(2023)
@@ -90,6 +94,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1225)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2022() {
         return unConstructeur(2022)
                 .montantMaxAssure(148_200).avs("8.7 %").ai("1.4 %").apg("0.5 %")
@@ -100,6 +106,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1195)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2021() {
         // Augmentation taux APG : 0.45 -> 0.5
         return unConstructeur(2021)
@@ -111,6 +119,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1195)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2020() {
         // Augmentation du taux AVS : 8.4 -> 8.7
         // Source RO 2019 2395 Loi fédérale relative à la réforme fiscale et au financement de l’AVS (RFFA)
@@ -124,6 +134,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1185)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2019() {
         return unConstructeur(2019)
                 .montantMaxAssure(148_200).avs("8.4 %").ai("1.4 %").apg("0.45 %")
@@ -134,6 +146,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1185)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2018() {
         return unConstructeur(2018)
                 .montantMaxAssure(148_200).avs("8.4 %").ai("1.4 %").apg("0.45 %")
@@ -144,6 +158,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1175)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2017() {
         return unConstructeur(2017)
                 .montantMaxAssure(148_200).avs("8.4 %").ai("1.4 %").apg("0.45 %")
@@ -154,6 +170,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1175)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2016() {
         // Diminution taux APG : 0.5 -> 0.45
         // Augmentation du montant maximum assuré : 126'000 -> 148'200
@@ -167,6 +185,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1175)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2015() {
         return unConstructeur(2015)
                 .montantMaxAssure(126_000).avs("8.4 %").ai("1.4 %").apg("0.5 %")
@@ -177,6 +197,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1175)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2014() {
         // Suppression de la limite pour la participation des hauts revenus à la cotisation
         // Acceptation par l‘Assemblée fédérale, le 21 juin 2013, du déplafonnement du pourcent de solidarité
@@ -189,6 +211,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1170)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2013() {
         return unConstructeur(2013)
                 .montantMaxAssure(126_000).avs("8.4 %").ai("1.4 %").apg("0.5 %")
@@ -201,6 +225,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1170)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2012() {
         return unConstructeur(2012)
                 .montantMaxAssure(126_000).avs("8.4 %").ai("1.4 %").apg("0.5 %")
@@ -213,6 +239,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1160)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2011() {
         // Augmentation taux APG : 0.3 % -> 0.5 %
         // Augmentation taux de l'assurance chômage : 2 % -> 2.2 %
@@ -228,6 +256,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1160)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2010() {
         return unConstructeur(2010)
                 .montantMaxAssure(126_000).avs("8.4 %").ai("1.4 %").apg("0.3 %")
@@ -238,6 +268,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1140)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2009() {
         return unConstructeur(2009)
                 .montantMaxAssure(126_000).avs("8.4 %").ai("1.4 %").apg("0.3 %")
@@ -248,6 +280,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1140)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2008() {
         // Décision du 27 juin 2007 du conseil fédéral (RO 2007 3667 Annexe 1)
         // la maximum passe de 106800 à 126000
@@ -261,6 +295,8 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .renteMensuelleMinimum(1105)
                 .cons();
     }
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2007() {
         return unConstructeur(2007)
                 .montantMaxAssure(106_800)
@@ -273,6 +309,7 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .cons();
     }
 
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2006() {
         return unConstructeur(2006)
                 .montantMaxAssure(106_800)
@@ -285,6 +322,7 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .cons();
     }
 
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2005() {
         return unConstructeur(2005)
                 .montantMaxAssure(106_800)
@@ -315,6 +353,7 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
 
 
     // montant max assuré = 97200 francs jusqu’à 1999 inclus puis à partir de 2000, 106800 francs
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2000() {
         // La loi fédérale sur l'assurance-accidents stipule qu' «en règle générale,
         // au moins 92 pour cent, mais pas plus de 96 pour cent des travailleurs assurés soient
@@ -332,6 +371,7 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
                 .cons();
     }
 
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage1999() {
         return unConstructeur(1999)
                 .montantMaxAssure(97_200) // À compléter

@@ -68,6 +68,7 @@ import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeGEParTra
 import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009.unConstructeurBaremeGEEntre2001et2009;
 import static org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ConstructeurBaremeRevenuAvecFormuleUniversite.unConstructeurBaremeRevenuAvecFormuleUniversite;
 import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
+import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille.*;
 
 public class FournisseurCantonalGE extends FournisseurCantonal implements FournisseurRegleImpotCantonalGE {
 
@@ -243,8 +244,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     private StrategieProductionImpotFamille impositionFamiliale(int annee) {
         if (annee < 2010) return new DoubleBaremeGE(getBaremeRevenu(annee), getBaremeRevenuFamille(annee));
-        if (annee < 2024) return new Splitting(getBaremeRevenu(annee), "50 %");
-        else return new SplittingEventuellementPartiel(getBaremeRevenu(annee),"50 %","55.56 %"); // https://ge.ch/grandconseil/data/texte/PL13254A.pdf
+        // À partir de 2010, un seul barème avec splitting
+        if (annee < 2024) return splittingIntegral(getBaremeRevenu(annee));
+        else return splittingIntegralEventuellementPartiel(getBaremeRevenu(annee),"55.56 %"); // https://ge.ch/grandconseil/data/texte/PL13254A.pdf
     }
 
     public ProducteurImpotBase construireImpotCantonalBaseRevenu(int annee) {

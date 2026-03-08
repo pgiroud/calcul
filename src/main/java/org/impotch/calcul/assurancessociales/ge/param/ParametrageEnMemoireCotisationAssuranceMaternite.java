@@ -52,7 +52,7 @@ public class ParametrageEnMemoireCotisationAssuranceMaternite implements Paramet
         }
 
         public Constructeur(ParametrageCotisationAssuranceMaternite parametrage) {
-            this.annee = parametrage.annee();;
+            this.annee = parametrage.annee();
             this.tauxCotisationAssuranceMaternite = parametrage.tauxAssuranceMaternite();
         }
 

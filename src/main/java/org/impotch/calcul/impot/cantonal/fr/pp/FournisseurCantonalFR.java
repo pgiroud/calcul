@@ -13,65 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of impotch/calcul.
- * <p>
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- * <p>
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- * <p>
- * This file is part of impotch/calcul.
- * <p>
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- * <p>
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of impotch/calcul.
- * <p>
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- * <p>
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot.cantonal.fr.pp;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -97,9 +39,8 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
     private final static TypeArrondi ARRONDI_ASSIETTE_REVENU = CENTAINE_INF;
     private final static TypeArrondi ARRONDI_IMPOT = CINQ_CENTIEMES_LES_PLUS_PROCHES;
 
-    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICRevenu = new ConcurrentHashMap<>();
-    private ConcurrentMap<Integer, SplittingFR> splittingParAnnee = new ConcurrentHashMap<>();
-    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICFortune = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICRevenu = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICFortune = new ConcurrentHashMap<>();
 
     private BaremeTauxEffectifParTranche construireBaremeRevenuEntre2006inclusEt2008inclus() {
         return
@@ -262,10 +203,6 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
         return producteurImpotsICFortune.get(annee);
     }
 
-
-    private IExplicationDetailleeBuilder getNewExplicationBuilder() {
-        return new ExplicationDetailleTexteBuilder();
-    }
 
 
 }

@@ -34,6 +34,7 @@ import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.taxation.pp.famille.DoubleBareme;
 import org.impotch.calcul.impot.taxation.pp.famille.ImpositionFamille;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
+import org.impotch.calcul.impot.taxation.pp.famille.SplittingEventuellementPartiel;
 
 import java.math.BigDecimal;
 
@@ -50,8 +51,17 @@ public interface StrategieProductionImpotFamille {
 		return strat;
 	}
 
-	public static StrategieProductionImpotFamille splittingIntegral(Bareme bareme) {
-		return new Splitting(bareme, "50 %");
+	public static Splitting splitting(Bareme bareme, String tauxSplitting) {
+		return new Splitting(bareme, tauxSplitting);
+	}
+
+
+	public static Splitting splittingIntegral(Bareme bareme) {
+		return splitting(bareme, "50 %");
+	}
+
+	public static StrategieProductionImpotFamille splittingIntegralEventuellementPartiel(Bareme bareme, String tauxSplittingPartiel) {
+		return new SplittingEventuellementPartiel(splittingIntegral(bareme),tauxSplittingPartiel);
 	}
 
 	BigDecimal produireImpotDeterminant(SituationFamiliale situation, BigDecimal determinantArrondi);
