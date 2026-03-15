@@ -13,21 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot.taxation.repart;
 
 import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
@@ -165,7 +151,7 @@ public class RepartitionToutesCommunesGETest {
     @Test
     public void testRepartSurToutesCommunes() {
         Repartition<ForCommunal> cle = creerRepartitionToutesCommunesGESuivantPopulationFin2012();
-        Repartition<ForCommunal> repart = cle.repartirSurResteARepartir(new BigDecimal("0.60"), TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES);
+        Repartition<ForCommunal> repart = cle.repartirSurResteARepartir(new BigDecimal("0.60"), TypeArrondi.VINGTIEME_LE_PLUS_PROCHE);
         // Carouge (GE) : 0.05
         controlePresence(repart,6608,new BigDecimal("0.05"));
         // Meyrin : 0.05

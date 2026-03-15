@@ -13,6 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
@@ -26,7 +27,8 @@ import org.impotch.calcul.lieu.ICommuneSuisse;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
-import org.impotch.util.TypeArrondi;
+
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
 /**
  * Classe chargée de produire les impôts communaux des personnes physiques
@@ -43,7 +45,7 @@ import org.impotch.util.TypeArrondi;
 public class ProducteurImpotCommunalGEPersPhysique extends
 		ProducteurImpotCommunalGE {
 
-	/**************************************************/
+    /**************************************************/
     /*************** Constructeurs ********************/
     /**************************************************/
 
@@ -57,7 +59,7 @@ public class ProducteurImpotCommunalGEPersPhysique extends
 		super(codePartPrivilegiee,codeCtsAdd);
 	}
 	
-	/**************************************************/
+    /**************************************************/
     /******************* Méthodes *********************/
     /**************************************************/
 	
@@ -87,9 +89,9 @@ public class ProducteurImpotCommunalGEPersPhysique extends
 		BigDecimal partPrivilegiee = BigDecimal.ZERO;
 		if ("GE".equals(domicile.getCanton().getCodeIso2())) {
 			BigDecimal tauxPartPrivilegiee = getFournisseurParametrage().getPartPrivilegiee(fournisseur.getPeriodeFiscale().annee(), domicile);
-			partPrivilegiee = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondir(montantCantonalBase.multiply(tauxPartPrivilegiee));
+			partPrivilegiee = VINGTIEME_LE_PLUS_PROCHE.arrondir(montantCantonalBase.multiply(tauxPartPrivilegiee));
 			BigDecimal taux = getFournisseurParametrage().getTauxCentimes(fournisseur.getPeriodeFiscale().annee(), domicile);
-			BigDecimal impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondir(partPrivilegiee.multiply(taux));
+			BigDecimal impot = VINGTIEME_LE_PLUS_PROCHE.arrondir(partPrivilegiee.multiply(taux));
 			if (BigDecimalUtil.isStrictementPositif(impot)) {
 				ImpotProduit impotProduit = new ImpotProduit.Cons(getCodePartPrivilegiee(),impot)
 						.baseCalcul(partPrivilegiee)

@@ -13,36 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of impotch/calcul.
- * <p>
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- * <p>
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot.cantonal.fr.pp;
 
 
@@ -55,7 +26,9 @@ import org.impotch.bareme.Bareme;
 
 import org.impotch.util.TypeArrondi;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 import static org.impotch.calcul.impot.cantonal.fr.ContexteTestCH_FR.CTX_TST_CH_FR;
 import static org.impotch.calcul.impot.cantonal.fr.pp.SplittingFR.unSplittingFribourgeois;
 
@@ -376,7 +349,7 @@ public class SplittingFRTest {
     private void testSplitting(SplittingFR splitting, int assiette, String montantAttendu) {
         BigDecimal assietteBG = new BigDecimal(assiette);
         BigDecimal impot = splitting.produireImpotDeterminant(getSituation(true), assietteBG);
-        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondir(impot);
+        impot = VINGTIEME_LE_PLUS_PROCHE.arrondir(impot);
         assertThat(impot).isEqualTo(new BigDecimal(montantAttendu));
 //		assertEquals("Splitting",new BigDecimal(montantAttendu),impot);
     }
@@ -384,7 +357,7 @@ public class SplittingFRTest {
     private void testSansSplitting(SplittingFR splitting, int assiette, String montantAttendu) {
         BigDecimal assietteBG = new BigDecimal(assiette);
         BigDecimal impot = splitting.produireImpotDeterminant(getSituation(false), assietteBG);
-        impot = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES.arrondir(impot);
+        impot = VINGTIEME_LE_PLUS_PROCHE.arrondir(impot);
         assertThat(impot).isEqualTo(new BigDecimal(montantAttendu));
 //		assertEquals("Splitting",new BigDecimal(montantAttendu),impot);
     }

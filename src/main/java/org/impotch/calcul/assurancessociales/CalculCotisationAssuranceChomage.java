@@ -13,12 +13,13 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
 import org.impotch.util.TypeArrondi;
 
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 /**
  * Calcule la cotisation à l'assurance chômage. Le calcul est décrit dans la loi  
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -42,7 +43,7 @@ public interface CalculCotisationAssuranceChomage {
 	 * @return le montant de la cotisation arrondi aux 5 centimes près
 	 */
 	default BigDecimal calculCotisationAC(BigDecimal montantDeterminant) {
-		return calculCotisationAC(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+		return calculCotisationAC(montantDeterminant,VINGTIEME_LE_PLUS_PROCHE);
 	}
 
 	default BigDecimal calculCotisationAC(long montantDeterminant, TypeArrondi arrondi) {
@@ -66,7 +67,7 @@ public interface CalculCotisationAssuranceChomage {
 	 * @return la part due par le salarié de la cotisation à l'assurance chômage arrondi aux 5 centimes les plus proches
 	 */
 	default BigDecimal calculPartSalarieeCotisationAssuranceChomage(BigDecimal montantDeterminant) {
-		return calculPartSalarieeCotisationAssuranceChomage(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+		return calculPartSalarieeCotisationAssuranceChomage(montantDeterminant,VINGTIEME_LE_PLUS_PROCHE);
 	}
 
 	default BigDecimal calculPartSalarieeCotisationAssuranceChomage(long montantDeterminant, TypeArrondi arrondi) {

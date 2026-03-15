@@ -13,12 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
 import org.impotch.util.TypeArrondi;
 
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.VINGTIEME_INF;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
 /**
  * Calcule les cotisations pour l'assurance maternité et adoption. Ces assurances
@@ -27,7 +29,7 @@ import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
  * la loi genevoise instituant une assurance en cas de maternité et d'adoption (LAMat) du
  * 21 avril 2005 - J 5 07.
  * 
- * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
+ * @author Patrick Giroud
  *
  */
 public interface CalculCotisationsAssuranceMaterniteAdoption {
@@ -48,6 +50,6 @@ public interface CalculCotisationsAssuranceMaterniteAdoption {
 	 * @return la part due par le salarié de la cotisation à l'assurance maternité adoption. 
 	 */
 	default BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant) {
-		return calculPartSalarieeAssuranceMaterniteAdoption(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+	    return calculPartSalarieeAssuranceMaterniteAdoption(montantDeterminant, VINGTIEME_LE_PLUS_PROCHE);
 	}
 }

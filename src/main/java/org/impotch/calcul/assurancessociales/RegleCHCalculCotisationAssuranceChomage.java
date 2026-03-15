@@ -6,7 +6,7 @@ import org.impotch.bareme.ConstructeurBareme;
 import java.math.BigDecimal;
 
 import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxMarginal;
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
 
 
@@ -55,7 +55,7 @@ class RegleCHCalculCotisationAssuranceChomage implements RegleCalculCotisationAs
 
         private ConstructeurBareme initBareme() {
             return unBaremeATauxMarginal()
-                    .typeArrondiSurChaqueTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                    .typeArrondiSurChaqueTranche(VINGTIEME_LE_PLUS_PROCHE)
                     .jusqua(0).taux("0")
                     .puisJusqua(montantAnnuelMaximumGainAssure).taux(tauxCotisationAssuranceChomage);
         }

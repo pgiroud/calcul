@@ -112,7 +112,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 	public BigDecimal calculPartSalarieeAssuranceMaterniteAdoption(BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		if (BigDecimalUtil.isStrictementPositif(this.tauxAssuranceMaterniteAdoption)) {
 			BigDecimal cotisation = montantDeterminant.multiply(tauxAssuranceMaterniteAdoption);
-			return arrondi.arrondirMontant(cotisation);
+			return arrondi.arrondir(cotisation);
 		} else {
 			return ZERO;
 		}
@@ -207,7 +207,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 			, BigDecimal montantDeterminant, TypeArrondi arrondi) {
 		BigDecimal plafond = montantAnnuelMaximumGainAssure.min(montantDeterminant);
 		BigDecimal cotisations =  plafond.multiply(tauxCotisationAssuranceAccidentsNonProfessionnels);
-		return arrondi.arrondirMontant(cotisations);
+		return arrondi.arrondir(cotisations);
 	}
 
     /**************************************************/
@@ -261,7 +261,7 @@ public class CalculCotisationsSocialesSalarie extends ReglePeriodique implements
 
 			calculateur.setCalculateurAvsAiApg(constructeur.construire(annee));
 			if (StringUtil.hasText(this.tauxAssuranceMaterniteAdoption)) {
-				calculateur.setTauxAssuranceMaterniteAdoption(BigDecimalUtil.parseTaux(tauxAssuranceMaterniteAdoption));
+				calculateur.setTauxAssuranceMaterniteAdoption(BigDecimalUtil.parse(tauxAssuranceMaterniteAdoption));
 			}
 			return calculateur;
 		}

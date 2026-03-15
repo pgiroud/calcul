@@ -13,21 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot.federal;
 
 import java.math.BigDecimal;
@@ -44,13 +30,16 @@ import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
 
+import static org.impotch.util.TypeArrondi.CENTAINE_INF;
+import static org.impotch.util.TypeArrondi.VINGTIEME_INF;
+
 import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
 import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille.doubleBareme;
 import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille.doubleBaremeAvecRabaisCharge;
 
 public class Fournisseur implements FournisseurRegleImpotFederal {
 
-	private static final TypeArrondi ARRONDI_ASSIETTES = TypeArrondi.CENTAINE_INF;
+	private static final TypeArrondi ARRONDI_ASSIETTES = CENTAINE_INF;
 
 
 	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<>();
@@ -75,8 +64,9 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 
 	private Bareme getBaremePrestationCapitalFamille(int annee) {
-		return  2011 > annee ? fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee, TypeArrondi.CINQ_CENTIEMES_INF)
-				: fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee, TypeArrondi.CINQ_CENTIEMES_INF).orElseThrow();
+		return  2011 > annee ?
+		    fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPraeNumerandoPersonnePhysiquePourFamille(annee, VINGTIEME_INF)
+		    : fournisseurParametrageAnnuelIFD.getBaremeImpotRevenuPersonnePhysiquePourFamille(annee, VINGTIEME_INF).orElseThrow();
 	}
 		
 	private IExplicationDetailleeBuilder getNewExplicationBuilder() {

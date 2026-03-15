@@ -13,36 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
-/**
- * This file is part of impotch/calcul.
- * <p>
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- * <p>
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import java.math.BigDecimal;
@@ -57,8 +28,6 @@ import org.impotch.calcul.impot.cantonal.FournisseurCantonal;
 import org.impotch.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageCommunaleGE;
 import org.impotch.calcul.impot.taxation.pp.*;
-import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
-import org.impotch.calcul.impot.taxation.pp.famille.SplittingEventuellementPartiel;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais.ProducteurBaseRabaisImpot;
 import org.impotch.util.TypeArrondi;
 
@@ -74,7 +43,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
 
     private final static TypeArrondi ARRONDI_ASSIETTE = TypeArrondi.UNITE_LA_PLUS_PROCHE;
-    private final static TypeArrondi ARRONDI_IMPOT = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+	private final static TypeArrondi ARRONDI_IMPOT = TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
     private static final String CODE_CANTON_GE = "CAN-GE";
     private ConstructeurBaremeGEParTrancheIndexee constructeurBaremeEntre2001et2009;

@@ -13,28 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.bareme.BaremeParTranche;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 
 import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe.unConstructeurDeBaremeParTrancheIndexee;
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
 public class ConstructeurBaremeGEParTrancheIndexeeActuel implements ConstructeurBaremeGEParTrancheIndexee {
 
@@ -58,8 +44,8 @@ public class ConstructeurBaremeGEParTrancheIndexeeActuel implements Constructeur
                 .valideDepuis(2010)
                 .anneeReferenceRencherissement(ANNEE_REFERENCE_INDEXATION)
                 .indexateur(fournisseurIndicePeriodique)
-                .typeArrondiTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
-                .typeArrondiGlobal(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiTranche(VINGTIEME_LE_PLUS_PROCHE)
+                .typeArrondiGlobal(VINGTIEME_LE_PLUS_PROCHE)
                 .jusqua(     17_493).taux(" 0 %")
                 .puisJusqua( 21_076).taux(" 8 %")
                 .puisJusqua( 23_184).taux(" 9 %")
@@ -85,8 +71,8 @@ public class ConstructeurBaremeGEParTrancheIndexeeActuel implements Constructeur
                 .valideDepuis(2025)
                 .anneeReferenceRencherissement(ANNEE_REFERENCE_INDEXATION)
                 .indexateur(fournisseurIndicePeriodique)
-                .typeArrondiTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
-                .typeArrondiGlobal(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiTranche(VINGTIEME_LE_PLUS_PROCHE)
+                .typeArrondiGlobal(VINGTIEME_LE_PLUS_PROCHE)
                 .jusqua(     17_493).taux(" 0.00 %")
                 .puisJusqua( 21_076).taux(" 7.30 %")
                 .puisJusqua( 23_184).taux(" 8.20 %")

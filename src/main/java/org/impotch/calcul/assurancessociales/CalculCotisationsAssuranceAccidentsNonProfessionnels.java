@@ -18,7 +18,7 @@ package org.impotch.calcul.assurancessociales;
 import java.math.BigDecimal;
 import org.impotch.util.TypeArrondi;
 
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
 public interface CalculCotisationsAssuranceAccidentsNonProfessionnels {
 	/**
@@ -41,7 +41,7 @@ public interface CalculCotisationsAssuranceAccidentsNonProfessionnels {
 	 */	default BigDecimal calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(
 			BigDecimal tauxCotisationAssuranceAccidentsNonProfessionnels, BigDecimal montantDeterminant) {
 		return calculPartSalarieeCotisationAssuranceAccidentNonProfessionnel(tauxCotisationAssuranceAccidentsNonProfessionnels
-				, montantDeterminant, CINQ_CENTIEMES_LES_PLUS_PROCHES);
+				, montantDeterminant, VINGTIEME_LE_PLUS_PROCHE);
 	}
 	
 }

@@ -13,32 +13,22 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot.taxation.repart;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.math.RoundingMode;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.impotch.calcul.impot.taxation.forimposition.ForImposition;
 import org.impotch.util.BigDecimalUtil;
 import org.impotch.util.TypeArrondi;
 
 /**
- * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
+ * @author Patrick Giroud
  *
  */
 public class Repartition<T extends ForImposition> {
@@ -105,7 +95,7 @@ public class Repartition<T extends ForImposition> {
                 BigDecimal totalTaux = BigDecimal.ZERO;
                 for (PartAvecFor<T> partAvecFor : liste) {
                     Part part = partAvecFor.getPart();
-                    BigDecimal taux = part.getMontant().divide(totalPart,7, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal taux = part.getMontant().divide(totalPart,7, RoundingMode.HALF_UP);
                     part.setTaux(taux);
                     totalTaux = totalTaux.add(taux);
                 }
@@ -177,8 +167,8 @@ public class Repartition<T extends ForImposition> {
             BigDecimal oTotalThis = this.getTotal();
             for (PartAvecFor<T> partAvecFor : liste) {
                 Part oPartThis = partAvecFor.getPart();
-                BigDecimal oMontantPart = montantARepartir.multiply(oPartThis.getMontant()).divide(oTotalThis,10,BigDecimal.ROUND_HALF_UP);
-                oMontantPart = typeArrondi.arrondirMontant(oMontantPart);
+                BigDecimal oMontantPart = montantARepartir.multiply(oPartThis.getMontant()).divide(oTotalThis,10,RoundingMode.HALF_UP);
+                oMontantPart = typeArrondi.arrondir(oMontantPart);
                 if (TypeCalculRepartition.SEULEMENT_SUR_RESTE_A_REPARTIR.equals(type)
                     && 0 == BigDecimal.ZERO.compareTo(oMontantPart)) {
                     oTotalThis = oTotalThis.subtract(oPartThis.getMontant());

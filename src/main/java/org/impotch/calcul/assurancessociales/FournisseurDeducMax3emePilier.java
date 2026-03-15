@@ -13,6 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.impotch.calcul.assurancessociales;
 
 import java.math.BigDecimal;
@@ -38,7 +39,7 @@ class FournisseurDeducMax3emePilier implements FournisseurDeductionMaxPilier3a {
     @Override
     public BigDecimal getDeductionMaximaleAvecLPP() {
         BigDecimal salaireLimiteSuperieur = fournisseurMontantsLimitesPrevoyanceProfessionnelle.limiteSupérieureSalaireCoordonnéAnnuel();
-        return UNITE_LA_PLUS_PROCHE.arrondirMontant(salaireLimiteSuperieur.multiply(BigDecimal.valueOf(8)).movePointLeft(2));
+        return UNITE_LA_PLUS_PROCHE.arrondir(salaireLimiteSuperieur.multiply(BigDecimal.valueOf(8)).movePointLeft(2));
     }
 
     /**
@@ -52,6 +53,6 @@ class FournisseurDeducMax3emePilier implements FournisseurDeductionMaxPilier3a {
     @Override
     public BigDecimal getDeductionMaximaleSansLPP() {
         BigDecimal salaireLimiteSuperieur = fournisseurMontantsLimitesPrevoyanceProfessionnelle.limiteSupérieureSalaireCoordonnéAnnuel();
-        return UNITE_LA_PLUS_PROCHE.arrondirMontant(salaireLimiteSuperieur.multiply(BigDecimal.valueOf(40)).movePointLeft(2));
+        return UNITE_LA_PLUS_PROCHE.arrondir(salaireLimiteSuperieur.multiply(BigDecimal.valueOf(40)).movePointLeft(2));
     }
 }

@@ -27,8 +27,6 @@ import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
 
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
-import static org.impotch.util.TypeArrondi.CENTAINE_INF;
 import static org.impotch.bareme.ConstructeurBareme.unBaremeATauxEffectif;
 import static org.impotch.calcul.impot.cantonal.fr.pp.SplittingFR.unSplittingFribourgeois;
 import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
@@ -36,8 +34,8 @@ import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif
 
 public class FournisseurCantonalFR extends FournisseurCantonal implements FournisseurRegleImpotCantonalFR {
 
-    private final static TypeArrondi ARRONDI_ASSIETTE_REVENU = CENTAINE_INF;
-    private final static TypeArrondi ARRONDI_IMPOT = CINQ_CENTIEMES_LES_PLUS_PROCHES;
+    private final static TypeArrondi ARRONDI_ASSIETTE_REVENU = TypeArrondi.CENTAINE_INF;
+    private final static TypeArrondi ARRONDI_IMPOT = TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
     private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICRevenu = new ConcurrentHashMap<>();
     private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICFortune = new ConcurrentHashMap<>();
@@ -45,7 +43,7 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
     private BaremeTauxEffectifParTranche construireBaremeRevenuEntre2006inclusEt2008inclus() {
         return
                 (BaremeTauxEffectifParTranche)unBaremeATauxEffectif()
-                        .typeArrondiSurChaqueTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                        .typeArrondiSurChaqueTranche(ARRONDI_IMPOT)
                         .fermeAGauche()
                         .jusqua(4900).taux("0")
                         .de(4900).a(16600).taux("1 %").increment("0.000272 %")
@@ -69,7 +67,7 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
     private BaremeTauxEffectifParTranche construireBaremeRevenuAvant2005inclus() {
         return
                 (BaremeTauxEffectifParTranche)unBaremeATauxEffectif()
-                        .typeArrondiSurChaqueTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                        .typeArrondiSurChaqueTranche(ARRONDI_IMPOT)
                         .fermeAGauche()
                         .jusqua(5100).taux("0")
                         .de(5100).a(17300).taux("1 %").increment("0.000261 %")
@@ -151,7 +149,7 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
                 .de(800100).a(900100).taux("3.30 ‰")
                 .de(900100).a(1000100).taux("3.40 ‰")
                 .plusDe(1000100).taux("3.50 ‰")
-                .typeArrondiSurChaqueTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES).construire();
+                .typeArrondiSurChaqueTranche(ARRONDI_IMPOT).construire();
     }
 
     private Bareme construireBaremeFortuneApres2009inclus() {
@@ -173,7 +171,7 @@ public class FournisseurCantonalFR extends FournisseurCantonal implements Fourni
                 .de(875100).a(975100).taux("3.30 ‰")
                 .de(975100).a(1100100).taux("3.40 ‰")
                 .plusDe(1100100).taux("3.50 ‰")
-                .typeArrondiSurChaqueTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES).construire();
+                .typeArrondiSurChaqueTranche(ARRONDI_IMPOT).construire();
 
     }
 

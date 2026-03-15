@@ -13,21 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot;
 
 import java.math.BigDecimal;
@@ -44,7 +30,7 @@ import org.impotch.util.StringUtil;
 import org.impotch.util.TypeArrondi;
 
 /**
- * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
+ * @author Patrick Giroud
  *
  */
 public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
@@ -56,7 +42,7 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 	private final String nomImpot;
 	private final BigDecimal taux;
 	private final String codeBeneficiaire;
-	private TypeArrondi typeArrondi = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+	private TypeArrondi typeArrondi = TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 	private String explicationDetailleePattern;
 
 	private ProducteurImpotDerive producteurDerive;
@@ -96,12 +82,8 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 	}
 
 	protected BigDecimal calculMontant(BigDecimal montantBase, FournisseurAssiette fournisseur) {
-        BigDecimal resultatNonArrondi = montantBase.multiply(taux);
-        if (null == typeArrondi) {
-            return resultatNonArrondi;
-        }  else {
-            return typeArrondi.arrondirMontant(resultatNonArrondi);
-        }
+	    BigDecimal resultatNonArrondi = montantBase.multiply(taux);
+	    return (null == typeArrondi) ? resultatNonArrondi : typeArrondi.arrondir(resultatNonArrondi);
 	}
 
 	protected String getExplicationDetailleePattern() {
@@ -150,7 +132,7 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 		private final String nomImpot;
 		private BigDecimal taux;
 		private String codeBeneficiaire;
-		private TypeArrondi typeArrondi = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+	    private TypeArrondi typeArrondi = TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 		private List<String> explications = new LinkedList<>();
 
 		private ProducteurImpotDerive producteurDerive;
@@ -160,7 +142,7 @@ public class ProducteurImpotDerivePourcent implements ProducteurImpotDerive {
 		}
 
 		public Constructeur taux(String tx) {
-			return taux(BigDecimalUtil.parseTaux(tx));
+			return taux(BigDecimalUtil.parse(tx));
 		}
 
 		public Constructeur taux(BigDecimal tx) {

@@ -18,7 +18,7 @@ package org.impotch.calcul.assurancessociales;
 import java.math.BigDecimal;
 import org.impotch.util.TypeArrondi;
 
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
 /**
  * Calcule les cotisations à l'assurance vieillesse et survivants, à l'assurance
@@ -46,7 +46,7 @@ public interface CalculCotisationAvsAiApg {
 	 * @return le montant global (part employeur + part employé) des 3 cotisations AVS, AI et APG.
 	 */
     default BigDecimal calculCotisationAvsAiApg(BigDecimal montantDeterminant) {
-        return calculCotisationAvsAiApg(montantDeterminant, CINQ_CENTIEMES_LES_PLUS_PROCHES);
+        return calculCotisationAvsAiApg(montantDeterminant, VINGTIEME_LE_PLUS_PROCHE);
     }
 
     /**
@@ -62,7 +62,7 @@ public interface CalculCotisationAvsAiApg {
      * @return le montant de la cotisation à l'AVS (part employé + part employeur).
      */
     default BigDecimal calculCotisationAvs(BigDecimal montantDeterminant) {
-        return calculCotisationAvs(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+        return calculCotisationAvs(montantDeterminant,VINGTIEME_LE_PLUS_PROCHE);
     }
 
     /**
@@ -78,7 +78,7 @@ public interface CalculCotisationAvsAiApg {
      * @return le montant de la cotisation à l'AI (part employé + part employeur).
      */
     default BigDecimal calculCotisationAi(BigDecimal montantDeterminant) {
-        return calculCotisationAi(montantDeterminant, CINQ_CENTIEMES_LES_PLUS_PROCHES);
+        return calculCotisationAi(montantDeterminant, VINGTIEME_LE_PLUS_PROCHE);
     }
 
     /**
@@ -94,7 +94,7 @@ public interface CalculCotisationAvsAiApg {
      * @return le montant de la cotisation à l'APG (part employé + part employeur).
      */
     default BigDecimal calculCotisationApg(BigDecimal montantDeterminant) {
-        return calculCotisationApg(montantDeterminant,CINQ_CENTIEMES_LES_PLUS_PROCHES);
+        return calculCotisationApg(montantDeterminant, VINGTIEME_LE_PLUS_PROCHE);
     }
 
 

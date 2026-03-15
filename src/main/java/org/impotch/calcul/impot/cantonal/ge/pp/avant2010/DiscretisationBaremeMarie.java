@@ -13,24 +13,8 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
-package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
-import static org.impotch.bareme.Point.ORIGINE;
+package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,10 +22,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.impotch.bareme.Point;
 import org.impotch.util.TypeArrondi;
 import org.impotch.util.math.Fonction;
 import org.impotch.util.math.integration.MethodeIntegration;
+
+import org.impotch.bareme.Point;
+
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
+import static org.impotch.bareme.Point.ORIGINE;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -51,7 +39,7 @@ public class DiscretisationBaremeMarie {
 
 	private MethodeIntegration methodeIntegration;
 	private Fonction tauxMarginal;
-	private TypeArrondi arrondi = TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+	private TypeArrondi arrondi = VINGTIEME_LE_PLUS_PROCHE;
 	
 	private int largeurCourante = -1;
 	private List<PasDiscretisation> pas = new ArrayList<PasDiscretisation>();
@@ -97,7 +85,7 @@ public class DiscretisationBaremeMarie {
 			for (int abscisse = maxPrecedent + pad.largeur; abscisse <= pad.montantSup; abscisse += pad.largeur) {
 				BigDecimal abscisseBd = new BigDecimal(abscisse);
 				BigDecimal ordonnee = pointPrecedent.getOrdonnee().add(this.integrer(pointPrecedent.getAbscisse(), abscisseBd));
-				points.add(new Point(abscisseBd,arrondi.arrondirMontant(ordonnee)));
+				points.add(new Point(abscisseBd,arrondi.arrondir(ordonnee)));
 				pointPrecedent = new Point(abscisseBd,ordonnee);
 			}
 			maxPrecedent = pad.montantSup;

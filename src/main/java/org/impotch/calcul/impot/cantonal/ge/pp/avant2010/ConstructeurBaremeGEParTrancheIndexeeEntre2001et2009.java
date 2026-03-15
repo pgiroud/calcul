@@ -13,28 +13,14 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of impotch/calcul.
- *
- * impotch/calcul is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * impotch/calcul is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeGEParTrancheIndexee;
 import org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe;
 import org.impotch.calcul.impot.indexation.FournisseurIndicePeriodique;
 
-import static org.impotch.util.TypeArrondi.CINQ_CENTIEMES_LES_PLUS_PROCHES;
+import static org.impotch.util.TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 import static org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeParTrancheIndexe.unConstructeurDeBaremeParTrancheIndexee;
 
 public class ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009 implements ConstructeurBaremeGEParTrancheIndexee {
@@ -60,8 +46,8 @@ public class ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009 implements Con
                 .valideEntre(2001, 2009)
                 .indexateur(fournisseurIndicePeriodique)
                 .anneeReferenceRencherissement(2000)
-                .typeArrondiTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
-                .typeArrondiGlobal(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiTranche(VINGTIEME_LE_PLUS_PROCHE)
+                .typeArrondiGlobal(VINGTIEME_LE_PLUS_PROCHE)
                 .jusqua(0).taux("0")
                 .puisJusqua(  100_000).taux("1.75 ‰")
                 .puisJusqua(  200_000).taux("2.25 ‰")
@@ -81,8 +67,8 @@ public class ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009 implements Con
                 .valideEntre(2001, 2009)
                 .indexateur(fournisseurIndicePeriodique)
                 .anneeReferenceRencherissement(2000)
-                .typeArrondiTranche(CINQ_CENTIEMES_LES_PLUS_PROCHES)
-                .typeArrondiGlobal(CINQ_CENTIEMES_LES_PLUS_PROCHES)
+                .typeArrondiTranche(VINGTIEME_LE_PLUS_PROCHE)
+                .typeArrondiGlobal(VINGTIEME_LE_PLUS_PROCHE)
                 .jusqua(      100_000).taux("0 ‰")
                 .puisJusqua(  200_000).taux("0.1125 ‰")
                 .puisJusqua(  300_000).taux("0.1375 ‰")
