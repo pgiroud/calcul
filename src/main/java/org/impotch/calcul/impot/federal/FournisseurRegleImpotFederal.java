@@ -23,11 +23,22 @@ import static org.impotch.util.TypeArrondi.VINGTIEME_INF;
 
 public interface FournisseurRegleImpotFederal {
 
+    /// Retourne un producteur d’impôt fédéral sur le revenu des personnes physiques.
+    /// Attention, il s’agit bien d’impôt produit et non pas d’impôt perçu.
+    /// L’alinea 3 de l’article 36 de la LIFD *Les montants d’impôt inférieurs à 25 francs ne sont pas perçus.* n’est donc pas appliqué
+    /// @param annee L’année fiscale pour laquelle cette production est valide
+    /// @return le producteur d’impôt valable pour l’année
     default ProducteurImpot producteurImpotsFederauxPP(int annee) {
-        return producteurImpotsFederauxPP(annee, VINGTIEME_INF,true);
+        return producteurImpotsFederauxPP(annee, VINGTIEME_INF);
     }
-    
+
+
+     /// Retourne un producteur d’impôt fédéral sur le revenu des personnes physiques.
+     /// Attention, il s’agit bien d’impôt produit et non pas d’impôt perçu.
+     /// L’alinea 3 de l’article 36 de la LIFD *Les montants d’impôt inférieurs à 25 francs ne sont pas perçus.* n’est donc pas appliqué
+     /// @param annee L’année fiscale pour laquelle cette production est valide
+     /// @param arrondiSurChaqueTrancheBareme Les calculs sur les tranches du barème à taux marginal sont arrondis. On peut donc spécifié l’arrondi
+     /// @return le producteur d’impôt valable pour l’année
     ProducteurImpot producteurImpotsFederauxPP(int annee,
-                                               TypeArrondi arrondiSurChaqueTrancheBareme,
-                                               boolean avecSeuillage);
+                                               TypeArrondi arrondiSurChaqueTrancheBareme);
 }

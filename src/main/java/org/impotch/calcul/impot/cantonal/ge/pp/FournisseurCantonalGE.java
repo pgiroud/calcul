@@ -28,6 +28,7 @@ import org.impotch.calcul.impot.cantonal.FournisseurCantonal;
 import org.impotch.calcul.impot.cantonal.ge.ProducteurImpotCommunalGE;
 import org.impotch.calcul.impot.cantonal.ge.param.FournisseurParametrageCommunaleGE;
 import org.impotch.calcul.impot.taxation.pp.*;
+import org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais.FournisseurMontantRabaisImpotGE;
 import org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais.ProducteurBaseRabaisImpot;
 import org.impotch.util.TypeArrondi;
 
@@ -68,7 +69,8 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortune = new ConcurrentHashMap<>();
     private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortuneSupplementaire = new ConcurrentHashMap<>();
 
-    private ConcurrentMap<Integer, ProducteurRabaisImpot> producteursRabaisImpot = new ConcurrentHashMap<Integer, ProducteurRabaisImpot>();
+    private ConcurrentMap<Integer, ProducteurRabaisImpot<SituationFamilialeGE, FournisseurMontantRabaisImpotGE>> producteursRabaisImpot
+            = new ConcurrentHashMap<>();
 
     public FournisseurCantonalGE(FournisseurRegleCalculAssuranceSociale regleAssurance, FournisseurIndexGenevois fournisseurIndexGenevois) {
         this.fournisseurRegleCalculCotisationAssuranceSociale = regleAssurance;
@@ -172,7 +174,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         return regleAge;
     }
 
-    public ProducteurRabaisImpot getProducteurRabaisImpot(int annee) {
+    public ProducteurRabaisImpot<SituationFamilialeGE, FournisseurMontantRabaisImpotGE> getProducteurRabaisImpot(int annee) {
         if (annee >= 2010 || annee < 2001)
             throw new IllegalArgumentException("Le rabais d'impôt est un processus défini uniquement entre les années 2001 et 2009 incluses !!");
         if (!producteursRabaisImpot.containsKey(annee)) {
@@ -182,8 +184,9 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     }
 
 
-    private ProducteurRabaisImpot construireProducteurRabaisImpot(int annee) {
-        ProducteurBaseRabaisImpot producteur = new ProducteurBaseRabaisImpot(annee);
+    private ProducteurRabaisImpot<SituationFamilialeGE, FournisseurMontantRabaisImpotGE> construireProducteurRabaisImpot(int annee) {
+        ProducteurBaseRabaisImpot producteur
+                = new ProducteurBaseRabaisImpot(annee);
         if (annee < 2005) {
             producteur.setMontantParEpoux(new BigDecimal(13750));
             producteur.setMontantDeducDoubleActivite(new BigDecimal(3500));
@@ -287,7 +290,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         ProducteurImpotBase producteurImpotBase = construireImpotCantonalBasePC(annee);
         ProducteurImpot producteur;
         if (annee < 2010) {
-            ProducteurImpotGEAvecRabais prodRabais = new ProducteurImpotGEAvecRabais("IBR", "RI", CODE_CANTON_GE);
+            ProducteurImpotAvecRabais prodRabais = new ProducteurImpotAvecRabais("IBR", "RI", CODE_CANTON_GE);
             prodRabais.setProducteurBaseRabais(producteurImpotBase);
             producteur = prodRabais;
         } else {
@@ -302,7 +305,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         ProducteurImpotBase producteurImpotBase = construireImpotCantonalBaseRevenu(annee);
         ProducteurImpot producteur;
         if (annee < 2010) {
-            ProducteurImpotGEAvecRabais prodRabais = new ProducteurImpotGEAvecRabais("IBR", "RI", CODE_CANTON_GE);
+            ProducteurImpotAvecRabais prodRabais = new ProducteurImpotAvecRabais("IBR", "RI", CODE_CANTON_GE);
             prodRabais.setProducteurBaseRabais(producteurImpotBase);
             producteur = prodRabais;
         } else {

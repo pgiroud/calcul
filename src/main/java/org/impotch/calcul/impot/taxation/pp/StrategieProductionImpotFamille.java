@@ -31,6 +31,7 @@
 package org.impotch.calcul.impot.taxation.pp;
 
 import org.impotch.bareme.Bareme;
+import org.impotch.calcul.impot.Souverainete;
 import org.impotch.calcul.impot.taxation.pp.famille.DoubleBareme;
 import org.impotch.calcul.impot.taxation.pp.famille.ImpositionFamille;
 import org.impotch.calcul.impot.taxation.pp.famille.Splitting;
@@ -41,26 +42,20 @@ import java.math.BigDecimal;
 
 public interface StrategieProductionImpotFamille {
 
-	public static StrategieProductionImpotFamille doubleBareme(Bareme baremeSeul, Bareme baremeFamille) {
+	static StrategieProductionImpotFamille doubleBareme(Bareme baremeSeul, Bareme baremeFamille) {
 		return new DoubleBareme(baremeSeul,baremeFamille);
 	}
 
-	public static StrategieProductionImpotFamille doubleBaremeAvecRabaisCharge(Bareme baremeSeul, Bareme baremeFamille, int rabais) {
-		ImpositionFamille strat = new DoubleBareme(baremeSeul,baremeFamille);
-		strat.setRabaisParCharge(rabais);
-		return strat;
-	}
-
-	public static Splitting splitting(Bareme bareme, String tauxSplitting) {
+	static Splitting splitting(Bareme bareme, String tauxSplitting) {
 		return new Splitting(bareme, tauxSplitting);
 	}
 
 
-	public static Splitting splittingIntegral(Bareme bareme) {
+	static Splitting splittingIntegral(Bareme bareme) {
 		return splitting(bareme, "50 %");
 	}
 
-	public static StrategieProductionImpotFamille splittingIntegralEventuellementPartiel(Bareme bareme, String tauxSplittingPartiel) {
+	static StrategieProductionImpotFamille splittingIntegralEventuellementPartiel(Bareme bareme, String tauxSplittingPartiel) {
 		return new SplittingEventuellementPartiel(splittingIntegral(bareme),tauxSplittingPartiel);
 	}
 

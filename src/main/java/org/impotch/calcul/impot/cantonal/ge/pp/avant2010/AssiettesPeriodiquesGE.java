@@ -31,13 +31,14 @@
 package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
+import org.impotch.calcul.impot.FournisseurAssiettePeriodiqueAvecRabais;
 import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
-class AssiettesPeriodiquesGE implements FournisseurAssiettePeriodiqueGE {
+class AssiettesPeriodiquesGE implements FournisseurAssiettePeriodiqueAvecRabais {
 
     private final FournisseurAssiettePeriodique assiettes;
     public BigDecimal rabaisDeterminant;

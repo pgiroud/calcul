@@ -31,19 +31,12 @@
 package org.impotch.calcul.impot.taxation.pp.famille;
 
 import java.math.BigDecimal;
-import java.util.OptionalInt;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.bareme.BaremeTauxMaximal;
-import org.impotch.calcul.impot.Souverainete;
-import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
 import org.impotch.calcul.impot.taxation.pp.SituationFamiliale;
 import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
 import org.impotch.util.TypeArrondi;
-
-import static java.math.BigDecimal.ONE;
-import static java.math.BigDecimal.ZERO;
-import static org.impotch.util.BigDecimalUtil.UN_DEMI;
 
 /**
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
@@ -58,8 +51,7 @@ public class ImpositionFamille implements
 	
 	private final Bareme bareme;
 	private TypeArrondi typeArrondiImpot = TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
-	private OptionalInt rabaisParCharge = OptionalInt.empty();
-	
+
     /**************************************************/
     /**************** Constructeurs *******************/
     /**************************************************/
@@ -79,33 +71,11 @@ public class ImpositionFamille implements
 	public void setTypeArrondiImpot(TypeArrondi type) {
 		this.typeArrondiImpot = type;
 	}
-	
-	public void setRabaisParCharge(int rabais) {
-		rabaisParCharge = OptionalInt.of(rabais);
-	}
-
-	public BigDecimal produireRabais(SituationFamiliale situation, int rabaisParCharge) {
-		BigDecimal nbreEnfant = ZERO;
-		for (EnfantACharge enfant : situation.getEnfants()) {
-			if (enfant.isDemiPart(Souverainete.CH_FEDERALE)) {
-				nbreEnfant = nbreEnfant.add(UN_DEMI);
-			} else {
-				nbreEnfant = nbreEnfant.add(ONE);
-			}
-		}
-		BigDecimal nbrePersonneNecessiteuse = BigDecimal.valueOf(situation.getPersonnesNecessiteuses().size());
-		BigDecimal rabais = nbreEnfant.multiply(BigDecimal.valueOf(rabaisParCharge));
-		rabais = rabais.add(nbrePersonneNecessiteuse.multiply(BigDecimal.valueOf(rabaisParCharge)));
-		return typeArrondiImpot.arrondir(rabais);
-	}
 
 	@Override
 	public BigDecimal produireImpotDeterminant(SituationFamiliale situation,
 											   BigDecimal determinantArrondi) {
 		BigDecimal impotDeterminant = getBareme(situation).calcul(determinantArrondi);
-		if (rabaisParCharge.isPresent()) {
-			impotDeterminant = ZERO.max(impotDeterminant.subtract(produireRabais(situation,rabaisParCharge.getAsInt())));
-		}
 		return typeArrondiImpot.arrondir(impotDeterminant);
 	}
 

@@ -47,16 +47,14 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
 
 
     private FournisseurRegleImpotFederal constructeur = CTX_TST_CH.getFournisseurRegleImpotFederal();
-    private Map<String,String> libelleImpotTaxe = new HashMap<>();
 
     public ProducteurImpotIFDTest() {
-        libelleImpotTaxe.put("IBR","Impôt fédéral de base sur le revenu");
-        libelleImpotTaxe.put("RI","rabais sur l'impôt de base");
+
     }
 
-    private RecepteurMultipleImpot recepteur(String... codesImpot) {
+    private RecepteurMultipleImpot recepteur() {
         RecepteurMultipleImpot recepteur = new RecepteurMultipleImpot();
-        for (String code : codesImpot) {
+        for (String code : new String[]{"IBR", "RI"}) {
             recepteur.ajouteRecepteur(code, new RecepteurUniqueImpot(code));
         }
         recepteur.ajouteRecepteur("TOTAL",new RecepteurImpotSomme());
@@ -81,39 +79,40 @@ public class ProducteurImpotIFDTest extends ProducteurImpotTst {
     @Test
     public void produireImpotIFD() {
         ProducteurImpot prod = constructeur.producteurImpotsFederauxPP(2013);
-        RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
+        RecepteurMultipleImpot recepteur = recepteur();
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(annee(2013), 12), this.creerAssiettes(2013, 52400), recepteur);
-        // Impôt de base : 256 - 251 (rabais enfant) = 5 francs < 25 francs --> 0
-        verifierMontantImpot(recepteur,"IBR",  "0.00");
+        // Impôt de base : 256 - 251 (rabais enfant) = 5 francs
+        verifierMontantImpot(recepteur,"TOTAL",  "5.00");
     }
 
     @Test
     public void produireImpotIFD2021() {
         ProducteurImpot prod = constructeur.producteurImpotsFederauxPP(2021);
-        RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
+        RecepteurMultipleImpot recepteur = recepteur();
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(annee(2021),16,13),
                 this.creerAssiettes(2021, 120400, 105300), recepteur);
-        verifierMontantImpot(recepteur,"IBR",  "2000.90");
+        // IBR = 2574.90 RI = -502
+        verifierMontantImpot(recepteur,"TOTAL",  "2072.90");
     }
 
     @Test
     public void produireImpotCouple1EnfantJusteAuDessousDuSeuil() {
         int periode = 2025;
         ProducteurImpot prod = constructeur.producteurImpotsFederauxPP(periode);
-        RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
+        RecepteurMultipleImpot recepteur = recepteur();
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(annee(periode),16),
                 this.creerAssiettes(periode, 56_000, 55_999), recepteur);
-        verifierMontantImpot(recepteur,"IBR",  "0.00");
+        verifierMontantImpot(recepteur,"TOTAL",  "24.50");
     }
 
     @Test
     public void produireImpotCouple1EnfantJusteAuDessusDuSeuil() {
         int periode = 2025;
         ProducteurImpot prod = constructeur.producteurImpotsFederauxPP(periode);
-        RecepteurMultipleImpot recepteur = recepteur("IBR","RI");
+        RecepteurMultipleImpot recepteur = recepteur();
         prod.produireImpot(this.creerSituationFamilleAvecEnfant(annee(periode),16),
                 this.creerAssiettes(periode, 56_000, 56_000), recepteur);
-        verifierMontantImpot(recepteur,"IBR",  "26.00");
+        verifierMontantImpot(recepteur,"TOTAL",  "26.00");
     }
 
 }

@@ -15,13 +15,14 @@
  */
 package org.impotch.calcul.impot.taxation.pp;
 
-import org.impotch.calcul.impot.ImpotProduit;
-import org.impotch.calcul.impot.RecepteurImpot;
+import org.impotch.calcul.impot.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.util.Optional;
 
 public class ProducteurImpotAvecRabais extends ProducteurImpot {
 
@@ -61,8 +62,42 @@ public class ProducteurImpotAvecRabais extends ProducteurImpot {
 	}
 
     protected FournisseurAssiettePeriodique construireAssietteRabais(final FournisseurAssiettePeriodique assietteImpot) {
-        return assietteImpot;
-    }
+		FournisseurAssiettePeriodique fournisseur = new FournisseurAssiettePeriodique() {
+
+			@Override
+			public int getNombreJourPourAnnualisation() {
+				return assietteImpot.getNombreJourPourAnnualisation();
+			}
+			@Override
+			public PeriodeFiscale getPeriodeFiscale() {
+				return assietteImpot.getPeriodeFiscale();
+			}
+			@Override
+			public Optional<BigDecimal> getMontantDeterminant() {
+				return Optional.of(((FournisseurAssiettePeriodiqueAvecRabais)assietteImpot).getMontantDeterminantRabais());
+			}
+			@Override
+			public BigDecimal getMontantImposable() {
+				BigDecimal montantDeterminantRabais = this.getMontantDeterminant().get();
+				if (assietteImpot.getMontantDeterminant().isPresent()) {
+					BigDecimal assietteImpotDeterminant = assietteImpot.getMontantDeterminant().get();
+
+					if (0 == assietteImpot.getMontantImposable().compareTo(assietteImpotDeterminant)) return montantDeterminantRabais;
+					else {
+						return montantDeterminantRabais.multiply(assietteImpot.getMontantImposable()).divide(assietteImpotDeterminant,0, RoundingMode.HALF_UP);
+					}
+				} else {
+					return montantDeterminantRabais;
+				}
+			}
+			@Override
+			public Optional<FournisseurAssietteCommunale> getFournisseurAssietteCommunale() {
+				return Optional.empty();
+			}
+
+		};
+		return fournisseur;
+	}
 
 	@Override
 	protected BigDecimal produireImpotBase(SituationFamiliale situation,
@@ -84,8 +119,7 @@ public class ProducteurImpotAvecRabais extends ProducteurImpot {
 		BigDecimal montantRabaisImpot = this.produireRabaisImpot(impotBase, situation, assiettePourRabais, recepteur);
 		logger.debug("Rabais impôt " + format.format(montantRabaisImpot));
 
-		BigDecimal impotNet = impotBase.add(montantRabaisImpot).max(BigDecimal.ZERO);
-		return impotNet;
+        return impotBase.add(montantRabaisImpot).max(BigDecimal.ZERO);
 	}
 
 }

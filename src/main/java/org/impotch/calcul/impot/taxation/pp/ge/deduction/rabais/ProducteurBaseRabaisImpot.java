@@ -21,11 +21,8 @@ import java.math.BigDecimal;
 import org.impotch.calcul.ReglePeriodique;
 import org.impotch.calcul.assurancessociales.CalculExtremaRentesAVS;
 import org.impotch.calcul.impot.Souverainete;
-import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ProducteurRabaisImpot;
 import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.SituationFamilialeGE;
-import org.impotch.calcul.impot.taxation.pp.EnfantACharge;
-import org.impotch.calcul.impot.taxation.pp.PersonneACharge;
-import org.impotch.calcul.impot.taxation.pp.RegleAgeEnfant;
+import org.impotch.calcul.impot.taxation.pp.*;
 import org.impotch.util.TypeArrondi;
 
 /**
@@ -34,7 +31,7 @@ import org.impotch.util.TypeArrondi;
  * @author Patrick Giroud
  *
  */
-public class ProducteurBaseRabaisImpot extends ReglePeriodique implements ProducteurRabaisImpot {
+public class ProducteurBaseRabaisImpot extends ReglePeriodique implements ProducteurRabaisImpot<SituationFamilialeGE,FournisseurMontantRabaisImpotGE> {
 
 	private RegleAgeEnfant regleAge;
 	private CalculExtremaRentesAVS regleRenteMaxi;
@@ -160,7 +157,7 @@ public class ProducteurBaseRabaisImpot extends ReglePeriodique implements Produc
 		this.plafondFaibleRevenu = plafondFaibleRevenu;
 	}
 
-	protected BigDecimal getDeductionDoubleActivite(FournisseurMontantRabaisImpot fournisseurAssiette) {
+	protected BigDecimal getDeductionDoubleActivite(FournisseurMontantRabaisImpotGE fournisseurAssiette) {
 		if (0 <= getPlafondFaibleRevenu().compareTo(fournisseurAssiette.getRevenuBrutTotaux())) {
 			return getMontantDeducDoubleActivitePourFaibleRevenu();
 		} else {
@@ -190,7 +187,7 @@ public class ProducteurBaseRabaisImpot extends ReglePeriodique implements Produc
 		return false;
 	}
 	
-	protected BigDecimal produireMontantAdditionnelRenteAVSAI(FournisseurMontantRabaisImpot fournisseur) {
+	protected BigDecimal produireMontantAdditionnelRenteAVSAI(FournisseurMontantRabaisImpotGE fournisseur) {
 		if (null == fournisseur.getSituationAVS() || null == fournisseur.getMontantRenteAVSPercu()) return BigDecimal.ZERO;
 		BigDecimal renteMaximum = getRegleRenteMaxi().getRente(fournisseur.getSituationAVS()).getMontantAnnuelMaximum();
 		// Détermination du coefficient
@@ -207,7 +204,7 @@ public class ProducteurBaseRabaisImpot extends ReglePeriodique implements Produc
     
 	
 	@Override
-	public BigDecimal produireMontantDeterminantRabais(SituationFamilialeGE situation, FournisseurMontantRabaisImpot fournisseur) {
+	public BigDecimal produireMontantDeterminantRabais(SituationFamilialeGE situation, FournisseurMontantRabaisImpotGE fournisseur) {
 		BigDecimal montantRabais = BigDecimal.ZERO;
 		if (situation.isCouple()) {
 			montantRabais = getMontantParEpoux().add(getMontantParEpoux());

@@ -28,27 +28,24 @@
  * You should have received a copy of the GNU General Public License
  * along with impotch/calcul.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
+package org.impotch.calcul.impot;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 
 /**
- * Dans le cadre du rabais d'impôt, il convient d'indiquer une assiette supplémentaire
+ * Dans le cadre d’un rabais d'impôt, il convient d'indiquer une assiette supplémentaire
  * qui permettra de calculer le montant du rabais d'impôt.
  * 
  * @author <a href="mailto:patrick.giroud@etat.ge.ch">Patrick Giroud</a>
  *
  */
-public interface FournisseurAssiettePeriodiqueGE extends
+public interface FournisseurAssiettePeriodiqueAvecRabais extends
 		FournisseurAssiettePeriodique {
 	
 	/**
 	 * Fournit le montant déterminant pour le calcul du rabais d'impôt.
-	 * Il s'agit en quelque sorte d'un minimum vital dépendant de la
-	 * composition de la famille.
 	 * @return le montant déterminant utilisé pour calculer le rabais d'impôt.
 	 */
 	BigDecimal getMontantDeterminantRabais();

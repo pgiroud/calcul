@@ -42,7 +42,7 @@ import org.impotch.calcul.impot.RecepteurImpot;
  */
 public class RecepteurMultipleImpot implements RecepteurImpot {
 
-	private Map<String,RecepteurImpot> map = new HashMap<String,RecepteurImpot>();
+	private final Map<String,RecepteurImpot> map = new HashMap<String,RecepteurImpot>();
 	
 	public void ajouteRecepteur(String nom, RecepteurImpot recepteur) {
 		map.put(nom, recepteur);

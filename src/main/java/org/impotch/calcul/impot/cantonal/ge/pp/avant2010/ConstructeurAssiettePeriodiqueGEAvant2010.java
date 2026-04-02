@@ -30,9 +30,9 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.pp.avant2010;
 
+import org.impotch.calcul.impot.FournisseurAssiettePeriodiqueAvecRabais;
 import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.taxation.pp.ConstructeurAssiettePeriodique;
-import org.impotch.calcul.impot.taxation.pp.FournisseurAssiettePeriodique;
 import org.impotch.calcul.lieu.ICommuneSuisse;
 
 import java.math.BigDecimal;
@@ -86,7 +86,7 @@ public class ConstructeurAssiettePeriodiqueGEAvant2010 {
         return this;
     }
 
-    public FournisseurAssiettePeriodiqueGE fournir() {
+    public FournisseurAssiettePeriodiqueAvecRabais fournir() {
         AssiettesPeriodiquesGE assiettes = new AssiettesPeriodiquesGE(cons.fournir());
         assiettes.rabaisDeterminant = rabaisDeterminant;
         return assiettes;

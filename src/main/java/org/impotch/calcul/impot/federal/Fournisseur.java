@@ -19,13 +19,10 @@ package org.impotch.calcul.impot.federal;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import org.impotch.bareme.Bareme;
 import org.impotch.calcul.impot.federal.param.FournisseurParametrageAnnuelIFD;
-import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
-import org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille;
+import org.impotch.calcul.impot.taxation.pp.*;
 import org.impotch.calcul.util.ExplicationDetailleTexteBuilder;
 import org.impotch.calcul.util.IExplicationDetailleeBuilder;
 import org.impotch.util.TypeArrondi;
@@ -35,15 +32,11 @@ import static org.impotch.util.TypeArrondi.VINGTIEME_INF;
 
 import static org.impotch.calcul.impot.taxation.pp.ProducteurImpotBaseProgressif.unProducteurImpotBaseProgressif;
 import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille.doubleBareme;
-import static org.impotch.calcul.impot.taxation.pp.StrategieProductionImpotFamille.doubleBaremeAvecRabaisCharge;
 
 public class Fournisseur implements FournisseurRegleImpotFederal {
 
 	private static final TypeArrondi ARRONDI_ASSIETTES = CENTAINE_INF;
-
-
-	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsPrestationCapital = new ConcurrentHashMap<>();
-	private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotSourcePrestationCapital = new ConcurrentHashMap<>();
+	private static final String CODE_CONFEDERATION_SUISSE = "CH";
 
     private final FournisseurParametrageAnnuelIFD fournisseurParametrageAnnuelIFD;
 
@@ -51,8 +44,8 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		this.fournisseurParametrageAnnuelIFD = fournisseurParamIFD;
 	}
 
-	public ProducteurImpot producteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche, boolean avecSeuillage) {
-		return construireProducteurImpotsFederauxPP(annee,arrondiSurChaqueTranche,avecSeuillage);
+	public ProducteurImpot producteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche) {
+		return construireProducteurImpotsFederauxPP(annee,arrondiSurChaqueTranche);
 	}
 
 	private Optional<Bareme> getBaremeRevenu(int annee, TypeArrondi arrondiSurChaqueTranche) {
@@ -73,30 +66,59 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 		return new ExplicationDetailleTexteBuilder();
 	}
 
-	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche, boolean avecSeuillage) {
-		ProducteurImpot producteur = new ProducteurImpot("IBR","");
-		StrategieProductionImpotFamille strat;
-		OptionalInt mntRabais = fournisseurParametrageAnnuelIFD.rabaisImpotCharge(annee);
+	private ProducteurRabaisImpotBaremeParental producteurImpotRabais(int annee, int rabais) {
+		return new ProducteurRabaisImpotBaremeParental(annee, rabais);
+	}
 
+	private StrategieProductionImpotFamille impositionFamiliale(int annee, TypeArrondi arrondiSurChaqueTranche) {
 		Bareme baremeRevenuSeul = getBaremeRevenu(annee,arrondiSurChaqueTranche).orElseThrow();
 		Bareme baremeRevenuFamille = getBaremeRevenuFamille(annee,arrondiSurChaqueTranche).orElseThrow();
+		return doubleBareme(baremeRevenuSeul, baremeRevenuFamille);
+	}
 
-		if (mntRabais.isPresent()) {
-			strat = doubleBaremeAvecRabaisCharge(baremeRevenuSeul,baremeRevenuFamille,mntRabais.getAsInt());
-		} else {
-			strat = doubleBareme(baremeRevenuSeul, baremeRevenuFamille);
-		}
+	private ProducteurImpot construireProducteurImpotsFederauxPPAvecBaremeParental(int annee, TypeArrondi arrondiSurChaqueTranche, int rabaisParCharge) {
+		ProducteurImpotAvecRabais producteur = new ProducteurImpotAvecRabais("IBR", "RI", CODE_CONFEDERATION_SUISSE);
+		producteur.setProducteurBaseRabais(new ProducteurImpotBaseAdaptateur(producteurImpotRabais(annee,rabaisParCharge)));
 		producteur.setProducteurBase(
-				unProducteurImpotBaseProgressif(strat)
+				unProducteurImpotBaseProgressif(impositionFamiliale(annee,arrondiSurChaqueTranche))
 						.arrondiAssiettes(ARRONDI_ASSIETTES)
 						.arrondiImpot(arrondiSurChaqueTranche)
-						.seuilSurImpotDeterminant(avecSeuillage ? BigDecimal.valueOf(25) : BigDecimal.ZERO)
 						.construire()
 		);
 		return producteur;
 	}
-	
 
+	private ProducteurImpot construireProducteurImpotsFederauxPPAvantBaremeParental(int annee, TypeArrondi arrondiSurChaqueTranche) {
+		ProducteurImpot producteur = new ProducteurImpot("IBR",CODE_CONFEDERATION_SUISSE);
+		producteur.setProducteurBase(
+				unProducteurImpotBaseProgressif(impositionFamiliale(annee,arrondiSurChaqueTranche))
+						.arrondiAssiettes(ARRONDI_ASSIETTES)
+						.arrondiImpot(arrondiSurChaqueTranche)
+						.construire()
+		);
+		return producteur;
+	}
+
+	private ProducteurImpot construireProducteurImpotsFederauxPP(int annee, TypeArrondi arrondiSurChaqueTranche) {
+		OptionalInt mntRabais = fournisseurParametrageAnnuelIFD.rabaisImpotCharge(annee);
+		return mntRabais.isPresent() ?
+				construireProducteurImpotsFederauxPPAvecBaremeParental(annee,arrondiSurChaqueTranche,mntRabais.orElseThrow())
+				: construireProducteurImpotsFederauxPPAvantBaremeParental(annee,arrondiSurChaqueTranche);
+	}
+	
+	private static class ProducteurImpotBaseAdaptateur implements ProducteurImpotBase {
+
+		private final ProducteurRabaisImpotBaremeParental prodRabais;
+
+		public ProducteurImpotBaseAdaptateur(ProducteurRabaisImpotBaremeParental prodRabais) {
+			this.prodRabais = prodRabais;
+		}
+
+		@Override
+		public BigDecimal produireImpotBase(SituationFamiliale situation, FournisseurAssiettePeriodique fournisseur) {
+			return prodRabais.produireMontantDeterminantRabais(situation, new FournisseurMontantRabaisImpot() {});
+		}
+	}
 
 
 }

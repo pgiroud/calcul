@@ -35,6 +35,7 @@ import java.util.*;
 
 
 import org.impotch.calcul.impot.FournisseurAssietteCommunale;
+import org.impotch.calcul.impot.FournisseurAssiettePeriodiqueAvecRabais;
 import org.impotch.calcul.impot.PeriodeFiscale;
 import org.impotch.calcul.impot.Souverainete;
 import org.impotch.calcul.impot.taxation.forimposition.ForCommunal;
@@ -107,8 +108,10 @@ public class ProducteurImpotTst {
 		return 	creerAssiettes(periodeFiscale,montantImposable,montantImposable);
 	}
 
-	protected FournisseurAssiettePeriodique creerAssiettes(final int periodeFiscale, final int montantImposable, final int montantDeterminant) {
-		return new FournisseurAssiettePeriodique() {
+	protected FournisseurAssiettePeriodiqueAvecRabais creerAssiettes(final int periodeFiscale,
+																	 final int montantImposable,
+																	 final int montantDeterminant) {
+		return new FournisseurAssiettePeriodiqueAvecRabais() {
 
 			@Override
 			public Optional<FournisseurAssietteCommunale> getFournisseurAssietteCommunale() {
@@ -134,7 +137,11 @@ public class ProducteurImpotTst {
 			public BigDecimal getMontantImposable() {
 				return new BigDecimal(montantImposable);
 			}
-			
+
+			@Override
+			public BigDecimal getMontantDeterminantRabais() {
+				return BigDecimal.ZERO;
+			}
 		};
 	}
 	

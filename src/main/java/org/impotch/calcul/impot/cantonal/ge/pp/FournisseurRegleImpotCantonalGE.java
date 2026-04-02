@@ -31,8 +31,10 @@
 package org.impotch.calcul.impot.cantonal.ge.pp;
 
 import org.impotch.bareme.Bareme;
-import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.ProducteurRabaisImpot;
+import org.impotch.calcul.impot.cantonal.ge.pp.avant2010.SituationFamilialeGE;
 import org.impotch.calcul.impot.taxation.pp.ProducteurImpot;
+import org.impotch.calcul.impot.taxation.pp.ProducteurRabaisImpot;
+import org.impotch.calcul.impot.taxation.pp.ge.deduction.rabais.FournisseurMontantRabaisImpotGE;
 import org.impotch.util.TypeArrondi;
 
 public interface FournisseurRegleImpotCantonalGE {
@@ -48,5 +50,5 @@ public interface FournisseurRegleImpotCantonalGE {
 	ProducteurImpot getProducteurImpotsICCFortune(int annee);
 	ProducteurImpot getProducteurImpotsICCFortuneSupplementaire(int annee);
 
-	ProducteurRabaisImpot getProducteurRabaisImpot(int annee);
+	ProducteurRabaisImpot<SituationFamilialeGE, FournisseurMontantRabaisImpotGE> getProducteurRabaisImpot(int annee);
 }

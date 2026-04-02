@@ -86,13 +86,13 @@ class AbstractTestProducteurBaseRabaisImpot {
 		return producteur;
 	}
 	
-	protected FournisseurMontantRabaisImpot creerFournisseurMontant() {
+	protected FournisseurMontantRabaisImpotGE creerFournisseurMontant() {
 		return creerFournisseurMontant(null,null,null);
 	}
 	
 	
-	protected FournisseurMontantRabaisImpot creerFournisseurMontant(final SituationAVS situation, final BigDecimal renteAVSPercu, final BigDecimal revenuPourMontantAdditionnelRenteAVS) {
-		FournisseurMontantRabaisImpot fournisseur = new FournisseurMontantRabaisImpot() {
+	protected FournisseurMontantRabaisImpotGE creerFournisseurMontant(final SituationAVS situation, final BigDecimal renteAVSPercu, final BigDecimal revenuPourMontantAdditionnelRenteAVS) {
+		FournisseurMontantRabaisImpotGE fournisseur = new FournisseurMontantRabaisImpotGE() {
 
 			@Override
 			public BigDecimal getMontantRenteAVSPercu() {
@@ -121,14 +121,14 @@ class AbstractTestProducteurBaseRabaisImpot {
 
 
 	protected BigDecimal calculRabais(SituationFamilialeGE situation) {
-		FournisseurMontantRabaisImpot fournisseur = creerFournisseurMontant();
+		FournisseurMontantRabaisImpotGE fournisseur = creerFournisseurMontant();
 		return producteur.produireMontantDeterminantRabais(situation, fournisseur);
 	}
 
 	protected BigDecimal montantAdditionnelRenteAVSAI(StatutAVS statut, boolean isComplementaireEpouse, int nombreOrphelin
 			, final int renteAVSPercu, final int revenuPourMontantAdditionnelRenteAVS) {
 		SituationAVS situation = new SituationAVS(statut,isComplementaireEpouse,nombreOrphelin);
-		FournisseurMontantRabaisImpot fournisseur = creerFournisseurMontant(situation
+		FournisseurMontantRabaisImpotGE fournisseur = creerFournisseurMontant(situation
 				,BigDecimal.valueOf(renteAVSPercu),BigDecimal.valueOf(revenuPourMontantAdditionnelRenteAVS));
 		return producteur.produireMontantAdditionnelRenteAVSAI(fournisseur);
 	}

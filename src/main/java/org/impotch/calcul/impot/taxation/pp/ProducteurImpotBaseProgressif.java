@@ -72,8 +72,6 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 	private TypeArrondi typeArrondiImposable;
 	private TypeArrondi typeArrondiDeterminant;
 	private TypeArrondi typeArrondiImpot;
-	private BigDecimal seuilSurImpotDeterminant;
-
 	private StrategieProductionImpotFamille impositionFamille;
 	private StrategieAnnualisation stratAnnualisation;
 
@@ -125,9 +123,6 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 	}
 
 
-	private void setSeuilSurImpotDeterminant(BigDecimal seuil) {
-		this.seuilSurImpotDeterminant = seuil;
-	}
 	/**
 	 * Spécifie le type d'arrondi à appliquer à l'impôt calculé. Par défaut, l'arrondi se fait aux 5 centimes
 	 * les plus proches.
@@ -197,10 +192,6 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 			BigDecimal determinant = getTypeArrondiDeterminant().arrondir(montantDeterminant);
 			if (!isStrictementPositif(determinant) || !isStrictementPositif(montantImposable)) return ZERO;
 			BigDecimal impotDeterminant = getStrategieImpositionFamille().produireImpotDeterminant(situation,determinant);
-			if (isStrictementPositif(seuilSurImpotDeterminant)
-				&& 0 < seuilSurImpotDeterminant.compareTo(impotDeterminant)) {
-				return ZERO;
-			}
 			if (0 == montantImposable.compareTo(determinant)) return impotDeterminant;
 			else return typeArrondiImpot.arrondir(montantImposable.multiply(impotDeterminant).divide(determinant,10, RoundingMode.HALF_UP));
 	}
@@ -232,7 +223,6 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 		private final StrategieProductionImpotFamille strategieImpositionFamiliale;
 		private TypeArrondi typeArrondiImposable	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
 		private TypeArrondi typeArrondiDeterminant	= TypeArrondi.UNITE_LA_PLUS_PROCHE;
-		private BigDecimal seuilSurImpotDeterminant = ZERO;
 		private TypeArrondi typeArrondiImpot		= TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
 
 		private StrategieAnnualisation stratAnnualisation = new StrategieAnnualisationComptable();
@@ -244,11 +234,6 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 
 		private Constructeur(StrategieProductionImpotFamille strategie) {
 			this.strategieImpositionFamiliale = strategie;
-		}
-
-		public Constructeur seuilSurImpotDeterminant(BigDecimal seuil) {
-			this.seuilSurImpotDeterminant = seuil;
-			return this;
 		}
 
 		public Constructeur arrondiAssiettes(TypeArrondi typeArrondi) {
@@ -286,7 +271,6 @@ public class ProducteurImpotBaseProgressif implements ProducteurImpotBase {
 			prod.setStrategieProductionImpotFamille(strategieImpositionFamiliale);
 			prod.setTypeArrondiImposable(typeArrondiImposable);
 			prod.setTypeArrondiDeterminant(typeArrondiDeterminant);
-			prod.setSeuilSurImpotDeterminant(seuilSurImpotDeterminant);
 			prod.setTypeArrondiImpot(typeArrondiImpot);
 			prod.setStrategieAnnualisation(stratAnnualisation);
 			return prod;

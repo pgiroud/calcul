@@ -32,6 +32,16 @@ package org.impotch.calcul.impot.taxation.pp;
 
 import org.impotch.calcul.impot.Souverainete;
 
+import java.math.BigDecimal;
+
+import static org.impotch.util.BigDecimalUtil.UN_DEMI;
+import static org.impotch.util.BigDecimalUtil.UN;
+
 public interface PersonneACharge {
+
+	default BigDecimal part(Souverainete souverainete) {
+		return isDemiPart(souverainete) ? UN_DEMI : UN;
+	}
+
 	boolean isDemiPart(Souverainete souverainete);
 }
