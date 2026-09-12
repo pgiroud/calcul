@@ -28,7 +28,7 @@ public class BaremeRevenu2026Test {
 
     private final static int PERIODE_FISCALE = 2026;
 
-    private FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
+    private final FournisseurRegleImpotCantonalGE fournisseur = CTX_TST_CH_GE.getFournisseurRegleImpotCantonalGE();
 
     @Test
     public void borneBareme() {

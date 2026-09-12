@@ -32,6 +32,8 @@ package org.impotch.calcul.impot.taxation.pp.ge.deduction;
 
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 
+import java.util.Optional;
+
 public interface FournisseurDeductionPP {
     /**
      * Retourne la règle calculant la déduction sociale sur les charges (voir article 39 de la LIPP).
@@ -39,14 +41,14 @@ public interface FournisseurDeductionPP {
      * @param annee Une année supérieure ou égale à 2010
      * @return la règle calculant la déduction sociale sur les charges.
      */
-    DeductionSociale getRegleDeductionSocialeCharge(int annee);
+    Optional<DeductionSociale> getRegleDeductionSocialeCharge(int annee);
 
     /**
      * Retourne la règle calculant la déduction en cas d'activité lucrative des 2 conjoints
      * @param annee L'année pour laquelle la règle va s'appliquer
      * @return la règle de calcul
      */
-    DeductionSociale getRegleDeductionDoubleActivite(int annee);
+    Optional<DeductionSociale> getRegleDeductionDoubleActivite(int annee);
 
     /**
      * Retourne la déduction sociale pour les bénéficiaires de rentes AVS ou AI.

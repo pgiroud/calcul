@@ -41,7 +41,7 @@ public class ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009 implements Con
     }
 
     @Override
-    public ConstructeurBaremeParTrancheIndexe constructeurBaremeFortune() {
+    public ConstructeurBaremeParTrancheIndexe constructeurBaremeFortune(int annee) {
         return unConstructeurDeBaremeParTrancheIndexee()
                 .valideEntre(2001, 2009)
                 .indexateur(fournisseurIndicePeriodique)
@@ -62,7 +62,7 @@ public class ConstructeurBaremeGEParTrancheIndexeeEntre2001et2009 implements Con
     }
 
     @Override
-    public ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneSupplementaire() {
+    public ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneSupplementaire(int annee) {
         return unConstructeurDeBaremeParTrancheIndexee()
                 .valideEntre(2001, 2009)
                 .indexateur(fournisseurIndicePeriodique)

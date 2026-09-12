@@ -93,6 +93,7 @@ public class FournisseurIndexGenevoisEnMemoire implements FournisseurIndexGenevo
                 .pour(2024).valeur("108.7")
                 .pour(2025).valeur("109.7")
                 .pour(2026).valeur("110.0")
+                .pour(2027).valeur("110.5")
                 .cons();
     }
 

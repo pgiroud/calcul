@@ -43,41 +43,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.impotch.calcul.impot.cantonal.ge.ContexteTestCH_GE.CTX_TST_CH_GE;
 public class DeductionDoubleActiviteTest {
 
-    private FournisseurDeductionPP fournisseurDeductionPP =
+    private final FournisseurDeductionPP fournisseurDeductionPP =
             new FournisseurDeductionPPEnMemoire(CTX_TST_CH_GE.getParametrageLIPP());
 
 
     private SituationFamiliale construireSituationCoupleAvecLes2Travaillant() {
         return ConstructeurSituationFamiliale.couple().fournir();
-//
-//        SituationFamiliale situation = new SituationFamiliale() {
-//            private final Contribuable contrib = new Contribuable() {};
-//            @Override
-//            public Contribuable getContribuable() {
-//                return contrib;
-//            }
-//
-//            @Override
-//            public Optional<Contribuable> getConjoint() {
-//                return Optional.of(contrib);
-//            }
-//
-//            @Override
-//            public Set<EnfantACharge> getEnfants() {
-//                return Collections.emptySet();
-//            }
-//
-//            @Override
-//            public Set<PersonneACharge> getPersonnesNecessiteuses() {
-//                return Collections.emptySet();
-//            }
-//        };
-//        return situation;
     }
 
     private void test(int annee, int montantAttendu) {
         SituationFamiliale situation = construireSituationCoupleAvecLes2Travaillant();
-        assertThat(fournisseurDeductionPP.getRegleDeductionDoubleActivite(annee).getMontantDeduction(situation))
+        assertThat(fournisseurDeductionPP.getRegleDeductionDoubleActivite(annee).orElseThrow().getMontantDeduction(situation))
                 .isEqualTo(BigDecimal.valueOf(montantAttendu));
     }
 
@@ -156,5 +132,14 @@ public class DeductionDoubleActiviteTest {
         test(2024,1041);
     }
 
+    @Test
+    public void test2025() {
+        test(2025,1051);
+    }
+
+    @Test
+    public void test2026() {
+        test(2026,1054);
+    }
 
 }

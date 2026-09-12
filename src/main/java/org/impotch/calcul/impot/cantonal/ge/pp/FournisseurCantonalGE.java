@@ -45,32 +45,21 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
 
     private final static TypeArrondi ARRONDI_ASSIETTE = TypeArrondi.UNITE_LA_PLUS_PROCHE;
 	private final static TypeArrondi ARRONDI_IMPOT = TypeArrondi.VINGTIEME_LE_PLUS_PROCHE;
-
     private static final String CODE_CANTON_GE = "CAN-GE";
-    private ConstructeurBaremeGEParTrancheIndexee constructeurBaremeEntre2001et2009;
-    private ConstructeurBaremeGEParTrancheIndexee constructeurBaremeActuel;
 
-    private ConstructeurBaremeRevenuAvecFormuleUniversite constructeurBaremeRevenuAvecFormuleUniversite;
+    private final ConstructeurBaremeGEParTrancheIndexee constructeurBaremeEntre2001et2009;
+    private final ConstructeurBaremeGEParTrancheIndexee constructeurBaremeActuel;
+    private final ConstructeurBaremeRevenuAvecFormuleUniversite constructeurBaremeRevenuAvecFormuleUniversite;
 
-    private FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale;
-
+    private final FournisseurRegleCalculAssuranceSociale fournisseurRegleCalculCotisationAssuranceSociale;
     private FournisseurParametrageCommunaleGE fournisseurParamCommunaux;
 
     private final ConcurrentMap<Integer, Bareme> mapBaremeRevenuMarie = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, Bareme> baremesFortuneSupplementaire = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCRevenu = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortune = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortuneSupplementaire = new ConcurrentHashMap<>();
 
-    private ConstructeurBaremeParTrancheIndexe constructeurBaremeFortune;
-    private ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneApres2009;
-
-    private ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneSupplementaire;
-    private ConstructeurBaremeParTrancheIndexe constructeurBaremeFortuneSupplementaireApres2009;
-    private ConcurrentMap<Integer, Bareme> baremesFortuneSupplementaire = new ConcurrentHashMap<>();
-
-    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCRevenu = new ConcurrentHashMap<>();
-    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortune = new ConcurrentHashMap<>();
-    private ConcurrentMap<Integer, ProducteurImpot> producteurImpotsICCFortuneSupplementaire = new ConcurrentHashMap<>();
-
-    private ConcurrentMap<Integer, ProducteurRabaisImpot<SituationFamilialeGE, FournisseurMontantRabaisImpotGE>> producteursRabaisImpot
-            = new ConcurrentHashMap<>();
 
     public FournisseurCantonalGE(FournisseurRegleCalculAssuranceSociale regleAssurance, FournisseurIndexGenevois fournisseurIndexGenevois) {
         this.fournisseurRegleCalculCotisationAssuranceSociale = regleAssurance;
@@ -95,12 +84,6 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
             FournisseurParametrageCommunaleGE fournisseurParamCommunaux) {
         this.fournisseurParamCommunaux = fournisseurParamCommunaux;
     }
-
-
-
-
-
-
 
     protected Bareme construireBaremeRevenu(int annee) {
         if (annee < 2010) {
@@ -128,7 +111,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     protected BaremeParTranche construireBaremeFortune(
             int annee) {
         return choisirConstructeurBaremeGEParTrancheIndexee(
-                annee).constructeurBaremeFortune().construire(annee);
+                annee).constructeurBaremeFortune(annee).construire(annee);
     }
 
     public Bareme getBaremeFortuneSupplementaire(int annee) {
@@ -142,7 +125,7 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
     private BaremeParTranche construireBaremeFortuneSupplementaire(
             int annee) {
         return choisirConstructeurBaremeGEParTrancheIndexee(
-                annee).constructeurBaremeFortuneSupplementaire().construire(annee);
+                annee).constructeurBaremeFortuneSupplementaire(annee).construire(annee);
     }
 
     public ProducteurImpot getProducteurImpotsICCRevenu(int annee) {
@@ -174,15 +157,10 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         return regleAge;
     }
 
+    @Override
     public ProducteurRabaisImpot<SituationFamilialeGE, FournisseurMontantRabaisImpotGE> getProducteurRabaisImpot(int annee) {
-        if (annee >= 2010 || annee < 2001)
-            throw new IllegalArgumentException("Le rabais d'impôt est un processus défini uniquement entre les années 2001 et 2009 incluses !!");
-        if (!producteursRabaisImpot.containsKey(annee)) {
-            producteursRabaisImpot.putIfAbsent(annee, construireProducteurRabaisImpot(annee));
-        }
-        return producteursRabaisImpot.get(annee);
+        return construireProducteurRabaisImpot(annee);
     }
-
 
     private ProducteurRabaisImpot<SituationFamilialeGE, FournisseurMontantRabaisImpotGE> construireProducteurRabaisImpot(int annee) {
         ProducteurBaseRabaisImpot producteur

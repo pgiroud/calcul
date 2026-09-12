@@ -81,14 +81,10 @@ public class ProducteurImpotAvecRabais extends ProducteurImpot {
 				BigDecimal montantDeterminantRabais = this.getMontantDeterminant().get();
 				if (assietteImpot.getMontantDeterminant().isPresent()) {
 					BigDecimal assietteImpotDeterminant = assietteImpot.getMontantDeterminant().get();
-
-					if (0 == assietteImpot.getMontantImposable().compareTo(assietteImpotDeterminant)) return montantDeterminantRabais;
-					else {
+					if (0 < assietteImpot.getMontantImposable().compareTo(assietteImpotDeterminant))
 						return montantDeterminantRabais.multiply(assietteImpot.getMontantImposable()).divide(assietteImpotDeterminant,0, RoundingMode.HALF_UP);
-					}
-				} else {
-					return montantDeterminantRabais;
 				}
+				return montantDeterminantRabais;
 			}
 			@Override
 			public Optional<FournisseurAssietteCommunale> getFournisseurAssietteCommunale() {

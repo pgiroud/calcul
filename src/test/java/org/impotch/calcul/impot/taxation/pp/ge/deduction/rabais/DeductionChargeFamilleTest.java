@@ -57,7 +57,7 @@ public class DeductionChargeFamilleTest {
 
     private void test(int annee, int montantAttendu) {
         SituationFamiliale situation = construireSituationCoupleAvecUneCharge();
-        assertThat(fournisseurDeductionPP.getRegleDeductionSocialeCharge(annee).getMontantDeduction(situation))
+        assertThat(fournisseurDeductionPP.getRegleDeductionSocialeCharge(annee).orElseThrow().getMontantDeduction(situation))
                 .isEqualTo(BigDecimal.valueOf(montantAttendu));
     }
 

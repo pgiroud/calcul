@@ -31,6 +31,7 @@
 package org.impotch.calcul.impot.indexation.ge;
 
 import org.impotch.calcul.impot.indexation.Indexateur;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,22 +41,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class Indexation2024Test {
 
+    private static final int ANNEE_INDEXATION_LIPP_D_3_08 = 2009;
     private static final int ANNEE = 2024;
+
+    private Indexateur indexateur;
+
+    @BeforeEach
+    public void initIndexateur() {
+        FournisseurIndexGenevois fournisseur = new FournisseurIndexGenevoisEnMemoire();
+        indexateur = new IndexateurGenevois(fournisseur);
+    }
+
+    private int indexer(int valeurBaseIndexation) {
+        int i = indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, BigDecimal.valueOf(valeurBaseIndexation), ANNEE)
+                .intValueExact();
+        return i;
+    }
+
 
     @Test
     @DisplayName("Déductions liées à l'exercice d'une activité lucrative dépendante (art. 29 de la loi)")
     public void plancherFraisForfaitaire() {
-        FournisseurIndexGenevois fournisseur = new FournisseurIndexGenevoisEnMemoire();
-//        Indexateur indexateurBaseDec05 = fournisseur.getIndexateurQuadriennalBaseDecembre2005(2009);
-//        assertThat(indexateurBaseDec05.indexer(BigDecimal.valueOf(600), ANNEE)).isEqualTo(BigDecimal.valueOf(634));
+        assertThat(indexer(600)).isEqualTo(634);
     }
 
     @Test
     @DisplayName("Déductions liées à l'exercice d'une activité lucrative dépendante (art. 29 de la loi)")
     public void plafondFraisForfaitaire() {
-        FournisseurIndexGenevois fournisseur = new FournisseurIndexGenevoisEnMemoire();
-//        Indexateur indexateurBaseDec05 = fournisseur.getIndexateurQuadriennalBaseDecembre2005(2009);
-//        assertThat(indexateurBaseDec05.indexer(BigDecimal.valueOf(1700), ANNEE)).isEqualTo(BigDecimal.valueOf(1796));
+        assertThat(indexer(1700)).isEqualTo(1796);
     }
 
 

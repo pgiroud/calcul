@@ -36,6 +36,7 @@ import org.impotch.calcul.impot.cantonal.ge.pp.ConstructeurBaremeDeductionBenefi
 import org.impotch.calcul.impot.taxation.pp.DeductionSociale;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -45,20 +46,19 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
 
     private final FournisseurParametrageAnnuelLIPP_D_3_08 fournisseurParametrage;
 
-    private ConcurrentMap<Integer, DeductionSociale> deducSocialeCharge = new ConcurrentHashMap<Integer, DeductionSociale>();
-    private ConcurrentMap<Integer, DeductionDoubleActivite> deducDoubleActivite = new ConcurrentHashMap<>();
-    private ConcurrentMap<Integer, DeductionBeneficiaireRentesAVSAI> deducSocialeRentier = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, Optional<DeductionSociale>> deducSocialeCharge = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, Optional<DeductionSociale>> deducDoubleActivite = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Integer, DeductionBeneficiaireRentesAVSAI> deducSocialeRentier = new ConcurrentHashMap<>();
 
     public FournisseurDeductionPPEnMemoire(FournisseurParametrageAnnuelLIPP_D_3_08 fournisseurParametrage) {
         this.fournisseurParametrage = fournisseurParametrage;
     }
 
     @Override
-    public DeductionSociale getRegleDeductionSocialeCharge(int annee) {
+    public Optional<DeductionSociale> getRegleDeductionSocialeCharge(int annee) {
         if (!deducSocialeCharge.containsKey(annee)) {
             DeductionSociale deduction = construireRegleDeductionSocialeCharge(annee);
-            // Attention, la ConcurrentMap n'aime pas les nulls !!
-            if (null != deduction) deducSocialeCharge.putIfAbsent(annee, deduction);
+            deducSocialeCharge.putIfAbsent(annee, Optional.ofNullable(deduction));
         }
         return deducSocialeCharge.get(annee);
     }
@@ -75,16 +75,15 @@ public class FournisseurDeductionPPEnMemoire implements FournisseurDeductionPP {
     }
 
     @Override
-    public DeductionSociale getRegleDeductionDoubleActivite(int annee) {
+    public Optional<DeductionSociale> getRegleDeductionDoubleActivite(int annee) {
         if (!deducDoubleActivite.containsKey(annee)) {
-            DeductionDoubleActivite deduction = construireRegleDeductionDoubleActivite(annee);
-            // Attention, la ConcurrentMap n'aime pas les nulls !!
-            if (null != deduction) deducDoubleActivite.putIfAbsent(annee, deduction);
+            DeductionSociale deduction = construireRegleDeductionDoubleActivite(annee);
+            deducDoubleActivite.putIfAbsent(annee, Optional.of(deduction));
         }
         return deducDoubleActivite.get(annee);
     }
 
-    private DeductionDoubleActivite construireRegleDeductionDoubleActivite(int annee) {
+    private DeductionSociale construireRegleDeductionDoubleActivite(int annee) {
         int montant = fournisseurParametrage.revenu(annee).deductionDoubleActivite();
         return new DeductionDoubleActivite(montant);
     }
