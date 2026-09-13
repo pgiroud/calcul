@@ -31,9 +31,11 @@ public class ProducteurImpotAvecRabais extends ProducteurImpot {
 	private ProducteurImpotBase producteurBaseRabais;
 
 	private final String nomRabaisImpot;
+	private final ConstructeurAssietteRabais constructeurAssietteRabais;
 
-	public ProducteurImpotAvecRabais(String nomImpotProduit, String nomRabaisImpot, String codeBeneficiaire) {
+	public ProducteurImpotAvecRabais(ConstructeurAssietteRabais constructeurAssiette, String nomImpotProduit, String nomRabaisImpot, String codeBeneficiaire) {
 		super(nomImpotProduit,codeBeneficiaire);
+		this.constructeurAssietteRabais = constructeurAssiette;
 		this.nomRabaisImpot = nomRabaisImpot;
 	}
 
@@ -61,43 +63,11 @@ public class ProducteurImpotAvecRabais extends ProducteurImpot {
 		return impot;
 	}
 
-    protected FournisseurAssiettePeriodique construireAssietteRabais(final FournisseurAssiettePeriodique assietteImpot) {
-		FournisseurAssiettePeriodique fournisseur = new FournisseurAssiettePeriodique() {
-
-			@Override
-			public int getNombreJourPourAnnualisation() {
-				return assietteImpot.getNombreJourPourAnnualisation();
-			}
-			@Override
-			public PeriodeFiscale getPeriodeFiscale() {
-				return assietteImpot.getPeriodeFiscale();
-			}
-			@Override
-			public Optional<BigDecimal> getMontantDeterminant() {
-				return Optional.of(((FournisseurAssiettePeriodiqueAvecRabais)assietteImpot).getMontantDeterminantRabais());
-			}
-			@Override
-			public BigDecimal getMontantImposable() {
-				BigDecimal montantDeterminantRabais = this.getMontantDeterminant().get();
-				if (assietteImpot.getMontantDeterminant().isPresent()) {
-					BigDecimal assietteImpotDeterminant = assietteImpot.getMontantDeterminant().get();
-					if (0 < assietteImpot.getMontantImposable().compareTo(assietteImpotDeterminant))
-						return montantDeterminantRabais.multiply(assietteImpot.getMontantImposable()).divide(assietteImpotDeterminant,0, RoundingMode.HALF_UP);
-				}
-				return montantDeterminantRabais;
-			}
-			@Override
-			public Optional<FournisseurAssietteCommunale> getFournisseurAssietteCommunale() {
-				return Optional.empty();
-			}
-
-		};
-		return fournisseur;
-	}
 
 	@Override
 	protected BigDecimal produireImpotBase(SituationFamiliale situation,
-			FournisseurAssiettePeriodique fournisseur, RecepteurImpot recepteur) {
+			FournisseurAssiettePeriodique fournisseur,
+										   RecepteurImpot recepteur) {
 
 		NumberFormat format = NumberFormat.getNumberInstance();
 		format.setGroupingUsed(true);
@@ -110,7 +80,7 @@ public class ProducteurImpotAvecRabais extends ProducteurImpot {
 		BigDecimal impotBase = super.produireImpotBase(situation, fournisseur, recepteur);
 		logger.debug("Impôt base " + format.format(impotBase));
 
-		FournisseurAssiettePeriodique assiettePourRabais = construireAssietteRabais(fournisseur);
+		FournisseurAssiettePeriodique assiettePourRabais = constructeurAssietteRabais.construireAssietteRabais(fournisseur);
 
 		BigDecimal montantRabaisImpot = this.produireRabaisImpot(impotBase, situation, assiettePourRabais, recepteur);
 		logger.debug("Rabais impôt " + format.format(montantRabaisImpot));

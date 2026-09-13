@@ -30,7 +30,5 @@
  */
 package org.impotch.calcul.impot.cantonal.ge.param;
 
-import org.impotch.bareme.BaremeParTranche;
-
-public record ParametrageDeductionSocialeRevenu(int parCharge, BaremeParTranche rentierAVSAISeul) {
+public record ParametrageDeductionSocialeRevenu(int parCharge, ParametrageDeductionSocialeBeneficiairesRentesAVSouAI beneficiairesRentesAVSouAI) {
 }

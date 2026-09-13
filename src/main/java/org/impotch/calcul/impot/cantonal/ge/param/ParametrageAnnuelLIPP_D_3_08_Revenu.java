@@ -34,6 +34,11 @@ public interface ParametrageAnnuelLIPP_D_3_08_Revenu {
     int deductionSocialeRevenuParChargeDeFamille();
 
     BaremeParTranche deductionSocialeBeneficiairesRentesAVSouAIPersonneSeule();
+
+    BaremeParTranche  deductionSocialeBeneficiairesRentesAVSouAICoupleUnSeulRentierOuPersonneSeuleAvecCharge();
+
+    BaremeParTranche  deductionSocialeBeneficiairesRentesAVSouAICoupleDeuxRentiers();
+
     /**
      * Retourne le montant de la déduction mentionnée à l’article 36
      * @return montant de la déduction mentionnée à l’article 36

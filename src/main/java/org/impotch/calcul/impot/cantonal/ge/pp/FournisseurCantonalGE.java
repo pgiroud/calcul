@@ -268,7 +268,8 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         ProducteurImpotBase producteurImpotBase = construireImpotCantonalBasePC(annee);
         ProducteurImpot producteur;
         if (annee < 2010) {
-            ProducteurImpotAvecRabais prodRabais = new ProducteurImpotAvecRabais("IBR", "RI", CODE_CANTON_GE);
+            ProducteurImpotAvecRabais prodRabais = new ProducteurImpotAvecRabais(new ConstructeurAssietteRabaisGE(),
+                    "IBR", "RI", CODE_CANTON_GE);
             prodRabais.setProducteurBaseRabais(producteurImpotBase);
             producteur = prodRabais;
         } else {
@@ -283,7 +284,8 @@ public class FournisseurCantonalGE extends FournisseurCantonal implements Fourni
         ProducteurImpotBase producteurImpotBase = construireImpotCantonalBaseRevenu(annee);
         ProducteurImpot producteur;
         if (annee < 2010) {
-            ProducteurImpotAvecRabais prodRabais = new ProducteurImpotAvecRabais("IBR", "RI", CODE_CANTON_GE);
+            ProducteurImpotAvecRabais prodRabais = new ProducteurImpotAvecRabais(new ConstructeurAssietteRabaisGE(),
+                    "IBR", "RI", CODE_CANTON_GE);
             prodRabais.setProducteurBaseRabais(producteurImpotBase);
             producteur = prodRabais;
         } else {

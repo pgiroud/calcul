@@ -81,6 +81,16 @@ public class ParametrageAnnuelLIPP_D_3_08 implements ParametrageAnnuelLIPP_D_3_0
 
     @Override
     public BaremeParTranche deductionSocialeBeneficiairesRentesAVSouAIPersonneSeule() {
-        return deducSocialesRevenu.rentierAVSAISeul();
+        return deducSocialesRevenu.beneficiairesRentesAVSouAI().personneSeule();
+    }
+
+    @Override
+    public BaremeParTranche deductionSocialeBeneficiairesRentesAVSouAICoupleUnSeulRentierOuPersonneSeuleAvecCharge() {
+        return deducSocialesRevenu.beneficiairesRentesAVSouAI().coupleUnSeulRentierOuPersonneSeuleAvecCharge();
+    }
+
+    @Override
+    public BaremeParTranche deductionSocialeBeneficiairesRentesAVSouAICoupleDeuxRentiers() {
+        return deducSocialesRevenu.beneficiairesRentesAVSouAI().coupleDeuxRentiers();
     }
 }

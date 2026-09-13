@@ -36,8 +36,8 @@ public class Indexation2027Test {
         indexateur = new IndexateurGenevois(fournisseur);
     }
 
-    private int indexer(int annee, int valeurBaseIndexation) {
-        return indexateur.indexer(annee, BigDecimal.valueOf(valeurBaseIndexation), ANNEE_FISCALE)
+    private int indexer(int anneeBaseIndexation, int valeurBaseIndexation) {
+        return indexateur.indexer(anneeBaseIndexation, BigDecimal.valueOf(valeurBaseIndexation), ANNEE_FISCALE)
                 .intValueExact();
     }
 
@@ -46,7 +46,7 @@ public class Indexation2027Test {
     }
 
 
-    private BaremeParTranche construireBaremeArt40Alinea3LIPP() {
+    private BaremeParTranche construireBaremeArt40Alinea3LIPPPersonneSeule() {
         return unBareme()
                 .jusqua(50000).valeur(10000)
                 .de(50000).a(56700).valeur(8000)
@@ -56,13 +56,13 @@ public class Indexation2027Test {
                 .plusDe(80000).valeur(0).construire();
     }
 
-    private BaremeParTranche construireBaremeArt40Alinea1LIPPUnSeulRentier() {
-        return construireBaremeArt40Alinea3LIPP()
+    private BaremeParTranche construireBaremeArt40Alinea1LIPPCoupleUnSeulRentier() {
+        return construireBaremeArt40Alinea3LIPPPersonneSeule()
                 .homothetie(new BigDecimal("1.15"), TypeArrondi.CENTAINE_INF);
     }
 
-    private BaremeParTranche construireBaremeArt40Alinea1LIPPDeuxRentiers() {
-        return construireBaremeArt40Alinea1LIPPUnSeulRentier()
+    private BaremeParTranche construireBaremeArt40Alinea1LIPPCoupleDeuxRentiers() {
+        return construireBaremeArt40Alinea1LIPPCoupleUnSeulRentier()
                 .homothetieValeur(new BigDecimal("1.15"), TypeArrondi.CENTAINE_INF);
     }
 
@@ -242,7 +242,7 @@ public class Indexation2027Test {
     public void deductionBeneficiairesRentesAVSouAICoupleAvecUnSeulRentier() {
         FournisseurIndexGenevois fournisseur = new FournisseurIndexGenevoisEnMemoire();
         Indexateur indexateur = new IndexateurGenevois(fournisseur);
-        BaremeParTranche baremeAdapte = indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, construireBaremeArt40Alinea1LIPPUnSeulRentier(), ANNEE_FISCALE);
+        BaremeParTranche baremeAdapte = indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, construireBaremeArt40Alinea1LIPPCoupleUnSeulRentier(), ANNEE_FISCALE);
         BaremeParTranche baremeAttendu = unBareme()
                 .jusqua(61_747).valeur(10_739)
                 .de(61_747).a(70_016).valeur(8591)
@@ -258,7 +258,7 @@ public class Indexation2027Test {
     public void deductionBeneficiairesRentesAVSouAICoupleAvecDeuxRentiers() {
         FournisseurIndexGenevois fournisseur = new FournisseurIndexGenevoisEnMemoire();
         Indexateur indexateur = new IndexateurGenevois(fournisseur);
-        BaremeParTranche baremeLIPP2009 = construireBaremeArt40Alinea1LIPPDeuxRentiers();
+        BaremeParTranche baremeLIPP2009 = construireBaremeArt40Alinea1LIPPCoupleDeuxRentiers();
         BaremeParTranche baremeAdapte = indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, baremeLIPP2009, ANNEE_FISCALE);
         BaremeParTranche baremeAttendu = unBareme()
                 .jusqua(61_747).valeur(12_349)
@@ -275,7 +275,7 @@ public class Indexation2027Test {
     public void deductionBeneficiairesRentesAVSouAIPersonneSeule() {
         FournisseurIndexGenevois fournisseur = new FournisseurIndexGenevoisEnMemoire();
         Indexateur indexateur = new IndexateurGenevois(fournisseur);
-        BaremeParTranche baremeLIPP2009 = this.construireBaremeArt40Alinea3LIPP();
+        BaremeParTranche baremeLIPP2009 = this.construireBaremeArt40Alinea3LIPPPersonneSeule();
         BaremeParTranche baremeAdapte = indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, baremeLIPP2009, ANNEE_FISCALE);
         BaremeParTranche baremeAttendu = unBareme()
                 .jusqua(53_693).valeur(10_739)

@@ -17,6 +17,7 @@
 package org.impotch.calcul.impot.federal;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -77,7 +78,8 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 	}
 
 	private ProducteurImpot construireProducteurImpotsFederauxPPAvecBaremeParental(int annee, TypeArrondi arrondiSurChaqueTranche, int rabaisParCharge) {
-		ProducteurImpotAvecRabais producteur = new ProducteurImpotAvecRabais("IBR", "RI", CODE_CONFEDERATION_SUISSE);
+		ProducteurImpotAvecRabais producteur = new ProducteurImpotAvecRabais(new ConstructeurAssietteBaremeParental(),
+				"IBR", "RI", CODE_CONFEDERATION_SUISSE);
 		producteur.setProducteurBaseRabais(new ProducteurImpotBaseAdaptateur(producteurImpotRabais(annee,rabaisParCharge)));
 		producteur.setProducteurBase(
 				unProducteurImpotBaseProgressif(impositionFamiliale(annee,arrondiSurChaqueTranche))
@@ -116,7 +118,15 @@ public class Fournisseur implements FournisseurRegleImpotFederal {
 
 		@Override
 		public BigDecimal produireImpotBase(SituationFamiliale situation, FournisseurAssiettePeriodique fournisseur) {
-			return prodRabais.produireMontantDeterminantRabais(situation, new FournisseurMontantRabaisImpot() {});
+			BigDecimal montantRabaisDeterminant = prodRabais.produireMontantDeterminantRabais(situation, new FournisseurMontantRabaisImpot() {});
+			// Si imposable < déterminant, on fait la règle de 3
+			BigDecimal revenuImposable = fournisseur.getMontantImposable();
+			BigDecimal revenuDeterminant = fournisseur.getMontantDeterminant().orElse(revenuImposable);
+			if (0 > revenuImposable.compareTo(revenuDeterminant)) {
+				return VINGTIEME_INF.arrondir(montantRabaisDeterminant.multiply(revenuImposable).divide(revenuDeterminant,10, RoundingMode.HALF_UP));
+			} else {
+				return montantRabaisDeterminant;
+			}
 		}
 	}
 

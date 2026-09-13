@@ -17,12 +17,17 @@ package org.impotch.calcul.impot.cantonal.ge.param;
 
 import org.impotch.bareme.BaremeParTranche;
 import org.impotch.calcul.impot.indexation.Indexateur;
+import org.impotch.util.TypeArrondi;
 
+
+import java.math.BigDecimal;
 
 import static org.impotch.bareme.ConstructeurBareme.unBareme;
 import static org.impotch.util.TypeArrondi.CENTAINE_SUP;
 
 public class FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire implements FournisseurParametrageAnnuelLIPP_D_3_08 {
+
+    private static final int ANNEE_INDEXATION_LIPP_D_3_08 = 2009;
 
     private final Indexateur indexateur;
 
@@ -87,7 +92,22 @@ public class FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire implements Fourni
         return 2 * montantDeductionSocialeParDemiCharge(annee);
     }
 
-    private BaremeParTranche construireBaremeArt40Alinea3LIPP() {
+    // Déductions bénéficiaires de rentes AVS ou AI
+    // Les barèmes sont construits par homothétie de l’uniaue barème figurant à l’alinea 3
+    // Attention à bien construire les barèmes de la LIPP puis à indexer chacun des barèmes. Ces opérations
+    // ne sont pas commutatives.
+
+    private BaremeParTranche construireBaremeArt40Alinea1LIPPCoupleUnSeulRentier() {
+        return construireBaremeArt40Alinea3LIPPPersonneSeule()
+                .homothetie(new BigDecimal("1.15"), TypeArrondi.CENTAINE_INF);
+    }
+
+    private BaremeParTranche construireBaremeArt40Alinea1LIPPCoupleDeuxRentiers() {
+        return construireBaremeArt40Alinea1LIPPCoupleUnSeulRentier()
+                .homothetieValeur(new BigDecimal("1.15"), TypeArrondi.CENTAINE_INF);
+    }
+
+    private BaremeParTranche construireBaremeArt40Alinea3LIPPPersonneSeule() {
         return unBareme()
                 .jusqua(50000).valeur(10000)
                 .de(50000).a(56700).valeur(8000)
@@ -97,17 +117,37 @@ public class FournisseurParametrageAnnuelLIPP_D_3_08_enMemoire implements Fourni
                 .plusDe(80000).valeur(0).construire();
     }
 
-    private BaremeParTranche baremeRentierAVSAISeul(int annee) {
-        BaremeParTranche baremeLIPP2009 = this.construireBaremeArt40Alinea3LIPP();
-        BaremeParTranche baremeAdapte = indexateur.indexer(2009, baremeLIPP2009, annee);
-        return baremeAdapte;
+    private BaremeParTranche baremeRentierAVSAIPersonneSeule(int annee) {
+        BaremeParTranche baremeLIPP = this.construireBaremeArt40Alinea3LIPPPersonneSeule();
+        return indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, baremeLIPP, annee);
     }
 
+    private BaremeParTranche baremeRentierAVSAICoupleUnSeulRentierOuPersonneSeuleAvecCharge(int annee) {
+        BaremeParTranche baremeLIPP = this.construireBaremeArt40Alinea1LIPPCoupleUnSeulRentier();
+        return indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, baremeLIPP, annee);
+    }
+
+    private BaremeParTranche baremeRentierAVSAICoupleDeuxRentiers(int annee) {
+        BaremeParTranche baremeLIPP = this.construireBaremeArt40Alinea1LIPPCoupleDeuxRentiers();
+        return indexateur.indexer(ANNEE_INDEXATION_LIPP_D_3_08, baremeLIPP, annee);
+    }
+
+    private ParametrageDeductionSocialeBeneficiairesRentesAVSouAI parametrageBeneficiaireAVSouAI(int annee){
+        BaremeParTranche baremeRentierAVSAISeul = baremeRentierAVSAIPersonneSeule(annee);
+        BaremeParTranche baremeRentierAVSAICoupleUnSeulRentier
+                = baremeRentierAVSAICoupleUnSeulRentierOuPersonneSeuleAvecCharge(annee);
+        BaremeParTranche baremeRentierAVSAICoupleDeuxRentiers = baremeRentierAVSAICoupleDeuxRentiers(annee);
+        return new ParametrageDeductionSocialeBeneficiairesRentesAVSouAI(baremeRentierAVSAISeul
+                ,baremeRentierAVSAICoupleUnSeulRentier
+                ,baremeRentierAVSAICoupleDeuxRentiers);
+    }
 
     private ParametrageDeductionSocialeRevenu construireParametrageDeductionSocialeRevenu(int annee) {
         int montantDeductionSocialeParCharge = montantDeductionSocialeParCharge(annee);
-        BaremeParTranche baremeRentierAVSAISeul = baremeRentierAVSAISeul(annee);
-        return new ParametrageDeductionSocialeRevenu(montantDeductionSocialeParCharge,baremeRentierAVSAISeul);
+        ParametrageDeductionSocialeBeneficiairesRentesAVSouAI parametrageDeductionSocialeBeneficiairesRentesAVSouAI
+                = parametrageBeneficiaireAVSouAI(annee);
+        return new ParametrageDeductionSocialeRevenu(montantDeductionSocialeParCharge,
+                parametrageDeductionSocialeBeneficiairesRentesAVSouAI);
     }
 
 
