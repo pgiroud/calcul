@@ -55,24 +55,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>25</maven.compiler.release>
 
-        <junit.version>6.0.2</junit.version>
+        <junit.version>6.1.3</junit.version> <!-- 2026-08-08 -->
         <assertj.version>3.27.7</assertj.version> <!-- 24/01/2026 -->
-        <logback-classic.version>1.5.32</logback-classic.version> <!-- 16/02/2026 -->
+        <logback-classic.version>1.6.3</logback-classic.version> <!-- 15/08/2026 -->
 
         <bareme.version>3.1.6</bareme.version>
 
         <!-- Plugin maven -->
-        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-        <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version> <!-- 15/11/2025 -->
-        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version> <!-- 10/09/2025 -->
+        <!-- Référence : https://maven.apache.org/plugins/ -->
+        <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>  <!-- 2026-08-30 -->
+        <maven-jar-plugin.version>3.5.1</maven-jar-plugin.version> <!-- 2026-07-19 -->
+        <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version> <!-- 2026-08-31 -->
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version> <!-- 29/11/2025 -->
 
-        <maven-site-plugin.version>3.21.0</maven-site-plugin.version> <!-- 22/10/2024 -->
+        <maven-site-plugin.version>3.22.0</maven-site-plugin.version> <!-- 2026-05-20 -->
         <maven-project-info-reports-plugin.version>3.9.0</maven-project-info-reports-plugin.version> <!-- 26/02/2025 -->
         <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version> <!-- 21/09/2025 -->
         <maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version> <!-- 25/10/2024 -->
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version> <!-- 11/10/2025 -->
-        <maven-surefire-report-plugin.version>3.5.4</maven-surefire-report-plugin.version> <!-- 10/09/2025 -->
+        <maven-surefire-report-plugin.version>3.6.0</maven-surefire-report-plugin.version> <!-- 2026-08-31 -->
         <maven-pmd-plugin.version>3.28.0</maven-pmd-plugin.version>
 
     </properties>
@@ -163,6 +164,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>${maven-site-plugin.version}</version>
+                <configuration>
+                    <locales>fr</locales>
+                </configuration>
             </plugin>
 
         </plugins>
@@ -173,6 +177,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>${maven-site-plugin.version}</version>
+                <configuration>
+                    <locales>fr</locales>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -189,9 +196,9 @@
                     <docfilessubdirs>true</docfilessubdirs>
                     <links>
                         <!-- JSE -->
-                        <link>https://docs.oracle.com/en/java/javase/17/docs/api/</link>
+                        <link>https://docs.oracle.com/en/java/javase/25/docs/api/</link>
                         <!-- Libraries -->
-                        <link>https://junit.org/junit5/docs/current/api/</link>
+                        <link>https://docs.junit.org/6.1.3/api/</link>
                         <link>https://www.slf4j.org/apidocs/</link>
                     </links>
                     <failOnError>false</failOnError>
