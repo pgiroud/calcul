@@ -52,6 +52,7 @@ public class FournisseurParametrageAnnuelIFDEnMemoire implements FournisseurPara
         if (2024 == annee) return OptionalInt.of(259); // https://www.fedlex.admin.ch/eli/cc/2023/493/fr RO 2023 493 Art.2 alinea 3
         if (2025 == annee
             || 2026 == annee) return OptionalInt.of(263); // https://www.fedlex.admin.ch/eli/oc/2024/479/fr RO 2024 479 Art.2 alinea 3
+        if (2027 == annee) return OptionalInt.of(264);
         throw new IllegalArgumentException("La progression à froid est inconnue pour l’année " + annee);
     }
 }

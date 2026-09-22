@@ -122,6 +122,50 @@ class IFDPostNumerando {
 //    }
 //
 
+    // ******************************************************************
+    // ************************* 2027 ***********************************
+    // ******************************************************************
+
+    /**
+     * Au 30 juin 2026, l'indice de référence s'élevait à 171,2 points, ce qui correspond à une augmentation
+     * de 0,47 pour cent par rapport à l'indice du 30 juin 2025.
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return le barème IFD pour personne seule valable dès 2027
+     */
+    @SuppressWarnings("unused")
+    private Bareme tranchesPersonneSeule2027(ConstructeurBaremeIFD constructeurBaremeIFD) {
+        return constructeurBaremeIFD
+                .jusqua(15_300).a(    "0.00").etPar100FrancsEnPlus( "0.77")
+                .pour(  33_400).a(  "139.35").etPar100FrancsEnPlus( "0.88")
+                .pour(  43_700).a(  "229.95").etPar100FrancsEnPlus( "2.64")
+                .pour(  58_300).a(  "615.35").etPar100FrancsEnPlus( "2.97")
+                .pour(  76_500).a( "1155.85").etPar100FrancsEnPlus( "5.94")
+                .pour(  82_400).a( "1506.30").etPar100FrancsEnPlus( "6.60")
+                .pour( 109_400).a( "3288.30").etPar100FrancsEnPlus( "8.80")
+                .pour( 142_200).a( "6174.70").etPar100FrancsEnPlus("11.00")
+                .pour( 185_900).a("10981.70").etPar100FrancsEnPlus("13.20")
+                .tauxEffectifMax("11.5 %").construire();
+    }
+
+    @SuppressWarnings("unused")
+    private Bareme tranchesFamille2027(ConstructeurBaremeIFD constructeurBaremeIFD) {
+        return constructeurBaremeIFD
+                .jusqua(29_900).a(   "0.00").etPar100FrancsEnPlus( "1.00")
+                .pour(  53_700).a( "238.00").etPar100FrancsEnPlus( "2.00")
+                .pour(  61_600).a( "396.00").etPar100FrancsEnPlus( "3.00")
+                .pour(  79_500).a( "933.00").etPar100FrancsEnPlus( "4.00")
+                .pour(  95_400).a("1569.00").etPar100FrancsEnPlus( "5.00")
+                .pour( 109_200).a("2259.00").etPar100FrancsEnPlus( "6.00")
+                .pour( 121_200).a("2979.00").etPar100FrancsEnPlus( "7.00")
+                .pour( 131_100).a("3672.00").etPar100FrancsEnPlus( "8.00")
+                .pour( 139_100).a("4312.00").etPar100FrancsEnPlus( "9.00")
+                .pour( 145_000).a("4843.00").etPar100FrancsEnPlus("10.00")
+                .pour( 149_000).a("5243.00").etPar100FrancsEnPlus("11.00")
+                .pour( 151_100).a("5474.00").etPar100FrancsEnPlus("12.00")
+                .pour( 153_100).a("5714.00").etPar100FrancsEnPlus("13.00")
+                .tauxEffectifMax("11.5 %").construire();
+    }
+
 
 
     // ******************************************************************
@@ -133,10 +177,10 @@ class IFDPostNumerando {
      *  de 0,06 pour cent par rapport à l'indice du 30 juin 2024.
      *  Voir <a href="https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-215-d-2025-fr.pdf.download.pdf/dbst-rs-2-215-d-2025-fr.pdf">lettre circulaire n 215</a>
      *  et l’ordonnance sur la progression à froid <a href="https://www.fedlex.admin.ch/eli/oc/2025/579/fr">RO 2025 579</a>
-     *
      * Attention, il y a eu une erreur sur une tranche dans la circulaire publiée (pour 76200, il était indiqué un montant d’impôt de 1152.55 alors que le
      * montant doit être 1152.50). Voir erratum <a href="https://www.fedlex.admin.ch/eli/oc/2025/621/fr">RO 2025 621</a>
-     * @return barème IFD pour personne seule valable dès 2025
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return le barème IFD pour personne seule valable dès 2026
      */
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2026(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -179,11 +223,13 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de juin 2024: 170,3
      * barème 2024 étiré de 1,31 %
-     * Voir Ordonnance du département fédéral des finances RS 642.119.2
-     * https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf
+     * Voir
+     * <a href="https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf">
+     *     Ordonnance du département fédéral des finances RS 642.119.2</a>
      * Attention, il y a une erreur sur une tranche dans la directive fédérale.
      * Se référer à l’article 36 de la LIFD en vigueur au 1er janvier 2025
-     * @return barème IFD pour personne seule valable dès 2025
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return le barème IFD pour personne seule valable dès 2025
      */
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2025(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -203,8 +249,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de juin 2024: 170,3
      * barème 2024 étiré de 1,31 %
-     * Voir Ordonnance du département fédéral des finances RS 642.119.2
-     * https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf
+     * Voir <a href="https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf">
+     *     Ordonnance du département fédéral des finances RS 642.119.2</a>
      * @return barème IFD pour famille valable dès 2025
      */
     @SuppressWarnings("unused")
@@ -233,9 +279,10 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de juin 2023: 168,1
      * barème 2023 étiré de 1,76 %
-     * Voir Ordonnance du département fédéral des finances RS 642.119.2
-     * https://lex.weblaw.ch/lex.php?norm_id=642.119.2&source=SR&lex_id=87133&q=
-     * @return barème IFD pour personne seule valable dès 2024
+     * Voir <a href="https://lex.weblaw.ch/lex.php?norm_id=642.119.2&source=SR&lex_id=87133&q=">Ordonnance du département fédéral
+     * des finances RS 642.119.2</a>
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return barème IFD pour personne seule valable pour la période fiscale 2024
      */
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2024(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -257,7 +304,8 @@ class IFDPostNumerando {
      * barème 2023 étiré de 1,76 %
      * Voir Ordonnance du département fédéral des finances RS 642.119.2
      * https://lex.weblaw.ch/lex.php?norm_id=642.119.2&source=SR&lex_id=87133&q=
-     * @return le barème IFD pour famille pour l’année 2024
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return le barème IFD pour famille pour la période fiscale 2024
      */
     @SuppressWarnings("unused")
     private Bareme tranchesFamille2024(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -285,7 +333,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de juin 2022: 165,2
      * barème 2012 étiré de 2.04 %
-     * @return Constructeur pour les périodes fiscales 2023
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return Le barème IFD personne seule pour la période fiscale 2023
      */
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2023(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -305,7 +354,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de juin 2022: 165.2
      * barème 2012 étiré de 2.04 %
-     * @return barèmè pour la période fiscale >= 2023
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return Le barème IFD famille pour la période fiscale 2023
      */
     @SuppressWarnings("unused")
     private Bareme tranchesFamille2023(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -333,7 +383,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de juin 2011: 161,9
      * barème 2011 étiré de 0.6 %
-     * @return Constructeur pour les périodes fiscales 2012, 2013
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return le barème IFD personne seule pour les périodes fiscales dès 2012
      */
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2012(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -353,7 +404,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de juin 2011: 161,9
      * barème 2011 étiré de 0.6 %
-     * @return Constructeur pour les périodes fiscales 2012, 2013
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return Le barème IFD famille dès la période fiscale 2012
      */
     @SuppressWarnings("unused")
     private Bareme tranchesFamille2012(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -381,7 +433,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de juin 2010: 161,0
      * barème 2006 étiré de 5,2 %
-     * @return Constructeur pour la période fiscale 2011
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return Le barème IFD personne seule pour la période fiscale 2011
      */
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2011(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -401,7 +454,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de juin 2010: 161,0
      * barème 2006 étiré de 5,2 %
-     * @return Constructeur pour la période fiscale 2011
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return Le barème IFD famille pour la période fiscale 2011
      */
     @SuppressWarnings("unused")
     private Bareme tranchesFamille2011(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -429,7 +483,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de décembre 2004: 153,1
      * barème 1996 étiré de 7,6 %
-     * @return Constructeur pour les périodes fiscales 2006, 2007, 2008, 2009, 2010
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return Le barème IFD personne seule pour les périodes fiscales 2006, 2007, 2008, 2009, 2010
      */
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2006(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -449,7 +504,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de décembre 2004: 153,1
      * barème 1996 étiré de 7,6 %
-     * @return Constructeur pour les périodes fiscales 2006, 2007, 2008, 2009, 2010
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return Le barème IFD famille pour les périodes fiscales 2006, 2007, 2008, 2009, 2010
      */
     @SuppressWarnings("unused")
     private Bareme tranchesFamille2006(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -477,7 +533,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de décembre 1995: 142,3
      * barème 1993 étiré de 8.5 %
-     * @return Constructeur pour les périodes fiscales 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004 et 2005
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return Le barème IFD pour les personnes seules pour les périodes fiscales 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004 et 2005
      */
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule1996(ConstructeurBaremeIFD constructeurBaremeIFD) {
@@ -497,7 +554,8 @@ class IFDPostNumerando {
     /**
      * Adapté à l'indice de décembre 1995: 142.3
      * barème 1993 étiré de 8.5 %
-     * @return Constructeur pour les périodes fiscales 1996 à 2005
+     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+     * @return Le barème IFD pour les familles pour les périodes fiscales 1996 à 2005
      */
     @SuppressWarnings("unused")
     private Bareme tranchesFamille1996(ConstructeurBaremeIFD constructeurBaremeIFD) {
