@@ -46,6 +46,13 @@ public class FournisseurParametrageCotisationAssuranceMaterniteEnMemoire impleme
     }
 
     @SuppressWarnings("unused")
+    private ParametrageCotisationAssuranceMaternite construireParametrage2027() {
+        return unConstructeur(2027)
+                .tauxCotisationAssuranceMaternite("0.058 %")
+                .cons();
+    }
+
+    @SuppressWarnings("unused")
     private ParametrageCotisationAssuranceMaternite construireParametrage2026() {
         return unConstructeur(2026)
                 .tauxCotisationAssuranceMaternite("0.058 %")

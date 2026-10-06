@@ -126,12 +126,11 @@ class IFDPostNumerando {
     // ************************* 2027 ***********************************
     // ******************************************************************
 
-    /**
-     * Au 30 juin 2026, l'indice de référence s'élevait à 171,2 points, ce qui correspond à une augmentation
-     * de 0,47 pour cent par rapport à l'indice du 30 juin 2025.
-     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
-     * @return le barème IFD pour personne seule valable dès 2027
-     */
+    /// Au 30 juin 2026, l'indice de référence s'élevait à 171,2 points, ce qui correspond à une augmentation
+    /// de 0,47 pour cent par rapport à l'indice du 30 juin 2025.
+    /// Voir [Ordonnance RO 2026 486](https://www.fedlex.admin.ch/eli/oc/2026/486/fr)
+    /// @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+    /// @return le barème IFD pour personne seule valable dès 2027
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2027(ConstructeurBaremeIFD constructeurBaremeIFD) {
         return constructeurBaremeIFD
@@ -172,16 +171,14 @@ class IFDPostNumerando {
     // ************************* 2026 ***********************************
     // ******************************************************************
 
-    /**
-     *  Au 30 juin 2025, l'indice de référence s'élevait à 170,4 points, ce qui correspond à une augmentation
-     *  de 0,06 pour cent par rapport à l'indice du 30 juin 2024.
-     *  Voir <a href="https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-215-d-2025-fr.pdf.download.pdf/dbst-rs-2-215-d-2025-fr.pdf">lettre circulaire n 215</a>
-     *  et l’ordonnance sur la progression à froid <a href="https://www.fedlex.admin.ch/eli/oc/2025/579/fr">RO 2025 579</a>
-     * Attention, il y a eu une erreur sur une tranche dans la circulaire publiée (pour 76200, il était indiqué un montant d’impôt de 1152.55 alors que le
-     * montant doit être 1152.50). Voir erratum <a href="https://www.fedlex.admin.ch/eli/oc/2025/621/fr">RO 2025 621</a>
-     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
-     * @return le barème IFD pour personne seule valable dès 2026
-     */
+    /// Au 30 juin 2025, l'indice de référence s'élevait à 170,4 points, ce qui correspond à une augmentation
+    ///  de 0,06 pour cent par rapport à l'indice du 30 juin 2024.
+    ///  Voir [lettre circulaire n 215](https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-215-d-2025-fr.pdf.download.pdf/dbst-rs-2-215-d-2025-fr.pdf)
+    ///  et l’ordonnance sur la progression à froid [RO 2025 579](https://www.fedlex.admin.ch/eli/oc/2025/579/fr)
+    /// Attention, il y a eu une erreur sur une tranche dans la circulaire publiée (pour 76200, il était indiqué un montant d’impôt de 1152.55 alors que le
+    /// montant doit être 1152.50). Voir erratum [RO 2025 621](https://www.fedlex.admin.ch/eli/oc/2025/621/fr)
+    /// @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+    /// @return le barème IFD pour personne seule valable dès 2026
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2026(ConstructeurBaremeIFD constructeurBaremeIFD) {
         return constructeurBaremeIFD
@@ -220,17 +217,13 @@ class IFDPostNumerando {
     // ************************* 2025 ***********************************
     // ******************************************************************
 
-    /**
-     * Adapté à l'indice de juin 2024: 170,3
-     * barème 2024 étiré de 1,31 %
-     * Voir
-     * <a href="https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf">
-     *     Ordonnance du département fédéral des finances RS 642.119.2</a>
-     * Attention, il y a une erreur sur une tranche dans la directive fédérale.
-     * Se référer à l’article 36 de la LIFD en vigueur au 1er janvier 2025
-     * @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
-     * @return le barème IFD pour personne seule valable dès 2025
-     */
+    /// Adapté à l'indice de juin 2024: 170,3
+    /// barème 2024 étiré de 1,31 %
+    /// Voir [Ordonnance du département fédéral des finances RS 642.119.2](https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf)
+    /// Attention, il y a une erreur sur une tranche dans la directive fédérale.
+    /// Se référer à l’article 36 de la LIFD en vigueur au 1er janvier 2025
+    /// @param constructeurBaremeIFD le constructeur de barème IFD dont on va spéficier les tranches
+    /// @return le barème IFD pour personne seule valable dès 2025
     @SuppressWarnings("unused")
     private Bareme tranchesPersonneSeule2025(ConstructeurBaremeIFD constructeurBaremeIFD) {
         return constructeurBaremeIFD
@@ -246,13 +239,10 @@ class IFDPostNumerando {
                 .tauxEffectifMax("11.5 %").construire();
     }
 
-    /**
-     * Adapté à l'indice de juin 2024: 170,3
-     * barème 2024 étiré de 1,31 %
-     * Voir <a href="https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf">
-     *     Ordonnance du département fédéral des finances RS 642.119.2</a>
-     * @return barème IFD pour famille valable dès 2025
-     */
+    /// Adapté à l'indice de juin 2024: 170,3
+    /// barème 2024 étiré de 1,31 %
+    /// Voir [Ordonnance du département fédéral des finances RS 642.119.2](https://www.estv.admin.ch/dam/estv/fr/dokumente/dbst/rundschreiben/dbst-rs-2-210-d-2024-fr.pdf.download.pdf/dbst-rs-2-210-d-2024-fr.pdf)
+    /// @return barème IFD pour famille valable dès 2025
     @SuppressWarnings("unused")
     private Bareme tranchesFamille2025(ConstructeurBaremeIFD constructeurBaremeIFD) {
         return constructeurBaremeIFD

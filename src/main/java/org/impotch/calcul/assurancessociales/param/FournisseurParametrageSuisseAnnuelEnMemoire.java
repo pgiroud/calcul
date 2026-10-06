@@ -44,6 +44,28 @@ class FournisseurParametrageSuisseAnnuelEnMemoire implements FournisseurParametr
     }
 
     @SuppressWarnings("unused")
+    private ParametrageSuisseAnnuel construireParametrage2027() {
+        // Adaptation de la rente mensuelle minimum : 1225 CHF --> 1260 CHF https://www.fedlex.admin.ch/eli/cc/2024/463/fr#art_3
+        return unConstructeur(2027)
+                // Source art.22 al. 1 de l’ Ordonnance sur l'assurance-accidents (OLAA) : https://www.fedlex.admin.ch/eli/cc/1983/38_38_38/fr#art_22
+                .montantMaxAssure(148_200)
+                // Source Art. 5 al. 1 de la loi sur l’assurance vieillesse et survivants (LAVS) : https://www.fedlex.admin.ch/eli/cc/63/837_843_843/fr#art_5
+                .avs("8.7 %")
+                // Source art.3 al.1 de la Loi fédérale sur l’assurance-invalidité (LAI) : https://www.fedlex.admin.ch/eli/cc/1959/827_857_845/fr#art_3
+                .ai("1.4 %")
+                // Source art.36 al.1 de l’ordonnance sur les allocations pour perte de gain (OAPG) https://www.fedlex.admin.ch/eli/cc/2005/187/fr#art_36
+                .apg("0.5 %")
+                // Source art.3 al. 2 de la Loi sur l’assurance chômage (LACI) : https://www.fedlex.admin.ch/eli/cc/1982/2184_2184_2184/fr#art_3
+                .ac("2.2 %")
+                // Source art. 3 al.1 de l’ordonnance sur les adaptations à l’évolution des salaires et des prix
+                // dans le régime de l’AVS, de l’AI et des APG à partir de 2025
+                // https://www.fedlex.admin.ch/eli/cc/2024/463/fr#art_3
+                .renteMensuelleMinimum(1280)
+                .cons();
+    }
+
+
+    @SuppressWarnings("unused")
     private ParametrageSuisseAnnuel construireParametrage2026() {
         // Le paramétrage 2026 est le même que celui de 2025
         return unConstructeur(2026).copie(construireParametrage2025()).cons();
